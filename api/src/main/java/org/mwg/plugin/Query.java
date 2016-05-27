@@ -2,6 +2,9 @@ package org.mwg.plugin;
 
 import org.mwg.Constants;
 
+import java.util.List;
+import java.util.Map;
+
 public class Query {
 
     private long _hash;
@@ -103,6 +106,22 @@ public class Query {
         //insert the last element
         if (currentKey != Constants.NULL_LONG) {
             flatQuery.add(currentKey, query.substring(lastElemStart, cursor).trim());
+        }
+        flatQuery.compute();
+        return flatQuery;
+    }
+
+    /**
+     * Should allow escaping of special character like = and ,
+     * @param keyvalue query under the form of map
+     * @param p_resolver
+     * @return complex FlatQuery object, containing the decomposition of keys/values
+     */
+    public static Query parseQuery( Map<String,String> keyvalue, Resolver p_resolver ){
+        Query flatQuery = new Query();
+        for (Map.Entry<String, String> entry : keyvalue.entrySet())
+        {
+            flatQuery.add(p_resolver.stringToHash(entry.getKey(),false),entry.getValue());
         }
         flatQuery.compute();
         return flatQuery;
