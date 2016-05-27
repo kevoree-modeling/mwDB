@@ -281,13 +281,13 @@ public abstract class AbstractNode implements Node {
 
     @Override
     public void findAt(String indexName, long world, long time, String query, Callback<Node[]> callback) {
-        final Query flatquery = Query.parseQuery(query,this._resolver);
-        findAt(indexName, world, time,flatquery, callback);
+        final Query flatquery = Query.parseQuery(query, this._resolver);
+        findAt(indexName, world, time, flatquery, callback);
     }
 
     public void findAt(String indexName, long world, long time, HashMap<String, String> query, Callback<Node[]> callback) {
-        final Query flatquery = Query.parseQuery(query,this._resolver);
-        findAt(indexName, world, time,flatquery, callback);
+        final Query flatquery = Query.parseQuery(query, this._resolver);
+        findAt(indexName, world, time, flatquery, callback);
     }
 
     private void findAt(String indexName, long world, long time, final Query flatQuery, final Callback<Node[]> callback) {
@@ -373,7 +373,7 @@ public abstract class AbstractNode implements Node {
         findAt(indexName, time(), world(), query, callback);
     }
 
-    public void find(String indexName, HashMap<String,String> query, Callback<Node[]> callback) {
+    public void find(String indexName, HashMap<String, String> query, Callback<Node[]> callback) {
         findAt(indexName, time(), world(), query, callback);
     }
 
