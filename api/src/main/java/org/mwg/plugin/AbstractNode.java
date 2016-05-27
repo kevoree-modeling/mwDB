@@ -285,7 +285,7 @@ public abstract class AbstractNode implements Node {
         findAt(indexName, world, time, flatquery, callback);
     }
 
-    public void findAt(String indexName, long world, long time, HashMap<String, String> query, Callback<Node[]> callback) {
+    public void findAt(String indexName, long world, long time, java.util.Map<String, String> query, Callback<Node[]> callback) {
         final Query flatquery = Query.parseQuery(query, this._resolver);
         findAt(indexName, world, time, flatquery, callback);
     }
