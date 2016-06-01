@@ -5,6 +5,7 @@ import org.mwg.struct.LongLongArrayMap;
 import org.mwg.struct.LongLongArrayMapCallBack;
 import org.mwg.struct.Map;
 
+import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -280,6 +281,16 @@ public abstract class AbstractNode implements Node {
 
     @Override
     public void findAt(String indexName, long world, long time, String query, Callback<Node[]> callback) {
+        final Query flatquery = Query.parseQuery(query, this._resolver);
+        findAt(indexName, world, time, flatquery, callback);
+    }
+
+    public void findAt(String indexName, long world, long time, java.util.Map<String, String> query, Callback<Node[]> callback) {
+        final Query flatquery = Query.parseQuery(query, this._resolver);
+        findAt(indexName, world, time, flatquery, callback);
+    }
+
+    private void findAt(String indexName, long world, long time, final Query flatQuery, final Callback<Node[]> callback) {
         NodeState currentNodeState = this._resolver.resolveState(this, false);
         if (currentNodeState == null) {
             throw new RuntimeException(Constants.CACHE_MISS_ERROR);
@@ -287,21 +298,20 @@ public abstract class AbstractNode implements Node {
         LongLongArrayMap indexMap = (LongLongArrayMap) currentNodeState.get(this._resolver.stringToHash(indexName, false));
         if (indexMap != null) {
             final AbstractNode selfPointer = this;
-            final Query flatQuery = Query.parseQuery(query, selfPointer._resolver);
             final long[] foundId = indexMap.get(flatQuery.hash());
             if (foundId == null) {
-                callback.on(new org.mwg.plugin.AbstractNode[0]);
+                callback.on(new AbstractNode[0]);
                 return;
             }
-            final org.mwg.Node[] resolved = new org.mwg.plugin.AbstractNode[foundId.length];
+            final Node[] resolved = new AbstractNode[foundId.length];
             final DeferCounter waiter = _graph.counter(foundId.length);
             //TODO replace by a par lookup
             final AtomicInteger nextResolvedTabIndex = new AtomicInteger(0);
 
             for (int i = 0; i < foundId.length; i++) {
-                selfPointer._resolver.lookup(world, time, foundId[i], new Callback<org.mwg.Node>() {
+                selfPointer._resolver.lookup(world, time, foundId[i], new Callback<Node>() {
                     @Override
-                    public void on(org.mwg.Node resolvedNode) {
+                    public void on(Node resolvedNode) {
                         if (resolvedNode != null) {
                             resolved[nextResolvedTabIndex.getAndIncrement()] = resolvedNode;
                         }
@@ -313,11 +323,11 @@ public abstract class AbstractNode implements Node {
                 @Override
                 public void on(Object o) {
                     //select
-                    Node[] resultSet = new org.mwg.plugin.AbstractNode[nextResolvedTabIndex.get()];
+                    Node[] resultSet = new AbstractNode[nextResolvedTabIndex.get()];
                     int resultSetIndex = 0;
 
                     for (int i = 0; i < resultSet.length; i++) {
-                        org.mwg.Node resolvedNode = resolved[i];
+                        Node resolvedNode = resolved[i];
                         NodeState resolvedState = selfPointer._resolver.resolveState(resolvedNode, true);
                         boolean exact = true;
                         for (int j = 0; j < flatQuery.size; j++) {
@@ -347,19 +357,23 @@ public abstract class AbstractNode implements Node {
                     if (resultSet.length == resultSetIndex) {
                         callback.on(resultSet);
                     } else {
-                        Node[] trimmedResultSet = new org.mwg.plugin.AbstractNode[resultSetIndex];
+                        Node[] trimmedResultSet = new AbstractNode[resultSetIndex];
                         System.arraycopy(resultSet, 0, trimmedResultSet, 0, resultSetIndex);
                         callback.on(trimmedResultSet);
                     }
                 }
             });
         } else {
-            callback.on(new org.mwg.plugin.AbstractNode[0]);
+            callback.on(new AbstractNode[0]);
         }
     }
 
     @Override
     public void find(String indexName, String query, Callback<Node[]> callback) {
+        findAt(indexName, time(), world(), query, callback);
+    }
+
+    public void find(String indexName, HashMap<String, String> query, Callback<Node[]> callback) {
         findAt(indexName, time(), world(), query, callback);
     }
 
