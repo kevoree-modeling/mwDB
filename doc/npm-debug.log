@@ -1,0 +1,2681 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'gitbook-pdf',
+1 verbose cli   '-g' ]
+2 info using npm@2.15.9
+3 info using node@v4.5.0
+4 verbose install initial load of /usr/local/lib/package.json
+5 verbose readDependencies loading dependencies from /usr/local/lib/package.json
+6 silly cache add args [ 'gitbook-pdf', null ]
+7 verbose cache add spec gitbook-pdf
+8 silly cache add parsed spec Result {
+8 silly cache add   raw: 'gitbook-pdf',
+8 silly cache add   scope: null,
+8 silly cache add   name: 'gitbook-pdf',
+8 silly cache add   rawSpec: '',
+8 silly cache add   spec: 'latest',
+8 silly cache add   type: 'tag' }
+9 silly addNamed gitbook-pdf@latest
+10 verbose addNamed "latest" is being treated as a dist-tag for gitbook-pdf
+11 info addNameTag [ 'gitbook-pdf', 'latest' ]
+12 silly mapToRegistry name gitbook-pdf
+13 silly mapToRegistry using default registry
+14 silly mapToRegistry registry https://registry.npmjs.org/
+15 silly mapToRegistry data Result {
+15 silly mapToRegistry   raw: 'gitbook-pdf',
+15 silly mapToRegistry   scope: null,
+15 silly mapToRegistry   name: 'gitbook-pdf',
+15 silly mapToRegistry   rawSpec: '',
+15 silly mapToRegistry   spec: 'latest',
+15 silly mapToRegistry   type: 'tag' }
+16 silly mapToRegistry uri https://registry.npmjs.org/gitbook-pdf
+17 verbose addNameTag registry:https://registry.npmjs.org/gitbook-pdf not in flight; fetching
+18 verbose request uri https://registry.npmjs.org/gitbook-pdf
+19 verbose request no auth needed
+20 info attempt registry request try #1 at 9:06:33 AM
+21 verbose request id 1df9198b499bea85
+22 verbose etag "8YF2BUIDP5X5YVJQUURCWAICZ"
+23 http request GET https://registry.npmjs.org/gitbook-pdf
+24 http 304 https://registry.npmjs.org/gitbook-pdf
+25 verbose headers { date: 'Thu, 25 Aug 2016 07:06:31 GMT',
+25 verbose headers   via: '1.1 varnish',
+25 verbose headers   'cache-control': 'max-age=300',
+25 verbose headers   etag: '"8YF2BUIDP5X5YVJQUURCWAICZ"',
+25 verbose headers   age: '14',
+25 verbose headers   connection: 'keep-alive',
+25 verbose headers   'x-served-by': 'cache-ams4135-AMS',
+25 verbose headers   'x-cache': 'HIT',
+25 verbose headers   'x-cache-hits': '1',
+25 verbose headers   'x-timer': 'S1472108791.649216,VS0,VE0',
+25 verbose headers   vary: 'Accept-Encoding' }
+26 silly get cb [ 304,
+26 silly get   { date: 'Thu, 25 Aug 2016 07:06:31 GMT',
+26 silly get     via: '1.1 varnish',
+26 silly get     'cache-control': 'max-age=300',
+26 silly get     etag: '"8YF2BUIDP5X5YVJQUURCWAICZ"',
+26 silly get     age: '14',
+26 silly get     connection: 'keep-alive',
+26 silly get     'x-served-by': 'cache-ams4135-AMS',
+26 silly get     'x-cache': 'HIT',
+26 silly get     'x-cache-hits': '1',
+26 silly get     'x-timer': 'S1472108791.649216,VS0,VE0',
+26 silly get     vary: 'Accept-Encoding' } ]
+27 verbose etag https://registry.npmjs.org/gitbook-pdf from cache
+28 verbose get saving gitbook-pdf to /Users/duke/.npm/registry.npmjs.org/gitbook-pdf/.cache.json
+29 verbose correctMkdir /Users/duke/.npm correctMkdir not in flight; initializing
+30 silly addNameTag next cb for gitbook-pdf with tag latest
+31 silly addNamed gitbook-pdf@0.0.2
+32 verbose addNamed "0.0.2" is a plain semver version for gitbook-pdf
+33 silly cache afterAdd gitbook-pdf@0.0.2
+34 verbose afterAdd /Users/duke/.npm/gitbook-pdf/0.0.2/package/package.json not in flight; writing
+35 verbose correctMkdir /Users/duke/.npm correctMkdir not in flight; initializing
+36 verbose afterAdd /Users/duke/.npm/gitbook-pdf/0.0.2/package/package.json written
+37 silly install resolved [ { name: 'gitbook-pdf',
+37 silly install resolved     version: '0.0.2',
+37 silly install resolved     description: 'PDF Generator for GitBook',
+37 silly install resolved     main: 'lib/index.js',
+37 silly install resolved     dependencies:
+37 silly install resolved      { q: '1.0.1',
+37 silly install resolved        lodash: '2.4.1',
+37 silly install resolved        commander: '2.2.0',
+37 silly install resolved        phantomjs: '1.9.7-5' },
+37 silly install resolved     bin: { 'gitbook-pdf': './bin/gitbook-pdf.js' },
+37 silly install resolved     repository:
+37 silly install resolved      { type: 'git',
+37 silly install resolved        url: 'git+https://github.com/GitbookIO/gitbook-pdf.git' },
+37 silly install resolved     keywords: [ 'git', 'book', 'gitbook', 'pdf' ],
+37 silly install resolved     author: { name: 'Samy Pessé', email: 'samypesse@gmail.com' },
+37 silly install resolved     license: 'Apache 2',
+37 silly install resolved     bugs: { url: 'https://github.com/GitbookIO/gitbook-pdf/issues' },
+37 silly install resolved     homepage: 'https://github.com/GitbookIO/gitbook-pdf',
+37 silly install resolved     _id: 'gitbook-pdf@0.0.2',
+37 silly install resolved     dist:
+37 silly install resolved      { shasum: 'f63db2806a0c498a116d30e78323881e53d1e75c',
+37 silly install resolved        tarball: 'https://registry.npmjs.org/gitbook-pdf/-/gitbook-pdf-0.0.2.tgz' },
+37 silly install resolved     _from: 'gitbook-pdf@latest',
+37 silly install resolved     _npmVersion: '1.4.3',
+37 silly install resolved     _npmUser: { name: 'samypesse', email: 'samypesse@gmail.com' },
+37 silly install resolved     maintainers: [ [Object] ],
+37 silly install resolved     directories: {},
+37 silly install resolved     _shasum: 'f63db2806a0c498a116d30e78323881e53d1e75c',
+37 silly install resolved     _resolved: 'https://registry.npmjs.org/gitbook-pdf/-/gitbook-pdf-0.0.2.tgz',
+37 silly install resolved     readme: 'ERROR: No README data found!' } ]
+38 info install gitbook-pdf@0.0.2 into /usr/local/lib
+39 info installOne gitbook-pdf@0.0.2
+40 verbose installOne of gitbook-pdf to /usr/local/lib not in flight; installing
+41 verbose correctMkdir /Users/duke/.npm/_locks correctMkdir not in flight; initializing
+42 verbose lock using /Users/duke/.npm/_locks/gitbook-pdf-9a497d59d7fb009a.lock for /usr/local/lib/node_modules/gitbook-pdf
+43 silly install write writing gitbook-pdf 0.0.2 to /usr/local/lib/node_modules/gitbook-pdf
+44 verbose unbuild lib/node_modules/gitbook-pdf
+45 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf is being purged from base /usr/local
+46 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf
+47 verbose tar unpack /Users/duke/.npm/gitbook-pdf/0.0.2/package.tgz
+48 verbose tar unpacking to /usr/local/lib/node_modules/gitbook-pdf
+49 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf is being purged
+50 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf
+51 silly gunzTarPerm modes [ '755', '644' ]
+52 silly gunzTarPerm extractEntry package.json
+53 silly gunzTarPerm extractEntry .npmignore
+54 silly gunzTarPerm extractEntry README.md
+55 silly gunzTarPerm extractEntry LICENSE
+56 silly gunzTarPerm extractEntry bin/gitbook-pdf.js
+57 silly gunzTarPerm extractEntry lib/index.js
+58 silly gunzTarPerm extractEntry lib/rasterize.js
+59 verbose write writing to /usr/local/lib/node_modules/gitbook-pdf/package.json
+60 info preinstall gitbook-pdf@0.0.2
+61 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/package.json
+62 silly prepareForInstallMany adding q@1.0.1 from gitbook-pdf dependencies
+63 silly prepareForInstallMany adding lodash@2.4.1 from gitbook-pdf dependencies
+64 silly prepareForInstallMany adding commander@2.2.0 from gitbook-pdf dependencies
+65 silly prepareForInstallMany adding phantomjs@1.9.7-5 from gitbook-pdf dependencies
+66 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/package.json
+67 silly cache add args [ 'q@1.0.1', null ]
+68 verbose cache add spec q@1.0.1
+69 silly cache add args [ 'lodash@2.4.1', null ]
+70 verbose cache add spec lodash@2.4.1
+71 silly cache add parsed spec Result {
+71 silly cache add   raw: 'q@1.0.1',
+71 silly cache add   scope: null,
+71 silly cache add   name: 'q',
+71 silly cache add   rawSpec: '1.0.1',
+71 silly cache add   spec: '1.0.1',
+71 silly cache add   type: 'version' }
+72 silly addNamed q@1.0.1
+73 verbose addNamed "1.0.1" is a plain semver version for q
+74 silly mapToRegistry name q
+75 silly mapToRegistry using default registry
+76 silly mapToRegistry registry https://registry.npmjs.org/
+77 silly mapToRegistry data Result {
+77 silly mapToRegistry   raw: 'q',
+77 silly mapToRegistry   scope: null,
+77 silly mapToRegistry   name: 'q',
+77 silly mapToRegistry   rawSpec: '',
+77 silly mapToRegistry   spec: 'latest',
+77 silly mapToRegistry   type: 'tag' }
+78 silly mapToRegistry uri https://registry.npmjs.org/q
+79 verbose addNameVersion registry:https://registry.npmjs.org/q not in flight; fetching
+80 silly cache add parsed spec Result {
+80 silly cache add   raw: 'lodash@2.4.1',
+80 silly cache add   scope: null,
+80 silly cache add   name: 'lodash',
+80 silly cache add   rawSpec: '2.4.1',
+80 silly cache add   spec: '2.4.1',
+80 silly cache add   type: 'version' }
+81 silly addNamed lodash@2.4.1
+82 verbose addNamed "2.4.1" is a plain semver version for lodash
+83 silly mapToRegistry name lodash
+84 silly mapToRegistry using default registry
+85 silly mapToRegistry registry https://registry.npmjs.org/
+86 silly mapToRegistry data Result {
+86 silly mapToRegistry   raw: 'lodash',
+86 silly mapToRegistry   scope: null,
+86 silly mapToRegistry   name: 'lodash',
+86 silly mapToRegistry   rawSpec: '',
+86 silly mapToRegistry   spec: 'latest',
+86 silly mapToRegistry   type: 'tag' }
+87 silly mapToRegistry uri https://registry.npmjs.org/lodash
+88 verbose addNameVersion registry:https://registry.npmjs.org/lodash not in flight; fetching
+89 silly cache add args [ 'commander@2.2.0', null ]
+90 verbose cache add spec commander@2.2.0
+91 silly cache add parsed spec Result {
+91 silly cache add   raw: 'commander@2.2.0',
+91 silly cache add   scope: null,
+91 silly cache add   name: 'commander',
+91 silly cache add   rawSpec: '2.2.0',
+91 silly cache add   spec: '2.2.0',
+91 silly cache add   type: 'version' }
+92 silly addNamed commander@2.2.0
+93 verbose addNamed "2.2.0" is a plain semver version for commander
+94 silly mapToRegistry name commander
+95 silly mapToRegistry using default registry
+96 silly mapToRegistry registry https://registry.npmjs.org/
+97 silly mapToRegistry data Result {
+97 silly mapToRegistry   raw: 'commander',
+97 silly mapToRegistry   scope: null,
+97 silly mapToRegistry   name: 'commander',
+97 silly mapToRegistry   rawSpec: '',
+97 silly mapToRegistry   spec: 'latest',
+97 silly mapToRegistry   type: 'tag' }
+98 silly mapToRegistry uri https://registry.npmjs.org/commander
+99 verbose addNameVersion registry:https://registry.npmjs.org/commander not in flight; fetching
+100 silly cache add args [ 'phantomjs@1.9.7-5', null ]
+101 verbose cache add spec phantomjs@1.9.7-5
+102 silly cache add parsed spec Result {
+102 silly cache add   raw: 'phantomjs@1.9.7-5',
+102 silly cache add   scope: null,
+102 silly cache add   name: 'phantomjs',
+102 silly cache add   rawSpec: '1.9.7-5',
+102 silly cache add   spec: '1.9.7-5',
+102 silly cache add   type: 'version' }
+103 silly addNamed phantomjs@1.9.7-5
+104 verbose addNamed "1.9.7-5" is a plain semver version for phantomjs
+105 silly mapToRegistry name phantomjs
+106 silly mapToRegistry using default registry
+107 silly mapToRegistry registry https://registry.npmjs.org/
+108 silly mapToRegistry data Result {
+108 silly mapToRegistry   raw: 'phantomjs',
+108 silly mapToRegistry   scope: null,
+108 silly mapToRegistry   name: 'phantomjs',
+108 silly mapToRegistry   rawSpec: '',
+108 silly mapToRegistry   spec: 'latest',
+108 silly mapToRegistry   type: 'tag' }
+109 silly mapToRegistry uri https://registry.npmjs.org/phantomjs
+110 verbose addNameVersion registry:https://registry.npmjs.org/phantomjs not in flight; fetching
+111 verbose get https://registry.npmjs.org/commander not expired, no request
+112 verbose get https://registry.npmjs.org/lodash not expired, no request
+113 warn deprecated lodash@2.4.1: lodash@<3.0.0 is no longer maintained. Upgrade to lodash@^4.0.0.
+114 verbose get https://registry.npmjs.org/q not expired, no request
+115 verbose get https://registry.npmjs.org/phantomjs not expired, no request
+116 silly cache afterAdd commander@2.2.0
+117 verbose afterAdd /Users/duke/.npm/commander/2.2.0/package/package.json not in flight; writing
+118 verbose correctMkdir /Users/duke/.npm correctMkdir not in flight; initializing
+119 silly cache afterAdd lodash@2.4.1
+120 verbose afterAdd /Users/duke/.npm/lodash/2.4.1/package/package.json not in flight; writing
+121 verbose correctMkdir /Users/duke/.npm correctMkdir not in flight; initializing
+122 silly cache afterAdd q@1.0.1
+123 verbose afterAdd /Users/duke/.npm/q/1.0.1/package/package.json not in flight; writing
+124 verbose correctMkdir /Users/duke/.npm correctMkdir not in flight; initializing
+125 silly cache afterAdd phantomjs@1.9.7-5
+126 verbose afterAdd /Users/duke/.npm/phantomjs/1.9.7-5/package/package.json not in flight; writing
+127 verbose correctMkdir /Users/duke/.npm correctMkdir not in flight; initializing
+128 verbose afterAdd /Users/duke/.npm/commander/2.2.0/package/package.json written
+129 verbose afterAdd /Users/duke/.npm/q/1.0.1/package/package.json written
+130 verbose afterAdd /Users/duke/.npm/lodash/2.4.1/package/package.json written
+131 verbose afterAdd /Users/duke/.npm/phantomjs/1.9.7-5/package/package.json written
+132 silly install resolved [ { name: 'commander',
+132 silly install resolved     version: '2.2.0',
+132 silly install resolved     description: 'the complete solution for node.js command-line programs',
+132 silly install resolved     keywords: [ 'command', 'option', 'parser', 'prompt', 'stdin' ],
+132 silly install resolved     author: { name: 'TJ Holowaychuk', email: 'tj@vision-media.ca' },
+132 silly install resolved     repository:
+132 silly install resolved      { type: 'git',
+132 silly install resolved        url: 'git+https://github.com/visionmedia/commander.js.git' },
+132 silly install resolved     devDependencies: { should: '>= 0.0.1' },
+132 silly install resolved     scripts: { test: 'make test' },
+132 silly install resolved     main: 'index',
+132 silly install resolved     engines: { node: '>= 0.6.x' },
+132 silly install resolved     files: [ 'index.js' ],
+132 silly install resolved     bugs: { url: 'https://github.com/visionmedia/commander.js/issues' },
+132 silly install resolved     homepage: 'https://github.com/visionmedia/commander.js',
+132 silly install resolved     _id: 'commander@2.2.0',
+132 silly install resolved     dist:
+132 silly install resolved      { shasum: '175ad4b9317f3ff615f201c1e57224f55a3e91df',
+132 silly install resolved        tarball: 'https://registry.npmjs.org/commander/-/commander-2.2.0.tgz' },
+132 silly install resolved     _from: 'commander@2.2.0',
+132 silly install resolved     _npmVersion: '1.3.15',
+132 silly install resolved     _npmUser: { name: 'tjholowaychuk', email: 'tj@vision-media.ca' },
+132 silly install resolved     maintainers: [ [Object] ],
+132 silly install resolved     directories: {},
+132 silly install resolved     _shasum: '175ad4b9317f3ff615f201c1e57224f55a3e91df',
+132 silly install resolved     _resolved: 'https://registry.npmjs.org/commander/-/commander-2.2.0.tgz',
+132 silly install resolved     readme: 'ERROR: No README data found!' },
+132 silly install resolved   { name: 'q',
+132 silly install resolved     version: '1.0.1',
+132 silly install resolved     description: 'A library for promises (CommonJS/Promises/A,B,D)',
+132 silly install resolved     homepage: 'https://github.com/kriskowal/q',
+132 silly install resolved     author:
+132 silly install resolved      { name: 'Kris Kowal',
+132 silly install resolved        email: 'kris@cixar.com',
+132 silly install resolved        url: 'https://github.com/kriskowal' },
+132 silly install resolved     keywords:
+132 silly install resolved      [ 'q',
+132 silly install resolved        'promise',
+132 silly install resolved        'promises',
+132 silly install resolved        'promises-a',
+132 silly install resolved        'promises-aplus',
+132 silly install resolved        'deferred',
+132 silly install resolved        'future',
+132 silly install resolved        'async',
+132 silly install resolved        'flow control',
+132 silly install resolved        'fluent',
+132 silly install resolved        'browser',
+132 silly install resolved        'node' ],
+132 silly install resolved     contributors: [ [Object], [Object], [Object] ],
+132 silly install resolved     bugs: { url: 'http://github.com/kriskowal/q/issues' },
+132 silly install resolved     license:
+132 silly install resolved      { type: 'MIT',
+132 silly install resolved        url: 'http://github.com/kriskowal/q/raw/master/LICENSE' },
+132 silly install resolved     main: 'q.js',
+132 silly install resolved     repository: { type: 'git', url: 'git://github.com/kriskowal/q.git' },
+132 silly install resolved     engines: { node: '>=0.6.0', teleport: '>=0.2.0' },
+132 silly install resolved     dependencies: {},
+132 silly install resolved     devDependencies:
+132 silly install resolved      { jshint: '~2.1.9',
+132 silly install resolved        cover: '*',
+132 silly install resolved        'jasmine-node': '1.11.0',
+132 silly install resolved        opener: '*',
+132 silly install resolved        'promises-aplus-tests': '1.x',
+132 silly install resolved        grunt: '~0.4.1',
+132 silly install resolved        'grunt-cli': '~0.1.9',
+132 silly install resolved        'grunt-contrib-uglify': '~0.2.2',
+132 silly install resolved        matcha: '~0.2.0' },
+132 silly install resolved     scripts:
+132 silly install resolved      { test: 'jasmine-node spec && promises-aplus-tests spec/aplus-adapter',
+132 silly install resolved        'test-browser': 'opener spec/q-spec.html',
+132 silly install resolved        benchmark: 'matcha',
+132 silly install resolved        lint: 'jshint q.js',
+132 silly install resolved        cover: 'cover run node_modules/jasmine-node/bin/jasmine-node spec && cover report html && opener cover_html/index.html',
+132 silly install resolved        minify: 'grunt',
+132 silly install resolved        prepublish: 'grunt' },
+132 silly install resolved     overlay: { teleport: [Object] },
+132 silly install resolved     directories: { test: './spec' },
+132 silly install resolved     _id: 'q@1.0.1',
+132 silly install resolved     dist:
+132 silly install resolved      { shasum: '11872aeedee89268110b10a718448ffb10112a14',
+132 silly install resolved        tarball: 'https://registry.npmjs.org/q/-/q-1.0.1.tgz' },
+132 silly install resolved     _from: 'q@1.0.1',
+132 silly install resolved     _npmVersion: '1.4.4',
+132 silly install resolved     _npmUser: { name: 'kriskowal', email: 'kris.kowal@cixar.com' },
+132 silly install resolved     maintainers: [ [Object], [Object] ],
+132 silly install resolved     _shasum: '11872aeedee89268110b10a718448ffb10112a14',
+132 silly install resolved     _resolved: 'https://registry.npmjs.org/q/-/q-1.0.1.tgz',
+132 silly install resolved     readme: 'ERROR: No README data found!' },
+132 silly install resolved   { name: 'lodash',
+132 silly install resolved     version: '2.4.1',
+132 silly install resolved     description: 'A utility library delivering consistency, customization, performance, & extras.',
+132 silly install resolved     homepage: 'http://lodash.com/',
+132 silly install resolved     license: 'MIT',
+132 silly install resolved     main: 'dist/lodash.js',
+132 silly install resolved     keywords:
+132 silly install resolved      [ 'amd',
+132 silly install resolved        'browser',
+132 silly install resolved        'client',
+132 silly install resolved        'customize',
+132 silly install resolved        'functional',
+132 silly install resolved        'server',
+132 silly install resolved        'util' ],
+132 silly install resolved     author:
+132 silly install resolved      { name: 'John-David Dalton',
+132 silly install resolved        email: 'john.david.dalton@gmail.com',
+132 silly install resolved        url: 'http://allyoucanleet.com/' },
+132 silly install resolved     contributors: [ [Object], [Object], [Object], [Object] ],
+132 silly install resolved     bugs: { url: 'https://github.com/lodash/lodash/issues' },
+132 silly install resolved     repository: { type: 'git', url: 'git+https://github.com/lodash/lodash.git' },
+132 silly install resolved     engines: [ 'node', 'rhino' ],
+132 silly install resolved     files:
+132 silly install resolved      [ 'LICENSE.txt',
+132 silly install resolved        'lodash.js',
+132 silly install resolved        'dist/lodash.js',
+132 silly install resolved        'dist/lodash.min.js',
+132 silly install resolved        'dist/lodash.compat.js',
+132 silly install resolved        'dist/lodash.compat.min.js',
+132 silly install resolved        'dist/lodash.underscore.js',
+132 silly install resolved        'dist/lodash.underscore.min.js' ],
+132 silly install resolved     jam: { main: 'dist/lodash.compat.js', include: [Object] },
+132 silly install resolved     volo: { type: 'directory', ignore: [Object] },
+132 silly install resolved     _id: 'lodash@2.4.1',
+132 silly install resolved     dist:
+132 silly install resolved      { shasum: '5b7723034dda4d262e5a46fb2c58d7cc22f71420',
+132 silly install resolved        tarball: 'https://registry.npmjs.org/lodash/-/lodash-2.4.1.tgz' },
+132 silly install resolved     _from: 'lodash@2.4.1',
+132 silly install resolved     _npmVersion: '1.3.14',
+132 silly install resolved     _npmUser: { name: 'jdalton', email: 'john.david.dalton@gmail.com' },
+132 silly install resolved     maintainers: [ [Object], [Object], [Object], [Object] ],
+132 silly install resolved     deprecated: 'lodash@<3.0.0 is no longer maintained. Upgrade to lodash@^4.0.0.',
+132 silly install resolved     directories: {},
+132 silly install resolved     _shasum: '5b7723034dda4d262e5a46fb2c58d7cc22f71420',
+132 silly install resolved     _resolved: 'https://registry.npmjs.org/lodash/-/lodash-2.4.1.tgz',
+132 silly install resolved     readme: 'ERROR: No README data found!' },
+132 silly install resolved   { name: 'phantomjs',
+132 silly install resolved     version: '1.9.7-5',
+132 silly install resolved     keywords: [ 'phantomjs', 'headless', 'webkit' ],
+132 silly install resolved     description: 'Headless WebKit with JS API',
+132 silly install resolved     homepage: 'https://github.com/Obvious/phantomjs',
+132 silly install resolved     repository: { type: 'git', url: 'git://github.com/Obvious/phantomjs.git' },
+132 silly install resolved     licenses: [ [Object] ],
+132 silly install resolved     author:
+132 silly install resolved      { name: 'Dan Pupius',
+132 silly install resolved        email: 'dan@obvious.com',
+132 silly install resolved        url: 'http://pupius.co.uk' },
+132 silly install resolved     maintainers: [ [Object] ],
+132 silly install resolved     main: 'lib/phantomjs',
+132 silly install resolved     bin: { phantomjs: './bin/phantomjs' },
+132 silly install resolved     scripts:
+132 silly install resolved      { install: 'node install.js',
+132 silly install resolved        test: 'nodeunit --reporter=minimal test/tests.js' },
+132 silly install resolved     dependencies:
+132 silly install resolved      { 'adm-zip': '0.2.1',
+132 silly install resolved        kew: '~0.1.7',
+132 silly install resolved        ncp: '0.4.2',
+132 silly install resolved        npmconf: '0.0.24',
+132 silly install resolved        mkdirp: '0.3.5',
+132 silly install resolved        rimraf: '~2.2.2',
+132 silly install resolved        which: '~1.0.5' },
+132 silly install resolved     devDependencies: { nodeunit: '~0.7.4' },
+132 silly install resolved     bugs: { url: 'https://github.com/Obvious/phantomjs/issues' },
+132 silly install resolved     _id: 'phantomjs@1.9.7-5',
+132 silly install resolved     dist:
+132 silly install resolved      { shasum: '7ac13fdc618c861dd34f7e5636bfa5bae30d3820',
+132 silly install resolved        tarball: 'https://registry.npmjs.org/phantomjs/-/phantomjs-1.9.7-5.tgz' },
+132 silly install resolved     _from: 'phantomjs@1.9.7-5',
+132 silly install resolved     _npmVersion: '1.4.3',
+132 silly install resolved     _npmUser: { name: 'dpup', email: 'dan@pupi.us' },
+132 silly install resolved     directories: {},
+132 silly install resolved     _shasum: '7ac13fdc618c861dd34f7e5636bfa5bae30d3820',
+132 silly install resolved     _resolved: 'https://registry.npmjs.org/phantomjs/-/phantomjs-1.9.7-5.tgz',
+132 silly install resolved     readme: 'ERROR: No README data found!' } ]
+133 info install commander@2.2.0 into /usr/local/lib/node_modules/gitbook-pdf
+134 info install q@1.0.1 into /usr/local/lib/node_modules/gitbook-pdf
+135 info install lodash@2.4.1 into /usr/local/lib/node_modules/gitbook-pdf
+136 info install phantomjs@1.9.7-5 into /usr/local/lib/node_modules/gitbook-pdf
+137 info installOne commander@2.2.0
+138 verbose installOne of commander to /usr/local/lib/node_modules/gitbook-pdf not in flight; installing
+139 verbose correctMkdir /Users/duke/.npm/_locks correctMkdir not in flight; initializing
+140 info installOne q@1.0.1
+141 verbose installOne of q to /usr/local/lib/node_modules/gitbook-pdf not in flight; installing
+142 verbose correctMkdir /Users/duke/.npm/_locks correctMkdir not in flight; initializing
+143 info installOne lodash@2.4.1
+144 verbose installOne of lodash to /usr/local/lib/node_modules/gitbook-pdf not in flight; installing
+145 verbose correctMkdir /Users/duke/.npm/_locks correctMkdir not in flight; initializing
+146 info installOne phantomjs@1.9.7-5
+147 verbose installOne of phantomjs to /usr/local/lib/node_modules/gitbook-pdf not in flight; installing
+148 verbose correctMkdir /Users/duke/.npm/_locks correctMkdir not in flight; initializing
+149 verbose lock using /Users/duke/.npm/_locks/commander-81a8466de07ff901.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/commander
+150 silly install write writing commander 2.2.0 to /usr/local/lib/node_modules/gitbook-pdf/node_modules/commander
+151 verbose lock using /Users/duke/.npm/_locks/lodash-fbf7959d6dc30044.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/lodash
+152 verbose lock using /Users/duke/.npm/_locks/q-d0bd9b4e73b9ae71.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/q
+153 verbose lock using /Users/duke/.npm/_locks/phantomjs-ac795bb7d7180809.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs
+154 silly install write writing lodash 2.4.1 to /usr/local/lib/node_modules/gitbook-pdf/node_modules/lodash
+155 silly install write writing q 1.0.1 to /usr/local/lib/node_modules/gitbook-pdf/node_modules/q
+156 silly install write writing phantomjs 1.9.7-5 to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs
+157 verbose unbuild lib/node_modules/gitbook-pdf/node_modules/commander
+158 verbose unbuild lib/node_modules/gitbook-pdf/node_modules/lodash
+159 verbose unbuild lib/node_modules/gitbook-pdf/node_modules/q
+160 verbose unbuild lib/node_modules/gitbook-pdf/node_modules/phantomjs
+161 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/commander is being purged from base /usr/local
+162 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/commander
+163 verbose tar unpack /Users/duke/.npm/commander/2.2.0/package.tgz
+164 verbose tar unpacking to /usr/local/lib/node_modules/gitbook-pdf/node_modules/commander
+165 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/commander is being purged
+166 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/commander
+167 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/lodash is being purged from base /usr/local
+168 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/lodash
+169 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/q is being purged from base /usr/local
+170 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/q
+171 silly gunzTarPerm modes [ '755', '644' ]
+172 verbose tar unpack /Users/duke/.npm/lodash/2.4.1/package.tgz
+173 verbose tar unpacking to /usr/local/lib/node_modules/gitbook-pdf/node_modules/lodash
+174 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/lodash is being purged
+175 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/lodash
+176 verbose tar unpack /Users/duke/.npm/q/1.0.1/package.tgz
+177 verbose tar unpacking to /usr/local/lib/node_modules/gitbook-pdf/node_modules/q
+178 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/q is being purged
+179 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/q
+180 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs is being purged from base /usr/local
+181 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs
+182 silly gunzTarPerm modes [ '755', '644' ]
+183 silly gunzTarPerm modes [ '755', '644' ]
+184 verbose tar unpack /Users/duke/.npm/phantomjs/1.9.7-5/package.tgz
+185 verbose tar unpacking to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs
+186 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs is being purged
+187 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs
+188 silly gunzTarPerm modes [ '755', '644' ]
+189 silly gunzTarPerm extractEntry package.json
+190 silly gunzTarPerm extractEntry package.json
+191 silly gunzTarPerm extractEntry package.json
+192 silly gunzTarPerm extractEntry package.json
+193 silly gunzTarPerm extractEntry index.js
+194 silly gunzTarPerm extractEntry Readme.md
+195 silly gunzTarPerm extractEntry README.md
+196 silly gunzTarPerm extractEntry lodash.js
+197 silly gunzTarPerm extractEntry README.md
+198 silly gunzTarPerm extractEntry LICENSE
+199 silly gunzTarPerm extractEntry q.js
+200 silly gunzTarPerm extractEntry queue.js
+201 silly gunzTarPerm extractEntry CONTRIBUTING.md
+202 silly gunzTarPerm extractEntry benchmark/compare-with-callbacks.js
+203 silly gunzTarPerm extractEntry benchmark/scenarios.js
+204 silly gunzTarPerm extractEntry .npmignore
+205 silly gunzTarPerm extractEntry README.md
+206 silly gunzTarPerm extractEntry install.js
+207 silly gunzTarPerm extractEntry .jshintrc
+208 silly gunzTarPerm extractEntry .travis.yml
+209 silly gunzTarPerm extractEntry LICENSE.txt
+210 silly gunzTarPerm extractEntry bin/phantomjs
+211 silly gunzTarPerm extractEntry lib/phantomjs.js
+212 silly gunzTarPerm extractEntry test/exit.js
+213 silly gunzTarPerm extractEntry test/loadspeed.js
+214 silly gunzTarPerm extractEntry test/tests.js
+215 silly gunzTarPerm extractEntry LICENSE.txt
+216 silly gunzTarPerm extractEntry dist/lodash.compat.js
+217 silly gunzTarPerm extractEntry dist/lodash.compat.min.js
+218 verbose write writing to /usr/local/lib/node_modules/gitbook-pdf/node_modules/commander/package.json
+219 silly gunzTarPerm extractEntry dist/lodash.js
+220 info preinstall commander@2.2.0
+221 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/commander/package.json
+222 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/commander/package.json
+223 silly gunzTarPerm extractEntry dist/lodash.min.js
+224 silly install resolved []
+225 verbose about to build /usr/local/lib/node_modules/gitbook-pdf/node_modules/commander
+226 info build /usr/local/lib/node_modules/gitbook-pdf/node_modules/commander
+227 silly gunzTarPerm extractEntry dist/lodash.underscore.js
+228 info linkStuff commander@2.2.0
+229 silly linkStuff commander@2.2.0 has /usr/local/lib/node_modules/gitbook-pdf/node_modules as its parent node_modules
+230 silly linkStuff commander@2.2.0 is part of a global install
+231 silly linkStuff commander@2.2.0 is installed into a global node_modules
+232 verbose linkBins commander@2.2.0
+233 verbose linkMans commander@2.2.0
+234 verbose rebuildBundles commander@2.2.0
+235 info install commander@2.2.0
+236 info postinstall commander@2.2.0
+237 verbose unlock done using /Users/duke/.npm/_locks/commander-81a8466de07ff901.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/commander
+238 silly gunzTarPerm extractEntry dist/lodash.underscore.min.js
+239 verbose write writing to /usr/local/lib/node_modules/gitbook-pdf/node_modules/q/package.json
+240 info preinstall q@1.0.1
+241 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/q/package.json
+242 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/q/package.json
+243 silly install resolved []
+244 verbose about to build /usr/local/lib/node_modules/gitbook-pdf/node_modules/q
+245 info build /usr/local/lib/node_modules/gitbook-pdf/node_modules/q
+246 info linkStuff q@1.0.1
+247 silly linkStuff q@1.0.1 has /usr/local/lib/node_modules/gitbook-pdf/node_modules as its parent node_modules
+248 silly linkStuff q@1.0.1 is part of a global install
+249 silly linkStuff q@1.0.1 is installed into a global node_modules
+250 verbose linkBins q@1.0.1
+251 verbose linkMans q@1.0.1
+252 verbose rebuildBundles q@1.0.1
+253 verbose write writing to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/package.json
+254 info install q@1.0.1
+255 info postinstall q@1.0.1
+256 info preinstall phantomjs@1.9.7-5
+257 verbose unlock done using /Users/duke/.npm/_locks/q-d0bd9b4e73b9ae71.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/q
+258 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/package.json
+259 silly prepareForInstallMany adding adm-zip@0.2.1 from phantomjs dependencies
+260 silly prepareForInstallMany adding kew@~0.1.7 from phantomjs dependencies
+261 silly prepareForInstallMany adding ncp@0.4.2 from phantomjs dependencies
+262 silly prepareForInstallMany adding npmconf@0.0.24 from phantomjs dependencies
+263 silly prepareForInstallMany adding mkdirp@0.3.5 from phantomjs dependencies
+264 silly prepareForInstallMany adding rimraf@~2.2.2 from phantomjs dependencies
+265 silly prepareForInstallMany adding which@~1.0.5 from phantomjs dependencies
+266 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/package.json
+267 silly cache add args [ 'adm-zip@0.2.1', null ]
+268 verbose cache add spec adm-zip@0.2.1
+269 silly cache add args [ 'kew@~0.1.7', null ]
+270 verbose cache add spec kew@~0.1.7
+271 silly cache add parsed spec Result {
+271 silly cache add   raw: 'adm-zip@0.2.1',
+271 silly cache add   scope: null,
+271 silly cache add   name: 'adm-zip',
+271 silly cache add   rawSpec: '0.2.1',
+271 silly cache add   spec: '0.2.1',
+271 silly cache add   type: 'version' }
+272 silly addNamed adm-zip@0.2.1
+273 verbose addNamed "0.2.1" is a plain semver version for adm-zip
+274 silly mapToRegistry name adm-zip
+275 silly mapToRegistry using default registry
+276 silly mapToRegistry registry https://registry.npmjs.org/
+277 silly mapToRegistry data Result {
+277 silly mapToRegistry   raw: 'adm-zip',
+277 silly mapToRegistry   scope: null,
+277 silly mapToRegistry   name: 'adm-zip',
+277 silly mapToRegistry   rawSpec: '',
+277 silly mapToRegistry   spec: 'latest',
+277 silly mapToRegistry   type: 'tag' }
+278 silly mapToRegistry uri https://registry.npmjs.org/adm-zip
+279 verbose addNameVersion registry:https://registry.npmjs.org/adm-zip not in flight; fetching
+280 silly cache add parsed spec Result {
+280 silly cache add   raw: 'kew@~0.1.7',
+280 silly cache add   scope: null,
+280 silly cache add   name: 'kew',
+280 silly cache add   rawSpec: '~0.1.7',
+280 silly cache add   spec: '>=0.1.7 <0.2.0',
+280 silly cache add   type: 'range' }
+281 silly addNamed kew@>=0.1.7 <0.2.0
+282 verbose addNamed ">=0.1.7 <0.2.0" is a valid semver range for kew
+283 silly addNameRange { name: 'kew', range: '>=0.1.7 <0.2.0', hasData: false }
+284 silly mapToRegistry name kew
+285 silly mapToRegistry using default registry
+286 silly mapToRegistry registry https://registry.npmjs.org/
+287 silly mapToRegistry data Result {
+287 silly mapToRegistry   raw: 'kew',
+287 silly mapToRegistry   scope: null,
+287 silly mapToRegistry   name: 'kew',
+287 silly mapToRegistry   rawSpec: '',
+287 silly mapToRegistry   spec: 'latest',
+287 silly mapToRegistry   type: 'tag' }
+288 silly mapToRegistry uri https://registry.npmjs.org/kew
+289 verbose addNameRange registry:https://registry.npmjs.org/kew not in flight; fetching
+290 silly cache add args [ 'ncp@0.4.2', null ]
+291 verbose cache add spec ncp@0.4.2
+292 silly cache add parsed spec Result {
+292 silly cache add   raw: 'ncp@0.4.2',
+292 silly cache add   scope: null,
+292 silly cache add   name: 'ncp',
+292 silly cache add   rawSpec: '0.4.2',
+292 silly cache add   spec: '0.4.2',
+292 silly cache add   type: 'version' }
+293 silly addNamed ncp@0.4.2
+294 verbose addNamed "0.4.2" is a plain semver version for ncp
+295 silly mapToRegistry name ncp
+296 silly mapToRegistry using default registry
+297 silly mapToRegistry registry https://registry.npmjs.org/
+298 silly mapToRegistry data Result {
+298 silly mapToRegistry   raw: 'ncp',
+298 silly mapToRegistry   scope: null,
+298 silly mapToRegistry   name: 'ncp',
+298 silly mapToRegistry   rawSpec: '',
+298 silly mapToRegistry   spec: 'latest',
+298 silly mapToRegistry   type: 'tag' }
+299 silly mapToRegistry uri https://registry.npmjs.org/ncp
+300 verbose addNameVersion registry:https://registry.npmjs.org/ncp not in flight; fetching
+301 silly cache add args [ 'npmconf@0.0.24', null ]
+302 verbose cache add spec npmconf@0.0.24
+303 silly cache add parsed spec Result {
+303 silly cache add   raw: 'npmconf@0.0.24',
+303 silly cache add   scope: null,
+303 silly cache add   name: 'npmconf',
+303 silly cache add   rawSpec: '0.0.24',
+303 silly cache add   spec: '0.0.24',
+303 silly cache add   type: 'version' }
+304 silly addNamed npmconf@0.0.24
+305 verbose addNamed "0.0.24" is a plain semver version for npmconf
+306 silly mapToRegistry name npmconf
+307 silly mapToRegistry using default registry
+308 silly mapToRegistry registry https://registry.npmjs.org/
+309 silly mapToRegistry data Result {
+309 silly mapToRegistry   raw: 'npmconf',
+309 silly mapToRegistry   scope: null,
+309 silly mapToRegistry   name: 'npmconf',
+309 silly mapToRegistry   rawSpec: '',
+309 silly mapToRegistry   spec: 'latest',
+309 silly mapToRegistry   type: 'tag' }
+310 silly mapToRegistry uri https://registry.npmjs.org/npmconf
+311 verbose addNameVersion registry:https://registry.npmjs.org/npmconf not in flight; fetching
+312 silly cache add args [ 'mkdirp@0.3.5', null ]
+313 verbose cache add spec mkdirp@0.3.5
+314 silly cache add parsed spec Result {
+314 silly cache add   raw: 'mkdirp@0.3.5',
+314 silly cache add   scope: null,
+314 silly cache add   name: 'mkdirp',
+314 silly cache add   rawSpec: '0.3.5',
+314 silly cache add   spec: '0.3.5',
+314 silly cache add   type: 'version' }
+315 silly addNamed mkdirp@0.3.5
+316 verbose addNamed "0.3.5" is a plain semver version for mkdirp
+317 silly mapToRegistry name mkdirp
+318 silly mapToRegistry using default registry
+319 silly mapToRegistry registry https://registry.npmjs.org/
+320 silly mapToRegistry data Result {
+320 silly mapToRegistry   raw: 'mkdirp',
+320 silly mapToRegistry   scope: null,
+320 silly mapToRegistry   name: 'mkdirp',
+320 silly mapToRegistry   rawSpec: '',
+320 silly mapToRegistry   spec: 'latest',
+320 silly mapToRegistry   type: 'tag' }
+321 silly mapToRegistry uri https://registry.npmjs.org/mkdirp
+322 verbose addNameVersion registry:https://registry.npmjs.org/mkdirp not in flight; fetching
+323 silly cache add args [ 'rimraf@~2.2.2', null ]
+324 verbose cache add spec rimraf@~2.2.2
+325 silly cache add parsed spec Result {
+325 silly cache add   raw: 'rimraf@~2.2.2',
+325 silly cache add   scope: null,
+325 silly cache add   name: 'rimraf',
+325 silly cache add   rawSpec: '~2.2.2',
+325 silly cache add   spec: '>=2.2.2 <2.3.0',
+325 silly cache add   type: 'range' }
+326 silly addNamed rimraf@>=2.2.2 <2.3.0
+327 verbose addNamed ">=2.2.2 <2.3.0" is a valid semver range for rimraf
+328 silly addNameRange { name: 'rimraf', range: '>=2.2.2 <2.3.0', hasData: false }
+329 silly mapToRegistry name rimraf
+330 silly mapToRegistry using default registry
+331 silly mapToRegistry registry https://registry.npmjs.org/
+332 silly mapToRegistry data Result {
+332 silly mapToRegistry   raw: 'rimraf',
+332 silly mapToRegistry   scope: null,
+332 silly mapToRegistry   name: 'rimraf',
+332 silly mapToRegistry   rawSpec: '',
+332 silly mapToRegistry   spec: 'latest',
+332 silly mapToRegistry   type: 'tag' }
+333 silly mapToRegistry uri https://registry.npmjs.org/rimraf
+334 verbose addNameRange registry:https://registry.npmjs.org/rimraf not in flight; fetching
+335 silly cache add args [ 'which@~1.0.5', null ]
+336 verbose cache add spec which@~1.0.5
+337 silly cache add parsed spec Result {
+337 silly cache add   raw: 'which@~1.0.5',
+337 silly cache add   scope: null,
+337 silly cache add   name: 'which',
+337 silly cache add   rawSpec: '~1.0.5',
+337 silly cache add   spec: '>=1.0.5 <1.1.0',
+337 silly cache add   type: 'range' }
+338 silly addNamed which@>=1.0.5 <1.1.0
+339 verbose addNamed ">=1.0.5 <1.1.0" is a valid semver range for which
+340 silly addNameRange { name: 'which', range: '>=1.0.5 <1.1.0', hasData: false }
+341 silly mapToRegistry name which
+342 silly mapToRegistry using default registry
+343 silly mapToRegistry registry https://registry.npmjs.org/
+344 silly mapToRegistry data Result {
+344 silly mapToRegistry   raw: 'which',
+344 silly mapToRegistry   scope: null,
+344 silly mapToRegistry   name: 'which',
+344 silly mapToRegistry   rawSpec: '',
+344 silly mapToRegistry   spec: 'latest',
+344 silly mapToRegistry   type: 'tag' }
+345 silly mapToRegistry uri https://registry.npmjs.org/which
+346 verbose addNameRange registry:https://registry.npmjs.org/which not in flight; fetching
+347 verbose get https://registry.npmjs.org/adm-zip not expired, no request
+348 verbose get https://registry.npmjs.org/kew not expired, no request
+349 silly addNameRange number 2 { name: 'kew', range: '>=0.1.7 <0.2.0', hasData: true }
+350 silly addNameRange versions [ 'kew',
+350 silly addNameRange   [ '0.0.1',
+350 silly addNameRange     '0.0.2',
+350 silly addNameRange     '0.0.3',
+350 silly addNameRange     '0.0.4',
+350 silly addNameRange     '0.1.0',
+350 silly addNameRange     '0.1.1',
+350 silly addNameRange     '0.1.2',
+350 silly addNameRange     '0.1.3',
+350 silly addNameRange     '0.1.4',
+350 silly addNameRange     '0.1.5',
+350 silly addNameRange     '0.1.6',
+350 silly addNameRange     '0.1.7',
+350 silly addNameRange     '0.2.1',
+350 silly addNameRange     '0.2.2',
+350 silly addNameRange     '0.3.0',
+350 silly addNameRange     '0.3.1',
+350 silly addNameRange     '0.3.2',
+350 silly addNameRange     '0.3.3',
+350 silly addNameRange     '0.3.4',
+350 silly addNameRange     '0.4.0',
+350 silly addNameRange     '0.5.0-alpha',
+350 silly addNameRange     '0.5.0-alpha.1',
+350 silly addNameRange     '0.5.0',
+350 silly addNameRange     '0.6.0',
+350 silly addNameRange     '0.7.0' ] ]
+351 silly addNamed kew@0.1.7
+352 verbose addNamed "0.1.7" is a plain semver version for kew
+353 verbose get https://registry.npmjs.org/ncp not expired, no request
+354 verbose get https://registry.npmjs.org/mkdirp not expired, no request
+355 verbose get https://registry.npmjs.org/npmconf not expired, no request
+356 warn deprecated npmconf@0.0.24: this package has been reintegrated into npm and is now out of date with respect to npm
+357 verbose get https://registry.npmjs.org/which not expired, no request
+358 silly addNameRange number 2 { name: 'which', range: '>=1.0.5 <1.1.0', hasData: true }
+359 silly addNameRange versions [ 'which',
+359 silly addNameRange   [ '1.0.0',
+359 silly addNameRange     '1.0.1',
+359 silly addNameRange     '1.0.2',
+359 silly addNameRange     '1.0.3',
+359 silly addNameRange     '1.0.5',
+359 silly addNameRange     '1.0.6',
+359 silly addNameRange     '1.0.7',
+359 silly addNameRange     '1.0.8',
+359 silly addNameRange     '1.0.9',
+359 silly addNameRange     '1.1.0',
+359 silly addNameRange     '1.1.1',
+359 silly addNameRange     '1.1.2',
+359 silly addNameRange     '1.2.0',
+359 silly addNameRange     '1.2.1',
+359 silly addNameRange     '1.2.4',
+359 silly addNameRange     '1.2.5',
+359 silly addNameRange     '1.2.6',
+359 silly addNameRange     '1.2.7',
+359 silly addNameRange     '1.2.8',
+359 silly addNameRange     '1.2.9',
+359 silly addNameRange     '1.2.10' ] ]
+360 silly addNamed which@1.0.9
+361 verbose addNamed "1.0.9" is a plain semver version for which
+362 verbose get https://registry.npmjs.org/rimraf not expired, no request
+363 silly addNameRange number 2 { name: 'rimraf', range: '>=2.2.2 <2.3.0', hasData: true }
+364 silly addNameRange versions [ 'rimraf',
+364 silly addNameRange   [ '1.0.0',
+364 silly addNameRange     '1.0.1',
+364 silly addNameRange     '1.0.2',
+364 silly addNameRange     '1.0.4',
+364 silly addNameRange     '1.0.5',
+364 silly addNameRange     '1.0.6',
+364 silly addNameRange     '1.0.7',
+364 silly addNameRange     '1.0.8',
+364 silly addNameRange     '1.0.9',
+364 silly addNameRange     '2.0.0',
+364 silly addNameRange     '2.0.1',
+364 silly addNameRange     '2.0.2',
+364 silly addNameRange     '2.0.3',
+364 silly addNameRange     '2.1.0',
+364 silly addNameRange     '2.1.1',
+364 silly addNameRange     '2.1.2',
+364 silly addNameRange     '2.1.3',
+364 silly addNameRange     '2.1.4',
+364 silly addNameRange     '2.2.0',
+364 silly addNameRange     '2.2.1',
+364 silly addNameRange     '2.2.2',
+364 silly addNameRange     '2.2.3',
+364 silly addNameRange     '2.2.4',
+364 silly addNameRange     '2.2.5',
+364 silly addNameRange     '2.2.6',
+364 silly addNameRange     '2.2.8',
+364 silly addNameRange     '2.3.0',
+364 silly addNameRange     '2.3.1',
+364 silly addNameRange     '2.3.2',
+364 silly addNameRange     '2.3.3',
+364 silly addNameRange     '2.3.4',
+364 silly addNameRange     '2.4.0',
+364 silly addNameRange     '2.4.1',
+364 silly addNameRange     '2.4.2',
+364 silly addNameRange     '2.4.3',
+364 silly addNameRange     '2.4.4',
+364 silly addNameRange     '2.4.5',
+364 silly addNameRange     '2.5.0',
+364 silly addNameRange     '2.5.1',
+364 silly addNameRange     '2.5.2',
+364 silly addNameRange     '2.5.3',
+364 silly addNameRange     '2.5.4' ] ]
+365 silly addNamed rimraf@2.2.8
+366 verbose addNamed "2.2.8" is a plain semver version for rimraf
+367 silly cache afterAdd adm-zip@0.2.1
+368 verbose afterAdd /Users/duke/.npm/adm-zip/0.2.1/package/package.json not in flight; writing
+369 verbose correctMkdir /Users/duke/.npm correctMkdir not in flight; initializing
+370 silly cache afterAdd kew@0.1.7
+371 verbose afterAdd /Users/duke/.npm/kew/0.1.7/package/package.json not in flight; writing
+372 verbose correctMkdir /Users/duke/.npm correctMkdir not in flight; initializing
+373 silly cache afterAdd mkdirp@0.3.5
+374 verbose afterAdd /Users/duke/.npm/mkdirp/0.3.5/package/package.json not in flight; writing
+375 verbose correctMkdir /Users/duke/.npm correctMkdir not in flight; initializing
+376 silly cache afterAdd npmconf@0.0.24
+377 verbose afterAdd /Users/duke/.npm/npmconf/0.0.24/package/package.json not in flight; writing
+378 verbose correctMkdir /Users/duke/.npm correctMkdir not in flight; initializing
+379 silly cache afterAdd ncp@0.4.2
+380 verbose afterAdd /Users/duke/.npm/ncp/0.4.2/package/package.json not in flight; writing
+381 verbose correctMkdir /Users/duke/.npm correctMkdir not in flight; initializing
+382 silly cache afterAdd which@1.0.9
+383 verbose afterAdd /Users/duke/.npm/which/1.0.9/package/package.json not in flight; writing
+384 verbose correctMkdir /Users/duke/.npm correctMkdir not in flight; initializing
+385 silly cache afterAdd rimraf@2.2.8
+386 verbose afterAdd /Users/duke/.npm/rimraf/2.2.8/package/package.json not in flight; writing
+387 verbose correctMkdir /Users/duke/.npm correctMkdir not in flight; initializing
+388 verbose afterAdd /Users/duke/.npm/adm-zip/0.2.1/package/package.json written
+389 verbose afterAdd /Users/duke/.npm/kew/0.1.7/package/package.json written
+390 verbose afterAdd /Users/duke/.npm/mkdirp/0.3.5/package/package.json written
+391 verbose afterAdd /Users/duke/.npm/npmconf/0.0.24/package/package.json written
+392 verbose afterAdd /Users/duke/.npm/ncp/0.4.2/package/package.json written
+393 verbose afterAdd /Users/duke/.npm/rimraf/2.2.8/package/package.json written
+394 verbose afterAdd /Users/duke/.npm/which/1.0.9/package/package.json written
+395 silly install resolved [ { name: 'adm-zip',
+395 silly install resolved     version: '0.2.1',
+395 silly install resolved     description: 'A Javascript implementation of zip for nodejs. Allows user to create or extract zip files both in memory or to/from disk',
+395 silly install resolved     keywords: [ 'zip', 'methods', 'archive', 'unzip' ],
+395 silly install resolved     homepage: 'http://github.com/cthackers/adm-zip',
+395 silly install resolved     author:
+395 silly install resolved      { name: 'Nasca Iacob',
+395 silly install resolved        email: 'sy@another-d-mention.ro',
+395 silly install resolved        url: 'https://github.com/cthackers' },
+395 silly install resolved     bugs:
+395 silly install resolved      { url: 'https://github.com/cthackers/adm-zip/issues',
+395 silly install resolved        email: 'sy@another-d-mention.ro' },
+395 silly install resolved     licenses: [ [Object] ],
+395 silly install resolved     main: 'adm-zip.js',
+395 silly install resolved     repository:
+395 silly install resolved      { type: 'git',
+395 silly install resolved        url: 'git+ssh://git@github.com/cthackers/adm-zip.git' },
+395 silly install resolved     engines: { node: '>=0.3.0' },
+395 silly install resolved     _id: 'adm-zip@0.2.1',
+395 silly install resolved     dist:
+395 silly install resolved      { shasum: 'e801cedeb5bd9a4e98d699c5c0f4239e2731dcbf',
+395 silly install resolved        tarball: 'https://registry.npmjs.org/adm-zip/-/adm-zip-0.2.1.tgz' },
+395 silly install resolved     _npmVersion: '1.2.0',
+395 silly install resolved     _npmUser: { name: 'cthackers', email: 'sy@another-d-mention.ro' },
+395 silly install resolved     maintainers: [ [Object] ],
+395 silly install resolved     directories: {},
+395 silly install resolved     _shasum: 'e801cedeb5bd9a4e98d699c5c0f4239e2731dcbf',
+395 silly install resolved     _resolved: 'https://registry.npmjs.org/adm-zip/-/adm-zip-0.2.1.tgz',
+395 silly install resolved     _from: 'adm-zip@0.2.1',
+395 silly install resolved     readme: 'ERROR: No README data found!' },
+395 silly install resolved   { name: 'kew',
+395 silly install resolved     description: 'a lightweight promise library for node',
+395 silly install resolved     version: '0.1.7',
+395 silly install resolved     homepage: 'https://github.com/Obvious/kew',
+395 silly install resolved     authors: [ 'Jeremy Stanley <github@azulus.com> (https://github.com/azulus)' ],
+395 silly install resolved     contributors: [],
+395 silly install resolved     keywords: [ 'kew', 'promises' ],
+395 silly install resolved     main: './kew.js',
+395 silly install resolved     repository: { type: 'git', url: 'git+https://github.com/Obvious/kew.git' },
+395 silly install resolved     dependencies: {},
+395 silly install resolved     devDependencies: { nodeunit: '0.7.4' },
+395 silly install resolved     scripts: { test: './node_modules/nodeunit/bin/nodeunit test' },
+395 silly install resolved     _id: 'kew@0.1.7',
+395 silly install resolved     dist:
+395 silly install resolved      { shasum: '0a32a817ff1a9b3b12b8c9bacf4bc4d679af8e72',
+395 silly install resolved        tarball: 'https://registry.npmjs.org/kew/-/kew-0.1.7.tgz' },
+395 silly install resolved     _from: 'kew@>=0.1.7 <0.2.0',
+395 silly install resolved     _npmVersion: '1.2.18',
+395 silly install resolved     _npmUser: { name: 'azulus', email: 'jeremy@obvious.com' },
+395 silly install resolved     maintainers: [ [Object] ],
+395 silly install resolved     directories: {},
+395 silly install resolved     _shasum: '0a32a817ff1a9b3b12b8c9bacf4bc4d679af8e72',
+395 silly install resolved     _resolved: 'https://registry.npmjs.org/kew/-/kew-0.1.7.tgz',
+395 silly install resolved     bugs: { url: 'https://github.com/Obvious/kew/issues' },
+395 silly install resolved     readme: 'ERROR: No README data found!' },
+395 silly install resolved   { name: 'mkdirp',
+395 silly install resolved     description: 'Recursively mkdir, like `mkdir -p`',
+395 silly install resolved     version: '0.3.5',
+395 silly install resolved     author:
+395 silly install resolved      { name: 'James Halliday',
+395 silly install resolved        email: 'mail@substack.net',
+395 silly install resolved        url: 'http://substack.net' },
+395 silly install resolved     main: './index',
+395 silly install resolved     keywords: [ 'mkdir', 'directory' ],
+395 silly install resolved     repository:
+395 silly install resolved      { type: 'git',
+395 silly install resolved        url: 'git+ssh://git@github.com/substack/node-mkdirp.git' },
+395 silly install resolved     scripts: { test: 'tap test/*.js' },
+395 silly install resolved     devDependencies: { tap: '~0.4.0' },
+395 silly install resolved     license: 'MIT',
+395 silly install resolved     _id: 'mkdirp@0.3.5',
+395 silly install resolved     dist:
+395 silly install resolved      { shasum: 'de3e5f8961c88c787ee1368df849ac4413eca8d7',
+395 silly install resolved        tarball: 'https://registry.npmjs.org/mkdirp/-/mkdirp-0.3.5.tgz' },
+395 silly install resolved     _from: 'mkdirp@0.3.5',
+395 silly install resolved     _npmVersion: '1.2.2',
+395 silly install resolved     _npmUser: { name: 'substack', email: 'mail@substack.net' },
+395 silly install resolved     maintainers: [ [Object] ],
+395 silly install resolved     directories: {},
+395 silly install resolved     _shasum: 'de3e5f8961c88c787ee1368df849ac4413eca8d7',
+395 silly install resolved     _resolved: 'https://registry.npmjs.org/mkdirp/-/mkdirp-0.3.5.tgz',
+395 silly install resolved     bugs: { url: 'https://github.com/substack/node-mkdirp/issues' },
+395 silly install resolved     readme: 'ERROR: No README data found!',
+395 silly install resolved     homepage: 'https://github.com/substack/node-mkdirp#readme' },
+395 silly install resolved   { name: 'npmconf',
+395 silly install resolved     version: '0.0.24',
+395 silly install resolved     description: 'The config thing npm uses',
+395 silly install resolved     main: 'npmconf.js',
+395 silly install resolved     directories: { test: 'test' },
+395 silly install resolved     dependencies:
+395 silly install resolved      { 'config-chain': '~1.1.1',
+395 silly install resolved        inherits: '~1.0.0',
+395 silly install resolved        once: '~1.1.1',
+395 silly install resolved        mkdirp: '~0.3.3',
+395 silly install resolved        osenv: '0.0.3',
+395 silly install resolved        nopt: '2',
+395 silly install resolved        semver: '~1.1.0',
+395 silly install resolved        ini: '~1.1.0' },
+395 silly install resolved     devDependencies: {},
+395 silly install resolved     scripts: { test: 'tap test/*.js' },
+395 silly install resolved     repository: { type: 'git', url: 'git://github.com/isaacs/npmconf.git' },
+395 silly install resolved     keywords: [ 'npm', 'config', 'config-chain', 'conf', 'ini' ],
+395 silly install resolved     author:
+395 silly install resolved      { name: 'Isaac Z. Schlueter',
+395 silly install resolved        email: 'i@izs.me',
+395 silly install resolved        url: 'http://blog.izs.me' },
+395 silly install resolved     license: 'BSD',
+395 silly install resolved     _id: 'npmconf@0.0.24',
+395 silly install resolved     dist:
+395 silly install resolved      { shasum: 'b78875b088ccc3c0afa3eceb3ce3244b1b52390c',
+395 silly install resolved        tarball: 'https://registry.npmjs.org/npmconf/-/npmconf-0.0.24.tgz' },
+395 silly install resolved     _from: 'npmconf@0.0.24',
+395 silly install resolved     _npmVersion: '1.2.18',
+395 silly install resolved     _npmUser: { name: 'isaacs', email: 'i@izs.me' },
+395 silly install resolved     maintainers: [ [Object] ],
+395 silly install resolved     deprecated: 'this package has been reintegrated into npm and is now out of date with respect to npm',
+395 silly install resolved     _shasum: 'b78875b088ccc3c0afa3eceb3ce3244b1b52390c',
+395 silly install resolved     _resolved: 'https://registry.npmjs.org/npmconf/-/npmconf-0.0.24.tgz',
+395 silly install resolved     bugs: { url: 'https://github.com/isaacs/npmconf/issues' },
+395 silly install resolved     readme: 'ERROR: No README data found!',
+395 silly install resolved     homepage: 'https://github.com/isaacs/npmconf#readme' },
+395 silly install resolved   { name: 'ncp',
+395 silly install resolved     version: '0.4.2',
+395 silly install resolved     author: { name: 'AvianFlu', email: 'charlie@charlieistheman.com' },
+395 silly install resolved     description: 'Asynchronous recursive file copy utility.',
+395 silly install resolved     bin: { ncp: './bin/ncp' },
+395 silly install resolved     devDependencies: { vows: '0.6.x', rimraf: '1.0.x', 'read-dir-files': '0.0.x' },
+395 silly install resolved     main: './lib/ncp.js',
+395 silly install resolved     repository: { type: 'git', url: 'git+https://github.com/AvianFlu/ncp.git' },
+395 silly install resolved     keywords: [ 'cli', 'copy' ],
+395 silly install resolved     license: 'MIT',
+395 silly install resolved     engine: { node: '>=0.4' },
+395 silly install resolved     scripts: { test: 'vows --isolate --spec' },
+395 silly install resolved     _id: 'ncp@0.4.2',
+395 silly install resolved     dist:
+395 silly install resolved      { shasum: 'abcc6cbd3ec2ed2a729ff6e7c1fa8f01784a8574',
+395 silly install resolved        tarball: 'https://registry.npmjs.org/ncp/-/ncp-0.4.2.tgz' },
+395 silly install resolved     _from: 'ncp@0.4.2',
+395 silly install resolved     _npmVersion: '1.2.2',
+395 silly install resolved     _npmUser: { name: 'avianflu', email: 'charlie@charlieistheman.com' },
+395 silly install resolved     maintainers: [ [Object] ],
+395 silly install resolved     directories: {},
+395 silly install resolved     _shasum: 'abcc6cbd3ec2ed2a729ff6e7c1fa8f01784a8574',
+395 silly install resolved     _resolved: 'https://registry.npmjs.org/ncp/-/ncp-0.4.2.tgz',
+395 silly install resolved     bugs: { url: 'https://github.com/AvianFlu/ncp/issues' },
+395 silly install resolved     readme: 'ERROR: No README data found!',
+395 silly install resolved     homepage: 'https://github.com/AvianFlu/ncp#readme' },
+395 silly install resolved   { name: 'rimraf',
+395 silly install resolved     version: '2.2.8',
+395 silly install resolved     main: 'rimraf.js',
+395 silly install resolved     description: 'A deep deletion module for node (like `rm -rf`)',
+395 silly install resolved     author:
+395 silly install resolved      { name: 'Isaac Z. Schlueter',
+395 silly install resolved        email: 'i@izs.me',
+395 silly install resolved        url: 'http://blog.izs.me/' },
+395 silly install resolved     license:
+395 silly install resolved      { type: 'MIT',
+395 silly install resolved        url: 'https://github.com/isaacs/rimraf/raw/master/LICENSE' },
+395 silly install resolved     repository: { type: 'git', url: 'git://github.com/isaacs/rimraf.git' },
+395 silly install resolved     scripts: { test: 'cd test && bash run.sh' },
+395 silly install resolved     bin: { rimraf: './bin.js' },
+395 silly install resolved     contributors: [ [Object], [Object], [Object], [Object], [Object] ],
+395 silly install resolved     bugs: { url: 'https://github.com/isaacs/rimraf/issues' },
+395 silly install resolved     homepage: 'https://github.com/isaacs/rimraf',
+395 silly install resolved     _id: 'rimraf@2.2.8',
+395 silly install resolved     _shasum: 'e439be2aaee327321952730f99a8929e4fc50582',
+395 silly install resolved     _from: 'rimraf@>=2.2.2 <2.3.0',
+395 silly install resolved     _npmVersion: '1.4.10',
+395 silly install resolved     _npmUser: { name: 'isaacs', email: 'i@izs.me' },
+395 silly install resolved     maintainers: [ [Object] ],
+395 silly install resolved     dist:
+395 silly install resolved      { shasum: 'e439be2aaee327321952730f99a8929e4fc50582',
+395 silly install resolved        tarball: 'https://registry.npmjs.org/rimraf/-/rimraf-2.2.8.tgz' },
+395 silly install resolved     directories: {},
+395 silly install resolved     _resolved: 'https://registry.npmjs.org/rimraf/-/rimraf-2.2.8.tgz',
+395 silly install resolved     readme: 'ERROR: No README data found!' },
+395 silly install resolved   { author:
+395 silly install resolved      { name: 'Isaac Z. Schlueter',
+395 silly install resolved        email: 'i@izs.me',
+395 silly install resolved        url: 'http://blog.izs.me' },
+395 silly install resolved     name: 'which',
+395 silly install resolved     description: 'Like which(1) unix command. Find the first instance of an executable in the PATH.',
+395 silly install resolved     version: '1.0.9',
+395 silly install resolved     repository: { type: 'git', url: 'git://github.com/isaacs/node-which.git' },
+395 silly install resolved     main: 'which.js',
+395 silly install resolved     bin: { which: './bin/which' },
+395 silly install resolved     license: 'ISC',
+395 silly install resolved     gitHead: 'df3d52a0ecd5f366d550e0f14d67ca4d5e621bad',
+395 silly install resolved     bugs: { url: 'https://github.com/isaacs/node-which/issues' },
+395 silly install resolved     homepage: 'https://github.com/isaacs/node-which',
+395 silly install resolved     _id: 'which@1.0.9',
+395 silly install resolved     scripts: {},
+395 silly install resolved     _shasum: '460c1da0f810103d0321a9b633af9e575e64486f',
+395 silly install resolved     _from: 'which@>=1.0.5 <1.1.0',
+395 silly install resolved     _npmVersion: '2.6.0',
+395 silly install resolved     _nodeVersion: '1.1.0',
+395 silly install resolved     _npmUser: { name: 'isaacs', email: 'i@izs.me' },
+395 silly install resolved     maintainers: [ [Object] ],
+395 silly install resolved     dist:
+395 silly install resolved      { shasum: '460c1da0f810103d0321a9b633af9e575e64486f',
+395 silly install resolved        tarball: 'https://registry.npmjs.org/which/-/which-1.0.9.tgz' },
+395 silly install resolved     directories: {},
+395 silly install resolved     _resolved: 'https://registry.npmjs.org/which/-/which-1.0.9.tgz',
+395 silly install resolved     readme: 'ERROR: No README data found!' } ]
+396 info install adm-zip@0.2.1 into /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs
+397 info install kew@0.1.7 into /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs
+398 info install mkdirp@0.3.5 into /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs
+399 info install npmconf@0.0.24 into /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs
+400 info install ncp@0.4.2 into /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs
+401 info install rimraf@2.2.8 into /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs
+402 info install which@1.0.9 into /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs
+403 info installOne adm-zip@0.2.1
+404 verbose installOne of adm-zip to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs not in flight; installing
+405 verbose correctMkdir /Users/duke/.npm/_locks correctMkdir not in flight; initializing
+406 info installOne kew@0.1.7
+407 verbose installOne of kew to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs not in flight; installing
+408 verbose correctMkdir /Users/duke/.npm/_locks correctMkdir not in flight; initializing
+409 info installOne mkdirp@0.3.5
+410 verbose installOne of mkdirp to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs not in flight; installing
+411 verbose correctMkdir /Users/duke/.npm/_locks correctMkdir not in flight; initializing
+412 info installOne npmconf@0.0.24
+413 verbose installOne of npmconf to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs not in flight; installing
+414 verbose correctMkdir /Users/duke/.npm/_locks correctMkdir not in flight; initializing
+415 info installOne ncp@0.4.2
+416 verbose installOne of ncp to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs not in flight; installing
+417 verbose correctMkdir /Users/duke/.npm/_locks correctMkdir not in flight; initializing
+418 info installOne rimraf@2.2.8
+419 verbose installOne of rimraf to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs not in flight; installing
+420 verbose correctMkdir /Users/duke/.npm/_locks correctMkdir not in flight; initializing
+421 info installOne which@1.0.9
+422 verbose installOne of which to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs not in flight; installing
+423 verbose correctMkdir /Users/duke/.npm/_locks correctMkdir not in flight; initializing
+424 verbose lock using /Users/duke/.npm/_locks/adm-zip-1d44fa6b364c846b.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/adm-zip
+425 verbose lock using /Users/duke/.npm/_locks/kew-c14c662c530af0a3.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/kew
+426 verbose lock using /Users/duke/.npm/_locks/npmconf-188125eb700efeac.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf
+427 verbose lock using /Users/duke/.npm/_locks/mkdirp-a78a7d726e4a4e1b.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/mkdirp
+428 verbose lock using /Users/duke/.npm/_locks/ncp-602ff5daecf640a8.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/ncp
+429 verbose lock using /Users/duke/.npm/_locks/rimraf-ac2d3214d159ffc6.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/rimraf
+430 verbose lock using /Users/duke/.npm/_locks/which-17d92be1c7f3b16d.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/which
+431 silly install write writing adm-zip 0.2.1 to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/adm-zip
+432 silly install write writing kew 0.1.7 to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/kew
+433 silly install write writing npmconf 0.0.24 to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf
+434 silly install write writing mkdirp 0.3.5 to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/mkdirp
+435 silly install write writing ncp 0.4.2 to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/ncp
+436 silly install write writing rimraf 2.2.8 to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/rimraf
+437 silly install write writing which 1.0.9 to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/which
+438 verbose unbuild lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/adm-zip
+439 verbose unbuild lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/kew
+440 verbose unbuild lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf
+441 verbose unbuild lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/mkdirp
+442 verbose unbuild lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/ncp
+443 verbose unbuild lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/rimraf
+444 verbose unbuild lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/which
+445 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/adm-zip is being purged from base /usr/local
+446 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/adm-zip
+447 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/kew is being purged from base /usr/local
+448 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/kew
+449 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf is being purged from base /usr/local
+450 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf
+451 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/mkdirp is being purged from base /usr/local
+452 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/mkdirp
+453 verbose tar unpack /Users/duke/.npm/adm-zip/0.2.1/package.tgz
+454 verbose tar unpacking to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/adm-zip
+455 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/adm-zip is being purged
+456 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/adm-zip
+457 verbose tar unpack /Users/duke/.npm/kew/0.1.7/package.tgz
+458 verbose tar unpacking to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/kew
+459 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/kew is being purged
+460 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/kew
+461 verbose tar unpack /Users/duke/.npm/npmconf/0.0.24/package.tgz
+462 verbose tar unpacking to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf
+463 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf is being purged
+464 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf
+465 verbose tar unpack /Users/duke/.npm/mkdirp/0.3.5/package.tgz
+466 verbose tar unpacking to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/mkdirp
+467 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/mkdirp is being purged
+468 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/mkdirp
+469 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/ncp is being purged from base /usr/local
+470 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/ncp
+471 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/rimraf is being purged from base /usr/local
+472 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/rimraf
+473 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/which is being purged from base /usr/local
+474 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/which
+475 silly gunzTarPerm modes [ '755', '644' ]
+476 silly gunzTarPerm modes [ '755', '644' ]
+477 silly gunzTarPerm modes [ '755', '644' ]
+478 silly gunzTarPerm modes [ '755', '644' ]
+479 verbose tar unpack /Users/duke/.npm/ncp/0.4.2/package.tgz
+480 verbose tar unpacking to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/ncp
+481 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/ncp is being purged
+482 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/ncp
+483 verbose tar unpack /Users/duke/.npm/rimraf/2.2.8/package.tgz
+484 verbose tar unpacking to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/rimraf
+485 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/rimraf is being purged
+486 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/rimraf
+487 verbose tar unpack /Users/duke/.npm/which/1.0.9/package.tgz
+488 verbose tar unpacking to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/which
+489 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/which is being purged
+490 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/which
+491 silly gunzTarPerm modes [ '755', '644' ]
+492 silly gunzTarPerm modes [ '755', '644' ]
+493 silly gunzTarPerm modes [ '755', '644' ]
+494 silly gunzTarPerm extractEntry package.json
+495 silly gunzTarPerm modified mode [ 'package.json', 438, 420 ]
+496 silly gunzTarPerm extractEntry package.json
+497 silly gunzTarPerm extractEntry package.json
+498 silly gunzTarPerm extractEntry package.json
+499 silly gunzTarPerm extractEntry package.json
+500 silly gunzTarPerm extractEntry package.json
+501 silly gunzTarPerm extractEntry package.json
+502 silly gunzTarPerm extractEntry README.md
+503 silly gunzTarPerm modified mode [ 'README.md', 438, 420 ]
+504 silly gunzTarPerm extractEntry zipEntry.js
+505 silly gunzTarPerm modified mode [ 'zipEntry.js', 438, 420 ]
+506 silly gunzTarPerm extractEntry .npmignore
+507 silly gunzTarPerm extractEntry README.md
+508 silly gunzTarPerm extractEntry .npmignore
+509 silly gunzTarPerm extractEntry README.md
+510 silly gunzTarPerm extractEntry .npmignore
+511 silly gunzTarPerm extractEntry LICENSE
+512 silly gunzTarPerm extractEntry .npmignore
+513 silly gunzTarPerm extractEntry README.md
+514 silly gunzTarPerm extractEntry README.md
+515 silly gunzTarPerm extractEntry LICENSE
+516 silly gunzTarPerm extractEntry README.md
+517 silly gunzTarPerm extractEntry LICENSE
+518 silly gunzTarPerm extractEntry sandbox.js
+519 silly gunzTarPerm modified mode [ 'sandbox.js', 438, 420 ]
+520 silly gunzTarPerm extractEntry adm-zip.js
+521 silly gunzTarPerm modified mode [ 'adm-zip.js', 438, 420 ]
+522 silly gunzTarPerm extractEntry kew.js
+523 silly gunzTarPerm extractEntry LICENSE.TXT
+524 silly gunzTarPerm extractEntry test/chain.js
+525 silly gunzTarPerm extractEntry test/context.js
+526 silly gunzTarPerm extractEntry test/defer.js
+527 silly gunzTarPerm extractEntry test/static.js
+528 silly gunzTarPerm extractEntry LICENSE
+529 silly gunzTarPerm extractEntry config-defs.js
+530 silly gunzTarPerm extractEntry bin.js
+531 silly gunzTarPerm extractEntry rimraf.js
+532 silly gunzTarPerm extractEntry which.js
+533 silly gunzTarPerm extractEntry bin/which
+534 silly gunzTarPerm extractEntry index.js
+535 silly gunzTarPerm extractEntry examples/pow.js
+536 silly gunzTarPerm extractEntry .travis.yml
+537 silly gunzTarPerm extractEntry bin/ncp
+538 silly gunzTarPerm extractEntry zipFile.js
+539 silly gunzTarPerm modified mode [ 'zipFile.js', 438, 420 ]
+540 silly gunzTarPerm extractEntry npmconf.js
+541 silly gunzTarPerm extractEntry readme.markdown
+542 silly gunzTarPerm extractEntry test/perm.js
+543 silly gunzTarPerm extractEntry lib/ncp.js
+544 silly gunzTarPerm extractEntry LICENSE.md
+545 silly gunzTarPerm extractEntry AUTHORS
+546 silly gunzTarPerm extractEntry test/test-async.js
+547 verbose write writing to /usr/local/lib/node_modules/gitbook-pdf/node_modules/lodash/package.json
+548 silly gunzTarPerm extractEntry test/00-setup.js
+549 silly gunzTarPerm extractEntry test/basic.js
+550 silly gunzTarPerm extractEntry MIT-LICENSE.txt
+551 silly gunzTarPerm modified mode [ 'MIT-LICENSE.txt', 438, 420 ]
+552 silly gunzTarPerm extractEntry methods/deflater.js
+553 silly gunzTarPerm modified mode [ 'methods/deflater.js', 438, 420 ]
+554 silly gunzTarPerm extractEntry test/perm_sync.js
+555 silly gunzTarPerm extractEntry test/race.js
+556 info preinstall lodash@2.4.1
+557 silly gunzTarPerm extractEntry test/ncp-test.js
+558 silly gunzTarPerm extractEntry test/fixtures/src/a
+559 silly gunzTarPerm extractEntry test/fixtures/src/b
+560 silly gunzTarPerm extractEntry test/fixtures/src/c
+561 silly gunzTarPerm extractEntry test/fixtures/src/d
+562 silly gunzTarPerm extractEntry test/fixtures/src/e
+563 silly gunzTarPerm extractEntry test/fixtures/src/f
+564 silly gunzTarPerm extractEntry test/fixtures/src/sub/a
+565 silly gunzTarPerm extractEntry test/fixtures/src/sub/b
+566 silly gunzTarPerm extractEntry test/test-sync.js
+567 silly gunzTarPerm extractEntry test/run.sh
+568 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/lodash/package.json
+569 silly gunzTarPerm extractEntry methods/index.js
+570 silly gunzTarPerm modified mode [ 'methods/index.js', 438, 420 ]
+571 silly gunzTarPerm extractEntry methods/inflater.js
+572 silly gunzTarPerm modified mode [ 'methods/inflater.js', 438, 420 ]
+573 silly gunzTarPerm extractEntry test/rel.js
+574 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/lodash/package.json
+575 silly gunzTarPerm extractEntry test/builtin.js
+576 silly gunzTarPerm extractEntry test/save.js
+577 silly gunzTarPerm extractEntry test/setup.sh
+578 silly install resolved []
+579 verbose about to build /usr/local/lib/node_modules/gitbook-pdf/node_modules/lodash
+580 info build /usr/local/lib/node_modules/gitbook-pdf/node_modules/lodash
+581 silly gunzTarPerm extractEntry util/constants.js
+582 silly gunzTarPerm modified mode [ 'util/constants.js', 438, 420 ]
+583 silly gunzTarPerm extractEntry util/errors.js
+584 silly gunzTarPerm modified mode [ 'util/errors.js', 438, 420 ]
+585 silly gunzTarPerm extractEntry test/fixtures/builtin
+586 silly gunzTarPerm extractEntry test/fixtures/globalconfig
+587 silly gunzTarPerm extractEntry test/return.js
+588 silly gunzTarPerm extractEntry test/clobber.js
+589 info linkStuff lodash@2.4.1
+590 silly linkStuff lodash@2.4.1 has /usr/local/lib/node_modules/gitbook-pdf/node_modules as its parent node_modules
+591 silly linkStuff lodash@2.4.1 is part of a global install
+592 silly linkStuff lodash@2.4.1 is installed into a global node_modules
+593 verbose linkBins lodash@2.4.1
+594 verbose linkMans lodash@2.4.1
+595 verbose rebuildBundles lodash@2.4.1
+596 info install lodash@2.4.1
+597 info postinstall lodash@2.4.1
+598 silly gunzTarPerm extractEntry util/fattr.js
+599 silly gunzTarPerm modified mode [ 'util/fattr.js', 438, 420 ]
+600 silly gunzTarPerm extractEntry util/index.js
+601 silly gunzTarPerm modified mode [ 'util/index.js', 438, 420 ]
+602 silly gunzTarPerm extractEntry test/fixtures/userconfig
+603 verbose write writing to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/which/package.json
+604 silly gunzTarPerm extractEntry test/root.js
+605 silly gunzTarPerm extractEntry test/umask.js
+606 verbose unlock done using /Users/duke/.npm/_locks/lodash-fbf7959d6dc30044.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/lodash
+607 info preinstall which@1.0.9
+608 silly gunzTarPerm extractEntry util/utils.js
+609 silly gunzTarPerm modified mode [ 'util/utils.js', 438, 420 ]
+610 silly gunzTarPerm extractEntry headers/dataHeader.js
+611 silly gunzTarPerm modified mode [ 'headers/dataHeader.js', 438, 420 ]
+612 silly gunzTarPerm extractEntry headers/entryHeader.js
+613 silly gunzTarPerm modified mode [ 'headers/entryHeader.js', 438, 420 ]
+614 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/which/package.json
+615 silly gunzTarPerm extractEntry headers/index.js
+616 silly gunzTarPerm modified mode [ 'headers/index.js', 438, 420 ]
+617 silly gunzTarPerm extractEntry test/sync.js
+618 silly gunzTarPerm extractEntry test/chmod.js
+619 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/which/package.json
+620 silly gunzTarPerm extractEntry headers/mainHeader.js
+621 silly gunzTarPerm modified mode [ 'headers/mainHeader.js', 438, 420 ]
+622 silly gunzTarPerm extractEntry .travis.yml
+623 silly gunzTarPerm modified mode [ '.travis.yml', 438, 420 ]
+624 silly install resolved []
+625 verbose about to build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/which
+626 info build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/which
+627 silly gunzTarPerm extractEntry test/umask_sync.js
+628 silly gunzTarPerm extractEntry test/return_sync.js
+629 info linkStuff which@1.0.9
+630 silly linkStuff which@1.0.9 has /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules as its parent node_modules
+631 silly linkStuff which@1.0.9 is part of a global install
+632 silly linkStuff which@1.0.9 is installed into a global node_modules
+633 verbose linkBins which@1.0.9
+634 verbose link bins [ { which: './bin/which' },
+634 verbose link bins   '/usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/.bin',
+634 verbose link bins   false ]
+635 verbose linkMans which@1.0.9
+636 verbose rebuildBundles which@1.0.9
+637 silly gunzTarPerm extractEntry test/mkdirp.js
+638 silly gunzTarPerm extractEntry .travis.yml
+639 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/.bin/which is being purged
+640 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/.bin/which
+641 verbose write writing to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/kew/package.json
+642 info install which@1.0.9
+643 info postinstall which@1.0.9
+644 info preinstall kew@0.1.7
+645 verbose unlock done using /Users/duke/.npm/_locks/which-17d92be1c7f3b16d.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/which
+646 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/kew/package.json
+647 verbose write writing to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/rimraf/package.json
+648 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/kew/package.json
+649 info preinstall rimraf@2.2.8
+650 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/rimraf/package.json
+651 silly install resolved []
+652 verbose about to build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/kew
+653 info build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/kew
+654 info linkStuff kew@0.1.7
+655 silly linkStuff kew@0.1.7 has /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules as its parent node_modules
+656 silly linkStuff kew@0.1.7 is part of a global install
+657 silly linkStuff kew@0.1.7 is installed into a global node_modules
+658 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/rimraf/package.json
+659 verbose linkBins kew@0.1.7
+660 verbose linkMans kew@0.1.7
+661 verbose rebuildBundles kew@0.1.7
+662 info install kew@0.1.7
+663 info postinstall kew@0.1.7
+664 silly install resolved []
+665 verbose about to build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/rimraf
+666 info build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/rimraf
+667 verbose unlock done using /Users/duke/.npm/_locks/kew-c14c662c530af0a3.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/kew
+668 verbose write writing to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/package.json
+669 info linkStuff rimraf@2.2.8
+670 silly linkStuff rimraf@2.2.8 has /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules as its parent node_modules
+671 silly linkStuff rimraf@2.2.8 is part of a global install
+672 silly linkStuff rimraf@2.2.8 is installed into a global node_modules
+673 verbose linkBins rimraf@2.2.8
+674 verbose link bins [ { rimraf: './bin.js' },
+674 verbose link bins   '/usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/.bin',
+674 verbose link bins   false ]
+675 verbose linkMans rimraf@2.2.8
+676 verbose rebuildBundles rimraf@2.2.8
+677 info preinstall npmconf@0.0.24
+678 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/.bin/rimraf is being purged
+679 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/.bin/rimraf
+680 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/package.json
+681 info install rimraf@2.2.8
+682 silly prepareForInstallMany adding config-chain@~1.1.1 from npmconf dependencies
+683 silly prepareForInstallMany adding inherits@~1.0.0 from npmconf dependencies
+684 silly prepareForInstallMany adding once@~1.1.1 from npmconf dependencies
+685 silly prepareForInstallMany adding osenv@0.0.3 from npmconf dependencies
+686 silly prepareForInstallMany adding nopt@2 from npmconf dependencies
+687 silly prepareForInstallMany adding semver@~1.1.0 from npmconf dependencies
+688 silly prepareForInstallMany adding ini@~1.1.0 from npmconf dependencies
+689 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/package.json
+690 info postinstall rimraf@2.2.8
+691 verbose unlock done using /Users/duke/.npm/_locks/rimraf-ac2d3214d159ffc6.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/rimraf
+692 silly cache add args [ 'config-chain@~1.1.1', null ]
+693 verbose cache add spec config-chain@~1.1.1
+694 silly cache add args [ 'inherits@~1.0.0', null ]
+695 verbose cache add spec inherits@~1.0.0
+696 silly cache add parsed spec Result {
+696 silly cache add   raw: 'config-chain@~1.1.1',
+696 silly cache add   scope: null,
+696 silly cache add   name: 'config-chain',
+696 silly cache add   rawSpec: '~1.1.1',
+696 silly cache add   spec: '>=1.1.1 <1.2.0',
+696 silly cache add   type: 'range' }
+697 silly addNamed config-chain@>=1.1.1 <1.2.0
+698 verbose addNamed ">=1.1.1 <1.2.0" is a valid semver range for config-chain
+699 silly addNameRange { name: 'config-chain', range: '>=1.1.1 <1.2.0', hasData: false }
+700 silly mapToRegistry name config-chain
+701 silly mapToRegistry using default registry
+702 silly mapToRegistry registry https://registry.npmjs.org/
+703 silly mapToRegistry data Result {
+703 silly mapToRegistry   raw: 'config-chain',
+703 silly mapToRegistry   scope: null,
+703 silly mapToRegistry   name: 'config-chain',
+703 silly mapToRegistry   rawSpec: '',
+703 silly mapToRegistry   spec: 'latest',
+703 silly mapToRegistry   type: 'tag' }
+704 silly mapToRegistry uri https://registry.npmjs.org/config-chain
+705 verbose addNameRange registry:https://registry.npmjs.org/config-chain not in flight; fetching
+706 silly cache add parsed spec Result {
+706 silly cache add   raw: 'inherits@~1.0.0',
+706 silly cache add   scope: null,
+706 silly cache add   name: 'inherits',
+706 silly cache add   rawSpec: '~1.0.0',
+706 silly cache add   spec: '>=1.0.0 <1.1.0',
+706 silly cache add   type: 'range' }
+707 silly addNamed inherits@>=1.0.0 <1.1.0
+708 verbose addNamed ">=1.0.0 <1.1.0" is a valid semver range for inherits
+709 silly addNameRange { name: 'inherits', range: '>=1.0.0 <1.1.0', hasData: false }
+710 silly mapToRegistry name inherits
+711 silly mapToRegistry using default registry
+712 silly mapToRegistry registry https://registry.npmjs.org/
+713 silly mapToRegistry data Result {
+713 silly mapToRegistry   raw: 'inherits',
+713 silly mapToRegistry   scope: null,
+713 silly mapToRegistry   name: 'inherits',
+713 silly mapToRegistry   rawSpec: '',
+713 silly mapToRegistry   spec: 'latest',
+713 silly mapToRegistry   type: 'tag' }
+714 silly mapToRegistry uri https://registry.npmjs.org/inherits
+715 verbose addNameRange registry:https://registry.npmjs.org/inherits not in flight; fetching
+716 silly cache add args [ 'once@~1.1.1', null ]
+717 verbose cache add spec once@~1.1.1
+718 silly cache add parsed spec Result {
+718 silly cache add   raw: 'once@~1.1.1',
+718 silly cache add   scope: null,
+718 silly cache add   name: 'once',
+718 silly cache add   rawSpec: '~1.1.1',
+718 silly cache add   spec: '>=1.1.1 <1.2.0',
+718 silly cache add   type: 'range' }
+719 silly addNamed once@>=1.1.1 <1.2.0
+720 verbose addNamed ">=1.1.1 <1.2.0" is a valid semver range for once
+721 silly addNameRange { name: 'once', range: '>=1.1.1 <1.2.0', hasData: false }
+722 silly mapToRegistry name once
+723 silly mapToRegistry using default registry
+724 silly mapToRegistry registry https://registry.npmjs.org/
+725 silly mapToRegistry data Result {
+725 silly mapToRegistry   raw: 'once',
+725 silly mapToRegistry   scope: null,
+725 silly mapToRegistry   name: 'once',
+725 silly mapToRegistry   rawSpec: '',
+725 silly mapToRegistry   spec: 'latest',
+725 silly mapToRegistry   type: 'tag' }
+726 silly mapToRegistry uri https://registry.npmjs.org/once
+727 verbose addNameRange registry:https://registry.npmjs.org/once not in flight; fetching
+728 silly cache add args [ 'osenv@0.0.3', null ]
+729 verbose cache add spec osenv@0.0.3
+730 silly cache add parsed spec Result {
+730 silly cache add   raw: 'osenv@0.0.3',
+730 silly cache add   scope: null,
+730 silly cache add   name: 'osenv',
+730 silly cache add   rawSpec: '0.0.3',
+730 silly cache add   spec: '0.0.3',
+730 silly cache add   type: 'version' }
+731 silly addNamed osenv@0.0.3
+732 verbose addNamed "0.0.3" is a plain semver version for osenv
+733 silly mapToRegistry name osenv
+734 silly mapToRegistry using default registry
+735 silly mapToRegistry registry https://registry.npmjs.org/
+736 silly mapToRegistry data Result {
+736 silly mapToRegistry   raw: 'osenv',
+736 silly mapToRegistry   scope: null,
+736 silly mapToRegistry   name: 'osenv',
+736 silly mapToRegistry   rawSpec: '',
+736 silly mapToRegistry   spec: 'latest',
+736 silly mapToRegistry   type: 'tag' }
+737 silly mapToRegistry uri https://registry.npmjs.org/osenv
+738 verbose addNameVersion registry:https://registry.npmjs.org/osenv not in flight; fetching
+739 silly cache add args [ 'nopt@2', null ]
+740 verbose cache add spec nopt@2
+741 silly cache add parsed spec Result {
+741 silly cache add   raw: 'nopt@2',
+741 silly cache add   scope: null,
+741 silly cache add   name: 'nopt',
+741 silly cache add   rawSpec: '2',
+741 silly cache add   spec: '>=2.0.0 <3.0.0',
+741 silly cache add   type: 'range' }
+742 silly addNamed nopt@>=2.0.0 <3.0.0
+743 verbose addNamed ">=2.0.0 <3.0.0" is a valid semver range for nopt
+744 silly addNameRange { name: 'nopt', range: '>=2.0.0 <3.0.0', hasData: false }
+745 silly mapToRegistry name nopt
+746 silly mapToRegistry using default registry
+747 silly mapToRegistry registry https://registry.npmjs.org/
+748 silly mapToRegistry data Result {
+748 silly mapToRegistry   raw: 'nopt',
+748 silly mapToRegistry   scope: null,
+748 silly mapToRegistry   name: 'nopt',
+748 silly mapToRegistry   rawSpec: '',
+748 silly mapToRegistry   spec: 'latest',
+748 silly mapToRegistry   type: 'tag' }
+749 silly mapToRegistry uri https://registry.npmjs.org/nopt
+750 verbose addNameRange registry:https://registry.npmjs.org/nopt not in flight; fetching
+751 silly cache add args [ 'semver@~1.1.0', null ]
+752 verbose cache add spec semver@~1.1.0
+753 silly cache add parsed spec Result {
+753 silly cache add   raw: 'semver@~1.1.0',
+753 silly cache add   scope: null,
+753 silly cache add   name: 'semver',
+753 silly cache add   rawSpec: '~1.1.0',
+753 silly cache add   spec: '>=1.1.0 <1.2.0',
+753 silly cache add   type: 'range' }
+754 silly addNamed semver@>=1.1.0 <1.2.0
+755 verbose addNamed ">=1.1.0 <1.2.0" is a valid semver range for semver
+756 silly addNameRange { name: 'semver', range: '>=1.1.0 <1.2.0', hasData: false }
+757 silly mapToRegistry name semver
+758 silly mapToRegistry using default registry
+759 silly mapToRegistry registry https://registry.npmjs.org/
+760 silly mapToRegistry data Result {
+760 silly mapToRegistry   raw: 'semver',
+760 silly mapToRegistry   scope: null,
+760 silly mapToRegistry   name: 'semver',
+760 silly mapToRegistry   rawSpec: '',
+760 silly mapToRegistry   spec: 'latest',
+760 silly mapToRegistry   type: 'tag' }
+761 silly mapToRegistry uri https://registry.npmjs.org/semver
+762 verbose addNameRange registry:https://registry.npmjs.org/semver not in flight; fetching
+763 silly cache add args [ 'ini@~1.1.0', null ]
+764 verbose cache add spec ini@~1.1.0
+765 silly cache add parsed spec Result {
+765 silly cache add   raw: 'ini@~1.1.0',
+765 silly cache add   scope: null,
+765 silly cache add   name: 'ini',
+765 silly cache add   rawSpec: '~1.1.0',
+765 silly cache add   spec: '>=1.1.0 <1.2.0',
+765 silly cache add   type: 'range' }
+766 silly addNamed ini@>=1.1.0 <1.2.0
+767 verbose addNamed ">=1.1.0 <1.2.0" is a valid semver range for ini
+768 silly addNameRange { name: 'ini', range: '>=1.1.0 <1.2.0', hasData: false }
+769 silly mapToRegistry name ini
+770 silly mapToRegistry using default registry
+771 silly mapToRegistry registry https://registry.npmjs.org/
+772 silly mapToRegistry data Result {
+772 silly mapToRegistry   raw: 'ini',
+772 silly mapToRegistry   scope: null,
+772 silly mapToRegistry   name: 'ini',
+772 silly mapToRegistry   rawSpec: '',
+772 silly mapToRegistry   spec: 'latest',
+772 silly mapToRegistry   type: 'tag' }
+773 silly mapToRegistry uri https://registry.npmjs.org/ini
+774 verbose addNameRange registry:https://registry.npmjs.org/ini not in flight; fetching
+775 verbose get https://registry.npmjs.org/config-chain not expired, no request
+776 silly addNameRange number 2 { name: 'config-chain', range: '>=1.1.1 <1.2.0', hasData: true }
+777 silly addNameRange versions [ 'config-chain',
+777 silly addNameRange   [ '0.1.0',
+777 silly addNameRange     '0.1.1',
+777 silly addNameRange     '0.2.0',
+777 silly addNameRange     '0.3.0',
+777 silly addNameRange     '0.3.1',
+777 silly addNameRange     '0.3.2',
+777 silly addNameRange     '0.3.3',
+777 silly addNameRange     '1.0.0',
+777 silly addNameRange     '1.0.1',
+777 silly addNameRange     '1.1.0',
+777 silly addNameRange     '1.1.1',
+777 silly addNameRange     '1.1.2',
+777 silly addNameRange     '1.1.3',
+777 silly addNameRange     '1.1.4',
+777 silly addNameRange     '1.1.5',
+777 silly addNameRange     '1.1.6',
+777 silly addNameRange     '0.3.4',
+777 silly addNameRange     '1.1.7',
+777 silly addNameRange     '1.1.8',
+777 silly addNameRange     '1.1.9',
+777 silly addNameRange     '1.1.10' ] ]
+778 silly addNamed config-chain@1.1.10
+779 verbose addNamed "1.1.10" is a plain semver version for config-chain
+780 verbose get https://registry.npmjs.org/inherits not expired, no request
+781 silly addNameRange number 2 { name: 'inherits', range: '>=1.0.0 <1.1.0', hasData: true }
+782 silly addNameRange versions [ 'inherits', [ '1.0.0', '2.0.0', '2.0.1', '1.0.1', '1.0.2' ] ]
+783 silly addNamed inherits@1.0.2
+784 verbose addNamed "1.0.2" is a plain semver version for inherits
+785 verbose get https://registry.npmjs.org/osenv not expired, no request
+786 verbose get https://registry.npmjs.org/once not expired, no request
+787 silly addNameRange number 2 { name: 'once', range: '>=1.1.1 <1.2.0', hasData: true }
+788 silly addNameRange versions [ 'once',
+788 silly addNameRange   [ '1.1.1', '1.2.0', '1.3.0', '1.3.1', '1.3.2', '1.3.3' ] ]
+789 silly addNamed once@1.1.1
+790 verbose addNamed "1.1.1" is a plain semver version for once
+791 verbose get https://registry.npmjs.org/nopt not expired, no request
+792 silly addNameRange number 2 { name: 'nopt', range: '>=2.0.0 <3.0.0', hasData: true }
+793 silly addNameRange versions [ 'nopt',
+793 silly addNameRange   [ '1.0.0',
+793 silly addNameRange     '1.0.1',
+793 silly addNameRange     '1.0.2',
+793 silly addNameRange     '1.0.3',
+793 silly addNameRange     '1.0.4',
+793 silly addNameRange     '1.0.5',
+793 silly addNameRange     '1.0.6',
+793 silly addNameRange     '1.0.7',
+793 silly addNameRange     '1.0.8',
+793 silly addNameRange     '1.0.9',
+793 silly addNameRange     '1.0.10',
+793 silly addNameRange     '2.0.0',
+793 silly addNameRange     '2.1.0',
+793 silly addNameRange     '2.1.1',
+793 silly addNameRange     '2.1.2',
+793 silly addNameRange     '2.2.0',
+793 silly addNameRange     '2.2.1',
+793 silly addNameRange     '3.0.0',
+793 silly addNameRange     '3.0.1',
+793 silly addNameRange     '3.0.2',
+793 silly addNameRange     '3.0.3',
+793 silly addNameRange     '3.0.4',
+793 silly addNameRange     '3.0.5',
+793 silly addNameRange     '3.0.6' ] ]
+794 silly addNamed nopt@2.2.1
+795 verbose addNamed "2.2.1" is a plain semver version for nopt
+796 verbose get https://registry.npmjs.org/semver not expired, no request
+797 silly addNameRange number 2 { name: 'semver', range: '>=1.1.0 <1.2.0', hasData: true }
+798 silly addNameRange versions [ 'semver',
+798 silly addNameRange   [ '1.0.0',
+798 silly addNameRange     '1.0.1',
+798 silly addNameRange     '1.0.2',
+798 silly addNameRange     '1.0.3',
+798 silly addNameRange     '1.0.4',
+798 silly addNameRange     '1.0.5',
+798 silly addNameRange     '1.0.6',
+798 silly addNameRange     '1.0.7',
+798 silly addNameRange     '1.0.8',
+798 silly addNameRange     '1.0.9',
+798 silly addNameRange     '1.0.10',
+798 silly addNameRange     '1.0.11',
+798 silly addNameRange     '1.0.12',
+798 silly addNameRange     '1.0.13',
+798 silly addNameRange     '1.0.14',
+798 silly addNameRange     '1.1.0',
+798 silly addNameRange     '1.1.1',
+798 silly addNameRange     '1.1.2',
+798 silly addNameRange     '1.1.3',
+798 silly addNameRange     '1.1.4',
+798 silly addNameRange     '2.0.0-alpha',
+798 silly addNameRange     '2.0.0-beta',
+798 silly addNameRange     '2.0.1',
+798 silly addNameRange     '2.0.2',
+798 silly addNameRange     '2.0.3',
+798 silly addNameRange     '2.0.4',
+798 silly addNameRange     '2.0.5',
+798 silly addNameRange     '2.0.6',
+798 silly addNameRange     '2.0.7',
+798 silly addNameRange     '2.0.8',
+798 silly addNameRange     '2.0.9',
+798 silly addNameRange     '2.0.10',
+798 silly addNameRange     '2.0.11',
+798 silly addNameRange     '2.1.0',
+798 silly addNameRange     '2.2.0',
+798 silly addNameRange     '2.2.1',
+798 silly addNameRange     '2.3.0',
+798 silly addNameRange     '2.3.1',
+798 silly addNameRange     '2.3.2',
+798 silly addNameRange     '3.0.0',
+798 silly addNameRange     '3.0.1',
+798 silly addNameRange     '4.0.0',
+798 silly addNameRange     '4.0.2',
+798 silly addNameRange     '4.0.3',
+798 silly addNameRange     '4.1.0',
+798 silly addNameRange     '4.1.1',
+798 silly addNameRange     '4.2.0',
+798 silly addNameRange     '4.2.1',
+798 silly addNameRange     '4.2.2',
+798 silly addNameRange     '4.3.0',
+798 silly addNameRange     '4.3.1',
+798 silly addNameRange     '4.3.2',
+798 silly addNameRange     '4.3.3',
+798 silly addNameRange     '4.3.4',
+798 silly addNameRange     '4.3.5',
+798 silly addNameRange     '4.3.6',
+798 silly addNameRange     '5.0.0',
+798 silly addNameRange     '5.0.1',
+798 silly addNameRange     '5.0.2',
+798 silly addNameRange     '5.0.3',
+798 silly addNameRange     '5.1.0',
+798 silly addNameRange     '5.1.1',
+798 silly addNameRange     '5.2.0',
+798 silly addNameRange     '5.3.0' ] ]
+799 silly addNamed semver@1.1.4
+800 verbose addNamed "1.1.4" is a plain semver version for semver
+801 verbose get https://registry.npmjs.org/ini not expired, no request
+802 silly addNameRange number 2 { name: 'ini', range: '>=1.1.0 <1.2.0', hasData: true }
+803 silly addNameRange versions [ 'ini',
+803 silly addNameRange   [ '1.0.0',
+803 silly addNameRange     '1.0.1',
+803 silly addNameRange     '1.0.2',
+803 silly addNameRange     '1.0.3',
+803 silly addNameRange     '1.0.4',
+803 silly addNameRange     '1.0.5',
+803 silly addNameRange     '1.1.0',
+803 silly addNameRange     '1.2.0',
+803 silly addNameRange     '1.2.1',
+803 silly addNameRange     '1.3.0',
+803 silly addNameRange     '1.3.1',
+803 silly addNameRange     '1.3.2',
+803 silly addNameRange     '1.3.3',
+803 silly addNameRange     '1.3.4' ] ]
+804 silly addNamed ini@1.1.0
+805 verbose addNamed "1.1.0" is a plain semver version for ini
+806 verbose write writing to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/ncp/package.json
+807 silly cache afterAdd config-chain@1.1.10
+808 verbose afterAdd /Users/duke/.npm/config-chain/1.1.10/package/package.json not in flight; writing
+809 verbose correctMkdir /Users/duke/.npm correctMkdir not in flight; initializing
+810 silly cache afterAdd inherits@1.0.2
+811 verbose afterAdd /Users/duke/.npm/inherits/1.0.2/package/package.json not in flight; writing
+812 verbose correctMkdir /Users/duke/.npm correctMkdir not in flight; initializing
+813 silly cache afterAdd osenv@0.0.3
+814 verbose afterAdd /Users/duke/.npm/osenv/0.0.3/package/package.json not in flight; writing
+815 verbose correctMkdir /Users/duke/.npm correctMkdir not in flight; initializing
+816 silly cache afterAdd once@1.1.1
+817 verbose afterAdd /Users/duke/.npm/once/1.1.1/package/package.json not in flight; writing
+818 verbose correctMkdir /Users/duke/.npm correctMkdir not in flight; initializing
+819 silly cache afterAdd ini@1.1.0
+820 verbose afterAdd /Users/duke/.npm/ini/1.1.0/package/package.json not in flight; writing
+821 verbose correctMkdir /Users/duke/.npm correctMkdir not in flight; initializing
+822 info preinstall ncp@0.4.2
+823 silly cache afterAdd nopt@2.2.1
+824 verbose afterAdd /Users/duke/.npm/nopt/2.2.1/package/package.json not in flight; writing
+825 verbose correctMkdir /Users/duke/.npm correctMkdir not in flight; initializing
+826 silly cache afterAdd semver@1.1.4
+827 verbose afterAdd /Users/duke/.npm/semver/1.1.4/package/package.json not in flight; writing
+828 verbose correctMkdir /Users/duke/.npm correctMkdir not in flight; initializing
+829 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/ncp/package.json
+830 verbose afterAdd /Users/duke/.npm/once/1.1.1/package/package.json written
+831 verbose afterAdd /Users/duke/.npm/osenv/0.0.3/package/package.json written
+832 verbose afterAdd /Users/duke/.npm/inherits/1.0.2/package/package.json written
+833 verbose afterAdd /Users/duke/.npm/config-chain/1.1.10/package/package.json written
+834 verbose afterAdd /Users/duke/.npm/ini/1.1.0/package/package.json written
+835 verbose afterAdd /Users/duke/.npm/nopt/2.2.1/package/package.json written
+836 verbose afterAdd /Users/duke/.npm/semver/1.1.4/package/package.json written
+837 silly install resolved [ { name: 'once',
+837 silly install resolved     version: '1.1.1',
+837 silly install resolved     description: 'Run a function exactly one time',
+837 silly install resolved     main: 'once.js',
+837 silly install resolved     directories: { test: 'test' },
+837 silly install resolved     dependencies: {},
+837 silly install resolved     devDependencies: { tap: '~0.3.0' },
+837 silly install resolved     scripts: { test: 'tap test/*.js' },
+837 silly install resolved     repository: { type: 'git', url: 'git://github.com/isaacs/once.git' },
+837 silly install resolved     keywords: [ 'once', 'function', 'one', 'single' ],
+837 silly install resolved     author:
+837 silly install resolved      { name: 'Isaac Z. Schlueter',
+837 silly install resolved        email: 'i@izs.me',
+837 silly install resolved        url: 'http://blog.izs.me/' },
+837 silly install resolved     license: 'BSD',
+837 silly install resolved     _id: 'once@1.1.1',
+837 silly install resolved     dist:
+837 silly install resolved      { shasum: '9db574933ccb08c3a7614d154032c09ea6f339e7',
+837 silly install resolved        tarball: 'https://registry.npmjs.org/once/-/once-1.1.1.tgz' },
+837 silly install resolved     _npmVersion: '1.1.48',
+837 silly install resolved     _npmUser: { name: 'isaacs', email: 'i@izs.me' },
+837 silly install resolved     maintainers: [ [Object] ],
+837 silly install resolved     _shasum: '9db574933ccb08c3a7614d154032c09ea6f339e7',
+837 silly install resolved     _resolved: 'https://registry.npmjs.org/once/-/once-1.1.1.tgz',
+837 silly install resolved     _from: 'once@>=1.1.1 <1.2.0',
+837 silly install resolved     bugs: { url: 'https://github.com/isaacs/once/issues' },
+837 silly install resolved     readme: 'ERROR: No README data found!',
+837 silly install resolved     homepage: 'https://github.com/isaacs/once#readme' },
+837 silly install resolved   { name: 'osenv',
+837 silly install resolved     version: '0.0.3',
+837 silly install resolved     main: 'osenv.js',
+837 silly install resolved     directories: { test: 'test' },
+837 silly install resolved     dependencies: {},
+837 silly install resolved     devDependencies: { tap: '~0.2.5' },
+837 silly install resolved     scripts: { test: 'tap test/*.js' },
+837 silly install resolved     repository: { type: 'git', url: 'git://github.com/isaacs/osenv.git' },
+837 silly install resolved     keywords:
+837 silly install resolved      [ 'environment',
+837 silly install resolved        'variable',
+837 silly install resolved        'home',
+837 silly install resolved        'tmpdir',
+837 silly install resolved        'path',
+837 silly install resolved        'prompt',
+837 silly install resolved        'ps1' ],
+837 silly install resolved     author:
+837 silly install resolved      { name: 'Isaac Z. Schlueter',
+837 silly install resolved        email: 'i@izs.me',
+837 silly install resolved        url: 'http://blog.izs.me/' },
+837 silly install resolved     license: 'BSD',
+837 silly install resolved     description: 'Look up environment settings specific to different operating systems',
+837 silly install resolved     _id: 'osenv@0.0.3',
+837 silly install resolved     dist:
+837 silly install resolved      { shasum: 'cd6ad8ddb290915ad9e22765576025d411f29cb6',
+837 silly install resolved        tarball: 'https://registry.npmjs.org/osenv/-/osenv-0.0.3.tgz' },
+837 silly install resolved     maintainers: [ [Object] ],
+837 silly install resolved     _shasum: 'cd6ad8ddb290915ad9e22765576025d411f29cb6',
+837 silly install resolved     _resolved: 'https://registry.npmjs.org/osenv/-/osenv-0.0.3.tgz',
+837 silly install resolved     _from: 'osenv@0.0.3',
+837 silly install resolved     bugs: { url: 'https://github.com/isaacs/osenv/issues' },
+837 silly install resolved     readme: 'ERROR: No README data found!',
+837 silly install resolved     homepage: 'https://github.com/isaacs/osenv#readme' },
+837 silly install resolved   { name: 'inherits',
+837 silly install resolved     description: 'A tiny simple way to do classic inheritance in js',
+837 silly install resolved     version: '1.0.2',
+837 silly install resolved     keywords: [ 'inheritance', 'class', 'klass', 'oop', 'object-oriented' ],
+837 silly install resolved     main: './inherits.js',
+837 silly install resolved     repository:
+837 silly install resolved      { type: 'git',
+837 silly install resolved        url: 'git+https://github.com/isaacs/inherits.git' },
+837 silly install resolved     author:
+837 silly install resolved      { name: 'Isaac Z. Schlueter',
+837 silly install resolved        email: 'i@izs.me',
+837 silly install resolved        url: 'http://blog.izs.me/' },
+837 silly install resolved     bugs: { url: 'https://github.com/isaacs/inherits/issues' },
+837 silly install resolved     homepage: 'https://github.com/isaacs/inherits#readme',
+837 silly install resolved     _id: 'inherits@1.0.2',
+837 silly install resolved     scripts: {},
+837 silly install resolved     _shasum: 'ca4309dadee6b54cc0b8d247e8d7c7a0975bdc9b',
+837 silly install resolved     _from: 'inherits@>=1.0.0 <1.1.0',
+837 silly install resolved     _npmVersion: '3.2.2',
+837 silly install resolved     _nodeVersion: '2.2.1',
+837 silly install resolved     _npmUser: { name: 'isaacs', email: 'isaacs@npmjs.com' },
+837 silly install resolved     dist:
+837 silly install resolved      { shasum: 'ca4309dadee6b54cc0b8d247e8d7c7a0975bdc9b',
+837 silly install resolved        tarball: 'https://registry.npmjs.org/inherits/-/inherits-1.0.2.tgz' },
+837 silly install resolved     maintainers: [ [Object] ],
+837 silly install resolved     directories: {},
+837 silly install resolved     _resolved: 'https://registry.npmjs.org/inherits/-/inherits-1.0.2.tgz',
+837 silly install resolved     readme: 'ERROR: No README data found!' },
+837 silly install resolved   { name: 'config-chain',
+837 silly install resolved     version: '1.1.10',
+837 silly install resolved     licenses: [ [Object] ],
+837 silly install resolved     description: 'HANDLE CONFIGURATION ONCE AND FOR ALL',
+837 silly install resolved     homepage: 'http://github.com/dominictarr/config-chain',
+837 silly install resolved     repository:
+837 silly install resolved      { type: 'git',
+837 silly install resolved        url: 'git+https://github.com/dominictarr/config-chain.git' },
+837 silly install resolved     dependencies: { 'proto-list': '~1.2.1', ini: '^1.3.4' },
+837 silly install resolved     devDependencies: { tap: '0.3.0' },
+837 silly install resolved     author:
+837 silly install resolved      { name: 'Dominic Tarr',
+837 silly install resolved        email: 'dominic.tarr@gmail.com',
+837 silly install resolved        url: 'http://dominictarr.com' },
+837 silly install resolved     scripts: { test: 'tap test/' },
+837 silly install resolved     gitHead: '0b6db3e14b9cdbe31460292bc4caf3983f977816',
+837 silly install resolved     bugs: { url: 'https://github.com/dominictarr/config-chain/issues' },
+837 silly install resolved     _id: 'config-chain@1.1.10',
+837 silly install resolved     _shasum: '7fc383de0fcc84d711cb465bd176579cad612346',
+837 silly install resolved     _from: 'config-chain@>=1.1.1 <1.2.0',
+837 silly install resolved     _npmVersion: '3.3.12',
+837 silly install resolved     _nodeVersion: '5.3.0',
+837 silly install resolved     _npmUser: { name: 'dominictarr', email: 'dominic.tarr@gmail.com' },
+837 silly install resolved     dist:
+837 silly install resolved      { shasum: '7fc383de0fcc84d711cb465bd176579cad612346',
+837 silly install resolved        tarball: 'https://registry.npmjs.org/config-chain/-/config-chain-1.1.10.tgz' },
+837 silly install resolved     maintainers: [ [Object], [Object] ],
+837 silly install resolved     directories: {},
+837 silly install resolved     _resolved: 'https://registry.npmjs.org/config-chain/-/config-chain-1.1.10.tgz',
+837 silly install resolved     readme: 'ERROR: No README data found!' },
+837 silly install resolved   { author:
+837 silly install resolved      { name: 'Isaac Z. Schlueter',
+837 silly install resolved        email: 'i@izs.me',
+837 silly install resolved        url: 'http://blog.izs.me/' },
+837 silly install resolved     name: 'ini',
+837 silly install resolved     description: 'An ini encoder/decoder for node',
+837 silly install resolved     version: '1.1.0',
+837 silly install resolved     repository: { type: 'git', url: 'git://github.com/isaacs/ini.git' },
+837 silly install resolved     main: 'ini.js',
+837 silly install resolved     scripts: { test: 'tap test/*.js' },
+837 silly install resolved     engines: { node: '*' },
+837 silly install resolved     dependencies: {},
+837 silly install resolved     devDependencies: { tap: '~0.0.9' },
+837 silly install resolved     _id: 'ini@1.1.0',
+837 silly install resolved     dist:
+837 silly install resolved      { shasum: '4e808c2ce144c6c1788918e034d6797bc6cf6281',
+837 silly install resolved        tarball: 'https://registry.npmjs.org/ini/-/ini-1.1.0.tgz' },
+837 silly install resolved     _from: 'ini@>=1.1.0 <1.2.0',
+837 silly install resolved     _npmVersion: '1.2.2',
+837 silly install resolved     _npmUser: { name: 'isaacs', email: 'i@izs.me' },
+837 silly install resolved     maintainers: [ [Object] ],
+837 silly install resolved     directories: {},
+837 silly install resolved     _shasum: '4e808c2ce144c6c1788918e034d6797bc6cf6281',
+837 silly install resolved     _resolved: 'https://registry.npmjs.org/ini/-/ini-1.1.0.tgz',
+837 silly install resolved     bugs: { url: 'https://github.com/isaacs/ini/issues' },
+837 silly install resolved     readme: 'ERROR: No README data found!',
+837 silly install resolved     homepage: 'https://github.com/isaacs/ini#readme' },
+837 silly install resolved   { name: 'nopt',
+837 silly install resolved     version: '2.2.1',
+837 silly install resolved     description: 'Option parsing for Node, supporting types, shorthands, etc. Used by npm.',
+837 silly install resolved     author:
+837 silly install resolved      { name: 'Isaac Z. Schlueter',
+837 silly install resolved        email: 'i@izs.me',
+837 silly install resolved        url: 'http://blog.izs.me/' },
+837 silly install resolved     main: 'lib/nopt.js',
+837 silly install resolved     scripts: { test: 'tap test/*.js' },
+837 silly install resolved     repository: { type: 'git', url: 'git+ssh://git@github.com/isaacs/nopt.git' },
+837 silly install resolved     bin: { nopt: './bin/nopt.js' },
+837 silly install resolved     license:
+837 silly install resolved      { type: 'MIT',
+837 silly install resolved        url: 'https://github.com/isaacs/nopt/raw/master/LICENSE' },
+837 silly install resolved     dependencies: { abbrev: '1' },
+837 silly install resolved     devDependencies: { tap: '~0.4.8' },
+837 silly install resolved     bugs: { url: 'https://github.com/isaacs/nopt/issues' },
+837 silly install resolved     homepage: 'https://github.com/isaacs/nopt',
+837 silly install resolved     _id: 'nopt@2.2.1',
+837 silly install resolved     _shasum: '2aa09b7d1768487b3b89a9c5aa52335bff0baea7',
+837 silly install resolved     _from: 'nopt@>=2.0.0 <3.0.0',
+837 silly install resolved     _npmVersion: '1.4.7',
+837 silly install resolved     _npmUser: { name: 'isaacs', email: 'i@izs.me' },
+837 silly install resolved     maintainers: [ [Object] ],
+837 silly install resolved     dist:
+837 silly install resolved      { shasum: '2aa09b7d1768487b3b89a9c5aa52335bff0baea7',
+837 silly install resolved        tarball: 'https://registry.npmjs.org/nopt/-/nopt-2.2.1.tgz' },
+837 silly install resolved     directories: {},
+837 silly install resolved     _resolved: 'https://registry.npmjs.org/nopt/-/nopt-2.2.1.tgz',
+837 silly install resolved     readme: 'ERROR: No README data found!' },
+837 silly install resolved   { name: 'semver',
+837 silly install resolved     version: '1.1.4',
+837 silly install resolved     description: 'The semantic version parser used by npm.',
+837 silly install resolved     main: 'semver.js',
+837 silly install resolved     scripts: { test: 'tap test.js' },
+837 silly install resolved     devDependencies: { tap: '0.x >=0.0.4' },
+837 silly install resolved     license:
+837 silly install resolved      { type: 'MIT',
+837 silly install resolved        url: 'https://github.com/isaacs/semver/raw/master/LICENSE' },
+837 silly install resolved     repository: { type: 'git', url: 'git://github.com/isaacs/node-semver.git' },
+837 silly install resolved     bin: { semver: './bin/semver' },
+837 silly install resolved     _id: 'semver@1.1.4',
+837 silly install resolved     dist:
+837 silly install resolved      { shasum: '2e5a4e72bab03472cc97f72753b4508912ef5540',
+837 silly install resolved        tarball: 'https://registry.npmjs.org/semver/-/semver-1.1.4.tgz' },
+837 silly install resolved     _from: 'semver@>=1.1.0 <1.2.0',
+837 silly install resolved     _npmVersion: '1.2.12',
+837 silly install resolved     _npmUser: { name: 'isaacs', email: 'i@izs.me' },
+837 silly install resolved     maintainers: [ [Object] ],
+837 silly install resolved     directories: {},
+837 silly install resolved     _shasum: '2e5a4e72bab03472cc97f72753b4508912ef5540',
+837 silly install resolved     _resolved: 'https://registry.npmjs.org/semver/-/semver-1.1.4.tgz',
+837 silly install resolved     bugs: { url: 'https://github.com/isaacs/node-semver/issues' },
+837 silly install resolved     readme: 'ERROR: No README data found!',
+837 silly install resolved     homepage: 'https://github.com/isaacs/node-semver#readme' } ]
+838 info install once@1.1.1 into /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf
+839 info install osenv@0.0.3 into /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf
+840 info install inherits@1.0.2 into /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf
+841 info install config-chain@1.1.10 into /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf
+842 info install ini@1.1.0 into /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf
+843 info install nopt@2.2.1 into /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf
+844 info install semver@1.1.4 into /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf
+845 info installOne once@1.1.1
+846 verbose installOne of once to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf not in flight; installing
+847 verbose correctMkdir /Users/duke/.npm/_locks correctMkdir not in flight; initializing
+848 info installOne osenv@0.0.3
+849 verbose installOne of osenv to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf not in flight; installing
+850 verbose correctMkdir /Users/duke/.npm/_locks correctMkdir not in flight; initializing
+851 info installOne inherits@1.0.2
+852 verbose installOne of inherits to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf not in flight; installing
+853 verbose correctMkdir /Users/duke/.npm/_locks correctMkdir not in flight; initializing
+854 info installOne config-chain@1.1.10
+855 verbose installOne of config-chain to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf not in flight; installing
+856 verbose correctMkdir /Users/duke/.npm/_locks correctMkdir not in flight; initializing
+857 info installOne ini@1.1.0
+858 verbose installOne of ini to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf not in flight; installing
+859 verbose correctMkdir /Users/duke/.npm/_locks correctMkdir not in flight; initializing
+860 info installOne nopt@2.2.1
+861 verbose installOne of nopt to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf not in flight; installing
+862 verbose correctMkdir /Users/duke/.npm/_locks correctMkdir not in flight; initializing
+863 info installOne semver@1.1.4
+864 verbose installOne of semver to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf not in flight; installing
+865 verbose correctMkdir /Users/duke/.npm/_locks correctMkdir not in flight; initializing
+866 verbose lock using /Users/duke/.npm/_locks/once-200334324402a9c6.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/once
+867 verbose lock using /Users/duke/.npm/_locks/osenv-e620f046fc5ccf17.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/osenv
+868 verbose lock using /Users/duke/.npm/_locks/config-chain-2238d78c752f7f05.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain
+869 verbose lock using /Users/duke/.npm/_locks/inherits-510541b7d2555e15.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/inherits
+870 verbose lock using /Users/duke/.npm/_locks/ini-bbfb9daed8961bcf.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/ini
+871 verbose lock using /Users/duke/.npm/_locks/semver-e91febfe98ddb129.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/semver
+872 verbose lock using /Users/duke/.npm/_locks/nopt-e606945f36789e09.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt
+873 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/ncp/package.json
+874 silly install write writing once 1.1.1 to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/once
+875 silly install write writing osenv 0.0.3 to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/osenv
+876 silly install write writing config-chain 1.1.10 to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain
+877 silly install write writing inherits 1.0.2 to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/inherits
+878 silly install write writing ini 1.1.0 to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/ini
+879 silly install write writing semver 1.1.4 to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/semver
+880 silly install write writing nopt 2.2.1 to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt
+881 verbose unbuild lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/once
+882 verbose unbuild lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/osenv
+883 verbose unbuild lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain
+884 verbose unbuild lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/inherits
+885 verbose unbuild lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/ini
+886 verbose unbuild lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/semver
+887 verbose unbuild lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt
+888 silly install resolved []
+889 verbose about to build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/ncp
+890 info build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/ncp
+891 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/once is being purged from base /usr/local
+892 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/once
+893 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/osenv is being purged from base /usr/local
+894 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/osenv
+895 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain is being purged from base /usr/local
+896 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain
+897 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/inherits is being purged from base /usr/local
+898 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/inherits
+899 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/ini is being purged from base /usr/local
+900 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/ini
+901 verbose tar unpack /Users/duke/.npm/once/1.1.1/package.tgz
+902 verbose tar unpacking to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/once
+903 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/once is being purged
+904 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/once
+905 verbose tar unpack /Users/duke/.npm/osenv/0.0.3/package.tgz
+906 verbose tar unpacking to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/osenv
+907 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/osenv is being purged
+908 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/osenv
+909 verbose tar unpack /Users/duke/.npm/config-chain/1.1.10/package.tgz
+910 verbose tar unpacking to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain
+911 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain is being purged
+912 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain
+913 verbose tar unpack /Users/duke/.npm/inherits/1.0.2/package.tgz
+914 verbose tar unpacking to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/inherits
+915 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/inherits is being purged
+916 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/inherits
+917 verbose tar unpack /Users/duke/.npm/ini/1.1.0/package.tgz
+918 verbose tar unpacking to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/ini
+919 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/ini is being purged
+920 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/ini
+921 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/semver is being purged from base /usr/local
+922 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/semver
+923 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt is being purged from base /usr/local
+924 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt
+925 silly gunzTarPerm modes [ '755', '644' ]
+926 silly gunzTarPerm modes [ '755', '644' ]
+927 silly gunzTarPerm modes [ '755', '644' ]
+928 silly gunzTarPerm modes [ '755', '644' ]
+929 silly gunzTarPerm modes [ '755', '644' ]
+930 verbose tar unpack /Users/duke/.npm/semver/1.1.4/package.tgz
+931 verbose tar unpacking to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/semver
+932 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/semver is being purged
+933 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/semver
+934 verbose tar unpack /Users/duke/.npm/nopt/2.2.1/package.tgz
+935 verbose tar unpacking to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt
+936 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt is being purged
+937 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt
+938 silly gunzTarPerm modes [ '755', '644' ]
+939 silly gunzTarPerm modes [ '755', '644' ]
+940 info linkStuff ncp@0.4.2
+941 silly linkStuff ncp@0.4.2 has /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules as its parent node_modules
+942 silly linkStuff ncp@0.4.2 is part of a global install
+943 silly linkStuff ncp@0.4.2 is installed into a global node_modules
+944 silly gunzTarPerm extractEntry package.json
+945 verbose linkBins ncp@0.4.2
+946 verbose link bins [ { ncp: './bin/ncp' },
+946 verbose link bins   '/usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/.bin',
+946 verbose link bins   false ]
+947 verbose linkMans ncp@0.4.2
+948 verbose rebuildBundles ncp@0.4.2
+949 silly gunzTarPerm extractEntry package.json
+950 silly gunzTarPerm extractEntry package.json
+951 silly gunzTarPerm modified mode [ 'package.json', 436, 420 ]
+952 silly gunzTarPerm extractEntry package.json
+953 silly gunzTarPerm extractEntry package.json
+954 silly gunzTarPerm extractEntry package.json
+955 silly gunzTarPerm extractEntry package.json
+956 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/.bin/ncp is being purged
+957 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/.bin/ncp
+958 silly gunzTarPerm extractEntry README.md
+959 silly gunzTarPerm extractEntry LICENSE
+960 silly gunzTarPerm extractEntry README.md
+961 silly gunzTarPerm extractEntry LICENSE
+962 silly gunzTarPerm extractEntry .npmignore
+963 silly gunzTarPerm modified mode [ '.npmignore', 436, 420 ]
+964 silly gunzTarPerm extractEntry LICENCE
+965 silly gunzTarPerm modified mode [ 'LICENCE', 436, 420 ]
+966 silly gunzTarPerm extractEntry README.md
+967 silly gunzTarPerm extractEntry LICENSE
+968 silly gunzTarPerm extractEntry README.md
+969 silly gunzTarPerm extractEntry LICENSE
+970 silly gunzTarPerm extractEntry README.md
+971 silly gunzTarPerm extractEntry LICENSE
+972 silly gunzTarPerm extractEntry .npmignore
+973 silly gunzTarPerm extractEntry README.md
+974 info install ncp@0.4.2
+975 info postinstall ncp@0.4.2
+976 verbose write writing to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/adm-zip/package.json
+977 verbose write writing to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/mkdirp/package.json
+978 silly gunzTarPerm extractEntry once.js
+979 silly gunzTarPerm extractEntry test/once.js
+980 verbose unlock done using /Users/duke/.npm/_locks/ncp-602ff5daecf640a8.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/ncp
+981 silly gunzTarPerm extractEntry inherits.js
+982 silly gunzTarPerm extractEntry ini.js
+983 silly gunzTarPerm extractEntry test/bar.js
+984 silly gunzTarPerm extractEntry osenv.js
+985 silly gunzTarPerm extractEntry test/unix.js
+986 silly gunzTarPerm extractEntry index.js
+987 silly gunzTarPerm modified mode [ 'index.js', 509, 493 ]
+988 silly gunzTarPerm extractEntry readme.markdown
+989 silly gunzTarPerm modified mode [ 'readme.markdown', 436, 420 ]
+990 info preinstall adm-zip@0.2.1
+991 silly gunzTarPerm extractEntry semver.js
+992 silly gunzTarPerm extractEntry test.js
+993 silly gunzTarPerm extractEntry bin/semver
+994 info preinstall mkdirp@0.3.5
+995 silly gunzTarPerm extractEntry LICENSE
+996 silly gunzTarPerm extractEntry bin/nopt.js
+997 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/adm-zip/package.json
+998 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/mkdirp/package.json
+999 silly gunzTarPerm extractEntry test/broken.js
+1000 silly gunzTarPerm modified mode [ 'test/broken.js', 436, 420 ]
+1001 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/adm-zip/package.json
+1002 silly gunzTarPerm extractEntry test/foo.js
+1003 silly gunzTarPerm extractEntry test/fixtures/foo.ini
+1004 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/mkdirp/package.json
+1005 silly gunzTarPerm extractEntry test/windows.js
+1006 silly gunzTarPerm extractEntry examples/my-program.js
+1007 silly gunzTarPerm extractEntry lib/nopt.js
+1008 silly gunzTarPerm extractEntry test/basic.js
+1009 silly install resolved []
+1010 verbose about to build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/adm-zip
+1011 info build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/adm-zip
+1012 silly install resolved []
+1013 verbose about to build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/mkdirp
+1014 info build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/mkdirp
+1015 silly gunzTarPerm extractEntry test/chain-class.js
+1016 silly gunzTarPerm modified mode [ 'test/chain-class.js', 436, 420 ]
+1017 silly gunzTarPerm extractEntry test/env.js
+1018 silly gunzTarPerm modified mode [ 'test/env.js', 436, 420 ]
+1019 info linkStuff adm-zip@0.2.1
+1020 silly linkStuff adm-zip@0.2.1 has /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules as its parent node_modules
+1021 silly linkStuff adm-zip@0.2.1 is part of a global install
+1022 silly linkStuff adm-zip@0.2.1 is installed into a global node_modules
+1023 info linkStuff mkdirp@0.3.5
+1024 silly linkStuff mkdirp@0.3.5 has /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules as its parent node_modules
+1025 silly linkStuff mkdirp@0.3.5 is part of a global install
+1026 silly linkStuff mkdirp@0.3.5 is installed into a global node_modules
+1027 verbose linkBins adm-zip@0.2.1
+1028 verbose linkMans adm-zip@0.2.1
+1029 verbose rebuildBundles adm-zip@0.2.1
+1030 verbose linkBins mkdirp@0.3.5
+1031 verbose linkMans mkdirp@0.3.5
+1032 verbose rebuildBundles mkdirp@0.3.5
+1033 info install adm-zip@0.2.1
+1034 info install mkdirp@0.3.5
+1035 info postinstall adm-zip@0.2.1
+1036 info postinstall mkdirp@0.3.5
+1037 silly gunzTarPerm extractEntry test/find-file.js
+1038 silly gunzTarPerm modified mode [ 'test/find-file.js', 436, 420 ]
+1039 silly gunzTarPerm extractEntry test/get.js
+1040 silly gunzTarPerm modified mode [ 'test/get.js', 436, 420 ]
+1041 verbose unlock done using /Users/duke/.npm/_locks/adm-zip-1d44fa6b364c846b.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/adm-zip
+1042 verbose unlock done using /Users/duke/.npm/_locks/mkdirp-a78a7d726e4a4e1b.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/mkdirp
+1043 verbose write writing to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/inherits/package.json
+1044 silly gunzTarPerm extractEntry test/ignore-unfound-file.js
+1045 silly gunzTarPerm modified mode [ 'test/ignore-unfound-file.js', 436, 420 ]
+1046 silly gunzTarPerm extractEntry test/ini.js
+1047 silly gunzTarPerm modified mode [ 'test/ini.js', 436, 420 ]
+1048 info preinstall inherits@1.0.2
+1049 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/inherits/package.json
+1050 verbose write writing to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/once/package.json
+1051 silly gunzTarPerm extractEntry test/save.js
+1052 silly gunzTarPerm modified mode [ 'test/save.js', 436, 420 ]
+1053 silly gunzTarPerm extractEntry test/broken.json
+1054 silly gunzTarPerm modified mode [ 'test/broken.json', 436, 420 ]
+1055 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/inherits/package.json
+1056 info preinstall once@1.1.1
+1057 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/once/package.json
+1058 silly install resolved []
+1059 verbose about to build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/inherits
+1060 info build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/inherits
+1061 verbose write writing to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/osenv/package.json
+1062 verbose write writing to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/semver/package.json
+1063 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/once/package.json
+1064 info linkStuff inherits@1.0.2
+1065 silly linkStuff inherits@1.0.2 has /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules as its parent node_modules
+1066 silly linkStuff inherits@1.0.2 is part of a global install
+1067 silly linkStuff inherits@1.0.2 is installed into a global node_modules
+1068 info preinstall osenv@0.0.3
+1069 info preinstall semver@1.1.4
+1070 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/osenv/package.json
+1071 verbose linkBins inherits@1.0.2
+1072 verbose linkMans inherits@1.0.2
+1073 verbose rebuildBundles inherits@1.0.2
+1074 info install inherits@1.0.2
+1075 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/semver/package.json
+1076 silly install resolved []
+1077 verbose about to build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/once
+1078 info build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/once
+1079 verbose write writing to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/ini/package.json
+1080 info postinstall inherits@1.0.2
+1081 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/osenv/package.json
+1082 verbose unlock done using /Users/duke/.npm/_locks/inherits-510541b7d2555e15.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/inherits
+1083 info preinstall ini@1.1.0
+1084 info linkStuff once@1.1.1
+1085 silly linkStuff once@1.1.1 has /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules as its parent node_modules
+1086 silly linkStuff once@1.1.1 is part of a global install
+1087 silly linkStuff once@1.1.1 is installed into a global node_modules
+1088 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/semver/package.json
+1089 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/ini/package.json
+1090 verbose linkBins once@1.1.1
+1091 verbose linkMans once@1.1.1
+1092 verbose rebuildBundles once@1.1.1
+1093 silly install resolved []
+1094 verbose about to build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/osenv
+1095 info build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/osenv
+1096 info install once@1.1.1
+1097 info postinstall once@1.1.1
+1098 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/ini/package.json
+1099 silly install resolved []
+1100 verbose about to build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/semver
+1101 info build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/semver
+1102 info linkStuff osenv@0.0.3
+1103 silly linkStuff osenv@0.0.3 has /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules as its parent node_modules
+1104 silly linkStuff osenv@0.0.3 is part of a global install
+1105 silly linkStuff osenv@0.0.3 is installed into a global node_modules
+1106 verbose unlock done using /Users/duke/.npm/_locks/once-200334324402a9c6.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/once
+1107 verbose write writing to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt/package.json
+1108 verbose linkBins osenv@0.0.3
+1109 verbose linkMans osenv@0.0.3
+1110 verbose rebuildBundles osenv@0.0.3
+1111 info install osenv@0.0.3
+1112 silly install resolved []
+1113 verbose about to build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/ini
+1114 info build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/ini
+1115 info linkStuff semver@1.1.4
+1116 silly linkStuff semver@1.1.4 has /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules as its parent node_modules
+1117 silly linkStuff semver@1.1.4 is part of a global install
+1118 silly linkStuff semver@1.1.4 is installed into a global node_modules
+1119 info postinstall osenv@0.0.3
+1120 info preinstall nopt@2.2.1
+1121 verbose linkBins semver@1.1.4
+1122 verbose link bins [ { semver: './bin/semver' },
+1122 verbose link bins   '/usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/.bin',
+1122 verbose link bins   false ]
+1123 verbose linkMans semver@1.1.4
+1124 verbose rebuildBundles semver@1.1.4
+1125 verbose unlock done using /Users/duke/.npm/_locks/osenv-e620f046fc5ccf17.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/osenv
+1126 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt/package.json
+1127 info linkStuff ini@1.1.0
+1128 silly linkStuff ini@1.1.0 has /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules as its parent node_modules
+1129 silly linkStuff ini@1.1.0 is part of a global install
+1130 silly linkStuff ini@1.1.0 is installed into a global node_modules
+1131 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/.bin/semver is being purged
+1132 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/.bin/semver
+1133 verbose linkBins ini@1.1.0
+1134 verbose linkMans ini@1.1.0
+1135 verbose rebuildBundles ini@1.1.0
+1136 info install ini@1.1.0
+1137 info install semver@1.1.4
+1138 silly prepareForInstallMany adding abbrev@1 from nopt dependencies
+1139 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt/package.json
+1140 info postinstall ini@1.1.0
+1141 info postinstall semver@1.1.4
+1142 verbose unlock done using /Users/duke/.npm/_locks/ini-bbfb9daed8961bcf.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/ini
+1143 verbose unlock done using /Users/duke/.npm/_locks/semver-e91febfe98ddb129.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/semver
+1144 silly cache add args [ 'abbrev@1', null ]
+1145 verbose cache add spec abbrev@1
+1146 silly cache add parsed spec Result {
+1146 silly cache add   raw: 'abbrev@1',
+1146 silly cache add   scope: null,
+1146 silly cache add   name: 'abbrev',
+1146 silly cache add   rawSpec: '1',
+1146 silly cache add   spec: '>=1.0.0 <2.0.0',
+1146 silly cache add   type: 'range' }
+1147 silly addNamed abbrev@>=1.0.0 <2.0.0
+1148 verbose addNamed ">=1.0.0 <2.0.0" is a valid semver range for abbrev
+1149 silly addNameRange { name: 'abbrev', range: '>=1.0.0 <2.0.0', hasData: false }
+1150 silly mapToRegistry name abbrev
+1151 silly mapToRegistry using default registry
+1152 silly mapToRegistry registry https://registry.npmjs.org/
+1153 silly mapToRegistry data Result {
+1153 silly mapToRegistry   raw: 'abbrev',
+1153 silly mapToRegistry   scope: null,
+1153 silly mapToRegistry   name: 'abbrev',
+1153 silly mapToRegistry   rawSpec: '',
+1153 silly mapToRegistry   spec: 'latest',
+1153 silly mapToRegistry   type: 'tag' }
+1154 silly mapToRegistry uri https://registry.npmjs.org/abbrev
+1155 verbose addNameRange registry:https://registry.npmjs.org/abbrev not in flight; fetching
+1156 verbose get https://registry.npmjs.org/abbrev not expired, no request
+1157 silly addNameRange number 2 { name: 'abbrev', range: '>=1.0.0 <2.0.0', hasData: true }
+1158 silly addNameRange versions [ 'abbrev',
+1158 silly addNameRange   [ '1.0.3', '1.0.4', '1.0.5', '1.0.6', '1.0.7', '1.0.9' ] ]
+1159 silly addNamed abbrev@1.0.9
+1160 verbose addNamed "1.0.9" is a plain semver version for abbrev
+1161 silly cache afterAdd abbrev@1.0.9
+1162 verbose afterAdd /Users/duke/.npm/abbrev/1.0.9/package/package.json not in flight; writing
+1163 verbose correctMkdir /Users/duke/.npm correctMkdir not in flight; initializing
+1164 verbose afterAdd /Users/duke/.npm/abbrev/1.0.9/package/package.json written
+1165 silly install resolved [ { name: 'abbrev',
+1165 silly install resolved     version: '1.0.9',
+1165 silly install resolved     description: 'Like ruby\'s abbrev module, but in js',
+1165 silly install resolved     author: { name: 'Isaac Z. Schlueter', email: 'i@izs.me' },
+1165 silly install resolved     main: 'abbrev.js',
+1165 silly install resolved     scripts: { test: 'tap test.js --cov' },
+1165 silly install resolved     repository:
+1165 silly install resolved      { type: 'git',
+1165 silly install resolved        url: 'git+ssh://git@github.com/isaacs/abbrev-js.git' },
+1165 silly install resolved     license: 'ISC',
+1165 silly install resolved     devDependencies: { tap: '^5.7.2' },
+1165 silly install resolved     files: [ 'abbrev.js' ],
+1165 silly install resolved     gitHead: 'c386cd9dbb1d8d7581718c54d4ba944cc9298d6f',
+1165 silly install resolved     bugs: { url: 'https://github.com/isaacs/abbrev-js/issues' },
+1165 silly install resolved     homepage: 'https://github.com/isaacs/abbrev-js#readme',
+1165 silly install resolved     _id: 'abbrev@1.0.9',
+1165 silly install resolved     _shasum: '91b4792588a7738c25f35dd6f63752a2f8776135',
+1165 silly install resolved     _from: 'abbrev@>=1.0.0 <2.0.0',
+1165 silly install resolved     _npmVersion: '3.9.1',
+1165 silly install resolved     _nodeVersion: '4.4.4',
+1165 silly install resolved     _npmUser: { name: 'isaacs', email: 'i@izs.me' },
+1165 silly install resolved     dist:
+1165 silly install resolved      { shasum: '91b4792588a7738c25f35dd6f63752a2f8776135',
+1165 silly install resolved        tarball: 'https://registry.npmjs.org/abbrev/-/abbrev-1.0.9.tgz' },
+1165 silly install resolved     maintainers: [ [Object] ],
+1165 silly install resolved     _npmOperationalInternal:
+1165 silly install resolved      { host: 'packages-16-east.internal.npmjs.com',
+1165 silly install resolved        tmp: 'tmp/abbrev-1.0.9.tgz_1466016055839_0.7825860097073019' },
+1165 silly install resolved     directories: {},
+1165 silly install resolved     _resolved: 'https://registry.npmjs.org/abbrev/-/abbrev-1.0.9.tgz',
+1165 silly install resolved     readme: 'ERROR: No README data found!' } ]
+1166 info install abbrev@1.0.9 into /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt
+1167 info installOne abbrev@1.0.9
+1168 verbose installOne of abbrev to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt not in flight; installing
+1169 verbose correctMkdir /Users/duke/.npm/_locks correctMkdir not in flight; initializing
+1170 verbose write writing to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/package.json
+1171 verbose lock using /Users/duke/.npm/_locks/abbrev-a8efa05e46d21845.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt/node_modules/abbrev
+1172 silly install write writing abbrev 1.0.9 to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt/node_modules/abbrev
+1173 info preinstall config-chain@1.1.10
+1174 verbose unbuild lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt/node_modules/abbrev
+1175 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/package.json
+1176 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt/node_modules/abbrev is being purged from base /usr/local
+1177 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt/node_modules/abbrev
+1178 verbose tar unpack /Users/duke/.npm/abbrev/1.0.9/package.tgz
+1179 verbose tar unpacking to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt/node_modules/abbrev
+1180 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt/node_modules/abbrev is being purged
+1181 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt/node_modules/abbrev
+1182 silly gunzTarPerm modes [ '755', '644' ]
+1183 silly prepareForInstallMany adding proto-list@~1.2.1 from config-chain dependencies
+1184 silly prepareForInstallMany adding ini@^1.3.4 from config-chain dependencies
+1185 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/package.json
+1186 silly gunzTarPerm extractEntry package.json
+1187 silly gunzTarPerm extractEntry README.md
+1188 silly gunzTarPerm extractEntry LICENSE
+1189 silly cache add args [ 'proto-list@~1.2.1', null ]
+1190 verbose cache add spec proto-list@~1.2.1
+1191 silly cache add args [ 'ini@^1.3.4', null ]
+1192 verbose cache add spec ini@^1.3.4
+1193 silly cache add parsed spec Result {
+1193 silly cache add   raw: 'proto-list@~1.2.1',
+1193 silly cache add   scope: null,
+1193 silly cache add   name: 'proto-list',
+1193 silly cache add   rawSpec: '~1.2.1',
+1193 silly cache add   spec: '>=1.2.1 <1.3.0',
+1193 silly cache add   type: 'range' }
+1194 silly addNamed proto-list@>=1.2.1 <1.3.0
+1195 verbose addNamed ">=1.2.1 <1.3.0" is a valid semver range for proto-list
+1196 silly addNameRange { name: 'proto-list', range: '>=1.2.1 <1.3.0', hasData: false }
+1197 silly mapToRegistry name proto-list
+1198 silly mapToRegistry using default registry
+1199 silly mapToRegistry registry https://registry.npmjs.org/
+1200 silly mapToRegistry data Result {
+1200 silly mapToRegistry   raw: 'proto-list',
+1200 silly mapToRegistry   scope: null,
+1200 silly mapToRegistry   name: 'proto-list',
+1200 silly mapToRegistry   rawSpec: '',
+1200 silly mapToRegistry   spec: 'latest',
+1200 silly mapToRegistry   type: 'tag' }
+1201 silly mapToRegistry uri https://registry.npmjs.org/proto-list
+1202 verbose addNameRange registry:https://registry.npmjs.org/proto-list not in flight; fetching
+1203 silly cache add parsed spec Result {
+1203 silly cache add   raw: 'ini@^1.3.4',
+1203 silly cache add   scope: null,
+1203 silly cache add   name: 'ini',
+1203 silly cache add   rawSpec: '^1.3.4',
+1203 silly cache add   spec: '>=1.3.4 <2.0.0',
+1203 silly cache add   type: 'range' }
+1204 silly addNamed ini@>=1.3.4 <2.0.0
+1205 verbose addNamed ">=1.3.4 <2.0.0" is a valid semver range for ini
+1206 silly addNameRange { name: 'ini', range: '>=1.3.4 <2.0.0', hasData: false }
+1207 silly mapToRegistry name ini
+1208 silly mapToRegistry using default registry
+1209 silly mapToRegistry registry https://registry.npmjs.org/
+1210 silly mapToRegistry data Result {
+1210 silly mapToRegistry   raw: 'ini',
+1210 silly mapToRegistry   scope: null,
+1210 silly mapToRegistry   name: 'ini',
+1210 silly mapToRegistry   rawSpec: '',
+1210 silly mapToRegistry   spec: 'latest',
+1210 silly mapToRegistry   type: 'tag' }
+1211 silly mapToRegistry uri https://registry.npmjs.org/ini
+1212 verbose addNameRange registry:https://registry.npmjs.org/ini not in flight; fetching
+1213 verbose get https://registry.npmjs.org/proto-list not expired, no request
+1214 silly addNameRange number 2 { name: 'proto-list', range: '>=1.2.1 <1.3.0', hasData: true }
+1215 silly addNameRange versions [ 'proto-list',
+1215 silly addNameRange   [ '1.0.0', '1.1.0', '1.2.0', '1.2.1', '1.2.2', '1.2.3', '1.2.4' ] ]
+1216 silly addNamed proto-list@1.2.4
+1217 verbose addNamed "1.2.4" is a plain semver version for proto-list
+1218 verbose get https://registry.npmjs.org/ini not expired, no request
+1219 silly addNameRange number 2 { name: 'ini', range: '>=1.3.4 <2.0.0', hasData: true }
+1220 silly addNameRange versions [ 'ini',
+1220 silly addNameRange   [ '1.0.0',
+1220 silly addNameRange     '1.0.1',
+1220 silly addNameRange     '1.0.2',
+1220 silly addNameRange     '1.0.3',
+1220 silly addNameRange     '1.0.4',
+1220 silly addNameRange     '1.0.5',
+1220 silly addNameRange     '1.1.0',
+1220 silly addNameRange     '1.2.0',
+1220 silly addNameRange     '1.2.1',
+1220 silly addNameRange     '1.3.0',
+1220 silly addNameRange     '1.3.1',
+1220 silly addNameRange     '1.3.2',
+1220 silly addNameRange     '1.3.3',
+1220 silly addNameRange     '1.3.4' ] ]
+1221 silly addNamed ini@1.3.4
+1222 verbose addNamed "1.3.4" is a plain semver version for ini
+1223 silly gunzTarPerm extractEntry abbrev.js
+1224 silly cache afterAdd proto-list@1.2.4
+1225 verbose afterAdd /Users/duke/.npm/proto-list/1.2.4/package/package.json not in flight; writing
+1226 verbose correctMkdir /Users/duke/.npm correctMkdir not in flight; initializing
+1227 silly cache afterAdd ini@1.3.4
+1228 verbose afterAdd /Users/duke/.npm/ini/1.3.4/package/package.json not in flight; writing
+1229 verbose correctMkdir /Users/duke/.npm correctMkdir not in flight; initializing
+1230 verbose afterAdd /Users/duke/.npm/proto-list/1.2.4/package/package.json written
+1231 verbose afterAdd /Users/duke/.npm/ini/1.3.4/package/package.json written
+1232 silly install resolved [ { name: 'proto-list',
+1232 silly install resolved     version: '1.2.4',
+1232 silly install resolved     description: 'A utility for managing a prototype chain',
+1232 silly install resolved     main: './proto-list.js',
+1232 silly install resolved     author:
+1232 silly install resolved      { name: 'Isaac Z. Schlueter',
+1232 silly install resolved        email: 'i@izs.me',
+1232 silly install resolved        url: 'http://blog.izs.me/' },
+1232 silly install resolved     scripts: { test: 'tap test/*.js' },
+1232 silly install resolved     repository:
+1232 silly install resolved      { type: 'git',
+1232 silly install resolved        url: 'git+https://github.com/isaacs/proto-list.git' },
+1232 silly install resolved     license: 'ISC',
+1232 silly install resolved     devDependencies: { tap: '0' },
+1232 silly install resolved     gitHead: '9e4af12d4dddee2fd531f0fe0c21c9cfacb78ac0',
+1232 silly install resolved     bugs: { url: 'https://github.com/isaacs/proto-list/issues' },
+1232 silly install resolved     homepage: 'https://github.com/isaacs/proto-list#readme',
+1232 silly install resolved     _id: 'proto-list@1.2.4',
+1232 silly install resolved     _shasum: '212d5bfe1318306a420f6402b8e26ff39647a849',
+1232 silly install resolved     _from: 'proto-list@>=1.2.1 <1.3.0',
+1232 silly install resolved     _npmVersion: '2.10.0',
+1232 silly install resolved     _nodeVersion: '2.0.1',
+1232 silly install resolved     _npmUser: { name: 'isaacs', email: 'isaacs@npmjs.com' },
+1232 silly install resolved     dist:
+1232 silly install resolved      { shasum: '212d5bfe1318306a420f6402b8e26ff39647a849',
+1232 silly install resolved        tarball: 'https://registry.npmjs.org/proto-list/-/proto-list-1.2.4.tgz' },
+1232 silly install resolved     maintainers: [ [Object] ],
+1232 silly install resolved     directories: {},
+1232 silly install resolved     _resolved: 'https://registry.npmjs.org/proto-list/-/proto-list-1.2.4.tgz',
+1232 silly install resolved     readme: 'ERROR: No README data found!' },
+1232 silly install resolved   { author:
+1232 silly install resolved      { name: 'Isaac Z. Schlueter',
+1232 silly install resolved        email: 'i@izs.me',
+1232 silly install resolved        url: 'http://blog.izs.me/' },
+1232 silly install resolved     name: 'ini',
+1232 silly install resolved     description: 'An ini encoder/decoder for node',
+1232 silly install resolved     version: '1.3.4',
+1232 silly install resolved     repository: { type: 'git', url: 'git://github.com/isaacs/ini.git' },
+1232 silly install resolved     main: 'ini.js',
+1232 silly install resolved     scripts: { test: 'tap test/*.js' },
+1232 silly install resolved     engines: { node: '*' },
+1232 silly install resolved     dependencies: {},
+1232 silly install resolved     devDependencies: { tap: '^1.2.0' },
+1232 silly install resolved     license: 'ISC',
+1232 silly install resolved     files: [ 'ini.js' ],
+1232 silly install resolved     gitHead: '4a3001abc4c608e51add9f1d2b2cadf02b8e6dea',
+1232 silly install resolved     bugs: { url: 'https://github.com/isaacs/ini/issues' },
+1232 silly install resolved     homepage: 'https://github.com/isaacs/ini#readme',
+1232 silly install resolved     _id: 'ini@1.3.4',
+1232 silly install resolved     _shasum: '0537cb79daf59b59a1a517dff706c86ec039162e',
+1232 silly install resolved     _from: 'ini@>=1.3.4 <2.0.0',
+1232 silly install resolved     _npmVersion: '2.10.1',
+1232 silly install resolved     _nodeVersion: '2.0.1',
+1232 silly install resolved     _npmUser: { name: 'isaacs', email: 'isaacs@npmjs.com' },
+1232 silly install resolved     dist:
+1232 silly install resolved      { shasum: '0537cb79daf59b59a1a517dff706c86ec039162e',
+1232 silly install resolved        tarball: 'https://registry.npmjs.org/ini/-/ini-1.3.4.tgz' },
+1232 silly install resolved     maintainers: [ [Object] ],
+1232 silly install resolved     directories: {},
+1232 silly install resolved     _resolved: 'https://registry.npmjs.org/ini/-/ini-1.3.4.tgz',
+1232 silly install resolved     readme: 'ERROR: No README data found!' } ]
+1233 info install proto-list@1.2.4 into /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain
+1234 info install ini@1.3.4 into /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain
+1235 info installOne proto-list@1.2.4
+1236 verbose installOne of proto-list to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain not in flight; installing
+1237 verbose correctMkdir /Users/duke/.npm/_locks correctMkdir not in flight; initializing
+1238 info installOne ini@1.3.4
+1239 verbose installOne of ini to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain not in flight; installing
+1240 verbose correctMkdir /Users/duke/.npm/_locks correctMkdir not in flight; initializing
+1241 verbose lock using /Users/duke/.npm/_locks/proto-list-7ca2f631f8a27975.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules/proto-list
+1242 silly install write writing proto-list 1.2.4 to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules/proto-list
+1243 verbose lock using /Users/duke/.npm/_locks/ini-14655ca5e1044148.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules/ini
+1244 silly install write writing ini 1.3.4 to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules/ini
+1245 verbose unbuild lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules/proto-list
+1246 verbose unbuild lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules/ini
+1247 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules/proto-list is being purged from base /usr/local
+1248 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules/proto-list
+1249 verbose tar unpack /Users/duke/.npm/proto-list/1.2.4/package.tgz
+1250 verbose tar unpacking to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules/proto-list
+1251 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules/proto-list is being purged
+1252 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules/proto-list
+1253 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules/ini is being purged from base /usr/local
+1254 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules/ini
+1255 silly gunzTarPerm modes [ '755', '644' ]
+1256 verbose tar unpack /Users/duke/.npm/ini/1.3.4/package.tgz
+1257 verbose tar unpacking to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules/ini
+1258 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules/ini is being purged
+1259 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules/ini
+1260 silly gunzTarPerm modes [ '755', '644' ]
+1261 silly gunzTarPerm extractEntry package.json
+1262 silly gunzTarPerm extractEntry package.json
+1263 silly gunzTarPerm extractEntry README.md
+1264 silly gunzTarPerm extractEntry LICENSE
+1265 silly gunzTarPerm extractEntry README.md
+1266 silly gunzTarPerm extractEntry LICENSE
+1267 verbose write writing to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt/node_modules/abbrev/package.json
+1268 silly gunzTarPerm extractEntry proto-list.js
+1269 silly gunzTarPerm extractEntry test/basic.js
+1270 silly gunzTarPerm extractEntry ini.js
+1271 info preinstall abbrev@1.0.9
+1272 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt/node_modules/abbrev/package.json
+1273 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt/node_modules/abbrev/package.json
+1274 silly install resolved []
+1275 verbose about to build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt/node_modules/abbrev
+1276 info build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt/node_modules/abbrev
+1277 info linkStuff abbrev@1.0.9
+1278 silly linkStuff abbrev@1.0.9 has /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt/node_modules as its parent node_modules
+1279 silly linkStuff abbrev@1.0.9 is part of a global install
+1280 silly linkStuff abbrev@1.0.9 is installed into a global node_modules
+1281 verbose linkBins abbrev@1.0.9
+1282 verbose linkMans abbrev@1.0.9
+1283 verbose rebuildBundles abbrev@1.0.9
+1284 info install abbrev@1.0.9
+1285 info postinstall abbrev@1.0.9
+1286 verbose unlock done using /Users/duke/.npm/_locks/abbrev-a8efa05e46d21845.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt/node_modules/abbrev
+1287 verbose about to build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt
+1288 info build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt
+1289 verbose write writing to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules/ini/package.json
+1290 info linkStuff nopt@2.2.1
+1291 silly linkStuff nopt@2.2.1 has /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules as its parent node_modules
+1292 silly linkStuff nopt@2.2.1 is part of a global install
+1293 silly linkStuff nopt@2.2.1 is installed into a global node_modules
+1294 verbose linkBins nopt@2.2.1
+1295 verbose link bins [ { nopt: './bin/nopt.js' },
+1295 verbose link bins   '/usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/.bin',
+1295 verbose link bins   false ]
+1296 verbose linkMans nopt@2.2.1
+1297 verbose rebuildBundles nopt@2.2.1
+1298 verbose rebuildBundles [ 'abbrev' ]
+1299 info preinstall ini@1.3.4
+1300 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/.bin/nopt is being purged
+1301 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/.bin/nopt
+1302 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules/ini/package.json
+1303 verbose write writing to /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules/proto-list/package.json
+1304 info install nopt@2.2.1
+1305 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules/ini/package.json
+1306 info postinstall nopt@2.2.1
+1307 info preinstall proto-list@1.2.4
+1308 verbose unlock done using /Users/duke/.npm/_locks/nopt-e606945f36789e09.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/nopt
+1309 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules/proto-list/package.json
+1310 silly install resolved []
+1311 verbose about to build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules/ini
+1312 info build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules/ini
+1313 verbose readDependencies loading dependencies from /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules/proto-list/package.json
+1314 info linkStuff ini@1.3.4
+1315 silly linkStuff ini@1.3.4 has /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules as its parent node_modules
+1316 silly linkStuff ini@1.3.4 is part of a global install
+1317 silly linkStuff ini@1.3.4 is installed into a global node_modules
+1318 verbose linkBins ini@1.3.4
+1319 verbose linkMans ini@1.3.4
+1320 verbose rebuildBundles ini@1.3.4
+1321 info install ini@1.3.4
+1322 silly install resolved []
+1323 verbose about to build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules/proto-list
+1324 info build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules/proto-list
+1325 info postinstall ini@1.3.4
+1326 verbose unlock done using /Users/duke/.npm/_locks/ini-14655ca5e1044148.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules/ini
+1327 info linkStuff proto-list@1.2.4
+1328 silly linkStuff proto-list@1.2.4 has /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules as its parent node_modules
+1329 silly linkStuff proto-list@1.2.4 is part of a global install
+1330 silly linkStuff proto-list@1.2.4 is installed into a global node_modules
+1331 verbose linkBins proto-list@1.2.4
+1332 verbose linkMans proto-list@1.2.4
+1333 verbose rebuildBundles proto-list@1.2.4
+1334 info install proto-list@1.2.4
+1335 info postinstall proto-list@1.2.4
+1336 verbose unlock done using /Users/duke/.npm/_locks/proto-list-7ca2f631f8a27975.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain/node_modules/proto-list
+1337 verbose about to build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain
+1338 info build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain
+1339 info linkStuff config-chain@1.1.10
+1340 silly linkStuff config-chain@1.1.10 has /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules as its parent node_modules
+1341 silly linkStuff config-chain@1.1.10 is part of a global install
+1342 silly linkStuff config-chain@1.1.10 is installed into a global node_modules
+1343 verbose linkBins config-chain@1.1.10
+1344 verbose linkMans config-chain@1.1.10
+1345 verbose rebuildBundles config-chain@1.1.10
+1346 verbose rebuildBundles [ 'ini', 'proto-list' ]
+1347 info install config-chain@1.1.10
+1348 info postinstall config-chain@1.1.10
+1349 verbose unlock done using /Users/duke/.npm/_locks/config-chain-2238d78c752f7f05.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf/node_modules/config-chain
+1350 verbose about to build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf
+1351 info build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf
+1352 info linkStuff npmconf@0.0.24
+1353 silly linkStuff npmconf@0.0.24 has /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules as its parent node_modules
+1354 silly linkStuff npmconf@0.0.24 is part of a global install
+1355 silly linkStuff npmconf@0.0.24 is installed into a global node_modules
+1356 verbose linkBins npmconf@0.0.24
+1357 verbose linkMans npmconf@0.0.24
+1358 verbose rebuildBundles npmconf@0.0.24
+1359 verbose rebuildBundles [ '.bin',
+1359 verbose rebuildBundles   'config-chain',
+1359 verbose rebuildBundles   'inherits',
+1359 verbose rebuildBundles   'ini',
+1359 verbose rebuildBundles   'nopt',
+1359 verbose rebuildBundles   'once',
+1359 verbose rebuildBundles   'osenv',
+1359 verbose rebuildBundles   'semver' ]
+1360 info install npmconf@0.0.24
+1361 info postinstall npmconf@0.0.24
+1362 verbose unlock done using /Users/duke/.npm/_locks/npmconf-188125eb700efeac.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs/node_modules/npmconf
+1363 verbose about to build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs
+1364 info build /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs
+1365 info linkStuff phantomjs@1.9.7-5
+1366 silly linkStuff phantomjs@1.9.7-5 has /usr/local/lib/node_modules/gitbook-pdf/node_modules as its parent node_modules
+1367 silly linkStuff phantomjs@1.9.7-5 is part of a global install
+1368 silly linkStuff phantomjs@1.9.7-5 is installed into a global node_modules
+1369 verbose linkBins phantomjs@1.9.7-5
+1370 verbose link bins [ { phantomjs: './bin/phantomjs' },
+1370 verbose link bins   '/usr/local/lib/node_modules/gitbook-pdf/node_modules/.bin',
+1370 verbose link bins   false ]
+1371 verbose linkMans phantomjs@1.9.7-5
+1372 verbose rebuildBundles phantomjs@1.9.7-5
+1373 verbose rebuildBundles [ '.bin',
+1373 verbose rebuildBundles   'adm-zip',
+1373 verbose rebuildBundles   'kew',
+1373 verbose rebuildBundles   'mkdirp',
+1373 verbose rebuildBundles   'ncp',
+1373 verbose rebuildBundles   'npmconf',
+1373 verbose rebuildBundles   'rimraf',
+1373 verbose rebuildBundles   'which' ]
+1374 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/.bin/phantomjs is being purged
+1375 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/.bin/phantomjs
+1376 info install phantomjs@1.9.7-5
+1377 verbose unsafe-perm in lifecycle false
+1378 info phantomjs@1.9.7-5 Failed to exec install script
+1379 verbose unlock done using /Users/duke/.npm/_locks/phantomjs-ac795bb7d7180809.lock for /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs
+1380 verbose about to build /usr/local/lib/node_modules/gitbook-pdf
+1381 verbose unlock done using /Users/duke/.npm/_locks/gitbook-pdf-9a497d59d7fb009a.lock for /usr/local/lib/node_modules/gitbook-pdf
+1382 verbose stack Error: phantomjs@1.9.7-5 install: `node install.js`
+1382 verbose stack Exit status 1
+1382 verbose stack     at EventEmitter.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/lifecycle.js:217:16)
+1382 verbose stack     at emitTwo (events.js:87:13)
+1382 verbose stack     at EventEmitter.emit (events.js:172:7)
+1382 verbose stack     at ChildProcess.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/spawn.js:24:14)
+1382 verbose stack     at emitTwo (events.js:87:13)
+1382 verbose stack     at ChildProcess.emit (events.js:172:7)
+1382 verbose stack     at maybeClose (internal/child_process.js:829:16)
+1382 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:211:5)
+1383 verbose pkgid phantomjs@1.9.7-5
+1384 verbose cwd /Users/duke/dev/mwDB/doc
+1385 error Darwin 15.6.0
+1386 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "install" "gitbook-pdf" "-g"
+1387 error node v4.5.0
+1388 error npm  v2.15.9
+1389 error code ELIFECYCLE
+1390 error phantomjs@1.9.7-5 install: `node install.js`
+1390 error Exit status 1
+1391 error Failed at the phantomjs@1.9.7-5 install script 'node install.js'.
+1391 error This is most likely a problem with the phantomjs package,
+1391 error not with npm itself.
+1391 error Tell the author that this fails on your system:
+1391 error     node install.js
+1391 error You can get information on how to open an issue for this project with:
+1391 error     npm bugs phantomjs
+1391 error Or if that isn't available, you can get their info via:
+1391 error
+1391 error     npm owner ls phantomjs
+1391 error There is likely additional logging output above.
+1392 verbose exit [ 1, true ]
+1393 verbose unbuild lib/node_modules/gitbook-pdf/node_modules/phantomjs
+1394 info preuninstall phantomjs@1.9.7-5
+1395 info uninstall phantomjs@1.9.7-5
+1396 verbose unbuild rmStuff phantomjs@1.9.7-5 from /usr/local/lib/node_modules
+1397 verbose unbuild rmStuff in /usr/local/lib/node_modules/gitbook-pdf/node_modules
+1398 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/.bin/phantomjs is being gently removed
+1399 silly gentlyRm verifying /usr/local is an npm working directory
+1400 silly gentlyRm containing path /usr/local is under npm's control, in /usr/local
+1401 silly gentlyRm deletion target /usr/local/lib/node_modules/gitbook-pdf/node_modules/.bin/phantomjs is under /usr/local
+1402 verbose gentlyRm vacuuming from /usr/local/lib/node_modules/gitbook-pdf/node_modules/.bin/phantomjs up to /usr/local
+1403 silly vacuum-fs removing /usr/local/lib/node_modules/gitbook-pdf/node_modules/.bin/phantomjs
+1404 silly vacuum-fs removing /usr/local/lib/node_modules/gitbook-pdf/node_modules/.bin
+1405 silly vacuum-fs quitting because other entries in /usr/local/lib/node_modules/gitbook-pdf/node_modules
+1406 info postuninstall phantomjs@1.9.7-5
+1407 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs is being purged from base /usr/local
+1408 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs
+1409 silly vacuum-fs purging /usr/local/lib/node_modules/gitbook-pdf/node_modules/phantomjs
+1410 silly vacuum-fs quitting because other entries in /usr/local/lib/node_modules/gitbook-pdf/node_modules
+1411 verbose unbuild lib/node_modules/gitbook-pdf
+1412 info preuninstall gitbook-pdf@0.0.2
+1413 info uninstall gitbook-pdf@0.0.2
+1414 verbose unbuild rmStuff gitbook-pdf@0.0.2 from /usr/local/lib/node_modules
+1415 silly gentlyRm /usr/local/bin/gitbook-pdf is being gently removed
+1416 silly gentlyRm verifying /usr/local is an npm working directory
+1417 silly gentlyRm containing path /usr/local is under npm's control, in /usr/local
+1418 silly gentlyRm deletion target /usr/local/bin/gitbook-pdf is under /usr/local
+1419 verbose gentlyRm vacuuming from /usr/local/bin/gitbook-pdf up to /usr/local
+1420 info postuninstall gitbook-pdf@0.0.2
+1421 silly gentlyRm /usr/local/lib/node_modules/gitbook-pdf is being purged from base /usr/local
+1422 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/gitbook-pdf
+1423 silly vacuum-fs purging /usr/local/lib/node_modules/gitbook-pdf
+1424 silly vacuum-fs quitting because other entries in /usr/local/lib/node_modules
