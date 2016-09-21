@@ -7,6 +7,7 @@ import org.kevoree.modeling.ast.*;
 import org.kevoree.modeling.ast.impl.Index;
 import org.kevoree.modeling.ast.impl.Model;
 import org.mwg.Graph;
+import org.mwg.GraphBuilder;
 import org.mwg.Type;
 
 import java.io.File;
@@ -347,10 +348,11 @@ public class Generator {
         }
 
         MethodSource<JavaClassSource> modelConstructor = modelClass.addMethod().setConstructor(true).setVisibility(Visibility.PUBLIC);
+        modelConstructor.addParameter(GraphBuilder.class,"graphBuilder");
         if (useML) {
-            modelConstructor.setBody("this._graph = new org.mwg.GraphBuilder().withPlugin(new org.mwg.ml.MLPlugin()).withPlugin(new " + name + "Plugin()).build();");
+            modelConstructor.setBody("this._graph = graphBuilder.withPlugin(new org.mwg.ml.MLPlugin()).withPlugin(new " + name + "Plugin()).build();");
         } else {
-            modelConstructor.setBody("this._graph = new org.mwg.GraphBuilder().withPlugin(new " + name + "Plugin()).build();");
+            modelConstructor.setBody("this._graph = graphBuilder.withPlugin(new " + name + "Plugin()).build();");
         }
         modelClass.addMethod().setName("graph").setBody("return this._graph;").setVisibility(Visibility.PUBLIC).setFinal(true).setReturnType(Graph.class);
 
