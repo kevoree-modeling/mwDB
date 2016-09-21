@@ -2,15 +2,11 @@ package org.kmf.generator;
 
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.Visibility;
-import org.jboss.forge.roaster.model.source.JavaClassSource;
-import org.jboss.forge.roaster.model.source.JavaEnumSource;
-import org.jboss.forge.roaster.model.source.JavaSource;
-import org.jboss.forge.roaster.model.source.MethodSource;
+import org.jboss.forge.roaster.model.source.*;
 import org.kevoree.modeling.ast.*;
 import org.kevoree.modeling.ast.impl.Index;
 import org.kevoree.modeling.ast.impl.Model;
 import org.mwg.Graph;
-import org.mwg.GraphBuilder;
 import org.mwg.Type;
 
 import java.io.File;
@@ -109,6 +105,35 @@ public class Generator {
                             .setType(String.class)
                             .setStringInitializer(prop.name())
                             .setStatic(true);
+
+                    if(prop instanceof KAttribute) {
+                        javaClass.addImport(Type.class);
+                        FieldSource<JavaClassSource> typeHelper = javaClass.addField()
+                                .setVisibility(Visibility.PUBLIC)
+                                .setFinal(true)
+                                .setName("TYPE_" + prop.name().toUpperCase())
+                                .setType(byte.class);
+
+                        switch (prop.type()) {
+                            case "String":
+                                typeHelper.setLiteralInitializer("Type.STRING");
+                                break;
+                            case "Double":
+                                typeHelper.setLiteralInitializer("Type.DOUBLE");
+                                break;
+                            case "Long":
+                                typeHelper.setLiteralInitializer("Type.LONG");
+                                break;
+                            case "Integer":
+                                typeHelper.setLiteralInitializer("Type.INT");
+                                break;
+                            case "Boolean":
+                                typeHelper.setLiteralInitializer("Type.BOOL");
+                                break;
+                            default:
+                                throw new RuntimeException("Unknown type: " + prop.type() + ". Please update the generator.");
+                        }
+                    }
 
                     //POJO generation
                     if (!prop.derived() && !prop.learned()) {
@@ -237,7 +262,8 @@ public class Generator {
                                     buffer.append("waiterUnIndex.then(new org.mwg.plugin.Job() {");
                                     buffer.append("@Override\n");
                                     buffer.append("public void run() {\n");
-                                    buffer.append("self.setProperty(" + prop.name().toUpperCase() + ", (byte) " + nameToType(prop.type()) + ", value);");
+                                    buffer.append("self.setProperty(").append(prop.name().toUpperCase()).append(", TYPE_").append(prop.name().toUpperCase()).append(", value);");
+
                                     for (KIndex index : prop.indexes()) {
                                         String queryParam = "";
                                         for (KProperty loopP : index.properties()) {
@@ -253,7 +279,7 @@ public class Generator {
                                     buffer.append("waiterIndex.waitResult();\n");
 
                                 } else {
-                                    buffer.append("super.setProperty(" + prop.name().toUpperCase() + ", (byte)" + nameToType(prop.type()) + ",value);");
+                                    buffer.append("super.setProperty(").append(prop.name().toUpperCase()).append(", TYPE_").append(prop.name().toUpperCase()).append(",value);");
                                 }
                                 buffer.append("return this;");
                                 setter.setBody(buffer.toString());
@@ -303,6 +329,7 @@ public class Generator {
         } else {
             modelClass.setName(name + "Model");
         }
+
         modelClass.addField().setName("_graph").setVisibility(Visibility.PRIVATE).setType(Graph.class).setFinal(true);
 
         //add indexes name
@@ -319,14 +346,29 @@ public class Generator {
             }
         }
 
-        MethodSource<JavaClassSource> modelConstructor = modelClass.addMethod().setConstructor(true);
-        modelConstructor.addParameter(GraphBuilder.class, "builder");
+        MethodSource<JavaClassSource> modelConstructor = modelClass.addMethod().setConstructor(true).setVisibility(Visibility.PUBLIC);
         if (useML) {
-            modelConstructor.setBody("this._graph = builder.withPlugin(new org.mwg.ml.MLPlugin()).withPlugin(new " + name + "Plugin()).build();");
+            modelConstructor.setBody("this._graph = new org.mwg.GraphBuilder().withPlugin(new org.mwg.ml.MLPlugin()).withPlugin(new " + name + "Plugin()).build();");
         } else {
-            modelConstructor.setBody("this._graph = builder.withPlugin(new " + name + "Plugin()).build();");
+            modelConstructor.setBody("this._graph = new org.mwg.GraphBuilder().withPlugin(new " + name + "Plugin()).build();");
         }
         modelClass.addMethod().setName("graph").setBody("return this._graph;").setVisibility(Visibility.PUBLIC).setFinal(true).setReturnType(Graph.class);
+
+        //connect method
+        MethodSource<JavaClassSource> connectMethod = modelClass.addMethod();
+        connectMethod.setName("connect");
+        connectMethod.setVisibility(Visibility.PUBLIC);
+        connectMethod.setReturnTypeVoid();
+        connectMethod.addParameter("org.mwg.Callback<Boolean>","callback");
+        connectMethod.setBody("_graph.connect(callback);");
+
+        //disconnect method
+        MethodSource<JavaClassSource> disconnectMethod = modelClass.addMethod();
+        disconnectMethod.setName("disconnect");
+        disconnectMethod.setVisibility(Visibility.PUBLIC);
+        disconnectMethod.setReturnTypeVoid();
+        disconnectMethod.addParameter("org.mwg.Callback<Boolean>","callback");
+        disconnectMethod.setBody("_graph.disconnect(callback);");
 
         for (KClassifier classifier : model.classifiers()) {
             if (classifier instanceof KClass) {
