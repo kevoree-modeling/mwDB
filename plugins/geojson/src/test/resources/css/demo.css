@@ -1,5 +1,5 @@
 .map {
-    width: calc(100% - 30em);
+    width: calc(100% - 35em);
     display: inline-block;
     height: 1000px;
 }
@@ -7,7 +7,7 @@
 .accordion {
     display: inline-block;
     vertical-align: top;
-    width: 20em;
+    width: 25em;
     padding: 0.5em 0.5em 1px 0.5em;
     margin: 0 auto;
     background-color: #666;
@@ -17,7 +17,7 @@
 
 .accordion panel {
     display: block;
-    width: 18em;
+    width: 23   em;
     height: 2em;
     padding: 0 1em;
     margin: 0 0 0.5em 0;
@@ -47,7 +47,7 @@
 }
 
 .accordion panel:target {
-    height: 30em;
+    height: 40em;
     background-color: #fff;
 }
 
@@ -191,3 +191,36 @@ select {
     background: -webkit-linear-gradient(#fff, #999);
     background: -o-linear-gradient(#fff, #999);
 }
+
+.level {
+    position: relative;
+    bottom: 0;
+}
+
+.level.full {
+    height: 100%;
+    background-color: limegreen;
+}
+
+.level.high {
+    height: 75%;
+    background-color: limegreen;
+}
+
+.level.medium {
+    height: 50%;
+    background-color: orange;
+}
+
+.level.low {
+    height: 25%;
+    background-color: red;
+}
+
+.level.empty {
+    height: 10%;
+    background-color: black;
+}
+
+
+

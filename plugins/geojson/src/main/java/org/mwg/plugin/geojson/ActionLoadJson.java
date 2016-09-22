@@ -9,6 +9,8 @@ import org.mwg.task.TaskContext;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Arrays;
 
 /**
@@ -26,8 +28,9 @@ public class ActionLoadJson extends AbstractTaskAction {
     public void eval(TaskContext context) {
         JsonResult result = null;
         final String path = context.template(_pathOrTemplate);
-        URI uri = URI.create((path.contains("://")?path:"file://" + path));
         try {
+            URI uri = URI.create((path.contains("://")?path:"file://" + path));
+           // System.out.println(uri.toString());
             try (InputStreamReader isr = new InputStreamReader(uri.toURL().openStream())) {
                 JsonValue firstElem = Json.parse(isr);
                 if (firstElem.isArray()) {

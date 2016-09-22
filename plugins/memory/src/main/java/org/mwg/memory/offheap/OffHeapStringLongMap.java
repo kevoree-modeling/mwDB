@@ -412,6 +412,15 @@ class OffHeapStringLongMap implements StringLongMap {
                 final long newHash = OffHeapLongArray.cloneArray(previousHash, (capacity * 3));
                 OffHeapLongArray.set(new_addr, SUBHASH, newHash);
             }
+            //increase cow counters of OffHeapStrings
+            long size = OffHeapLongArray.get(addr, SIZE);
+            for (long i = 0; i < size; i++) {
+                // not necessary to set the cloned value
+                // OffHeapString.clone always returns the same address, it just increments the cow counter
+                /*long newKey = */
+                OffHeapString.clone(key(addr, i));
+                // OffHeapLongArray.set(addr, HEADER + (i * ELEM_SIZE), newKey);
+            }
             return new_addr;
         }
     }

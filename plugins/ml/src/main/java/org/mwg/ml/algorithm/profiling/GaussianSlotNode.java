@@ -25,10 +25,10 @@ public class GaussianSlotNode extends AbstractMLNode implements ProfilingNode {
 
     /**
      * @native ts
-     * return Math.floor(t/s)*s;
+     * return Math.floor(currentTime/sensitivity)*sensitivity;
      */
-    private static long floor(long t, long s) {
-        return Math.floorDiv(t, s) * s;
+    private static long timeSensitivity(long currentTime, long sensitivity) {
+        return Math.floorDiv(currentTime, sensitivity) * sensitivity;
     }
 
     public void learnArray(double[] values) {
@@ -36,7 +36,7 @@ public class GaussianSlotNode extends AbstractMLNode implements ProfilingNode {
         final long insTime = time();
         final long periodSize = (long) this.get(PERIOD_SIZE);
 
-        final long[] newTime = {floor(insTime, periodSize)};
+        final long[] newTime = {timeSensitivity(insTime, periodSize)};
 
         timepoints(Constants.BEGINNING_OF_TIME, Constants.END_OF_TIME, result -> {
             if (newTime[0] < result[0]) {

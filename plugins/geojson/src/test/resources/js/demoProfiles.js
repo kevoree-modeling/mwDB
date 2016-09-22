@@ -10,37 +10,30 @@ var Demo = function () {
     var markers;
     var graph;
     var currentContract;
+    var flatpickr;
+    var currentNodeId;
 
     var init = function () {
 
         graph = new org.mwg.GraphBuilder().withStorage(new org.mwg.plugin.WSClient("ws://localhost:8050")).withPlugin(new org.mwg.structure.StructurePlugin()).withPlugin(new org.mwg.ml.MLPlugin()).build();
         graph.connect(function () {
 
-            document.querySelector(".modalDialog").style.setProperty("opacity", 0);
-
-            var getStation = org.mwg.task.Actions
-                .setTime((new Date()).getTime())
-                //.print("{{context}}")
-                .fromIndex("cities", "name=Luxembourg")
-                //.print("{{result}}")
-                .traverseIndex("stations", "name", "BRICHERHAFF")
-                //.print("{{result}}");
-            getStation.execute(graph, null);
-
-           /*
            initOptionList();
             updateContract("Luxembourg");
-            */
 
         });
-        /*
         initFlatpickr();
         initMap();
-        */
     };
 
     var initFlatpickr = function () {
-        document.querySelector(".flatpickr").flatpickr();
+        flatpickr = document.querySelector(".flatpickr").flatpickr(
+            {
+                defaultDate:new Date(),
+                onChange: function(dateObject, dateString){
+                    showAvailabilities(currentNodeId, dateObject.getTime());
+                }
+            });
     };
 
     var fillOptionListTask = org.mwg.task.Actions
@@ -52,7 +45,7 @@ var Demo = function () {
             var result = context.result();
             var s = result.size();
 
-            var selector = document.querySelector("select")
+            var selector = document.querySelector("select");
             for (var i = 0; i < s; i++) {
                 var val = result.get(i);
                 var opt = document.createElement("option");
@@ -226,15 +219,136 @@ var Demo = function () {
             .bindPopup(node.get("name"));
         marker["node"] = node.id();
         marker.on('click', function (e) {
-            graph.lookup(0, (new Date()).getTime(), e.target.node, function (node) {
-                document.querySelector("#all_stands").textContent = node.get("bike_stands");
-                document.querySelector("#free_stands").textContent = node.get("available_bike_stands");
-                document.querySelector("#available_bikes").textContent = node.get("available_bikes");
-            });
+            currentNodeId = e.target.node;
+            showAvailabilities(e.target.node, flatpickr.selectedDateObj.getTime());
         });
         markers.addLayer(marker);
         context.continueTask();
     };
+
+
+    var showAvailabilitiesTask = org.mwg.task.Actions
+    // .hook(hookFactory)
+        .setTime("{{processTime}}")
+        .lookup("{{nodeId}}")
+        .asVar("node")
+        .println("{{result}}")
+        .traverse("available_bikes")
+        .asVar("available_bikes")
+        .fromVar("node")
+        .traverse("available_bike_stands")
+        .asVar("available_bike_stands")
+        .fromVar("node")
+        .traverse("station_profile")
+        .asVar("station_profile")
+        .then(function(context){
+            document.querySelector("#all_stands").textContent = context.variable("node").get(0).get("bike_stands");
+            document.querySelector("#free_stands").textContent = context.variable("available_bike_stands").get(0).get("value");
+            document.querySelector("#available_bikes").textContent = context.variable("available_bikes").get(0).get("value");
+
+            updateTrendTables(context.variable("station_profile").get(0), context.variable("node").get(0).get("bike_stands"));
+
+            context.continueTask();
+        });
+
+    var updateTrendTables = function(gaussianSlotNode, totalStands) {
+        var bikesTable = document.querySelector("#bikesAvailabilityTrend table");
+        if(bikesTable == undefined) {
+            document.querySelector("#bikesAvailabilityTrend").appendChild(createTable("bikesAvailabilityTrend"));
+        }
+
+        var standsTable = document.querySelector("#bikeStandsAvailabilityTrend table");
+        if(standsTable == undefined) {
+            document.querySelector("#bikeStandsAvailabilityTrend").appendChild(createTable("bikeStandsAvailabilityTrend"));
+        }
+
+        var currentTimestamp = gaussianSlotNode.time();
+        var day = new Date(currentTimestamp);
+        day.setHours(0,0,0);
+
+        for(var i = 0; i < 24; i++) {
+            (function(i) {
+                gaussianSlotNode.jump((day.getTime() + (i*3600*1000)), function (node) {
+                    node.predict(function(prediction){
+                        var bikeLevel = document.querySelector("#bikesAvailabilityTrend_" + i + " div");
+                        bikeLevel.className = 'level ';
+                        if(prediction[0] / totalStands >= 0.75) {
+                            bikeLevel.className += 'full';
+                        } else if(prediction[0] / totalStands >= 0.5) {
+                            bikeLevel.className += 'high';
+                        } else if(prediction[0] / totalStands >= 0.30) {
+                            bikeLevel.className += 'medium';
+                        } else if(prediction[0] / totalStands >= 0.15) {
+                            bikeLevel.className += 'low';
+                        } else {
+                            bikeLevel.className += 'empty';
+                        }
+
+                        var bikeStandLevel = document.querySelector("#bikeStandsAvailabilityTrend_" + i + " div");
+                        bikeStandLevel.className = 'level ';
+                        if(prediction[1] / totalStands >= 0.75) {
+                            bikeStandLevel.className += 'full';
+                        } else if(prediction[1] / totalStands >= 0.5) {
+                            bikeStandLevel.className += 'high';
+                        } else if(prediction[1] / totalStands >= 0.30) {
+                            bikeStandLevel.className += 'medium';
+                        } else if(prediction[1] / totalStands >= 0.15) {
+                            bikeStandLevel.className += 'low';
+                        } else {
+                            bikeStandLevel.className += 'empty';
+                        }
+                    });
+                });
+            })(i);
+        }
+
+
+
+    };
+
+    var createTable = function(id) {
+        var standsTable = document.createElement("table");
+        standsTable.style.setProperty("font-size", "8px");
+        standsTable.style.setProperty("width", "100%");
+        standsTable.style.setProperty("border-spacing", "0px");
+        var slotLine = document.createElement("tr");
+        var timeLine = document.createElement("tr");
+        for(var i = 0; i < 24; i++) {
+            var slot = document.createElement("td");
+            slot.setAttribute("id", id + "_" + i);
+            slot.style.setProperty("padding", "0px");
+            slot.style.setProperty("vertical-align", "bottom");
+            slot.style.setProperty("height", "20px");
+            slot.style.setProperty("border-left", "0.5px solid grey");
+            slotLine.appendChild(slot);
+            var level = document.createElement("div");
+            level.className = "level empty";
+            slot.appendChild(level);
+            var time = document.createElement("td");
+            time.style.setProperty("width", "12px");
+            time.style.setProperty("border-left", "0.5px solid grey");
+            time.style.setProperty("border-top", "0.5px solid grey");
+            time.style.setProperty("vertical-align", "bottom");
+            time.textContent = "" + i;
+            timeLine.appendChild(time);
+        }
+        standsTable.appendChild(slotLine);
+        standsTable.appendChild(timeLine);
+        return standsTable;
+    };
+
+    var showAvailabilities = function(nodeId, time) {
+        var context = showAvailabilitiesTask.prepareWith(graph, null, function (result) {
+            result.free();
+        });
+        context.setVariable("nodeId", nodeId);
+        context.setVariable("processTime", ( time==undefined ? (new Date()).getTime() : time));
+        showAvailabilitiesTask.executeUsing(context);
+
+    };
+
+
+
 
     var getGraph = function () {
         return graph;

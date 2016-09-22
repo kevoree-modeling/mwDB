@@ -94,7 +94,7 @@ public class Actions {
     }
 
     public static Task asVar(String variableName) {
-        return newTask().asGlobalVar(variableName);
+        return newTask().asVar(variableName);
     }
 
     public static Task defineVar(String variableName) {

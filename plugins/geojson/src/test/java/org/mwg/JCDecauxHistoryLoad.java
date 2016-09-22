@@ -5,7 +5,6 @@ import com.eclipsesource.json.JsonValue;
 import org.mwg.importer.ImporterPlugin;
 import org.mwg.ml.MLPlugin;
 import org.mwg.ml.algorithm.profiling.GaussianSlotNode;
-import org.mwg.ml.algorithm.regression.PolynomialNode;
 import org.mwg.plugin.geojson.GeoJsonPlugin;
 import org.mwg.structure.StructurePlugin;
 import org.mwg.structure.action.NTreeInsertTo;
@@ -13,22 +12,19 @@ import org.mwg.structure.distance.Distances;
 import org.mwg.structure.tree.KDTree;
 import org.mwg.task.*;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 
 import static org.mwg.importer.ImporterActions.READFILES;
-import static org.mwg.importer.ImporterActions.readFiles;
 import static org.mwg.plugin.geojson.GeoJsonActions.loadJson;
 import static org.mwg.task.Actions.*;
 
 public class JCDecauxHistoryLoad {
 
     //public static final String dataSetFolder = "/Users/gnain/Sources/Kevoree-Modeling/mwDB/plugins/geojson/dataset_jcd/dataset";
-    public static final String dataSetFolder = "/Users/gnain/Sources/Kevoree-Modeling/mwDB/plugins/geojson/dataset_jcd/subset";
-
+    //public static final String dataSetFolder = "/Users/gnain/Sources/Kevoree-Modeling/mwDB/plugins/geojson/dataset_jcd/subset";
+    //public static final String dataSetFolder = "/Users/gnain/Sources/Kevoree-Modeling/mwDB/plugins/geojson/dataset_jcd/sortedSubset/Luxembourg_BRICHERHAFF.json";
+    //public static final String dataSetFolder = "/Users/gnain/Sources/Kevoree-Modeling/mwDB/plugins/geojson/dataset_jcd/sortedDataset";
+    public static final String dataSetFolder = "/Users/gnain/Sources/Kevoree-Modeling/mwDB/plugins/geojson/dataset_jcd/sortedSubset";
 
     //@Test
     public void baseTest() {
@@ -44,29 +40,94 @@ public class JCDecauxHistoryLoad {
                     .inject(System.currentTimeMillis())
                     .asVar("processStartTime")
                     .action(READFILES, dataSetFolder)
-                    .foreach(
-                            print("Processing file {{i}}:{{result}} ")
-                                    .then(context->{
-                                        String filePath = (String) context.result().get(0);
-                                        String finaleName = filePath.substring(filePath.lastIndexOf("/")+1, filePath.length()-5);
-                                        LocalDateTime ldt = LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.parseLong(finaleName)*1000), ZoneId.systemDefault());
-                                        System.out.println(ldt.format(DateTimeFormatter.ofPattern("dd/MM/yyyy H:mm:ss")));
+                    .asVar("citiesFolders")
+                    .foreachPar(
+                            isolate(
+                                    asVar("folderPath")
+                                            .inject(System.currentTimeMillis())
+                                            .asVar("cityProcessStartTime")
+                                            .fromVar("folderPath")
+                                            //.println("FolderPath::{{folderPath}}")
+                                            .map(obj -> {
+                                                String fileName = (String) obj;
+                                                return fileName.substring(fileName.lastIndexOf("/") + 1);
+                                            })
+                                            .asVar("cityName")
+                                            //.println("{{cityName}}")
+                                            .fromIndex("cities", "name={{cityName}}")
+                                            .ifThen((context -> context.result().size() == 0),
+                                                    newNode()
+                                                            .setProperty("name", Type.STRING, "{{cityName}}")
+                                                            .asVar(CITY_NODE)
+                                                            .indexNodeAt("0", "0", "cities", "name")
+                                                            .setTime("" + Constants.BEGINNING_OF_TIME)
+                                                            .newTypedNode(KDTree.NAME)
+                                                            .setProperty(KDTree.DISTANCE, Type.INT, Distances.GEODISTANCE + "")
+                                                            .setProperty(KDTree.FROM, Type.STRING, "position.lat,position.lng")
+                                                            .asVar(POSITIONS_TREE)
+                                                            .fromVar(CITY_NODE)
+                                                            //.setTime("{{processTime}}")
+                                                            .add("positions", POSITIONS_TREE)
+                                                            .println("City Created: {{cityName}}")
+                                            )
+                                            .asVar(CITY_NODE)
+                                            //.print("City Node: {{result}}")
+                                            .traverse("positions")
+                                            .asVar(POSITIONS_TREE)
+                                            //.println("FolderPath2::{{folderPath}}")
+                                            .action(READFILES, "{{folderPath}}")
+                                            //.println("{{result}}")
+                                            .foreachPar(
+                                                    isolate(
+                                                            asVar("stationFilePath")
+                                                                    .inject(System.currentTimeMillis())
+                                                                    .asVar("stationProcessStartTime")
+                                                                    .fromVar("stationFilePath")
+                                                                    .map(obj -> {
+                                                                        String fileName = (String) obj;
+                                                                        return fileName.substring(fileName.lastIndexOf("/") + 1, fileName.lastIndexOf("."));
+                                                                    }).asVar("stationName")
+                                                                    //.println("{{stationName}}")
+                                                                    .fromVar(CITY_NODE)
+                                                                    .traverseIndex("stations", "name", "{{stationName}}")
+                                                                    .ifThen((context -> context.result().size() == 0),
+                                                                            then(context -> createStationNode(context))
+                                                                                    .println("Station Created: {{stationName}}")
+                                                                                    .asVar(STATION_NODE)
+                                                                                    .fromVar(CITY_NODE)
+                                                                                    .localIndex("stations", "name", STATION_NODE)
+                                                                                    .fromVar(STATION_NODE)
+                                                                    ).asVar(STATION_NODE)
+                                                                    .fromVar("stationFilePath")
+                                                                    .println("Processing file {{i}}:{{result}}")
+                                                                    .subTask(processFile)
+                                                                    .save()
+                                                                    .clear()
+                                                                    .then(context -> {
+                                                                        long start = (long) context.variable("stationProcessStartTime").get(0);
+                                                                        long duration = System.currentTimeMillis() - start;
+                                                                        System.out.println("Station "+context.variable("stationName")+" process finished. Duration: " + duration / (60 * 1000) + "m" + (int) ((duration % (60 * 1000)) / 1000) + "s");
+                                                                        context.continueTask();
+                                                                    })
+                                                    )
+                                            ).then(context -> {
+                                        long start = (long) context.variable("cityProcessStartTime").get(0);
+                                        long duration = System.currentTimeMillis() - start;
+                                        System.out.println("City "+context.variable("cityName")+" process finished. Duration: " + duration / (60 * 1000) + "m" + (int) ((duration % (60 * 1000)) / 1000) + "s");
                                         context.continueTask();
                                     })
-                                    .subTask(processFile)
-                                    .save()
-                                    .clear())
-                    .then(context -> {
-                        long start = (long)context.variable("processStartTime").get(0);
+                            )
+                    ).then(context -> {
+                        long start = (long) context.variable("processStartTime").get(0);
                         long duration = System.currentTimeMillis() - start;
-                        System.out.println("Duration: " + duration/(60*1000) + "m" + (int)((duration%(60*1000))/1000) + "s");
+                        System.out.println("All process finished. Duration: " + duration / (60 * 1000) + "m" + (int) ((duration % (60 * 1000)) / 1000) + "s");
                         context.continueTask();
                     });
 
             TaskContext context = processFiles.prepareWith(g, null, new Callback<TaskResult>() {
                 @Override
                 public void on(TaskResult result) {
-                    System.out.println(result.size());
+
                 }
             });
             context.setVariable("processTime", System.currentTimeMillis());
@@ -80,103 +141,55 @@ public class JCDecauxHistoryLoad {
                     .setTime("{{processTime}}")
                     .asVar("jsonFileContent")
                     .foreach(
-                            isolate(
-                                    asVar("jsonObject")
-                                            .map(jsonValue -> ((JsonObject) jsonValue).get("contract_name").asString())
-                                            .asVar("cityName")
-                                            //.print("City Name: {{cityName}}")
-                                            .fromVar("jsonObject")
-                                            .map(jsonValue -> ((JsonObject) jsonValue).get("name").asString())
-                                            .asVar("stationName")
-                                            .fromVar("jsonObject")
-                                            .map(jsonValue -> ((JsonObject) jsonValue).get("last_update").asLong())
-                                            .asVar("lastUpdateTime")
-                                            //.print("Processing Station: {{stationName}}")
-                                            .fromIndex("cities", "name={{cityName}}")
-                                            .ifThen((context -> context.result().size() == 0),
-                                                    newNode()
-                                                            .setProperty("name", Type.STRING, "{{cityName}}")
-                                                            .asVar("cityNode")
-                                                            .indexNodeAt("0", "0", "cities", "name")
-                                                            .setTime("" + Constants.BEGINNING_OF_TIME)
-                                                            .newTypedNode(KDTree.NAME)
-                                                            .setProperty(KDTree.DISTANCE, Type.INT, Distances.GEODISTANCE + "")
-                                                            .setProperty(KDTree.FROM, Type.STRING, "position.lat,position.lng")
-                                                            .asVar(POSITIONS_TREE)
-                                                            .fromVar("cityNode")
-                                                            //.setTime("{{processTime}}")
-                                                            .add("positions", POSITIONS_TREE)
-                                                            .print("City Created: {{cityName}}\n")
-
-                                            ).asVar("cityNode")
-                                            //.print("City Node: {{result}}")
-                                            .traverse("positions")
-                                            .asVar(POSITIONS_TREE)
-                                            //.print("Positions Tree: {{result}}")
-                                            .fromVar("cityNode")
-                                            .traverseIndex("stations", "name", "{{stationName}}")
-                                            .ifThen((context -> context.result().size() == 0),
-                                                    then(context -> createStationNode(context))
-                                                            .print("Station Created: {{stationName}}\n")
-                                                            .asVar(STATION_NODE)
-                                                            .fromVar("cityNode")
-                                                            .localIndex("stations", "name", STATION_NODE)
-                                                            .fromVar(STATION_NODE)
-                                                    //.print("Station Indexed: {{stationName}}")
-                                            ).asVar(STATION_NODE)
-                                            .jump("{{lastUpdateTime}}")
-                                            .asVar(STATION_NODE)
-                                            .traverse(POSITION)
-                                            .asVar(POSITION_NODE)
-                                            .fromVar(STATION_NODE)
-                                            .traverse(AVAILABLE_STANDS_PROFILE)
-                                            .asVar(AVAILABLE_STANDS_PROFILE_NODE)
-                                            .fromVar(STATION_NODE)
-                                            .traverse(AVAILABLE_BIKES_PROFILE)
-                                            .asVar(AVAILABLE_BIKES_PROFILE_NODE)
-                                            .fromVar(STATION_NODE)
-                                            .then(context -> updateStationValues(context))
-                                            .action(NTreeInsertTo.NAME, POSITIONS_TREE)
-                                            .traverse(AVAILABLE_BIKES)
-                                            .setProperty("value", Type.DOUBLE, "{{" + AVAILABLE_BIKES_VALUE + "}}")
-                                            .fromVar(STATION_NODE)
-                                            .traverse(AVAILABLE_STANDS)
-                                            .setProperty("value", Type.DOUBLE, "{{" + AVAILABLE_STANDS_VALUE + "}}")
-                                            .clear()
-                            ).clear()
-                    ).print("File Completed.\n")
-                    .clear();
+                            asVar("jsonObject")
+                                    .map(jsonValue -> ((JsonObject) jsonValue).get("last_update").asLong())
+                                    .asVar("lastUpdateTime")
+                                    .fromVar(STATION_NODE)
+                                    //.println("{{result}}")
+                                    .jump("{{lastUpdateTime}}")
+                                    .asVar(STATION_NODE)
+                                    .traverse(POSITION)
+                                    .asVar(POSITION_NODE)
+                                    .fromVar(STATION_NODE)
+                                    .traverse(STATION_PROFILE)
+                                    .asVar(STATION_PROFILE_NODE)
+                                    .fromVar(STATION_NODE)
+                                    .then(context -> updateStationValues(context))
+                                    .action(NTreeInsertTo.NAME, POSITIONS_TREE)
+                                    .traverse(AVAILABLE_BIKES)
+                                    //.println("{{result}}")
+                                    .setProperty("value", Type.INT, "{{" + AVAILABLE_BIKES_VALUE + "}}")
+                                    .fromVar(STATION_NODE)
+                                    .traverse(AVAILABLE_STANDS)
+                                    //.println("{{result}}")
+                                    .setProperty("value", Type.INT, "{{" + AVAILABLE_STANDS_VALUE + "}}")
+                                    .save()
+                                    .clear()
+                    ).clear();
 
 
     public void createStationNode(TaskContext context) {
 
         Graph g = context.graph();
 
-        JsonObject obj = (JsonObject) context.variable("jsonObject").get(0);
-        context.setTime(obj.getLong("last_update", context.time()));
+        //JsonObject obj = (JsonObject) context.variable("jsonObject").get(0);
+        //context.setTime(obj.getLong("last_update", context.time()));
 
-        Node n = g.newNode(context.world(), context.time());
-        n.set("name", obj.get("name").asString());
+        Node n = g.newNode(context.world(), Constants.BEGINNING_OF_TIME);
+        n.set("name", context.variable("stationName").get(0));
 
         n.add(POSITION, g.newNode(context.world(), context.time()));
 
-        Node polyBikes = g.newTypedNode(context.world(), context.time(), PolynomialNode.NAME);
-        polyBikes.set(PolynomialNode.PRECISION, 1.);
-        n.add(AVAILABLE_BIKES, polyBikes);
+        Node stationProfile = g.newTypedNode(context.world(), context.time(), GaussianSlotNode.NAME);
+        stationProfile.setProperty(GaussianSlotNode.SLOTS_NUMBER, Type.INT, 7 * 24);
+        stationProfile.setProperty(GaussianSlotNode.PERIOD_SIZE, Type.LONG, 7 * 24 * 3600 * 1000);
+        n.add(STATION_PROFILE, stationProfile);
 
-        Node profileBikes = g.newTypedNode(context.world(), context.time(), GaussianSlotNode.NAME);
-        profileBikes.setProperty(GaussianSlotNode.SLOTS_NUMBER, Type.INT, 7 * 24);
-        profileBikes.setProperty(GaussianSlotNode.PERIOD_SIZE, Type.LONG, 7 * 24 * 3600 * 1000);
-        n.add(AVAILABLE_BIKES_PROFILE, profileBikes);
+        Node bikes = g.newNode(context.world(), context.time());
+        n.add(AVAILABLE_BIKES, bikes);
 
-        Node polyStands = g.newTypedNode(context.world(), context.time(), PolynomialNode.NAME);
-        polyStands.set(PolynomialNode.PRECISION, 1.);
-        n.add(AVAILABLE_STANDS, polyStands);
-
-        Node profileStands = g.newTypedNode(context.world(), context.time(), GaussianSlotNode.NAME);
-        profileStands.setProperty(GaussianSlotNode.SLOTS_NUMBER, Type.INT, 7 * 24);
-        profileStands.setProperty(GaussianSlotNode.PERIOD_SIZE, Type.LONG, 7 * 24 * 3600 * 1000);
-        n.add(AVAILABLE_STANDS_PROFILE, profileStands);
+        Node stands = g.newNode(context.world(), context.time());
+        n.add(AVAILABLE_STANDS, stands);
 
         TaskResult<Node> res = context.newResult();
         res.add(n);
@@ -188,10 +201,14 @@ public class JCDecauxHistoryLoad {
         Node stationNode = (Node) context.variable("stationNode").get(0);
         Node positionNode = (Node) context.variable(POSITION_NODE).get(0);
 
-        GaussianSlotNode availableStandsProfileNode = (GaussianSlotNode) context.variable(AVAILABLE_STANDS_PROFILE_NODE).get(0);
-        GaussianSlotNode availableBikesProfileNode = (GaussianSlotNode) context.variable(AVAILABLE_BIKES_PROFILE_NODE).get(0);
+        GaussianSlotNode stationProfileNode = (GaussianSlotNode) context.variable(STATION_PROFILE_NODE).get(0);
 
         JsonObject obj = (JsonObject) context.variable("jsonObject").get(0);
+
+        double[] profileValues = new double[2];
+        profileValues[0] = obj.get(AVAILABLE_BIKES).asDouble();
+        profileValues[1] = obj.get(AVAILABLE_STANDS).asDouble();
+        stationProfileNode.learnArray(profileValues);
 
         Iterator<JsonObject.Member> mIt = obj.iterator();
         while (mIt.hasNext()) {
@@ -206,14 +223,9 @@ public class JCDecauxHistoryLoad {
                     positionNode.set(p.getName(), p.getValue().asDouble());
                 }
             } else if (name.equals(AVAILABLE_BIKES)) {
-                //System.out.println("Available Bikes learn " + value.asDouble() + " at " + availableBikesProfileNode.time());
-                availableBikesProfileNode.learnArray(new double[]{value.asDouble()});
-                context.setVariable(AVAILABLE_BIKES_VALUE, value.asDouble());
-
+                context.setVariable(AVAILABLE_BIKES_VALUE, value.asInt());
             } else if (name.equals(AVAILABLE_STANDS)) {
-                //System.out.println("Available Stands learn " + value.asDouble() + " at " + availableBikesProfileNode.time());
-                availableStandsProfileNode.learnArray(new double[]{value.asDouble()});
-                context.setVariable(AVAILABLE_STANDS_VALUE, value.asDouble());
+                context.setVariable(AVAILABLE_STANDS_VALUE, value.asInt());
             } else {
                 if (value.isString()) {
                     stationNode.set(m.getName(), value.asString());
@@ -248,14 +260,13 @@ public class JCDecauxHistoryLoad {
     public static final String POSITION = "position";
     public static final String AVAILABLE_BIKES = "available_bikes";
     public static final String AVAILABLE_STANDS = "available_bike_stands";
-    public static final String AVAILABLE_BIKES_PROFILE = "available_bike_stands_profile";
-    public static final String AVAILABLE_STANDS_PROFILE = "available_bikes_profile";
+    public static final String STATION_PROFILE = "station_profile";
 
+    public static final String CITY_NODE = "cityNode";
     public static final String STATION_NODE = "stationNode";
     public static final String POSITIONS_TREE = "positionsTree";
     public static final String POSITION_NODE = "positionNode";
-    public static final String AVAILABLE_BIKES_PROFILE_NODE = "available_bike_stands_profileNode";
-    public static final String AVAILABLE_STANDS_PROFILE_NODE = "available_bikes_profileNode";
+    public static final String STATION_PROFILE_NODE = "station_profileNode";
     public static final String AVAILABLE_BIKES_VALUE = "available_bike_stands_val";
     public static final String AVAILABLE_STANDS_VALUE = "available_bikes_val";
 

@@ -1,23 +1,13 @@
 package org.mwg;
 
-import org.mwg.chunk.StateChunk;
-import org.mwg.chunk.TimeTreeChunk;
 import org.mwg.ml.MLPlugin;
 import org.mwg.ml.algorithm.profiling.GaussianSlotNode;
-import org.mwg.ml.algorithm.regression.PolynomialNode;
-import org.mwg.plugin.AbstractNode;
-import org.mwg.plugin.Job;
-import org.mwg.struct.Buffer;
 import org.mwg.structure.StructurePlugin;
 import org.mwg.task.Task;
 import org.mwg.task.TaskContext;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 import static org.mwg.task.Actions.*;
 
@@ -33,76 +23,103 @@ public class JClient {
         final Graph g = new GraphBuilder().withMemorySize(200000).withPlugin(new StructurePlugin()).withPlugin(new MLPlugin()).withStorage(new WSClient("ws://localhost:8050")).build();
         g.connect(connectionResult -> {
 
-            //updateContract(g);
-
-            Task readProfile = newTask()
-                    .setTime("" + System.currentTimeMillis())
-                    .fromIndex("cities", "name=Luxembourg")
-                    .traverseIndex("stations", "name", "ROBERT SCHUMAN")
-                    .print("{{result}}")
-                    .asVar("station")
-                    .inject(System.currentTimeMillis() + (2 * 3600 * 1000))
-                    .asVar("currentTime")
-                    .fromVar("station")
-                    .doWhile(
-                            jump("{{currentTime}}")
-                                    .traverse(JCDecauxHistoryLoad.AVAILABLE_BIKES_PROFILE)
-                                    .asVar(JCDecauxHistoryLoad.AVAILABLE_BIKES_PROFILE_NODE)
-                                    .fromVar("station")
-                                    .traverse(JCDecauxHistoryLoad.AVAILABLE_STANDS_PROFILE)
-                                    .asVar(JCDecauxHistoryLoad.AVAILABLE_STANDS_PROFILE_NODE)
-                                    .fromVar("station")
-                                    .jump("{{=currentTime-(7*24*3600*1000)}}")
-                                    .traverse(JCDecauxHistoryLoad.AVAILABLE_BIKES)
-                                    .asVar(JCDecauxHistoryLoad.AVAILABLE_BIKES_VALUE)
-                                    .fromVar("station")
-                                    .traverse(JCDecauxHistoryLoad.AVAILABLE_STANDS)
-                                    .asVar(JCDecauxHistoryLoad.AVAILABLE_STANDS_VALUE)
-                                    .fromVar("station")
-                                    .jump("{{currentTime}}")
-                                    .then(context -> {
-                                        LocalDateTime ldt = LocalDateTime.ofInstant(Instant.ofEpochMilli(context.time()), ZoneId.systemDefault());
-                                        GaussianSlotNode availableBikesNode = (GaussianSlotNode) context.variable(JCDecauxHistoryLoad.AVAILABLE_BIKES_PROFILE_NODE).get(0);
-                                        GaussianSlotNode availableStandsNode = (GaussianSlotNode) context.variable(JCDecauxHistoryLoad.AVAILABLE_STANDS_PROFILE_NODE).get(0);
-
-                                        PolynomialNode availableBikesValue = (PolynomialNode) context.variable(JCDecauxHistoryLoad.AVAILABLE_BIKES_VALUE).get(0);
-                                        PolynomialNode availableStandsValue = (PolynomialNode) context.variable(JCDecauxHistoryLoad.AVAILABLE_STANDS_VALUE).get(0);
-
-                                        DeferCounter s = context.graph().newCounter(2);
-                                        final double[][] availableBikes = new double[1][1];
-                                        availableBikesNode.predict(result -> {
-                                            availableBikes[0] = result;
-                                            s.count();
-                                        });
-                                        final double[][] availableStands = new double[1][1];
-                                        availableStandsNode.predict(result -> {
-                                            availableStands[0] = result;
-                                            s.count();
-                                        });
-
-                                        s.then(() -> {
-
-                                            System.out.println("" + ldt.getHour() + "h: \t" + availableBikes[0][0] + " bikes("+availableBikesValue.get("value")+")  and " + availableStands[0][0] + " stands("+availableStandsValue.get("value")+") available");
-                                            context.continueTask();
-
-                                        });
 
 
-                                    }), context -> {
-                                long time = context.time();
-                                time += 3600 * 1000;
-                                if (time < (System.currentTimeMillis() + (25 * 3600 * 1000))) {
-                                    context.setTime(time);
-                                    context.setVariable("currentTime", time);
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            });
-            readProfile.execute(g, null);
 
+            Task showAvailabilitiesTask = org.mwg.task.Actions
+                    // .hook(hookFactory)
+                    .setTime("{{processTime}}")
+                    .lookup("{{nodeId}}")
+                    .asVar("node")
+                    .println("{{result}}")
+                    .traverse("available_bikes")
+                    .println("{{result}}")
+                    .asVar("available_bikes")
+                    .fromVar("node")
+                    .traverse("available_bike_stands")
+                    .println("{{result}}")
+                    .asVar("available_bike_stands")
+                    .fromVar("node")
+                    .traverse("station_profile")
+                    .println("{{result}}")
+                    .asVar("station_profile")
+                    .then(context->{
+                        context.variable("node").get(0);
+                        context.variable("available_bike_stands").get(0);
+                        context.variable("available_bikes").get(0);
+                context.continueTask();
+            });
+
+                TaskContext context = showAvailabilitiesTask.prepareWith(g, null, result-> {
+                    result.free();
+                });
+                context.setVariable("nodeId", 4588);
+                context.setVariable("processTime", 1474370640000L);
+                showAvailabilitiesTask.executeUsing(context);
 
         });
+    }
+
+    private void test1(Graph g) {
+        //updateContract(g);
+        DateTimeFormatter formatter
+                = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        LocalDateTime date = LocalDateTime.parse("09/09/2016 17:06:00", formatter);
+        System.out.printf("%s%n", date);
+        System.out.println(date.toInstant(ZoneOffset.of("+1")).toEpochMilli());
+
+
+
+        Task readProfile = newTask()
+                .setTime("" + System.currentTimeMillis())
+                .fromIndex("cities", "name=Luxembourg")
+                .traverseIndex("stations", "name", "BRICHERHAFF")
+                //.print("{{result}}")
+                .asVar("station")
+                .inject(date.toInstant(ZoneOffset.of("+1")).toEpochMilli())
+                .asVar("initialTime")
+                .asVar("currentTime")
+                .fromVar("station")
+                .doWhile(
+                        jump("{{currentTime}}")
+                                .asVar("station")
+                                //.print("{{result}}")
+                                .traverse(JCDecauxHistoryLoad.STATION_PROFILE)
+                                .asVar(JCDecauxHistoryLoad.STATION_PROFILE_NODE)
+                                .fromVar("station")
+                                //.jump("{{=currentTime-(7*24*3600*1000)}}")
+                                //.asVar("station")
+                                .traverse(JCDecauxHistoryLoad.AVAILABLE_BIKES)
+                                .asVar(JCDecauxHistoryLoad.AVAILABLE_BIKES_VALUE)
+                                .fromVar("station")
+                                .traverse(JCDecauxHistoryLoad.AVAILABLE_STANDS)
+                                .asVar(JCDecauxHistoryLoad.AVAILABLE_STANDS_VALUE)
+                                .fromVar("station")
+                                .then(context -> {
+                                    GaussianSlotNode stationProfileNode = (GaussianSlotNode) context.variable(JCDecauxHistoryLoad.STATION_PROFILE_NODE).get(0);
+                                    LocalDateTime ldt = LocalDateTime.ofInstant(Instant.ofEpochMilli(stationProfileNode.time()), ZoneId.systemDefault());
+
+                                    Node availableBikesValue = (Node)context.variable(JCDecauxHistoryLoad.AVAILABLE_BIKES_VALUE).get(0);
+                                    Node availableStandsValue = (Node)context.variable(JCDecauxHistoryLoad.AVAILABLE_STANDS_VALUE).get(0);
+
+                                    stationProfileNode.predict(result -> {
+                                        System.out.println("" + ldt.getHour() + "h: \t" + result[0] + " bikes(" + availableBikesValue.get("value") + ")  and " + result[1] + " stands(" + availableStandsValue.get("value") + ") available");
+                                        context.continueTask();
+                                    });
+
+
+                                }), context -> {
+                            long time = (long)context.variable("currentTime").get(0);
+                            time += 3600 * 1000;
+                            if (time < (((long)context.variable("initialTime").get(0)) + (25 * 3600 * 1000))) {
+                                context.setTime(time);
+                                context.setVariable("currentTime", time);
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        });
+        readProfile.execute(g, null);
     }
 
 }

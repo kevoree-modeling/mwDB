@@ -32,7 +32,8 @@ public class PolynomialNode extends AbstractMLNode implements RegressionNode {
     private static final String INTERNAL_LAST_TIME_KEY = "lastTime";
 
     //Other default parameters that should not be changed externally:
-    private static final int MAX_DEGREE = 20; // maximum polynomial degree
+    public static final String MAX_DEGREE = "maxdegree";
+    public static final int MAX_DEGREE_DEF = 20; // maximum polynomial degree
 
     private final static String NOT_MANAGED_ATT_ERROR = "Polynomial node can only handle value attribute, please use a super node to store other data";
     private static final Enforcer enforcer = new Enforcer().asPositiveDouble(PRECISION);
@@ -128,8 +129,10 @@ public class PolynomialNode extends AbstractMLNode implements RegressionNode {
             t = t / stp;
             double maxError = maxErr(precision, deg);
 
-            double[] times = updateBuffer(previousState, t, INTERNAL_TIME_BUFFER);
-            double[] values = updateBuffer(previousState, value, INTERNAL_VALUES_BUFFER);
+            int maxd = previousState.getFromKeyWithDefault(MAX_DEGREE, MAX_DEGREE_DEF);
+
+            double[] times = updateBuffer(previousState, t, maxd, INTERNAL_TIME_BUFFER);
+            double[] values = updateBuffer(previousState, value, maxd, INTERNAL_VALUES_BUFFER);
 
 
             //If yes, update some states parameters and return
@@ -143,8 +146,8 @@ public class PolynomialNode extends AbstractMLNode implements RegressionNode {
             }
 
             //If not increase polynomial degrees
-            int newdeg = Math.min(times.length, MAX_DEGREE);
-            while (deg < newdeg && times.length < MAX_DEGREE * 4) {
+            int newdeg = Math.min(times.length, maxd);
+            while (deg < newdeg && times.length < maxd * 4) {
                 maxError = maxErr(precision, deg);
                 PolynomialFit pf = new PolynomialFit(deg);
                 pf.fit(times, values);
@@ -193,6 +196,7 @@ public class PolynomialNode extends AbstractMLNode implements RegressionNode {
             phasedState.setFromKey(INTERNAL_TIME_BUFFER, Type.DOUBLE_ARRAY, ntimes);
             phasedState.setFromKey(INTERNAL_VALUES_BUFFER, Type.DOUBLE_ARRAY, nvalues);
             phasedState.setFromKey(PRECISION, Type.DOUBLE, precision);
+            phasedState.setFromKey(MAX_DEGREE, Type.INT, maxd);
             phasedState.setFromKey(INTERNAL_WEIGHT_KEY, Type.DOUBLE_ARRAY, weight);
             phasedState.setFromKey(INTERNAL_NB_PAST_KEY, Type.INT, 2);
             phasedState.setFromKey(INTERNAL_STEP_KEY, Type.LONG, newstep);
@@ -210,15 +214,14 @@ public class PolynomialNode extends AbstractMLNode implements RegressionNode {
         }
     }
 
-    private static double[] updateBuffer(NodeState state, double t, String key) {
+    private static double[] updateBuffer(NodeState state, double t, int maxdeg, String key) {
         double[] ts = (double[]) state.getFromKey(key);
-        if(ts==null){
-            ts=new double[1];
-            ts[0]=t;
+        if (ts == null) {
+            ts = new double[1];
+            ts[0] = t;
             state.setFromKey(key, Type.DOUBLE_ARRAY, ts);
             return ts;
-        }
-        else if (ts.length < MAX_DEGREE * 4) {
+        } else if (ts.length < maxdeg * 4) {
             double[] nts = new double[ts.length + 1];
             System.arraycopy(ts, 0, nts, 0, ts.length);
             nts[ts.length] = t;
