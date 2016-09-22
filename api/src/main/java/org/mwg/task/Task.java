@@ -191,6 +191,15 @@ public interface Task {
     Task select(TaskFunctionSelect filterFunction);
 
     /**
+     * Filters the previous result to get nodes that complies to the condition specified in {@code filterFunction}
+     * If you want to access/modify the context, please use {@link #selectWhere(Task)}
+     *
+     * @param filter condition that nodes have to respect
+     * @return this task to chain actions (fluent API)
+     */
+    Task newSelect(TaskFunctionSelectNew filter);
+
+    /**
      * Selects an object complying to the filter function.
      *
      * @param filterFunction condition that objects have to respect

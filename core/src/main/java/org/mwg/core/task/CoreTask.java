@@ -192,6 +192,15 @@ public class CoreTask implements org.mwg.task.Task {
     }
 
     @Override
+    public Task newSelect(TaskFunctionSelectNew filter) {
+        if (filter == null) {
+            throw new RuntimeException("filter should not be null");
+        }
+        addAction(new ActionSelectNew(filter));
+        return this;
+    }
+
+    @Override
     public final Task selectObject(TaskFunctionSelectObject filterFunction) {
         if (filterFunction == null) {
             throw new RuntimeException("filterFunction should not be null");

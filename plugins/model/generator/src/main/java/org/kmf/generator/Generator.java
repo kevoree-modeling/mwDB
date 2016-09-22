@@ -113,7 +113,8 @@ public class Generator {
                                 .setVisibility(Visibility.PUBLIC)
                                 .setFinal(true)
                                 .setName("TYPE_" + prop.name().toUpperCase())
-                                .setType(byte.class);
+                                .setType(byte.class)
+                                .setStatic(true);
 
                         switch (prop.type()) {
                             case "String":
