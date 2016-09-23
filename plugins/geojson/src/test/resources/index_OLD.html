@@ -12,7 +12,6 @@
 
     <script src="plugins/mwg/mwg.js"></script>
     <script src="plugins/mwg/mwg.structure.js"></script>
-    <script src="plugins/mwg/mwg.ml.js"></script>
     <script src="plugins/mwg/mwg.ws.js"></script>
 
     <link rel="stylesheet" type="text/css" href="css/demo.css">
@@ -43,10 +42,11 @@
         </form>
     </panel>
     <panel id="acc3">
-        <h2><a href="#acc3">Station Infos</a></h2>
-        <div>
-            <input class="flatpickr" data-date-format="d-m-Y" data-inline=true data-enable-time=true data-time_24hr=true style="width: 100%; display: none;">
-        </div>
+        <h2><a href="#acc3">Time Machine</a></h2>
+        <input class=flatpickr data-date-format="d-m-Y" data-inline=true data-enable-time=true data-time_24hr=true style="width: 100%">
+    </panel>
+    <panel id="acc4">
+        <h2><a href="#acc4">Station Infos</a></h2>
         <h3>&nbsp;&nbsp;INFORMATION </h3>
         <table>
             <tr>
@@ -60,20 +60,6 @@
             <tr>
                 <td><b>Available bikes:</b></td>
                 <td id="available_bikes"></td>
-            </tr>
-            <tr>
-                <td colspan="2">Bikes availability Trend</td>
-            </tr>
-            <tr>
-                <td colspan="2" id="bikesAvailabilityTrend">
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">Stands availability Trend</td>
-            </tr>
-            <tr>
-                <td colspan="2" id="bikeStandsAvailabilityTrend">
-                </td>
             </tr>
         </table>
     </panel>
@@ -90,7 +76,7 @@
 </div>
 
 <script src="js/TimerHook.js"></script>
-<script src="js/demoProfiles.js"></script>
+<script src="js/demo.js"></script>
 <script>
     var demo = Demo();
     demo.init();

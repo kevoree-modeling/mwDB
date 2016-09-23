@@ -112,7 +112,14 @@
                         </goals>
                         <configuration>
                             <target>
-                                <exec executable="tsc" dir="${basedir}/src/main/ts"/>
+                                <exec executable="npm" dir="${basedir}/target">
+                                    <arg value="install"/>
+                                    <arg value="tsc"/>
+                                </exec>
+                                <echo message="Compile TypeScript to JavaScript"/>
+                                <exec executable="${basedir}/target/node_modules/tsc/bin/tsc"
+                                      dir="${basedir}/src/main/ts">
+                                </exec>
                             </target>
                         </configuration>
                     </execution>

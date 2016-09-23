@@ -136,11 +136,11 @@ public abstract class AbstractNode implements Node {
     }
 
     /**
-     * @native ts
+     * {@native ts
      * if (typeof propertyValue === 'string' || propertyValue instanceof String) {
      * this.setProperty(propertyName, org.mwg.Type.STRING, propertyValue);
      * } else if(typeof propertyValue === 'number' || propertyValue instanceof Number) {
-     * if(propertyValue % 1 != 0) {
+     * if(((<number>propertyValue) % 1) != 0) {
      * this.setProperty(propertyName, org.mwg.Type.DOUBLE, propertyValue);
      * } else {
      * this.setProperty(propertyName, org.mwg.Type.LONG, propertyValue);
@@ -153,6 +153,7 @@ public abstract class AbstractNode implements Node {
      * this.setProperty(propertyName, org.mwg.Type.DOUBLE_ARRAY, propertyValue);
      * } else {
      * throw new Error("Invalid property type: " + propertyValue + ", please use a Type listed in org.mwg.Type");
+     * }
      * }
      */
     @Override

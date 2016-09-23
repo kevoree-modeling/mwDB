@@ -15,11 +15,12 @@ var Demo = function () {
 
     var init = function () {
 
-        graph = new org.mwg.GraphBuilder().withStorage(new org.mwg.plugin.WSClient("ws://localhost:8050")).withPlugin(new org.mwg.structure.StructurePlugin()).withPlugin(new org.mwg.ml.MLPlugin()).build();
+        graph = new org.mwg.GraphBuilder().withStorage(new org.mwg.plugin.WSClient("ws://" + window.location.hostname + ":8050")).withPlugin(new org.mwg.structure.StructurePlugin()).withPlugin(new org.mwg.ml.MLPlugin()).build();
         graph.connect(function () {
 
-           initOptionList();
+            initOptionList();
             updateContract("Luxembourg");
+            //updateContract("Paris")
 
         });
         initFlatpickr();
@@ -29,15 +30,15 @@ var Demo = function () {
     var initFlatpickr = function () {
         flatpickr = document.querySelector(".flatpickr").flatpickr(
             {
-                defaultDate:new Date(),
-                onChange: function(dateObject, dateString){
+                defaultDate: new Date(),
+                onChange: function (dateObject, dateString) {
                     showAvailabilities(currentNodeId, dateObject.getTime());
                 }
             });
     };
 
     var fillOptionListTask = org.mwg.task.Actions
-        .hook(TimerHookFactory())
+    //.hook(TimerHookFactory())
         .setTime("{{processTime}}")
         .fromIndexAll("cities")
         .get("name")
@@ -50,7 +51,7 @@ var Demo = function () {
                 var val = result.get(i);
                 var opt = document.createElement("option");
                 opt.textContent = val;
-                if (val == "Luxembourg") {
+                if (val == "Paris") {
                     opt.setAttribute("selected", "");
                 }
                 selector.appendChild(opt);
@@ -59,7 +60,7 @@ var Demo = function () {
         });
 
     var initOptionList = function () {
-        console.log("Filling Option List");
+        //console.log("Filling Option List");
         var context = fillOptionListTask.prepareWith(graph, null, function (result) {
             document.querySelector("#cities_init").textContent = document.querySelector("#cities_init").textContent + "... Done !";
         });
@@ -69,8 +70,9 @@ var Demo = function () {
 
 
     var initMap = function () {
-
-        mymap = L.map('mapid').setView([49.632386, 6.168544], 10);
+        //PARIS: 48.8523947,2.3462913
+        //Luxembourg: 49.632386, 6.168544
+        mymap = L.map('mapid').setView([49.632386, 6.168544], 12);
         L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v9/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
             attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
             maxZoom: 18,
@@ -87,13 +89,32 @@ var Demo = function () {
             updateFilter();
         });
 
-        addUserPositionMarker();
-        addFilterCircle();
+        markers = new L.layerGroup();
+        markers.addTo(mymap);
+
+        initiateUserPosition();
 
     };
 
-    var addUserPositionMarker = function () {
-        userPositionMarker = L.marker([49.632386, 6.168544], {
+    var initiateUserPosition = function () {
+        /*
+         if (navigator.geolocation) {
+         navigator.geolocation.getCurrentPosition(function (position) {
+         addUserPositionMarker(position.coords.latitude, position.coords.longitude);
+         addFilterCircle(position.coords.latitude, position.coords.longitude)
+         });
+         } else {
+         */
+        //console.warn("Geolocation is not supported by this browser.");
+        //Luxembourg: 49.632386, 6.168544
+        //PARIS: 48.8344884,2.3716972
+        addUserPositionMarker(49.632386, 6.168544);
+        addFilterCircle(49.632386, 6.168544)
+        //}
+    };
+
+    var addUserPositionMarker = function (lat, lng) {
+        userPositionMarker = L.marker([lat, lng], {
             icon: L.icon({
                 iconUrl: 'img/red_pin.png',
                 iconAnchor: [15, 44],
@@ -118,20 +139,13 @@ var Demo = function () {
         });
 
     };
-    var addFilterCircle = function () {
-        filterCircle = L.circle([49.632386, 6.168544], 2000).addTo(mymap);
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                userPositionMarker.setLatLng([position.coords.latitude, position.coords.longitude]);
-            });
-        } else {
-            console.error("Geolocation is not supported by this browser.");
-        }
+    var addFilterCircle = function (lat, lng) {
+        filterCircle = L.circle([lat, lng], 2000).addTo(mymap);
     };
 
 
     var displayStationsTask = org.mwg.task.Actions
-        .hook(TimerHookFactory())
+    //.hook(TimerHookFactory())
         .setTime("{{processTime}}")
         .fromIndex("cities", "name={{contract_name}}")
         .traverseIndexAll("stations")
@@ -146,18 +160,13 @@ var Demo = function () {
                 addMarker(station, position, context);
             })
         ).then(function (context) {
-            mymap.addLayer(markers);
             context.continueTask();
         });
 
     function updateContract(contract_name) {
-        console.log("Updating contract:" + contract_name);
+        //console.log("Updating contract:" + contract_name);
         currentContract = contract_name;
-        if (markers != undefined) {
-            mymap.removeLayer(markers);
-        }
-        markers = new L.FeatureGroup();
-
+        markers.clearLayers();
         var context = displayStationsTask.prepareWith(graph, null, function (result) {
             result.free();
             document.querySelector("#markers_loading").textContent = document.querySelector("#markers_loading").textContent + "... Done !";
@@ -177,10 +186,7 @@ var Demo = function () {
         //.print("{{result}}")
         .action(org.mwg.structure.action.NTreeNearestNWithinRadius.NAME, "{{actionParam}}")
         .ifThen(function (context) {
-                if (markers != undefined) {
-                    mymap.removeLayer(markers);
-                }
-                markers = new L.FeatureGroup();
+                markers.clearLayers();
                 return context.result().size() > 0;
             }, org.mwg.task.Actions.asVar("stations")
                 .traverse("position")
@@ -190,10 +196,9 @@ var Demo = function () {
                     var station = context.variable("stations").get(index);
                     var position = context.variable("positions").get(index);
                     addMarker(station, position, context);
-                })).then(function(context){
-                mymap.addLayer(markers);
-                context.continueTask();
-            })
+                })).then(function (context) {
+                    context.continueTask();
+                })
         );
 
     function updateFilter() {
@@ -215,7 +220,7 @@ var Demo = function () {
 
     var addMarker = function (node, position, context) {
         var marker = L.marker([position.get("lat"), position.get("lng")])
-            .addTo(mymap)
+        //.addTo(mymap)
             .bindPopup(node.get("name"));
         marker["node"] = node.id();
         marker.on('click', function (e) {
@@ -223,6 +228,7 @@ var Demo = function () {
             showAvailabilities(e.target.node, flatpickr.selectedDateObj.getTime());
         });
         markers.addLayer(marker);
+
         context.continueTask();
     };
 
@@ -232,7 +238,7 @@ var Demo = function () {
         .setTime("{{processTime}}")
         .lookup("{{nodeId}}")
         .asVar("node")
-        .println("{{result}}")
+        //.println("{{result}}")
         .traverse("available_bikes")
         .asVar("available_bikes")
         .fromVar("node")
@@ -241,7 +247,7 @@ var Demo = function () {
         .fromVar("node")
         .traverse("station_profile")
         .asVar("station_profile")
-        .then(function(context){
+        .then(function (context) {
             document.querySelector("#all_stands").textContent = context.variable("node").get(0).get("bike_stands");
             document.querySelector("#free_stands").textContent = context.variable("available_bike_stands").get(0).get("value");
             document.querySelector("#available_bikes").textContent = context.variable("available_bikes").get(0).get("value");
@@ -251,34 +257,34 @@ var Demo = function () {
             context.continueTask();
         });
 
-    var updateTrendTables = function(gaussianSlotNode, totalStands) {
+    var updateTrendTables = function (gaussianSlotNode, totalStands) {
         var bikesTable = document.querySelector("#bikesAvailabilityTrend table");
-        if(bikesTable == undefined) {
+        if (bikesTable == undefined) {
             document.querySelector("#bikesAvailabilityTrend").appendChild(createTable("bikesAvailabilityTrend"));
         }
 
         var standsTable = document.querySelector("#bikeStandsAvailabilityTrend table");
-        if(standsTable == undefined) {
+        if (standsTable == undefined) {
             document.querySelector("#bikeStandsAvailabilityTrend").appendChild(createTable("bikeStandsAvailabilityTrend"));
         }
 
         var currentTimestamp = gaussianSlotNode.time();
         var day = new Date(currentTimestamp);
-        day.setHours(0,0,0);
+        day.setHours(0, 0, 0);
 
-        for(var i = 0; i < 24; i++) {
-            (function(i) {
-                gaussianSlotNode.jump((day.getTime() + (i*3600*1000)), function (node) {
-                    node.predict(function(prediction){
+        for (var i = 0; i < 24; i++) {
+            (function (i) {
+                gaussianSlotNode.jump((day.getTime() + (i * 3600 * 1000)), function (node) {
+                    node.predict(function (prediction) {
                         var bikeLevel = document.querySelector("#bikesAvailabilityTrend_" + i + " div");
                         bikeLevel.className = 'level ';
-                        if(prediction[0] / totalStands >= 0.75) {
+                        if (prediction[0] / totalStands >= 0.75) {
                             bikeLevel.className += 'full';
-                        } else if(prediction[0] / totalStands >= 0.5) {
+                        } else if (prediction[0] / totalStands >= 0.5) {
                             bikeLevel.className += 'high';
-                        } else if(prediction[0] / totalStands >= 0.30) {
+                        } else if (prediction[0] / totalStands >= 0.30) {
                             bikeLevel.className += 'medium';
-                        } else if(prediction[0] / totalStands >= 0.15) {
+                        } else if (prediction[0] / totalStands >= 0.15) {
                             bikeLevel.className += 'low';
                         } else {
                             bikeLevel.className += 'empty';
@@ -286,13 +292,13 @@ var Demo = function () {
 
                         var bikeStandLevel = document.querySelector("#bikeStandsAvailabilityTrend_" + i + " div");
                         bikeStandLevel.className = 'level ';
-                        if(prediction[1] / totalStands >= 0.75) {
+                        if (prediction[1] / totalStands >= 0.75) {
                             bikeStandLevel.className += 'full';
-                        } else if(prediction[1] / totalStands >= 0.5) {
+                        } else if (prediction[1] / totalStands >= 0.5) {
                             bikeStandLevel.className += 'high';
-                        } else if(prediction[1] / totalStands >= 0.30) {
+                        } else if (prediction[1] / totalStands >= 0.30) {
                             bikeStandLevel.className += 'medium';
-                        } else if(prediction[1] / totalStands >= 0.15) {
+                        } else if (prediction[1] / totalStands >= 0.15) {
                             bikeStandLevel.className += 'low';
                         } else {
                             bikeStandLevel.className += 'empty';
@@ -303,17 +309,16 @@ var Demo = function () {
         }
 
 
-
     };
 
-    var createTable = function(id) {
+    var createTable = function (id) {
         var standsTable = document.createElement("table");
         standsTable.style.setProperty("font-size", "8px");
         standsTable.style.setProperty("width", "100%");
         standsTable.style.setProperty("border-spacing", "0px");
         var slotLine = document.createElement("tr");
         var timeLine = document.createElement("tr");
-        for(var i = 0; i < 24; i++) {
+        for (var i = 0; i < 24; i++) {
             var slot = document.createElement("td");
             slot.setAttribute("id", id + "_" + i);
             slot.style.setProperty("padding", "0px");
@@ -337,17 +342,15 @@ var Demo = function () {
         return standsTable;
     };
 
-    var showAvailabilities = function(nodeId, time) {
+    var showAvailabilities = function (nodeId, time) {
         var context = showAvailabilitiesTask.prepareWith(graph, null, function (result) {
             result.free();
         });
         context.setVariable("nodeId", nodeId);
-        context.setVariable("processTime", ( time==undefined ? (new Date()).getTime() : time));
+        context.setVariable("processTime", ( time == undefined ? (new Date()).getTime() : time));
         showAvailabilitiesTask.executeUsing(context);
 
     };
-
-
 
 
     var getGraph = function () {

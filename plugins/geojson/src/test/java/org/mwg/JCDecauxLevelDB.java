@@ -1,6 +1,8 @@
 package org.mwg;
 
-import org.mwg.structure.StructurePlugin;
+import io.undertow.Handlers;
+import io.undertow.Undertow;
+import io.undertow.server.handlers.resource.ClassPathResourceManager;
 
 public class JCDecauxLevelDB {
 
@@ -8,11 +10,16 @@ public class JCDecauxLevelDB {
     public void baseTest() {
 
 
-        final Graph g = new GraphBuilder().withStorage(new LevelDBStorage("tempStorage")).withMemorySize(1000000).build();
+        final Graph g = new GraphBuilder().withStorage(new LevelDBStorage("fullTempStorage")).withMemorySize(1000000).build();
         g.connect(connectionResult -> {
 
-            WSServer graphServer = new WSServer(g, 8050);
+            WSServer graphServer = new WSServer(g, 9011);
             graphServer.start();
+
+            Undertow server = Undertow.builder()
+                    .addHttpListener(9010,"0.0.0.0")
+                    .setHandler(Handlers.resource(new ClassPathResourceManager(this.getClass().getClassLoader()))).build();
+            server.start();
 
         });
     }

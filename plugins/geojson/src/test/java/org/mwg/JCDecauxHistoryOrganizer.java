@@ -19,13 +19,13 @@ import java.util.concurrent.TimeUnit;
  */
 public class JCDecauxHistoryOrganizer {
 
-    /*
     private static final String SRC_DIRECTORY = "/Users/gnain/Sources/Kevoree-Modeling/mwDB/plugins/geojson/dataset_jcd/dataset";
     private static final String DEST_DIRECTORY = "/Users/gnain/Sources/Kevoree-Modeling/mwDB/plugins/geojson/dataset_jcd/sortedDataset";
-    */
 
+    /*
     private static final String SRC_DIRECTORY = "/Users/gnain/Sources/Kevoree-Modeling/mwDB/plugins/geojson/dataset_jcd/subset";
     private static final String DEST_DIRECTORY = "/Users/gnain/Sources/Kevoree-Modeling/mwDB/plugins/geojson/dataset_jcd/sortedSubset";
+    */
 
     public static void main(String[] args) {
 

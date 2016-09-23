@@ -40,24 +40,24 @@ public interface NodeState {
      * Get the named state element
      *
      * @param index unique key of element
-     * @return stored element
+     * @return      stored element
      */
     Object get(long index);
 
     /**
      * Get the named state element
      *
-     * @param key unique key of element
-     * @return stored element
+     * @param key   unique key of element
+     * @return      stored element
      */
     Object getFromKey(String key);
 
     /**
      * Get the named state element
      *
-     * @param key          unique key of element
-     * @param defaultValue default value in case of null on the previous state
-     * @param <A> The type of the value
+     * @param key           unique key of element
+     * @param defaultValue  default value in case of null on the previous state
+     * @param <A>           The type of the value
      * @return typed stored element
      */
     <A> A getFromKeyWithDefault(String key, A defaultValue);
@@ -65,8 +65,9 @@ public interface NodeState {
     /**
      * Get from the state element long
      *
-     * @param key          unique long key of element
-     * @param defaultValue default value in case of null on the previous state
+     * @param key           unique long key of element
+     * @param defaultValue  default value in case of null on the previous state
+     * @param <A>           The type of the value
      * @return stored element
      */
     <A> A getWithDefault(long key, A defaultValue);
@@ -75,9 +76,9 @@ public interface NodeState {
      * Atomically get or create an element according to the elemType parameter.
      * This method is particularly handy for map manipulation that have to be initialize by the node state before any usage.
      *
-     * @param index    unique key of element
-     * @param elemType type of the element (according to Type definition)
-     * @return new or previously stored element
+     * @param index         unique key of element
+     * @param elemType      type of the element (according to Type definition)
+     * @return              new or previously stored element
      */
     Object getOrCreate(long index, byte elemType);
 
@@ -85,25 +86,25 @@ public interface NodeState {
      * Atomically get or create an element according to the elemType parameter.
      * This method is particularly handy for map manipulation that have to be initialize by the node state before any usage.
      *
-     * @param key      unique key of element
-     * @param elemType type of the element (according to Type definition)
-     * @return new or previously stored element
+     * @param key       unique key of element
+     * @param elemType  type of the element (according to Type definition)
+     * @return          new or previously stored element
      */
     Object getOrCreateFromKey(String key, byte elemType);
 
     /**
      * Get the type of the stored element, -1 if not found
      *
-     * @param index unique key of element
-     * @return type currently stored, encoded as a int according the Type defintion
+     * @param index     unique key of element
+     * @return          type currently stored, encoded as a int according the Type defintion
      */
     byte getType(long index);
 
     /**
      * Get the type of the stored element, -1 if not found
      *
-     * @param key unique key of element
-     * @return type currently stored, encoded as a int according the Type defintion
+     * @param key   unique key of element
+     * @return      type currently stored, encoded as a int according the Type defintion
      */
     byte getTypeFromKey(String key);
 
