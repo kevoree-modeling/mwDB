@@ -7,8 +7,12 @@ import org.mwg.core.task.math.CoreMathExpressionEngine;
 import org.mwg.core.task.math.MathExpressionEngine;
 import org.mwg.plugin.AbstractNode;
 import org.mwg.plugin.AbstractTaskAction;
-import org.mwg.task.*;
+import org.mwg.task.TaskContext;
+import org.mwg.task.TaskHook;
+import org.mwg.task.TaskResult;
+import org.mwg.task.TaskResultIterator;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -406,26 +410,27 @@ class CoreTaskContext implements TaskContext {
                     }
                     buffer.append(valueStr);
                 } else {//variable name or array access
+                    String[] methodCalls = contextKey.split("\\.");
                     //check if it is an array access
                     int indexArray = -1;
-                    if (contextKey.charAt(contextKey.length() - 1) == ']') {
+                    if (methodCalls[0].charAt(methodCalls[0].length() - 1) == ']') {
                         int indexStart = -1;
-                        for (int i = contextKey.length() - 3; i >= 0; i--) {
-                            if (contextKey.charAt(i) == '[') {
+                        for (int i = methodCalls[0].length() - 3; i >= 0; i--) {
+                            if (methodCalls[0].charAt(i) == '[') {
                                 indexStart = i + 1;
                                 break;
                             }
                         }
                         if (indexStart != -1) {
-                            indexArray = TaskHelper.parseInt(contextKey.substring(indexStart, contextKey.length() - 1));
-                            contextKey = contextKey.substring(0, indexStart - 1);
+                            indexArray = TaskHelper.parseInt(methodCalls[0].substring(indexStart, methodCalls[0].length() - 1));
+                            contextKey = methodCalls[0].substring(0, indexStart - 1);
                             if (indexArray < 0) {
                                 throw new RuntimeException("Array index out of range: " + indexArray);
                             }
                         }
                     }
                     TaskResult foundVar = variable(contextKey);
-                    if (foundVar == null && contextKey.equals("result")) {
+                    if (foundVar == null && methodCalls[0].equals("result")) {
                         foundVar = result();
                     }
                     if (foundVar != null) {
@@ -434,8 +439,18 @@ class CoreTaskContext implements TaskContext {
                             Object toShow = null;
                             if (indexArray == -1) {
                                 toShow = foundVar.get(0);
+
                             } else {
                                 toShow = foundVar.get(indexArray);
+                            }
+
+                            if(methodCalls.length > 1) {
+                                String methodName = methodCalls[1].substring(0,methodCalls[1].length() - 2);
+                                try {
+                                    toShow = toShow.getClass().getMethod(methodName).invoke(toShow);
+                                } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
+                                    throw new RuntimeException(ex);
+                                }
                             }
                             buffer.append(toShow);
                         } else {
