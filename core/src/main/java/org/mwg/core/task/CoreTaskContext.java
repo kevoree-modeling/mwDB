@@ -410,7 +410,7 @@ class CoreTaskContext implements TaskContext {
                     }
                     buffer.append(valueStr);
                 } else {//variable name or array access
-                    String[] methodCalls = contextKey.split("\\.");
+                    String[] methodCalls = extractMethodElements(contextKey);
                     //check if it is an array access
                     int indexArray = -1;
                     if (methodCalls[0].charAt(methodCalls[0].length() - 1) == ']') {
@@ -445,9 +445,24 @@ class CoreTaskContext implements TaskContext {
                             }
 
                             if(methodCalls.length > 1) {
-                                String methodName = methodCalls[1].substring(0,methodCalls[1].length() - 2);
+                                int sizeParans = (methodCalls.length > 2)? (methodCalls.length - 2) : 0;
+                                Object[] parameters = new Object[sizeParans];
+                                Class[] parametersType = new Class[sizeParans];
+                                for(int i=0;i<parameters.length;i++) {
+                                    TaskResult var = variable(methodCalls[i + 2]);
+                                    Object p;
+                                    if(var == null && methodCalls[i + 2].equals("result")) {
+                                        p = result().get(0);
+                                    } else if(var == null) {
+                                        p = methodCalls[i + 2];
+                                    } else {
+                                        p = var.get(0);
+                                    }
+                                    parameters[i] = p;
+                                    parametersType[i] = p.getClass();
+                                }
                                 try {
-                                    toShow = toShow.getClass().getMethod(methodName).invoke(toShow);
+                                    toShow = toShow.getClass().getMethod(methodCalls[1],parametersType).invoke(toShow, parameters);
                                 } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
                                     throw new RuntimeException(ex);
                                 }
@@ -490,6 +505,46 @@ class CoreTaskContext implements TaskContext {
         } else {
             return buffer.toString();
         }
+    }
+
+    /**
+     * Extract all the methods elements (object, method name and parameters) of a given method call.
+     * Result:
+     *  return[0] = object name
+     *  return[1] = method name //if present
+     *  return[2..n] = parameters //if present
+     *
+     * @param methodCall method call
+     * @return methods elements
+     */
+    private String[] extractMethodElements(String methodCall) {
+        String[] result = null;
+
+        int startIndex = -1;
+        int cursor = 0;
+        while(cursor < methodCall.length()) {
+            if(methodCall.charAt(cursor) == '.') {
+                result = new String[1];
+                result[0] = methodCall.substring(0,cursor);
+                startIndex = -1;
+            } else if(methodCall.charAt(cursor) == '(' || methodCall.charAt(cursor) == ',' ||
+                    (methodCall.charAt(cursor) == ')' && startIndex != -1)){
+                String[] tmp = new String[result.length + 1];
+                System.arraycopy(result,0,tmp,0,result.length);
+                result = tmp;
+                result[result.length - 1] = methodCall.substring(startIndex,cursor);
+                startIndex = -1;
+            } else if(startIndex == -1) {
+                startIndex = cursor;
+            }
+
+            cursor++;
+        }
+
+        if(result == null) {
+            return new String[]{methodCall};
+        }
+        return result;
     }
 
     @Override

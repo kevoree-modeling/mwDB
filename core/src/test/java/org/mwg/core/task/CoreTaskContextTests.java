@@ -2,12 +2,11 @@ package org.mwg.core.task;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.mwg.Callback;
-import org.mwg.Graph;
-import org.mwg.GraphBuilder;
+import org.mwg.*;
 import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
 
+import static org.mwg.task.Actions.newNode;
 import static org.mwg.task.Actions.newTask;
 
 public class CoreTaskContextTests {
@@ -51,6 +50,44 @@ public class CoreTaskContextTests {
                             }
                         })
                         .execute(graph, null);
+            }
+        });
+    }
+
+    @Test
+    public void testVarWithMethodCall() {
+        Graph graph = new GraphBuilder().build();
+        graph.connect(new Callback<Boolean>() {
+            @Override
+            public void on(Boolean result) {
+
+                newNode()
+                        .then(new Action() {
+                            @Override
+                            public void eval(TaskContext context) {
+                                Node resultNode = (Node) context.result().get(0);
+                                //call simple method without parameter
+                                Assert.assertEquals(resultNode.id() + "", context.template("{{result.id()}}"));
+                                Node[] nodes = new Node[] {
+                                    graph.newNode(0,0)
+                                };
+
+                                nodes[0].setProperty("name", Type.INT,55);
+                                context.setVariable("nodes",nodes);
+                                context.setVariable("nameVar","name");
+
+                                //Usage of var as parameters
+                                //if var == result, we use previous result
+                                Assert.assertEquals("55",context.template("{{nodes[0].get(nameVar)}}"));
+
+                                //Set parameters without var
+                                Assert.assertEquals("55",context.template("{{nodes[0].get(name)}}"));
+
+                                context.continueTask();
+                            }
+                        })
+                        .execute(graph,null);
+
             }
         });
     }
