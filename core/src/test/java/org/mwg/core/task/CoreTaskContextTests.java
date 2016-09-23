@@ -29,6 +29,7 @@ public class CoreTaskContextTests {
                                 Assert.assertEquals("[1,2,3,4,5,6,7,8,9]", context.template("{{result}}"));
                                 Assert.assertEquals("[1,2,3,4,5,6,7,8,9]", context.template("{{array}}"));
 
+
                                 /*
                                 boolean exceptionCaught = false;
                                 try {
@@ -54,6 +55,10 @@ public class CoreTaskContextTests {
         });
     }
 
+
+    /**
+     * @ignore ts
+     */
     @Test
     public void testVarWithMethodCall() {
         Graph graph = new GraphBuilder().build();

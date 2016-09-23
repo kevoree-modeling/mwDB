@@ -423,13 +423,13 @@ class CoreTaskContext implements TaskContext {
                         }
                         if (indexStart != -1) {
                             indexArray = TaskHelper.parseInt(methodCalls[0].substring(indexStart, methodCalls[0].length() - 1));
-                            contextKey = methodCalls[0].substring(0, indexStart - 1);
+                            methodCalls[0] = methodCalls[0].substring(0, indexStart - 1);
                             if (indexArray < 0) {
                                 throw new RuntimeException("Array index out of range: " + indexArray);
                             }
                         }
                     }
-                    TaskResult foundVar = variable(contextKey);
+                    TaskResult foundVar = variable(methodCalls[0]);
                     if (foundVar == null && methodCalls[0].equals("result")) {
                         foundVar = result();
                     }
@@ -447,24 +447,24 @@ class CoreTaskContext implements TaskContext {
                             if(methodCalls.length > 1) {
                                 int sizeParans = (methodCalls.length > 2)? (methodCalls.length - 2) : 0;
                                 Object[] parameters = new Object[sizeParans];
-                                Class[] parametersType = new Class[sizeParans];
+                                Class<?>[] parametersType = new Class[sizeParans];
                                 for(int i=0;i<parameters.length;i++) {
-                                    TaskResult var = variable(methodCalls[i + 2]);
+                                    TaskResult r_var = variable(methodCalls[i + 2]);
                                     Object p;
-                                    if(var == null && methodCalls[i + 2].equals("result")) {
+                                    if(r_var == null && methodCalls[i + 2].equals("result")) {
                                         p = result().get(0);
-                                    } else if(var == null) {
+                                    } else if(r_var == null) {
                                         p = methodCalls[i + 2];
                                     } else {
-                                        p = var.get(0);
+                                        p = r_var.get(0);
                                     }
                                     parameters[i] = p;
                                     parametersType[i] = p.getClass();
                                 }
                                 try {
-                                    toShow = toShow.getClass().getMethod(methodCalls[1],parametersType).invoke(toShow, parameters);
+                                    toShow = toShow.getClass().getMethod(methodCalls[1], parametersType).invoke(toShow, parameters);
                                 } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
-                                    throw new RuntimeException(ex);
+                                    throw new RuntimeException("Method define by is not define.");
                                 }
                             }
                             buffer.append(toShow);
