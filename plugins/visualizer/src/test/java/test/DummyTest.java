@@ -48,7 +48,7 @@ public class DummyTest {
                 idx3.jump(ii, new Callback<Node>() {
                     @Override
                     public void on(Node newIdx3) {
-                        newIdx3.setProperty("value",Type.INT,ii);
+                       newIdx3.setProperty("value",Type.INT,ii);
                     }
                 });
             }

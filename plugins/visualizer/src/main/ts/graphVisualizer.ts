@@ -159,32 +159,62 @@ function selectNode(nodeID : number) {
 }
 
 
-/*function drawGraph(graphVisu : GraphVisu) {
-    Actions.newTask()
-        .setTime(0 + "")
-        .setWorld(0 + "")
-        .indexesNames()
-        .fromIndexAll("{{result}}")
-        .foreach(
-            Actions.traverseIndexAll("idx")
-                .print("{{result}}")
-        )
-        .execute(graphVisu._graph,null);
-
-
-    Actions.newTask()
-        .setTime(4 + "")
-        .setWorld(0 + "")
-        .indexesNames()
-        .fromIndexAll("{{result}}")
-        .foreach(
-            Actions.traverseIndexAll("idx")
-                .print("{{result}}")
-        )
-        .execute(graphVisu._graph,null);
-}*/
-
 function drawGraph(graphVisu : GraphVisu) {
+    var task : Task = Actions.newTask();
+    graphVisu._graphVisu.clear();
+    task
+        .setTime(graphVisu._time + "")
+        .setWorld(graphVisu._world + "")
+        .indexesNames()
+        .foreach(
+            Actions
+                .fromIndexAll("{{result}}")
+                .asGlobalVar("toVisit")
+                .foreach(Actions.then(function(context : TaskContext) {
+                    var node : org.mwg.Node = context.resultAsNodes().get(0);
+                    var id : number = node.id();
+
+                    var nodeType : string = node.nodeTypeName() || 'default';
+                    graphVisu._graphVisu.addNode(id,{_type: nodeType});
+                    if(graphVisu._mapTypeColor[nodeType] == null) {
+                        graphVisu._mapTypeColor[nodeType] = getRandomColor();
+                    }
+                    context.continueTask();
+                }))
+                .fromVar("toVisit")
+                .loop("1",graphVisu._depth + "",
+                    Actions
+                        .defineVar("nextToVisit")
+                        .fromVar("toVisit")
+                        .foreach(
+                            Actions
+                                .asGlobalVar("currentNode")
+                                .then(function(context : TaskContext) {
+                                    var node : org.mwg.Node = context.result().get(0);
+                                    context.addToGlobalVariable("alreadyVisit",node.id());
+                                    context.continueTask();
+                                })
+                                .propertiesWithTypes(Type.LONG_TO_LONG_ARRAY_MAP)
+                                .foreach(
+                                    Actions.asVar("relationName")
+                                        .fromVar("currentNode")
+                                        .traverseIndexAll("{{relationName}}")
+                                )
+
+                        )
+                        .fromVar("nextToVisit")
+                        .asGlobalVar("toVisit")
+                        .fromVar("nextToVisit")
+                        .clear()
+                        .asGlobalVar("nextToVisit")
+                )
+        )
+        .execute(graphVisu._graph,function() {
+            console.log("Draw done.");
+        });
+}
+
+/*function drawGraph(graphVisu : GraphVisu) {
 
     var task : Task = Actions.newTask();
     graphVisu._graphVisu.clear();
@@ -373,7 +403,7 @@ function drawGraph(graphVisu : GraphVisu) {
             // }
         });
 
-}
+}*/
 
 function internal_initVivaGraph(url: string, idDiv : string) {
     defaultGraphVisu = new GraphVisu(url);
