@@ -161,7 +161,8 @@ public class HeapChunkSpace implements ChunkSpace {
                         reverse = new int[querySize];
                         toLoadKeys = graph().newBuffer();
                     }
-                    reverse[i] = reverseIndex;
+                    // reverse[i] = reverseIndex;
+                    reverse[reverseIndex] = i;
                     if (reverseIndex != 0) {
                         toLoadKeys.write(BUFFER_SEP);
                     }
