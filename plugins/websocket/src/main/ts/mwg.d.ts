@@ -847,6 +847,7 @@ declare module org {
                 selectWith(name: string, pattern: string): org.mwg.task.Task;
                 selectWithout(name: string, pattern: string): org.mwg.task.Task;
                 select(filterFunction: org.mwg.task.TaskFunctionSelect): org.mwg.task.Task;
+                newSelect(filter: org.mwg.task.TaskFunctionSelectNew): org.mwg.task.Task;
                 selectObject(filterFunction: org.mwg.task.TaskFunctionSelectObject): org.mwg.task.Task;
                 selectWhere(subTask: org.mwg.task.Task): org.mwg.task.Task;
                 traverse(relationName: string): org.mwg.task.Task;
@@ -946,6 +947,9 @@ declare module org {
             }
             interface TaskFunctionSelect {
                 (node: org.mwg.Node): boolean;
+            }
+            interface TaskFunctionSelectNew {
+                (node: org.mwg.Node, context: org.mwg.task.TaskContext): boolean;
             }
             interface TaskFunctionSelectObject {
                 (object: any, context: org.mwg.task.TaskContext): boolean;
@@ -1818,6 +1822,11 @@ declare module org {
                     eval(context: org.mwg.task.TaskContext): void;
                     toString(): string;
                 }
+                class ActionSelectNew extends org.mwg.plugin.AbstractTaskAction {
+                    private _filter;
+                    constructor(filter: org.mwg.task.TaskFunctionSelectNew);
+                    eval(context: org.mwg.task.TaskContext): void;
+                }
                 class ActionSelectObject extends org.mwg.plugin.AbstractTaskAction {
                     private _filter;
                     constructor(filterFunction: org.mwg.task.TaskFunctionSelectObject);
@@ -1949,6 +1958,7 @@ declare module org {
                     fromVar(variableName: string): org.mwg.task.Task;
                     fromVarAt(variableName: string, index: number): org.mwg.task.Task;
                     select(filter: org.mwg.task.TaskFunctionSelect): org.mwg.task.Task;
+                    newSelect(filter: org.mwg.task.TaskFunctionSelectNew): org.mwg.task.Task;
                     selectObject(filterFunction: org.mwg.task.TaskFunctionSelectObject): org.mwg.task.Task;
                     selectWhere(subTask: org.mwg.task.Task): org.mwg.task.Task;
                     get(name: string): org.mwg.task.Task;
@@ -2050,6 +2060,7 @@ declare module org {
                     continueTask(): void;
                     execute(initialTaskAction: org.mwg.plugin.AbstractTaskAction): void;
                     template(input: string): string;
+                    private extractMethodElements(methodCall);
                     hook(): org.mwg.task.TaskHook;
                     toString(): string;
                 }

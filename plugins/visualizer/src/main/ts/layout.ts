@@ -1,4 +1,5 @@
 /// <reference path="graphVisualizer.ts" />
+/// <reference path="jquery.d.ts" />
 
 interface Window {
     GoldenLayout?: any;
@@ -21,8 +22,7 @@ var defaultConfig = {
         type: "column",
         content: [{
             type: 'component',
-            componentName: 'testComponent',
-            componentState: {label: 'A'}
+            componentName: 'Graph command',
         }, {
             type: 'component',
             componentName: 'nodeDetails',
@@ -59,8 +59,17 @@ function addVisu() {
 
 function initLayout() {
     layout = new window.GoldenLayout(globalConfig, document.getElementById("goldenLayout"));
-    layout.registerComponent('testComponent', function(container, componantState) {
-        container.getElement().html('<h1>' + componantState.label + '</h1>');
+    layout.registerComponent('Graph command', function(container, componantState) {
+        container.getElement().html('Time: <input type="text" id="timeSelector" value="" name="range" />');
+
+        container.getElement().ionRangeSlider({
+            min: 0,
+            max: 1000,
+            from: 0,
+            onChange: function(data) {
+                updateGraphVisu(data.from,defaultGraphVisu);
+            }
+        });
 
     });
 

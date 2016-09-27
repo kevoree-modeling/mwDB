@@ -3,6 +3,7 @@ package test;
 import org.mwg.*;
 import org.mwg.ml.MLPlugin;
 import org.mwg.ml.algorithm.regression.PolynomialNode;
+import org.mwg.task.Actions;
 
 /**
  * Created by ludovicmouline on 15/09/16.
@@ -41,7 +42,45 @@ public class DummyTest {
             root.index("idx",idx2,"name",null);
             root.index("idx",idx3,"name",null);
 
+
+            for(int i=0;i<10;i++) {
+                final int ii = i;
+                idx3.jump(ii, new Callback<Node>() {
+                    @Override
+                    public void on(Node newIdx3) {
+                        newIdx3.setProperty("value",Type.INT,ii);
+                    }
+                });
+            }
+
+
+            Actions.newTask()
+                    .setTime(0 + "")
+                    .setWorld(0 + "")
+                    .indexesNames()
+                    .fromIndexAll("{{result}}")
+                    .foreach(
+                            Actions.traverseIndexAll("idx")
+                                    .print("{{result}}")
+                    )
+                    .execute(g,null);
+
+            System.out.println("------");
+
+            Actions.newTask()
+                    .setTime(4 + "")
+                    .setWorld(0 + "")
+                    .indexesNames()
+                    .fromIndexAll("{{result}}")
+                    .foreach(
+                            Actions.traverseIndexAll("idx")
+                                    .print("{{result}}")
+                    )
+                    .execute(g,null);
+
         });
+
+
 
         final WSServer server = new WSServer(g,5678);
         server.start();
@@ -58,5 +97,3 @@ public class DummyTest {
     }
 
 }
-
-//ws://localhost:5678
