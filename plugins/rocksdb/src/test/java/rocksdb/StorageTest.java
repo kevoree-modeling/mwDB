@@ -36,7 +36,7 @@ public class StorageTest {
                 for (long i = 0; i < valuesToInsert; i++) {
 
                     if (i % 10000 == 0) {
-                        System.out.println("<insert til " + i + " in " + (System.currentTimeMillis() - before) / 1000 + "s");
+                       // System.out.println("<insert til " + i + " in " + (System.currentTimeMillis() - before) / 1000 + "s");
                         graph.save(null);
                     }
 
@@ -58,13 +58,13 @@ public class StorageTest {
 
                         long beforeRead = System.currentTimeMillis();
 
-                        System.out.println("<end insert phase>" + " " + (System.currentTimeMillis() - before) / 1000 + "s");
-                        System.out.println(name + " result: " + (valuesToInsert / ((System.currentTimeMillis() - before) / 1000) / 1000) + "kv/s");
+                        //System.out.println("<end insert phase>" + " " + (System.currentTimeMillis() - before) / 1000 + "s");
+                        //System.out.println(name + " result: " + (valuesToInsert / ((System.currentTimeMillis() - before) / 1000) / 1000) + "kv/s");
 
                         graph.disconnect(new Callback<Boolean>() {
                             @Override
                             public void on(Boolean result) {
-                                System.out.println("Graph disconnected");
+                                //System.out.println("Graph disconnected");
 /*
                                 Assert.assertTrue(OffHeapByteArray.alloc_counter == 0);
                                 Assert.assertTrue(OffHeapDoubleArray.alloc_counter == 0);

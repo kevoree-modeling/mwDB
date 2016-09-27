@@ -7,6 +7,7 @@ import org.mwg.plugin.AbstractTaskAction;
 import org.mwg.task.TaskContext;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
@@ -28,31 +29,56 @@ public class ActionLoadJson extends AbstractTaskAction {
     public void eval(TaskContext context) {
         JsonResult result = null;
         final String path = context.template(_pathOrTemplate);
+        URI uri = URI.create((path.contains("://") ? path : "file://" + path));
+        // System.out.println(uri.toString());
+
+        InputStream is = null;
+        InputStreamReader isr = null;
+        JsonValue firstElem = null;
+
         try {
-            URI uri = URI.create((path.contains("://")?path:"file://" + path));
-           // System.out.println(uri.toString());
-            try (InputStreamReader isr = new InputStreamReader(uri.toURL().openStream())) {
-                JsonValue firstElem = Json.parse(isr);
-                if (firstElem.isArray()) {
-                    JsonArray array = firstElem.asArray();
-                    JsonValue[] values = new JsonValue[array.size()];
-                    for (int i = 0; i < array.size(); i++) {
-                        values[i] = array.get(i);
-                    }
-                    //result = new JsonResult(Arrays.copyOf(values, 500));
-                    result = new JsonResult(values);
-                } else {
-                    result = new JsonResult(new JsonValue[]{firstElem});
-                }
-                isr.close();
-            }
+            is = uri.toURL().openStream();
+            isr = new InputStreamReader(is);
+            firstElem = Json.parse(isr);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (result == null) {
-                result = new JsonResult(new JsonValue[]{});
+            if (isr != null) {
+                try {
+                    isr.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (is != null) {
+                        try {
+                            is.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
             }
-            context.continueWith(result);
         }
+
+        if(firstElem != null) {
+            if (firstElem.isArray()) {
+                JsonArray array = firstElem.asArray();
+                JsonValue[] values = new JsonValue[array.size()];
+                for (int i = 0; i < array.size(); i++) {
+                    values[i] = array.get(i);
+                }
+                //result = new JsonResult(Arrays.copyOf(values, 500));
+                result = new JsonResult(values);
+            } else {
+                result = new JsonResult(new JsonValue[]{firstElem});
+            }
+        }
+
+        if (result == null) {
+            result = new JsonResult(new JsonValue[]{});
+        }
+        context.continueWith(result);
+
     }
 }

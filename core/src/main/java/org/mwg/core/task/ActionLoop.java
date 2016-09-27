@@ -28,7 +28,6 @@ class ActionLoop extends AbstractTaskAction {
         final String upperString = context.template(_upper);
         final int lower = (int) Double.parseDouble(context.template(lowerString));
         final int upper = (int) Double.parseDouble(context.template(upperString));
-        
         final TaskResult previous = context.result();
         final ActionLoop selfPointer = this;
         final AtomicInteger cursor = new AtomicInteger(lower);

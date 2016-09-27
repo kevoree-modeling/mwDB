@@ -3,6 +3,7 @@ package org.mwg.plugin.geojson;
 import com.eclipsesource.json.JsonValue;
 import org.mwg.task.TaskResult;
 import org.mwg.task.TaskResultIterator;
+import org.mwg.utility.Tuple;
 
 public class JsonResult implements TaskResult<JsonValue> {
 
@@ -18,8 +19,13 @@ public class JsonResult implements TaskResult<JsonValue> {
             private int currentIndex = 0;
 
             @Override
-            public Object next() {
+            public synchronized Object next() {
                 return (currentIndex < _content.length ? _content[currentIndex++] : null);
+            }
+
+            @Override
+            public synchronized Tuple nextWithIndex() {
+                return (currentIndex < _content.length ? new Tuple(currentIndex, _content[currentIndex++]) : null);
             }
         };
     }
@@ -43,6 +49,7 @@ public class JsonResult implements TaskResult<JsonValue> {
 
     @Override
     public void clear() {
+        _content = new JsonValue[0];
     }
 
     @Override
@@ -52,7 +59,7 @@ public class JsonResult implements TaskResult<JsonValue> {
 
     @Override
     public void free() {
-
+        _content = null;
     }
 
     @Override

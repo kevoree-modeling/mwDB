@@ -19,28 +19,19 @@ public class ActionWhileDoTest extends AbstractActionTest {
 
                 final long cache1 = graph.space().available();
 
-                Task whiletask = newTask().inject(root).whileDo(new TaskFunctionConditional() {
-                                                                    @Override
-                                                                    public boolean eval(TaskContext context) {
-                                                                        //System.out.println("condition while");
-                                                                        return context.result().size() != 0;
-                                                                    }
-                                                                }, flatmap(ifThenElse(new TaskFunctionConditional() {
-                                                                                          @Override
-                                                                                          public boolean eval(TaskContext context) {
-                                                                                              return context.resultAsNodes().get(0).get("child") != null;
-                                                                                          }
-                                                                                      }, traverse("child")
-                        , then(new Action() {
-                            @Override
-                            public void eval(TaskContext context) {
-                                //System.out.println("if is false");
-                                context.addToGlobalVariable("leaves", context.wrap(context.resultAsNodes().get(0).id()));
-                                context.continueWith(null);
-                            }
-                        })))
-                ).fromVar("leaves");
-
+                Task whiletask = newTask()
+                        .inject(root)
+                        .whileDo(context -> context.result().size() != 0,
+                                flatmap(
+                                        ifThenElse(context -> context.resultAsNodes().get(0).get("child") != null,
+                                                traverse("child"), then(context -> {
+                                                    //System.out.println("if is false");
+                                                    context.addToGlobalVariable("leaves", context.wrap(context.resultAsNodes().get(0).id()));
+                                                    context.continueWith(null);
+                                                })
+                                        )
+                                )
+                        ).fromVar("leaves");
 
                 whiletask.execute(graph, new Callback<TaskResult>() {
                     @Override

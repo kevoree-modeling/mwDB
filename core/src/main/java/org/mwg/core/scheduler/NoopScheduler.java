@@ -20,4 +20,9 @@ public class NoopScheduler implements Scheduler {
         //noop
     }
 
+    @Override
+    public int workers() {
+        return 1;
+    }
+
 }

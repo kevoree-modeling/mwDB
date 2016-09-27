@@ -38,7 +38,7 @@ public class ReadFiles extends AbstractTaskAction {
             file = new File(url.getPath());
         }
         if (file.isDirectory()) {
-            final File[] listFiles = file.listFiles();
+            final File[] listFiles = file.listFiles((dir, name) -> !name.contains(".DS_Store"));
             if (listFiles != null) {
                 for (int i = 0; i < listFiles.length; i++) {
                     next.add(listFiles[i].getAbsolutePath());

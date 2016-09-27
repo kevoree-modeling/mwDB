@@ -75,8 +75,8 @@ Java_org_mwg_NativeHasherHelper_tripleHash(jbyte p0, jlong p1, jlong p2, jlong p
     return tripleHash(p0,p1,p2,p3,max);
 }
 
+
 JNIEXPORT jlong JNICALL
 JavaCritical_org_mwg_NativeHasherHelper_tripleHash(jbyte p0, jlong p1, jlong p2, jlong p3, jlong max){
     return tripleHash(p0,p1,p2,p3,max);
 }
-

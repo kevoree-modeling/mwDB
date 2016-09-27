@@ -2,6 +2,7 @@ package org.mwg.importer.util;
 
 import org.mwg.task.TaskResult;
 import org.mwg.task.TaskResultIterator;
+import org.mwg.utility.Tuple;
 
 import java.io.*;
 
@@ -30,14 +31,36 @@ public class IterableLines implements TaskResult<String> {
         }
         final BufferedReader final_buffer = _buffer;
         return new TaskResultIterator() {
+
+            private int _i = 0;
+
             @Override
-            public Object next() {
+            public synchronized Object next() {
+                _i++;
                 try {
                     String line = final_buffer.readLine();
                     if (line == null) {
                         final_buffer.close();
                     }
                     return line;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            @Override
+            public synchronized Tuple nextWithIndex() {
+                final int c_i = _i;
+                _i++;
+                try {
+                    String line = final_buffer.readLine();
+                    if (line == null) {
+                        final_buffer.close();
+                        return null;
+                    } else {
+                        return new Tuple(c_i, line);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                     return null;

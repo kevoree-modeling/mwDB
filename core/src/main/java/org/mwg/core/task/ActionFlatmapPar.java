@@ -9,6 +9,9 @@ import org.mwg.task.Task;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 import org.mwg.task.TaskResultIterator;
+import org.mwg.utility.Tuple;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 class ActionFlatmapPar extends AbstractTaskAction {
 
@@ -30,22 +33,35 @@ class ActionFlatmapPar extends AbstractTaskAction {
         }
         finalResult.allocate(previousSize);
         final DeferCounter waiter = context.graph().newCounter(previousSize);
-        Object loop = it.next();
-        while (loop != null) {
-            final TaskResult loopResult = context.wrap(loop);
-            _subTask.executeFrom(context, loopResult, SchedulerAffinity.ANY_LOCAL_THREAD, new Callback<TaskResult>() {
-                @Override
-                public void on(TaskResult result) {
-                    if (result != null) {
-                        for (int i = 0; i < result.size(); i++) {
-                            finalResult.add(result.get(i));
+        final Job[] dequeueJob = new Job[1];
+        dequeueJob[0] = new Job() {
+            @Override
+            public void run() {
+                final Tuple<Integer, Object> loop = it.nextWithIndex();
+                if (loop != null) {
+                    _subTask.executeFromUsing(context, context.wrap(loop.right()), SchedulerAffinity.ANY_LOCAL_THREAD, new Callback<TaskContext>() {
+                        @Override
+                        public void on(TaskContext result) {
+                            result.defineVariable("i", loop.left());
                         }
-                    }
-                    loopResult.free();
-                    waiter.count();
+                    }, new Callback<TaskResult>() {
+                        @Override
+                        public void on(TaskResult result) {
+                            if (result != null) {
+                                for (int i = 0; i < result.size(); i++) {
+                                    finalResult.add(result.get(i));
+                                }
+                            }
+                            waiter.count();
+                            dequeueJob[0].run();
+                        }
+                    });
                 }
-            });
-            loop = it.next();
+            }
+        };
+        final int nbThread = context.graph().scheduler().workers();
+        for (int i = 0; i < nbThread; i++) {
+            dequeueJob[0].run();
         }
         waiter.then(new Job() {
             @Override
@@ -57,7 +73,7 @@ class ActionFlatmapPar extends AbstractTaskAction {
 
     @Override
     public String toString() {
-        return "flatmapPar()";
+        return "flatMapPar()";
     }
 
 }

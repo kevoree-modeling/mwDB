@@ -111,11 +111,13 @@ public class HybridMatrixEngine implements MatrixEngine {
 
     @Override
     public SVDDecompose decomposeSVD(Matrix matA, boolean workInPlace) {
-        if(matA.leadingDimension()<SOLVESVD_LIMIT){
-            return jama.decomposeSVD(matA,workInPlace);
-        }
-        else {
-            return blas.decomposeSVD(matA,workInPlace);
-        }
+
+        return jama.decomposeSVD(matA,workInPlace);
+//        if(matA.leadingDimension()<SOLVESVD_LIMIT){
+//            return jama.decomposeSVD(matA,workInPlace);
+//        }
+//        else {
+//            return blas.decomposeSVD(matA,workInPlace);
+//        }
     }
 }

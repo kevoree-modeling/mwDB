@@ -29,7 +29,7 @@
     </parent>
 
     <properties>
-        <java2typescript.plugin.version>78</java2typescript.plugin.version>
+        <java2typescript.plugin.version>79-SNAPSHOT</java2typescript.plugin.version>
     </properties>
 
     <developers>
@@ -112,6 +112,7 @@
         <!--
         <module>plugins/debug</module>
         -->
+
         <module>plugins/visualizer</module>
         <module>plugins/geojson</module>
 

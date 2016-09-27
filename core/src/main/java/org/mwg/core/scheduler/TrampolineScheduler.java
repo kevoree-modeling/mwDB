@@ -43,4 +43,9 @@ public class TrampolineScheduler implements Scheduler {
 
     }
 
+    @Override
+    public int workers() {
+        return 1;
+    }
+
 }

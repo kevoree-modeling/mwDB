@@ -183,8 +183,8 @@ public class NDTreeTest {
                 }
 
 
-                System.out.println("ndtree: " + ndTree.size());
-                System.out.println("ndtree2: " + ndTree2.size());
+                //System.out.println("ndtree: " + ndTree.size());
+                //System.out.println("ndtree2: " + ndTree2.size());
 
 
 //                printgraph(ndTree, "ndtree");

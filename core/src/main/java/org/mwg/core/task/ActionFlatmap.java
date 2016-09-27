@@ -8,6 +8,7 @@ import org.mwg.task.Task;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 import org.mwg.task.TaskResultIterator;
+import org.mwg.utility.Tuple;
 
 class ActionFlatmap extends AbstractTaskAction {
 
@@ -39,26 +40,36 @@ class ActionFlatmap extends AbstractTaskAction {
                         }
                     }
                     loopRes[0].free();
-                    Object nextResult = it.next();
+                    final Tuple<Integer, Object> nextResult = it.nextWithIndex();
                     if (nextResult != null) {
-                        loopRes[0] = context.wrap(nextResult);
+                        loopRes[0] = context.wrap(nextResult.right());
                     } else {
                         loopRes[0] = null;
                     }
                     if (nextResult == null) {
                         context.continueWith(finalResult);
                     } else {
-                        selfPointer._subTask.executeFrom(context, loopRes[0], SchedulerAffinity.SAME_THREAD, recursiveAction[0]);
+                        selfPointer._subTask.executeFromUsing(context, loopRes[0], SchedulerAffinity.SAME_THREAD, new Callback<TaskContext>() {
+                            @Override
+                            public void on(TaskContext result) {
+                                result.defineVariable("i", nextResult.left());
+                            }
+                        }, recursiveAction[0]);
                     }
                 }
             };
-            Object nextRes = it.next();
-            loopRes[0] = context.wrap(nextRes);
+            final Tuple<Integer, Object> nextRes = it.nextWithIndex();
             if (nextRes != null) {
+                loopRes[0] = context.wrap(nextRes.right());
                 context.graph().scheduler().dispatch(SchedulerAffinity.SAME_THREAD, new Job() {
                     @Override
                     public void run() {
-                        _subTask.executeFrom(context, context.wrap(loopRes[0]), SchedulerAffinity.SAME_THREAD, recursiveAction[0]);
+                        _subTask.executeFromUsing(context, loopRes[0], SchedulerAffinity.SAME_THREAD, new Callback<TaskContext>() {
+                            @Override
+                            public void on(TaskContext result) {
+                                result.defineVariable("i", nextRes.left());
+                            }
+                        }, recursiveAction[0]);
                     }
                 });
             } else {
@@ -69,7 +80,7 @@ class ActionFlatmap extends AbstractTaskAction {
 
     @Override
     public String toString() {
-        return "flatmap()";
+        return "flatMap()";
     }
 
 

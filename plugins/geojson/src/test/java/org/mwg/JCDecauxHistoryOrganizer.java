@@ -55,8 +55,8 @@ public class JCDecauxHistoryOrganizer {
                                 try {
                                     //String cityName = Charset.forName("UTF-8").encode(record.get("contract_name").asString().replace(" ", "_").replace("/", "_")).toString();
                                     //String fileName = Charset.forName("UTF-8").encode(record.get("name").asString().replace(" ", "_").replace("/", "_")).toString();
-                                    String cityName = record.get("contract_name").asString().replaceAll(whitespace_charclass,"_").replace("/", "_");
-                                    String fileName = record.get("name").asString().replaceAll(whitespace_charclass,"_").replace("/", "_");
+                                    String cityName = cleanString(record.get("contract_name").asString());
+                                    String fileName = cleanString(record.get("name").asString());
                                     String entry = cityName + "_" + fileName;
 
                                     if (lastRecord.getOrDefault(entry, 0L) < record.get("last_update").asLong()) {
@@ -133,7 +133,7 @@ public class JCDecauxHistoryOrganizer {
     }
 
 
-    private static final String whitespace_chars =  ""       /* dummy empty string for homogeneity */
+    private static final String whitespace_chars = ""       /* dummy empty string for homogeneity */
             + "\\u0009" // CHARACTER TABULATION
             + "\\u000A" // LINE FEED (LF)
             + "\\u000B" // LINE TABULATION
@@ -163,8 +163,30 @@ public class JCDecauxHistoryOrganizer {
             + "\\u3000" // IDEOGRAPHIC SPACE
             ;
     /* A \s that actually works for Java’s native character set: Unicode */
-    private static final String     whitespace_charclass = "["  + whitespace_chars + "]";
+    private static final String whitespace_charclass = "[" + whitespace_chars + "]";
     /* A \S that actually works for  Java’s native character set: Unicode */
     private static final String not_whitespace_charclass = "[^" + whitespace_chars + "]";
+
+    private static final String hyphen_chars = ""       /* dummy empty string for homogeneity */
+            + "\\u00AD" // discretionary hyphen
+            + "\\u058A" // armenian hyphen
+            + "\\u05BE" // hebrew punctuation maqaf
+            + "\\u2010" // hyphen
+            + "\\u2011" // non-breaking hyphen
+            + "\\u2012" // figure dash
+            + "\\u2013" // en dash
+            + "\\u2014" // em dash
+            + "\\u2015" // horizontal bar
+            ;
+
+    private static final String hyphen_charclass = "[" + hyphen_chars + "]";
+
+    public static String cleanString(String input) {
+        String cleaned = input;
+        cleaned = cleaned.replace("/", "_");
+        cleaned = cleaned.replaceAll(whitespace_charclass, " ");
+        cleaned = cleaned.replaceAll(hyphen_charclass, "-");
+        return cleaned;
+    }
 
 }

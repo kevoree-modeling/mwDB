@@ -58,9 +58,9 @@ public class GeoIndexTaskTest {
                         }), print("{{result}}").subTasks(new Task[]{traverse("left"), traverse("right")}))
 */
                         .fromVar("geoIndex")
-                        .print("{{result}}")
+                        //.print("{{result}}")
                         .action(NTreeNearestN.NAME, "49.6116,6.1319,10") //lat,long,nb
-                        .print("{{result}}")
+                        //.print("{{result}}")
                         .then(new Action() {
                             @Override
                             public void eval(TaskContext context) {
@@ -72,7 +72,7 @@ public class GeoIndexTaskTest {
                         })
                         .fromVar("geoIndex")
                         .action(NTreeNearestWithinRadius.NAME, "49.6116,6.1319,100000") //lat,long,meters
-                        .print("{{result}}")
+                        //.print("{{result}}")
                         .then(new Action() {
                             @Override
                             public void eval(TaskContext context) {

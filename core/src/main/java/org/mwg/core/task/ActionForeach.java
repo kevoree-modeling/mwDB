@@ -5,6 +5,7 @@ import org.mwg.plugin.AbstractTaskAction;
 import org.mwg.plugin.Job;
 import org.mwg.plugin.SchedulerAffinity;
 import org.mwg.task.*;
+import org.mwg.utility.Tuple;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -26,7 +27,6 @@ class ActionForeach extends AbstractTaskAction {
         } else {
             final TaskResultIterator it = previousResult.iterator();
             final Callback[] recursiveAction = new Callback[1];
-            final AtomicInteger cursor = new AtomicInteger(0);
             recursiveAction[0] = new Callback<TaskResult>() {
                 @Override
                 public void on(final TaskResult res) {
@@ -34,27 +34,25 @@ class ActionForeach extends AbstractTaskAction {
                     if (res != null) {
                         res.free();
                     }
-                    Object nextResult = it.next();
+                    final Tuple<Integer, Object> nextResult = it.nextWithIndex();
                     if (nextResult == null) {
                         context.continueTask();
                     } else {
-
-                        selfPointer._subTask.executeFromUsing(context, context.wrap(nextResult), SchedulerAffinity.SAME_THREAD, new Callback<TaskContext>() {
+                        selfPointer._subTask.executeFromUsing(context, context.wrap(nextResult.right()), SchedulerAffinity.SAME_THREAD, new Callback<TaskContext>() {
                             @Override
                             public void on(TaskContext result) {
-                                result.defineVariable("i", cursor.getAndIncrement());
+                                result.defineVariable("i", nextResult.left());
                             }
                         }, recursiveAction[0]);
-                        
                     }
                 }
             };
-            Object nextRes = it.next();
+            final Tuple<Integer, Object> nextRes = it.nextWithIndex();
             if (nextRes != null) {
-                _subTask.executeFromUsing(context, context.wrap(nextRes), SchedulerAffinity.SAME_THREAD, new Callback<TaskContext>() {
+                _subTask.executeFromUsing(context, context.wrap(nextRes.right()), SchedulerAffinity.SAME_THREAD, new Callback<TaskContext>() {
                     @Override
                     public void on(TaskContext result) {
-                        result.defineVariable("i", cursor.getAndIncrement());
+                        result.defineVariable("i", nextRes.left());
                     }
                 }, recursiveAction[0]);
             } else {

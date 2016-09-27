@@ -679,6 +679,7 @@ declare module org {
                 dispatch(affinity: number, job: org.mwg.plugin.Job): void;
                 start(): void;
                 stop(): void;
+                workers(): number;
             }
             class SchedulerAffinity {
                 static SAME_THREAD: number;
@@ -979,6 +980,7 @@ declare module org {
             }
             interface TaskResultIterator<A> {
                 next(): A;
+                nextWithIndex(): org.mwg.utility.Tuple<number, A>;
             }
         }
         module utility {
@@ -1070,6 +1072,13 @@ declare module org {
             }
             class KeyHelper {
                 static keyToBuffer(buffer: org.mwg.struct.Buffer, chunkType: number, world: number, time: number, id: number): void;
+            }
+            class Tuple<A, B> {
+                private _left;
+                private _right;
+                constructor(p_left: A, p_right: B);
+                left(): A;
+                right(): B;
             }
             class VerboseHook implements org.mwg.task.TaskHook {
                 private ctxIdents;
@@ -1564,6 +1573,7 @@ declare module org {
                     dispatch(affinity: number, job: org.mwg.plugin.Job): void;
                     start(): void;
                     stop(): void;
+                    workers(): number;
                 }
                 class TrampolineScheduler implements org.mwg.plugin.Scheduler {
                     private queue;
@@ -1571,6 +1581,7 @@ declare module org {
                     dispatch(affinity: number, job: org.mwg.plugin.Job): void;
                     start(): void;
                     stop(): void;
+                    workers(): number;
                 }
             }
             module task {
@@ -2089,6 +2100,7 @@ declare module org {
                     private _current;
                     constructor(p_backend: any[]);
                     next(): A;
+                    nextWithIndex(): org.mwg.utility.Tuple<number, A>;
                 }
                 class TaskHelper {
                     static flatNodes(toFLat: any, strict: boolean): org.mwg.Node[];

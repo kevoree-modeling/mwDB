@@ -13,14 +13,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class HybridScheduler implements Scheduler {
 
-    private Worker[] workers = null;
+    private Worker[] _workers = null;
     private final BlockingDeque<Job> globalQueue = new LinkedBlockingDeque<Job>();
-    private int _workers = -1;
-
-    public HybridScheduler workers(int p_workers) {
-        this._workers = p_workers;
-        return this;
-    }
+    private int nbWorkers = -1;
 
     @Override
     public void dispatch(byte affinity, Job job) {
@@ -42,25 +37,30 @@ public class HybridScheduler implements Scheduler {
 
     @Override
     public void start() {
-        int nbcore = this._workers;
+        int nbcore = this.nbWorkers;
         if (nbcore == -1) {
             nbcore = Runtime.getRuntime().availableProcessors();
         }
-        workers = new Worker[nbcore];
-        for (int i = 0; i < workers.length; i++) {
-            workers[i] = new Worker();
-            workers[i].start();
+        _workers = new Worker[nbcore];
+        for (int i = 0; i < _workers.length; i++) {
+            _workers[i] = new Worker();
+            _workers[i].start();
         }
     }
 
     @Override
     public void stop() {
-        if (workers != null) {
-            for (int i = 0; i < workers.length; i++) {
-                workers[i].running = false;
+        if (_workers != null) {
+            for (int i = 0; i < _workers.length; i++) {
+                _workers[i].running = false;
             }
-            workers = null;
+            _workers = null;
         }
+    }
+
+    @Override
+    public int workers() {
+        return _workers.length;
     }
 
     private final class Worker extends Thread {

@@ -68,12 +68,12 @@
                                 <copy file="${basedir}/src/main/ts/reconnecting-websocket.ts"
                                       todir="${basedir}/target/generated-sources"/>
 
-                                <exec executable="npm" dir="${basedir}/target">
+                                <exec executable="npm" dir="${basedir}/target" failonerror="true">
                                     <arg value="install"/>
                                 </exec>
 
                                 <exec executable="${basedir}/target/node_modules/typescript/bin/tsc"
-                                      dir="${basedir}/target/generated-sources">
+                                      dir="${basedir}/target/generated-sources" failonerror="true">
                                     <arg value="-d"/>
                                     <arg value="--sourceMap"/>
                                     <arg value="--target"/>

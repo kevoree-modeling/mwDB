@@ -4,8 +4,10 @@ import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonValue;
 import org.mwg.task.TaskResult;
 import org.mwg.task.TaskResultIterator;
+import org.mwg.utility.Tuple;
 
 import java.util.Iterator;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class JsonArrayResult implements TaskResult {
 
@@ -18,12 +20,26 @@ public class JsonArrayResult implements TaskResult {
     @Override
     public TaskResultIterator iterator() {
         return new TaskResultIterator() {
-            private Iterator<JsonValue> it = _content.iterator();
+
+            private final Iterator<JsonValue> it = _content.iterator();
+            private int cursor = 0;
 
             @Override
-            public Object next() {
-                if(it.hasNext()){
+            public synchronized Object next() {
+                cursor++;
+                if (it.hasNext()) {
                     return JsonValueResultBuilder.build(it.next());
+                } else {
+                    return null;
+                }
+            }
+
+            @Override
+            public synchronized Tuple nextWithIndex() {
+                final int i = cursor;
+                cursor++;
+                if (it.hasNext()) {
+                    return new Tuple<Integer, Object>(i, JsonValueResultBuilder.build(it.next()));
                 } else {
                     return null;
                 }
@@ -77,7 +93,7 @@ public class JsonArrayResult implements TaskResult {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return _content.toString();
     }
 

@@ -44,7 +44,7 @@
                 <executions>
                     <execution>
                         <id>unpack</id>
-                        <phase>package</phase>
+                        <phase>process-sources</phase>
                         <goals>
                             <goal>unpack</goal>
                         </goals>
@@ -54,7 +54,7 @@
                                 <artifactItem>
                                     <groupId>org.kevoree.mwg</groupId>
                                     <artifactId>core</artifactId>
-                                    <version>${project.parent.version}</version>
+                                    <version>${project.version}</version>
                                     <classifier>js</classifier>
                                     <type>zip</type>
                                     <includes>*.ts</includes>
@@ -65,7 +65,7 @@
                                 <artifactItem>
                                     <groupId>org.kevoree.mwg</groupId>
                                     <artifactId>core</artifactId>
-                                    <version>${project.parent.version}</version>
+                                    <version>${project.version}</version>
                                     <classifier>js</classifier>
                                     <type>zip</type>
                                     <includes>*.js</includes>
@@ -76,7 +76,7 @@
                                 <artifactItem>
                                     <groupId>org.kevoree.mwg.plugins</groupId>
                                     <artifactId>websocket</artifactId>
-                                    <version>${project.parent.version}</version>
+                                    <version>${project.version}</version>
                                     <classifier>js</classifier>
                                     <type>zip</type>
                                     <includes>*.ts</includes>
@@ -86,7 +86,7 @@
                                 <artifactItem>
                                     <groupId>org.kevoree.mwg.plugins</groupId>
                                     <artifactId>websocket</artifactId>
-                                    <version>${project.parent.version}</version>
+                                    <version>${project.version}</version>
                                     <classifier>js</classifier>
                                     <type>zip</type>
                                     <includes>*.js</includes>
@@ -112,13 +112,14 @@
                         </goals>
                         <configuration>
                             <target>
-                                <exec executable="npm" dir="${basedir}/target">
+                                <echo message="NPM install dependency"/>
+                                <copy file="${basedir}/../../share/package.json" todir="${basedir}/target"/>
+                                <exec executable="npm" dir="${basedir}/target" failonerror="true">
                                     <arg value="install"/>
-                                    <arg value="tsc"/>
                                 </exec>
                                 <echo message="Compile TypeScript to JavaScript"/>
-                                <exec executable="${basedir}/target/node_modules/tsc/bin/tsc"
-                                      dir="${basedir}/src/main/ts">
+                                <exec executable="${basedir}/target/node_modules/typescript/bin/tsc"
+                                      dir="${basedir}/src/main/ts" failonerror="true">
                                 </exec>
                             </target>
                         </configuration>

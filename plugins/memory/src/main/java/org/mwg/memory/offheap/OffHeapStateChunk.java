@@ -2,15 +2,15 @@ package org.mwg.memory.offheap;
 
 import org.mwg.Constants;
 import org.mwg.Type;
+import org.mwg.chunk.ChunkType;
 import org.mwg.chunk.StateChunk;
 import org.mwg.memory.offheap.primary.OffHeapDoubleArray;
 import org.mwg.memory.offheap.primary.OffHeapIntArray;
 import org.mwg.memory.offheap.primary.OffHeapLongArray;
 import org.mwg.memory.offheap.primary.OffHeapString;
-import org.mwg.utility.Base64;
-import org.mwg.chunk.ChunkType;
 import org.mwg.plugin.NodeStateCallback;
-import org.mwg.struct.*;
+import org.mwg.struct.Buffer;
+import org.mwg.utility.Base64;
 import org.mwg.utility.HashHelper;
 
 class OffHeapStateChunk implements StateChunk {
@@ -407,45 +407,53 @@ class OffHeapStateChunk implements StateChunk {
                 }
                 //retrieve to clone address
                 final long castedAddr = space.addrByIndex(casted.index);
-                final long castedCapacity = OffHeapLongArray.get(castedAddr, CAPACITY);
-                final long castedSize = OffHeapLongArray.get(castedAddr, SIZE);
-                final long castedSubHash = OffHeapLongArray.get(castedAddr, SUBHASH);
-                addr = OffHeapLongArray.cloneArray(castedAddr, OFFSET + (castedCapacity * ELEM_SIZE));
-                //clone sub hash if needed
-                if (castedSubHash != OffHeapConstants.OFFHEAP_NULL_PTR) {
-                    OffHeapLongArray.set(addr, SUBHASH, OffHeapLongArray.cloneArray(castedSubHash, castedCapacity * 3));
-                }
-                //clone complex structures
-                //TODO optimze with a flag to avoid this iteration
-                for (int i = 0; i < castedSize; i++) {
-                    switch (type(castedAddr, i)) {
-                        case Type.DOUBLE_ARRAY:
-                            OffHeapDoubleArray.cloneObject(value(castedAddr, i));
-                            break;
-                        case Type.LONG_ARRAY:
-                            OffHeapLongArray.cloneObject(value(castedAddr, i));
-                            break;
-                        case Type.INT_ARRAY:
-                            OffHeapIntArray.cloneObject(value(castedAddr, i));
-                            break;
-                        case Type.STRING:
-                            OffHeapString.clone(value(castedAddr, i));
-                            break;
-                        case Type.RELATION:
-                            setValue(addr, i, OffHeapRelationship.clone(value(castedAddr, i)));
-                            break;
-                        case Type.LONG_TO_LONG_MAP:
-                            setValue(addr, i, OffHeapLongLongMap.clone(value(castedAddr, i)));
-                            break;
-                        case Type.LONG_TO_LONG_ARRAY_MAP:
-                            setValue(addr, i, OffHeapLongLongArrayMap.clone(value(castedAddr, i)));
-                            break;
-                        case Type.STRING_TO_LONG_MAP:
-                            setValue(addr, i, OffHeapStringLongMap.clone(value(castedAddr, i)));
-                            break;
+
+                //nothing set yet, don't clone
+                if (castedAddr == OffHeapConstants.OFFHEAP_NULL_PTR) {
+                    space.setAddrByIndex(index, OffHeapConstants.OFFHEAP_NULL_PTR);
+
+                } else {
+
+                    final long castedCapacity = OffHeapLongArray.get(castedAddr, CAPACITY);
+                    final long castedSize = OffHeapLongArray.get(castedAddr, SIZE);
+                    final long castedSubHash = OffHeapLongArray.get(castedAddr, SUBHASH);
+                    addr = OffHeapLongArray.cloneArray(castedAddr, OFFSET + (castedCapacity * ELEM_SIZE));
+                    //clone sub hash if needed
+                    if (castedSubHash != OffHeapConstants.OFFHEAP_NULL_PTR) {
+                        OffHeapLongArray.set(addr, SUBHASH, OffHeapLongArray.cloneArray(castedSubHash, castedCapacity * 3));
                     }
+                    //clone complex structures
+                    //TODO optimze with a flag to avoid this iteration
+                    for (int i = 0; i < castedSize; i++) {
+                        switch (type(castedAddr, i)) {
+                            case Type.DOUBLE_ARRAY:
+                                OffHeapDoubleArray.cloneObject(value(castedAddr, i));
+                                break;
+                            case Type.LONG_ARRAY:
+                                OffHeapLongArray.cloneObject(value(castedAddr, i));
+                                break;
+                            case Type.INT_ARRAY:
+                                OffHeapIntArray.cloneObject(value(castedAddr, i));
+                                break;
+                            case Type.STRING:
+                                OffHeapString.clone(value(castedAddr, i));
+                                break;
+                            case Type.RELATION:
+                                setValue(addr, i, OffHeapRelationship.clone(value(castedAddr, i)));
+                                break;
+                            case Type.LONG_TO_LONG_MAP:
+                                setValue(addr, i, OffHeapLongLongMap.clone(value(castedAddr, i)));
+                                break;
+                            case Type.LONG_TO_LONG_ARRAY_MAP:
+                                setValue(addr, i, OffHeapLongLongArrayMap.clone(value(castedAddr, i)));
+                                break;
+                            case Type.STRING_TO_LONG_MAP:
+                                setValue(addr, i, OffHeapStringLongMap.clone(value(castedAddr, i)));
+                                break;
+                        }
+                    }
+                    space.setAddrByIndex(index, addr);
                 }
-                space.setAddrByIndex(index, addr);
             } finally {
                 casted.unlock();
             }

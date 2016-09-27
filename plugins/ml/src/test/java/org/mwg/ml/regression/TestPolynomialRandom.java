@@ -48,7 +48,7 @@ public class TestPolynomialRandom {
                     });
                 }
                 long end = System.currentTimeMillis() - start;
-                System.out.println("total time: " + end + " ms");
+                //System.out.println("total time: " + end + " ms");
 
 
                 final double[] res = new double[3];

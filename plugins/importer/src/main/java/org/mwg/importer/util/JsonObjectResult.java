@@ -5,6 +5,7 @@ import com.eclipsesource.json.JsonValue;
 import org.mwg.task.Task;
 import org.mwg.task.TaskResult;
 import org.mwg.task.TaskResultIterator;
+import org.mwg.utility.Tuple;
 
 import java.util.Iterator;
 import java.util.List;
@@ -21,13 +22,28 @@ public class JsonObjectResult implements TaskResult<JsonMemberResult> {
     public TaskResultIterator iterator() {
         return new TaskResultIterator() {
             private Iterator<JsonObject.Member> subIt = _content.iterator();
+            private int i=0;
 
             @Override
-            public Object next() {
+            public synchronized Object next() {
+                i++;
                 if (subIt.hasNext()) {
                     JsonObject.Member res = subIt.next();
                     if (res != null) {
                         return new JsonMemberResult(res);
+                    }
+                }
+                return null;
+            }
+
+            @Override
+            public synchronized Tuple nextWithIndex() {
+                final int cursor = i;
+                i++;
+                if (subIt.hasNext()) {
+                    JsonObject.Member res = subIt.next();
+                    if (res != null) {
+                        return new Tuple(cursor,new JsonMemberResult(res));
                     }
                 }
                 return null;

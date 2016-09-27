@@ -23,4 +23,10 @@ public interface Scheduler {
      */
     void stop();
 
+    /**
+     * Return the number of parallel workers
+     * @return integer representing the number of current parallel workers
+     */
+    int workers();
+
 }

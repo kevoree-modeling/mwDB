@@ -110,12 +110,12 @@
                                 <copy file="${basedir}/../../core/target/classes-js/mwg.d.ts"
                                       todir="${basedir}/target/generated-sources/"/>
                                 <copy file="${basedir}/../../share/package.json" todir="${basedir}/target"/>
-                                <exec executable="npm" dir="${basedir}/target">
+                                <exec executable="npm" dir="${basedir}/target" failonerror="true">
                                     <arg value="install"/>
                                 </exec>
                                 <echo message="Compile TypeScript to JavaScript"/>
                                 <exec executable="${basedir}/target/node_modules/typescript/bin/tsc"
-                                      dir="${basedir}/target/generated-sources/">
+                                      dir="${basedir}/target/generated-sources/" failonerror="true">
                                     <arg value="-d"/>
                                     <arg value="--sourceMap"/>
                                     <arg value="--target"/>

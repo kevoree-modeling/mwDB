@@ -2,6 +2,7 @@ package org.mwg.importer.util;
 
 import org.mwg.task.TaskResult;
 import org.mwg.task.TaskResultIterator;
+import org.mwg.utility.Tuple;
 
 public class JsonSingleResult implements TaskResult {
 
@@ -18,10 +19,20 @@ public class JsonSingleResult implements TaskResult {
             private int i = 0;
 
             @Override
-            public Object next() {
+            public synchronized Object next() {
                 i++;
                 if (i == 1) {
                     return _content;
+                } else {
+                    return null;
+                }
+            }
+
+            @Override
+            public synchronized Tuple nextWithIndex() {
+                i++;
+                if (i == 1) {
+                    return new Tuple(0, _content);
                 } else {
                     return null;
                 }

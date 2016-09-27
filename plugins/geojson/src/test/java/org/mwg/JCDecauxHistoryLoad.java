@@ -15,6 +15,12 @@ import org.mwg.structure.tree.KDTree;
 import org.mwg.task.*;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileVisitOption;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Comparator;
 import java.util.Iterator;
 
 import static org.mwg.importer.ImporterActions.READFILES;
@@ -30,11 +36,12 @@ public class JCDecauxHistoryLoad {
     //public static final String dataSetFolder = "/Users/gnain/Sources/Kevoree-Modeling/mwDB/plugins/geojson/dataset_jcd/sortedSubset";
     public static final String dataSetFolder = "/Users/gnain/Sources/Kevoree-Modeling/mwDB/plugins/geojson/dataset_jcd/sortedDatasetSubset";
 
+
     //@Test
     public void baseTest() {
 
 
-        final Graph g = new GraphBuilder().withStorage(new LevelDBStorage("fullTempStorage2")).withMemorySize(40000000).withPlugin(new OffHeapMemoryPlugin()).withPlugin(new ImporterPlugin()).withPlugin(new GeoJsonPlugin()).withPlugin(new StructurePlugin()).withPlugin(new MLPlugin()).build();
+        final Graph g = new GraphBuilder().withStorage(new LevelDBStorage("fullTempStorage2")).withMemorySize(2000000).withPlugin(new ImporterPlugin()).withPlugin(new GeoJsonPlugin()).withPlugin(new StructurePlugin()).withPlugin(new MLPlugin()).build();
         g.connect(connectionResult -> {
 
             WSServer graphServer = new WSServer(g, 8050);
@@ -77,12 +84,9 @@ public class JCDecauxHistoryLoad {
                             asVar("folderPath")
                                     .map(obj -> {
                                         String fileName = (String) obj;
-                                        return fileName.substring(fileName.lastIndexOf("/") + 1);
+                                        return JCDecauxHistoryOrganizer.cleanString(fileName.substring(fileName.lastIndexOf("/") + 1));
                                     })
                                     .asVar("cityName")
-                                    .newNode()
-                                    .setProperty("name", Type.STRING, "toto")
-                                    .indexNodeAt("0", "" + Constants.BEGINNING_OF_TIME, "cities", "name")
                                     .fromIndex("cities", "name={{cityName}}")
                                     .ifThen((context -> context.result().size() == 0),
                                             setTime("" + Constants.BEGINNING_OF_TIME)
@@ -108,7 +112,7 @@ public class JCDecauxHistoryLoad {
                                                             .addToGlobalVar("stationsPaths")
                                                             .map(obj -> {
                                                                 String fileName = (String) obj;
-                                                                return fileName.substring(fileName.lastIndexOf("/") + 1, fileName.lastIndexOf("."));
+                                                                return JCDecauxHistoryOrganizer.cleanString(fileName.substring(fileName.lastIndexOf("/") + 1, fileName.lastIndexOf(".")));
                                                             }).asVar("stationName")
                                                             .fromVar(CITY_NODE)
                                                             .traverseIndex("stations", "name", "{{stationName}}")
@@ -135,8 +139,8 @@ public class JCDecauxHistoryLoad {
                         final String cityName = pathElements[pathElements.length - 2];
                         final String fileName = pathElements[pathElements.length - 1];
                         final String stationName = fileName.substring(0, fileName.lastIndexOf("."));
-                        context.setVariable("cityName", cityName);
-                        context.setVariable("stationName", stationName);
+                        context.setVariable("cityName", JCDecauxHistoryOrganizer.cleanString(cityName));
+                        context.setVariable("stationName", JCDecauxHistoryOrganizer.cleanString(stationName));
                         context.continueTask();
                     })
                     .println("Looking for city: {{cityName}}")
@@ -185,7 +189,7 @@ public class JCDecauxHistoryLoad {
                                     /*
                                     .action(NTreeInsertTo.NAME, POSITIONS_TREE)
                                         */
-                    );
+                    ).save();
 
 
     public void createStationNode(TaskContext context) {
@@ -193,10 +197,10 @@ public class JCDecauxHistoryLoad {
         Graph g = context.graph();
 
         Node n = g.newNode(context.world(), Constants.BEGINNING_OF_TIME);
-        n.set("name", context.variable("stationName").get(0));
+        String stationName = (String) context.variable("stationName").get(0);
+        n.set("name", stationName);
 
         Node positionNode = g.newNode(context.world(), Constants.BEGINNING_OF_TIME);
-        positionNode.setProperty("toto", Type.STRING, "hey");
         n.add(POSITION, positionNode);
 
         Node stationProfile = g.newTypedNode(context.world(), Constants.BEGINNING_OF_TIME, GaussianSlotNode.NAME);
@@ -225,6 +229,11 @@ public class JCDecauxHistoryLoad {
 
         KDTree positionsTree = (KDTree) context.variable(POSITIONS_TREE).get(0);
 
+        if(stationProfileNode == null) {
+            System.out.println("");
+        }
+
+
         JsonObject obj = (JsonObject) context.variable("jsonObject").get(0);
         double[] profileValues = new double[2];
         profileValues[0] = obj.get(AVAILABLE_BIKES).asDouble();
@@ -240,17 +249,17 @@ public class JCDecauxHistoryLoad {
             if (name.equals(POSITION)) {
 
                 JsonObject posJson = obj.get(POSITION).asObject();
-                /*
-                if (posJson.get("lat").asDouble() != (double) positionNode.get("lat")
+                if(positionNode.get("lat") == null) {
+                    index = true;
+                } else if (posJson.get("lat").asDouble() != (double) positionNode.get("lat")
                         || posJson.get("lng").asDouble() != (double) positionNode.get("lng")) {
                     index = true;
                 }
-                */
-                    Iterator<JsonObject.Member> mIt2 = posJson.iterator();
-                    while (mIt2.hasNext()) {
-                        JsonObject.Member p = mIt2.next();
-                        positionNode.set(p.getName(), p.getValue().asDouble());
-                    }
+                Iterator<JsonObject.Member> mIt2 = posJson.iterator();
+                while (mIt2.hasNext()) {
+                    JsonObject.Member p = mIt2.next();
+                    positionNode.set(p.getName(), p.getValue().asDouble());
+                }
                 //System.out.println(positionNode.toString());
             } else if (name.equals(AVAILABLE_BIKES)) {
                 ((Node) context.variable(AVAILABLE_BIKES).get(0)).setProperty("value", Type.INT, value.asInt());
@@ -304,8 +313,19 @@ public class JCDecauxHistoryLoad {
     public static final String AVAILABLE_STANDS_VALUE = "available_bikes_val";
 
     public static void main(String[] args) {
+        try {
+            Path rootPath = Paths.get("fullTempStorage2");
+            Files.walk(rootPath, FileVisitOption.FOLLOW_LINKS)
+                    .sorted(Comparator.reverseOrder())
+                    .map(Path::toFile)
+                    .forEach(File::delete);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         JCDecauxHistoryLoad test = new JCDecauxHistoryLoad();
         test.baseTest();
     }
+
 
 }

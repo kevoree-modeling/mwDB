@@ -25,8 +25,10 @@ class ActionLoopPar extends AbstractTaskAction {
 
     @Override
     public void eval(final TaskContext context) {
-        final int lower = TaskHelper.parseInt(context.template(_lower));
-        final int upper = TaskHelper.parseInt(context.template(_upper));
+        final String lowerString = context.template(_lower);
+        final String upperString = context.template(_upper);
+        final int lower = (int) Double.parseDouble(context.template(lowerString));
+        final int upper = (int) Double.parseDouble(context.template(upperString));
         final TaskResult previous = context.result();
         final TaskResult next = context.newResult();
         if ((upper - lower) > 0) {
