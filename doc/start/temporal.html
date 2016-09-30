@@ -147,7 +147,7 @@
                 <a href="manyworld.html">
             
                     
-                    Many World graph
+                    Many world graph
             
                 </a>
             
@@ -155,7 +155,33 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2.4" data-path="distributed.html">
+        <li class="chapter " data-level="1.2.4" data-path="persistence.html">
+            
+                <a href="persistence.html">
+            
+                    
+                    Persistence
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.5" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Indexing
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.6" data-path="distributed.html">
             
                 <a href="distributed.html">
             
@@ -425,7 +451,47 @@
     
                                 <section class="normal markdown-section">
                                 
-                                
+                                <h1 id="temporal-graphs">Temporal graphs</h1>
+<p>Many domains, from social networks to cyber-physical systems to enterprise applications, need to deal with dynamic, i.e., time-evolving data. Think of a time-evolving graph like the following figure:</p>
+<p><img src="temporal_graph.png" alt="temporal graph"></p>
+<p>The orange nodes in the graph represent the changes compared to the version before. Over time, both attributes of nodes, i.e., values, as well as the structure of the graph itself can arbitiraly change. Usually, considering only the latest state of a graph is not enough, instead, many applications require to analyse and correlate past data. That is where temporal graphs are required. </p>
+<p>First, we create again a graph, just like for the non temporal example</p>
+<pre><code class="lang-java">Graph g = <span class="hljs-keyword">new</span> GraphBuilder().build();
+g.connect(isConnected -&gt; {
+        <span class="hljs-comment">//your next code goes here...</span>
+});
+</code></pre>
+<p>Then, we specify a timepoint and create nodes, attributes, and relations</p>
+<pre><code class="lang-java"><span class="hljs-keyword">long</span> timepoint_0 = <span class="hljs-number">0</span>;
+
+Node sensor0 = g.newNode(<span class="hljs-number">0</span>, timepoint_0); <span class="hljs-comment">//the second param is the time</span>
+sensor0.set(<span class="hljs-string">&quot;id&quot;</span>, <span class="hljs-string">&quot;4494F&quot;</span>);
+sensor0.set(<span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-string">&quot;sensor0&quot;</span>);
+sensor0.set(<span class="hljs-string">&quot;value&quot;</span>, <span class="hljs-number">26.2</span>); <span class="hljs-comment">//set the value of the sensor</span>
+
+Node room0 = g.newNode(<span class="hljs-number">0</span>, timepoint_0); <span class="hljs-comment">//the second param is the time</span>
+room0.set(<span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-string">&quot;room0&quot;</span>);
+room0.add(<span class="hljs-string">&quot;sensors&quot;</span>, sensor0);
+</code></pre>
+<p>Nodes can be freely &apos;moved in time&apos;</p>
+<pre><code class="lang-java">sensor0.jump(System.currentTimeMillis(), (Node sensor0now) -&gt; {
+    sensor0now.set(<span class="hljs-string">&quot;value&quot;</span>, <span class="hljs-number">27.5</span>); <span class="hljs-comment">//update the value to time: now</span>
+    System.out.println(<span class="hljs-string">&quot;T0:&quot;</span> + sensor0.toString());
+    System.out.println(<span class="hljs-string">&quot;Now:&quot;</span> + sensor0now.toString());
+
+    <span class="hljs-comment">//now jump over the room</span>
+    room0.jump(System.currentTimeMillis(), room0now -&gt; {
+        System.out.println(<span class="hljs-string">&quot;RoomNow:&quot;</span>);
+        room0now.rel(<span class="hljs-string">&quot;sensors&quot;</span>, sensorsNow -&gt; {
+            <span class="hljs-keyword">for</span>(Node sensorNow : sensorsNow){
+                System.out.println(<span class="hljs-string">&quot;\t&quot;</span>+sensorNow.toString());
+            }
+         });
+    });
+});
+</code></pre>
+<p>The method <em>jump</em> can be used to resolve a node at an abritrary timepoint. In the example above, the node <em>room0</em> is resolved at the current time. The last valid version of <em>room0</em>, relative to the time asked (current time) is <em>room0</em> at timepoint 0. This version is transparently resolved. The graph can be freely traversed from this node and it automatically the correct versions of the traversed nodes are resolved. </p>
+
                                 
                                 </section>
                             
@@ -457,7 +523,7 @@
                 </a>
                 
                 
-                <a href="manyworld.html" class="navigation navigation-next " aria-label="Next page: Many World graph">
+                <a href="manyworld.html" class="navigation navigation-next " aria-label="Next page: Many world graph">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -468,7 +534,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Temporal graph","level":"1.2.2","depth":2,"next":{"title":"Many World graph","level":"1.2.3","depth":2,"path":"start/manyworld.md","ref":"start/manyworld.md","articles":[]},"previous":{"title":"First minimal graph","level":"1.2.1","depth":2,"path":"start/minimal.md","ref":"start/minimal.md","articles":[]},"dir":"neutral"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"start/temporal.md","mtime":"2016-09-14T08:16:45.000Z","type":"markdown"},"gitbook":{"version":"3.1.0","time":"2016-09-14T08:19:58.719Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Temporal graph","level":"1.2.2","depth":2,"next":{"title":"Many world graph","level":"1.2.3","depth":2,"path":"start/manyworld.md","ref":"start/manyworld.md","articles":[]},"previous":{"title":"First minimal graph","level":"1.2.1","depth":2,"path":"start/minimal.md","ref":"start/minimal.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"start/temporal.md","mtime":"2016-09-30T14:05:32.000Z","type":"markdown"},"gitbook":{"version":"3.1.0","time":"2016-09-30T17:13:30.153Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

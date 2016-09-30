@@ -145,7 +145,7 @@
                 <a href="start/manyworld.html">
             
                     
-                    Many World graph
+                    Many world graph
             
                 </a>
             
@@ -153,7 +153,33 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2.4" data-path="start/distributed.html">
+        <li class="chapter " data-level="1.2.4" data-path="start/persistence.html">
+            
+                <a href="start/persistence.html">
+            
+                    
+                    Persistence
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.5" data-path="start/">
+            
+                <a href="start/">
+            
+                    
+                    Indexing
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.6" data-path="start/distributed.html">
             
                 <a href="start/distributed.html">
             
@@ -425,29 +451,29 @@
                                 
                                 <h1 id="introduction">Introduction</h1>
 <blockquote>
-<p>What is MWG?</p>
+<p>What is MWG? </p>
 </blockquote>
-<p>MwG is the first Many World Temporal Graph. In a nutshell, this project define a Graph storage and processing framework that allows to store complex data structures, highly connected, and highly evolving over time. Finally this data structure can be seen has infinitly clonable to test various graph modification and search for the best one. Namely speaking MwG is a the conerstone for a reasoning engine. So MwG is:</p>
+<p>MWG is the first temporal Many World Graph. In a nutshell, this project defines a graph storage and processing framework that allows to store complex data structures, which are highly connected, and rapidly evolving over time. Finally, this data structure can be seen has infinitly clonable to test various graph modifications in order to find the best one. MWG is core data structure of reasoning engines. MWG is:</p>
 <blockquote>
-<p>What is a temporal graph</p>
+<p>What is a temporal graph?</p>
 </blockquote>
-<p>A temporal organize data such as a graph, therfore a set of nodes and relationships between them. A temporal graph in addition add as a first class entity the time. Therefore all nodes attributes and relationships can change overtime.</p>
+<p>Graphs allow to organize and structure data in form of a set of nodes and relationships between these nodes. Data in real-life applications is barely static, think of social network graphs, i.e., graphs evolve and change over time. MWG adds time as a first class entity to the graph. Therefore, all nodes, attributes and relationships can change over time.</p>
 <blockquote>
-<p>To do what ?</p>
+<p>To do what?</p>
 </blockquote>
-<p>In short analyzing data in motion! In many domains data coming from many devices and from various timepoints has to be aggregated in a coherent view in order to reason and take decision. Towards such goal MwG also include various machine learning algorithm to empower complex data structure directly into the temporal graph... Perfect applications for MwG are: IoT systems, Smart Grid, Trading prediction and simulation engine...</p>
+<p>In short, analyzing data in motion! In many domains data coming from different devices and from various timepoints, has to be aggregated in a coherent view in order to reason and take decisions. Towards such goal MWG includes various machine learning algorithms. Example applications where MWG is useful for: IoT systems, cyber-physical systems like smart Grid, trading prediction, and simulation engines.</p>
 <blockquote>
-<p>Who are we ?</p>
+<p>Who are we?</p>
 </blockquote>
-<p>Behind MwG a group of research is hardly working to make it a reality and match close to production performance. MwG is coded in Java with a lot of attention on any method performance impact. I&apos;s proudly build from scratch without no dependency and can manage millions of nodes per secondes on a single computer...</p>
+<p>Behind MWG stands a research group working hard to make real-time analytcis of complex systems a reality. MWG is developed in Java, with lots of attention to performance and memory requirements. It us proudly built from scratch without any dependency and can process millions of nodes per second on a single computer.</p>
 <blockquote>
-<p>How to start ?</p>
+<p>How to start?</p>
 </blockquote>
-<p>In this small documentation we provide the essential informations for a quick start. Then we provide links to case study that demonstrate the efficiency and usefulness of MwG.</p>
+<p>In this small documentation we provide the essential information for a quick start. Then, we provide links to  a case demonstrating the efficiency and usefulness of MWG.</p>
 <blockquote>
 <p>In case of troubles or questions ?</p>
 </blockquote>
-<p>Please contact us via our Github for questions, pull request, or requested evolutions</p>
+<p>Please contact us via our Github for questions, pull request, or feature requests.</p>
 
                                 
                                 </section>
@@ -487,7 +513,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Introduction","level":"1.1","depth":1,"next":{"title":"Quick start","level":"1.2","depth":1,"path":"start/README.md","ref":"start/README.md","articles":[{"title":"First minimal graph","level":"1.2.1","depth":2,"path":"start/minimal.md","ref":"start/minimal.md","articles":[]},{"title":"Temporal graph","level":"1.2.2","depth":2,"path":"start/temporal.md","ref":"start/temporal.md","articles":[]},{"title":"Many World graph","level":"1.2.3","depth":2,"path":"start/manyworld.md","ref":"start/manyworld.md","articles":[]},{"title":"Distributed graph","level":"1.2.4","depth":2,"path":"start/distributed.md","ref":"start/distributed.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"README.md","mtime":"2016-09-14T07:41:06.000Z","type":"markdown"},"gitbook":{"version":"3.1.0","time":"2016-09-14T08:19:58.719Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Introduction","level":"1.1","depth":1,"next":{"title":"Quick start","level":"1.2","depth":1,"path":"start/README.md","ref":"start/README.md","articles":[{"title":"First minimal graph","level":"1.2.1","depth":2,"path":"start/minimal.md","ref":"start/minimal.md","articles":[]},{"title":"Temporal graph","level":"1.2.2","depth":2,"path":"start/temporal.md","ref":"start/temporal.md","articles":[]},{"title":"Many world graph","level":"1.2.3","depth":2,"path":"start/manyworld.md","ref":"start/manyworld.md","articles":[]},{"title":"Persistence","level":"1.2.4","depth":2,"path":"start/persistence.md","ref":"start/persistence.md","articles":[]},{"title":"Indexing","level":"1.2.5","depth":2,"path":"start/index.md","ref":"start/index.md","articles":[]},{"title":"Distributed graph","level":"1.2.6","depth":2,"path":"start/distributed.md","ref":"start/distributed.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"README.md","mtime":"2016-09-30T17:13:05.000Z","type":"markdown"},"gitbook":{"version":"3.1.0","time":"2016-09-30T17:13:30.153Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

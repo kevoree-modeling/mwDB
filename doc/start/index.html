@@ -2,7 +2,7 @@
 <!DOCTYPE HTML>
 <html lang="" >
     <head>
-        <title>Quick start · GitBook</title>
+        <title>Indexing · GitBook</title>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -57,10 +57,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="minimal.html" />
+    <link rel="next" href="distributed.html" />
     
     
-    <link rel="prev" href="../" />
+    <link rel="prev" href="persistence.html" />
     
 
     </head>
@@ -102,7 +102,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.2" data-path="./">
+        <li class="chapter " data-level="1.2" data-path="./">
             
                 <a href="./">
             
@@ -147,7 +147,7 @@
                 <a href="manyworld.html">
             
                     
-                    Many World graph
+                    Many world graph
             
                 </a>
             
@@ -155,7 +155,33 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2.4" data-path="distributed.html">
+        <li class="chapter " data-level="1.2.4" data-path="persistence.html">
+            
+                <a href="persistence.html">
+            
+                    
+                    Persistence
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.2.5" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Indexing
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.6" data-path="distributed.html">
             
                 <a href="distributed.html">
             
@@ -410,7 +436,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Quick start</a>
+        <a href=".." >Indexing</a>
     </h1>
 </div>
 
@@ -425,22 +451,49 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="quick-start">Quick start</h1>
-<p>MwG is distributed over maven repository.
-Therefore it can be used with maven, ivy, sbt...</p>
-<p>Simply add the api and core module dependency to your project and start using MwG api such as:</p>
-<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.kevoree.mwg<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>api<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>${mwg.version}<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.kevoree.mwg<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>core<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>${mwg.version}<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+                                <h1 id="indexing">Indexing</h1>
+<p>MWG allows to index your data for efficient retrieval. Indexing is straightforward. Basically, an index node is a graph node, just like all other nodes. This also implies that index nodes are temporal, i.e., what is indexed by a node depends on the time the index was created (and also the world in which the index was created). </p>
+<pre><code class="lang-java">    Node sensor0 = g.newNode(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+    sensor0.set(<span class="hljs-string">&quot;id&quot;</span>, <span class="hljs-string">&quot;4494F&quot;</span>);
+    sensor0.set(<span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-string">&quot;sensor0&quot;</span>);
+    sensor0.set(<span class="hljs-string">&quot;value&quot;</span>, <span class="hljs-number">26.2</span>); <span class="hljs-comment">//set the value of the sensor</span>
+
+    Node room0 = g.newNode(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+    room0.set(<span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-string">&quot;room0&quot;</span>);
+    room0.add(<span class="hljs-string">&quot;sensors&quot;</span>, sensor0);
+
+    g.index(<span class="hljs-string">&quot;rooms&quot;</span>, room0, <span class="hljs-string">&quot;name&quot;</span>, processResult -&gt; { <span class="hljs-comment">//index the node room0</span>
+        g.index(<span class="hljs-string">&quot;sensors&quot;</span>, sensor0, <span class="hljs-string">&quot;id&quot;</span>, processResult2 -&gt; { <span class="hljs-comment">//index the node sensor0</span>
+             g.indexes(<span class="hljs-number">0</span>, System.currentTimeMillis(), (String[] indexNames) -&gt; {
+                System.out.println(<span class="hljs-string">&quot;Index names in Graph:&quot;</span>);
+                    <span class="hljs-keyword">for</span> (String indexName : indexNames) {
+                    System.out.println(<span class="hljs-string">&quot;\t&quot;</span> + indexName);
+                }
+            });
+
+            g.find(<span class="hljs-number">0</span>, System.currentTimeMillis(), <span class="hljs-string">&quot;rooms&quot;</span>, <span class="hljs-string">&quot;name=room0&quot;</span>, (Node[] rooms) -&gt; {
+                System.out.println(<span class="hljs-string">&quot;Rooms found by string query:&quot;</span>);
+                <span class="hljs-keyword">for</span> (Node roomNow : rooms) {
+                    System.out.println(<span class="hljs-string">&quot;\t&quot;</span> + roomNow.toString());
+                }
+            });
+
+            g.find(<span class="hljs-number">0</span>, System.currentTimeMillis(), <span class="hljs-string">&quot;sensors&quot;</span>, <span class="hljs-string">&quot;id=4494F&quot;</span>, (Node[] sensors) -&gt; {
+                System.out.println(<span class="hljs-string">&quot;Sensors found by string query:&quot;</span>);
+                    <span class="hljs-keyword">for</span> (Node sensorNow : sensors) {
+                    System.out.println(<span class="hljs-string">&quot;\t&quot;</span> + sensorNow.toString());
+                }
+            });
+
+            g.findAll(<span class="hljs-number">0</span>, System.currentTimeMillis(), <span class="hljs-string">&quot;sensors&quot;</span>, allSensorsNow -&gt; {
+                System.out.println(<span class="hljs-string">&quot;All sensors indexed:&quot;</span>);
+                <span class="hljs-keyword">for</span> (Node sensorNow : allSensorsNow) {
+                    System.out.println(<span class="hljs-string">&quot;\t&quot;</span> + sensorNow.toString());
+                }
+            });
+        });
+    });
 </code></pre>
-<p>Next go for the next session for you first graph</p>
 
                                 
                                 </section>
@@ -468,12 +521,12 @@ Therefore it can be used with maven, ivy, sbt...</p>
 
             
                 
-                <a href="../" class="navigation navigation-prev " aria-label="Previous page: Introduction">
+                <a href="persistence.html" class="navigation navigation-prev " aria-label="Previous page: Persistence">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="minimal.html" class="navigation navigation-next " aria-label="Next page: First minimal graph">
+                <a href="distributed.html" class="navigation navigation-next " aria-label="Next page: Distributed graph">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -484,7 +537,7 @@ Therefore it can be used with maven, ivy, sbt...</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Quick start","level":"1.2","depth":1,"next":{"title":"First minimal graph","level":"1.2.1","depth":2,"path":"start/minimal.md","ref":"start/minimal.md","articles":[]},"previous":{"title":"Introduction","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"start/README.md","mtime":"2016-09-14T08:00:06.000Z","type":"markdown"},"gitbook":{"version":"3.1.0","time":"2016-09-14T08:19:58.719Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Indexing","level":"1.2.5","depth":2,"next":{"title":"Distributed graph","level":"1.2.6","depth":2,"path":"start/distributed.md","ref":"start/distributed.md","articles":[]},"previous":{"title":"Persistence","level":"1.2.4","depth":2,"path":"start/persistence.md","ref":"start/persistence.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"start/index.md","mtime":"2016-09-30T17:13:05.000Z","type":"markdown"},"gitbook":{"version":"3.1.0","time":"2016-09-30T17:13:30.153Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
