@@ -2,7 +2,7 @@
 <!DOCTYPE HTML>
 <html lang="" >
     <head>
-        <title>First minimal graph · GitBook</title>
+        <title>Browser · GitBook</title>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -57,8 +57,6 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="temporal.html" />
-    
     
     <link rel="prev" href="./" />
     
@@ -102,9 +100,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="./">
+        <li class="chapter " data-level="1.2" data-path="../start/">
             
-                <a href="./">
+                <a href="../start/">
             
                     
                     Quick start
@@ -116,9 +114,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter active" data-level="1.2.1" data-path="minimal.html">
+        <li class="chapter " data-level="1.2.1" data-path="../start/minimal.html">
             
-                <a href="minimal.html">
+                <a href="../start/minimal.html">
             
                     
                     First minimal graph
@@ -129,9 +127,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2.2" data-path="temporal.html">
+        <li class="chapter " data-level="1.2.2" data-path="../start/temporal.html">
             
-                <a href="temporal.html">
+                <a href="../start/temporal.html">
             
                     
                     Temporal graph
@@ -142,9 +140,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2.3" data-path="manyworld.html">
+        <li class="chapter " data-level="1.2.3" data-path="../start/manyworld.html">
             
-                <a href="manyworld.html">
+                <a href="../start/manyworld.html">
             
                     
                     Many world graph
@@ -155,9 +153,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2.4" data-path="persistence.html">
+        <li class="chapter " data-level="1.2.4" data-path="../start/persistence.html">
             
-                <a href="persistence.html">
+                <a href="../start/persistence.html">
             
                     
                     Persistence
@@ -168,9 +166,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2.5" data-path="indexing.html">
+        <li class="chapter " data-level="1.2.5" data-path="../start/indexing.html">
             
-                <a href="indexing.html">
+                <a href="../start/indexing.html">
             
                     
                     Indexing
@@ -181,9 +179,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2.6" data-path="distributed.html">
+        <li class="chapter " data-level="1.2.6" data-path="../start/distributed.html">
             
-                <a href="distributed.html">
+                <a href="../start/distributed.html">
             
                     
                     Distributed graph
@@ -438,9 +436,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6" data-path="../js/">
+        <li class="chapter " data-level="1.6" data-path="./">
             
-                <a href="../js/">
+                <a href="./">
             
                     
                     JavaScript
@@ -452,9 +450,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.6.1" data-path="../js/browser.html">
+        <li class="chapter active" data-level="1.6.1" data-path="browser.html">
             
-                <a href="../js/browser.html">
+                <a href="browser.html">
             
                     
                     Browser
@@ -500,7 +498,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >First minimal graph</a>
+        <a href=".." >Browser</a>
     </h1>
 </div>
 
@@ -515,32 +513,68 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="a-simple-graph">A simple graph</h1>
-<p>Create and connect a simple graph using the following code</p>
-<pre><code class="lang-java">Graph g = <span class="hljs-keyword">new</span> GraphBuilder().build();
-g.connect(isconnected-&gt; {
-    <span class="hljs-comment">//your next code goes here...</span>
+                                <h1 id="browser-usage">Browser usage</h1>
+<p>To use MWG in your browser, you simply have to add the needed <code>.js</code> files to your DOM, for example:</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;js/mwg.js&quot;</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</code></pre>
+<p>In addition, plugins can be loaded later, for example:</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;js/mwg.structure.js&quot;</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;js/mwg.ml.js&quot;</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;js/mwg.ws.js&quot;</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</code></pre>
+<h2 id="usage-with-manual-download">Usage with manual download</h2>
+<p>JS files can be downloaded via the maven central repository, e.g., <code>https://repo.maven.apache.org/maven2/org/kevoree/mwg/core/7/core-7-js.zip</code></p>
+<p>The name &apos;core&apos; and the version number &apos;7&apos; must be replaced by the desired plugin name and version number.  In every MWG zip bundle one can find the following files:</p>
+<ul>
+<li>XYZ.js: standard file usable for debug and development environments </li>
+<li>XYZ.min.js: compressed file for production usage</li>
+<li>XYZ.ts: TypeScript source for MWG extension</li>
+<li>XYZ.d.ts TypeScript header file for simple inclusion in TypeScript development environment.</li>
+</ul>
+<p>For lightweight development, we advice you to use <code>.min.js</code> files.</p>
+<p>Then, the JS API is practically identical to the Java API and can be used like in the following code snipped:</p>
+<pre><code class="lang-js"><span class="hljs-keyword">var</span> mwg = <span class="hljs-keyword">new</span> org.mwg.GraphBuilder()
+    .withStorage(<span class="hljs-keyword">new</span> org.mwg.plugin.WSClient(<span class="hljs-string">&quot;ws://localhost:8081&quot;</span>))
+    .build();
+</code></pre>
+<p>The line <code>.withStorage(new org.mwg.plugin.WSClient(&quot;ws://localhost:8081&quot;))</code> is optional but allows to use a remote graph (client/server mode). Please read the distributed graph section to get more details on this topic.</p>
+<h2 id="usage-with-bower">Usage with Bower</h2>
+<p>Bower is a very handy tool to manage dependencies for font-end development.</p>
+<p>For instance, it allows to describe <em>(in <code>bower.json</code>)</em> dependencies for MWG related development, for example:</p>
+<pre><code class="lang-json">{
+  <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;mwg-sample&quot;</span>,
+  <span class="hljs-string">&quot;version&quot;</span>: <span class="hljs-string">&quot;0.0.1&quot;</span>,
+  <span class="hljs-string">&quot;dependencies&quot;</span>: {
+    <span class="hljs-string">&quot;mwg-core&quot;</span>: <span class="hljs-string">&quot;https://repo.maven.apache.org/maven2/org/kevoree/mwg/core/7/core-7-js.zip&quot;</span>,
+    <span class="hljs-string">&quot;mwg-ws&quot;</span>: <span class="hljs-string">&quot;https://repo.maven.apache.org/maven2/org/kevoree/mwg/plugins/websocket/7/websocket-7-js.zip&quot;</span>,
+    <span class="hljs-string">&quot;mwg-structure&quot;</span>: <span class="hljs-string">&quot;https://repo.maven.apache.org/maven2/org/kevoree/mwg/plugins/structure/7/structure-7-js.zip&quot;</span>,
+    <span class="hljs-string">&quot;mwg-ml&quot;</span>: <span class="hljs-string">&quot;https://repo.maven.apache.org/maven2/org/kevoree/mwg/plugins/ml/7/ml-7-js.zip&quot;</span>
+  }
+}
+</code></pre>
+<p>Then a simple command: <code>bower install</code> will download and extract the necessary dependencies in a directory <code>bower_components</code>.</p>
+<p>Then, these dependencies can be used like in the following code snipped:</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>MWG Sample<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text/javascript&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;bower_components/mwg-core/mwg.min.js&quot;</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text/javascript&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;bower_components/mwg-ws/mwg.ws.min.js&quot;</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text/javascript&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;bower_components/mwg-structure/mwg.structure.min.js&quot;</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text/javascript&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;bower_components/mwg-ml/mwg.ml.min.js&quot;</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+<span class="hljs-keyword">var</span> mwg = <span class="hljs-keyword">new</span> org.mwg.GraphBuilder()
+    <span class="hljs-comment">//.withStorage(new org.mwg.plugin.WSClient(&quot;ws://localhost:8081&quot;))</span>
+    .build();
+mwg.connect(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;Ready to work...&quot;</span>);
 });
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>
 </code></pre>
-<p>Next, create a first node and set some attributes:</p>
-<pre><code class="lang-java">Node sensor0 = g.newNode(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>); <span class="hljs-comment">// for now, use 0,0 as params</span>
-sensor0.set(<span class="hljs-string">&quot;id&quot;</span>, <span class="hljs-string">&quot;4494F&quot;</span>);
-sensor0.set(<span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-string">&quot;sensor0&quot;</span>);
-</code></pre>
-<p>Then, create a second node and connect the two nodes with a relation</p>
-<pre><code class="lang-java">Node room0 = g.newNode(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>); <span class="hljs-comment">// for now, use 0,0 as params</span>
-room0.set(<span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-string">&quot;room0&quot;</span>);
-room0.add(<span class="hljs-string">&quot;sensors&quot;</span>, sensor0);
-</code></pre>
-<p>Finally, relations can be traversed as follows</p>
-<pre><code class="lang-java">room0.rel(<span class="hljs-string">&quot;sensors&quot;</span>, (Node[] sensors) -&gt; { <span class="hljs-comment">//iterate over saved sensors</span>
-    System.out.println(<span class="hljs-string">&quot;Sensors&quot;</span>);
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; sensors.length; i++) {
-        System.out.println(<span class="hljs-string">&quot;\t&quot;</span> + sensors[i].toString());
-    }
-});
-</code></pre>
-<p>Note that graph processing and traversing is fully asynchronous</p>
+<p>A sample project can be downloaded <a href="bower_mwg_sample.zip">here</a>.</p>
 
                                 
                                 </section>
@@ -568,14 +602,10 @@ room0.add(<span class="hljs-string">&quot;sensors&quot;</span>, sensor0);
 
             
                 
-                <a href="./" class="navigation navigation-prev " aria-label="Previous page: Quick start">
+                <a href="./" class="navigation navigation-prev navigation-unique" aria-label="Previous page: JavaScript">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
-                
-                <a href="temporal.html" class="navigation navigation-next " aria-label="Next page: Temporal graph">
-                    <i class="fa fa-angle-right"></i>
-                </a>
                 
             
         
@@ -584,7 +614,7 @@ room0.add(<span class="hljs-string">&quot;sensors&quot;</span>, sensor0);
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"First minimal graph","level":"1.2.1","depth":2,"next":{"title":"Temporal graph","level":"1.2.2","depth":2,"path":"start/temporal.md","ref":"start/temporal.md","articles":[]},"previous":{"title":"Quick start","level":"1.2","depth":1,"path":"start/README.md","ref":"start/README.md","articles":[{"title":"First minimal graph","level":"1.2.1","depth":2,"path":"start/minimal.md","ref":"start/minimal.md","articles":[]},{"title":"Temporal graph","level":"1.2.2","depth":2,"path":"start/temporal.md","ref":"start/temporal.md","articles":[]},{"title":"Many world graph","level":"1.2.3","depth":2,"path":"start/manyworld.md","ref":"start/manyworld.md","articles":[]},{"title":"Persistence","level":"1.2.4","depth":2,"path":"start/persistence.md","ref":"start/persistence.md","articles":[]},{"title":"Indexing","level":"1.2.5","depth":2,"path":"start/indexing.md","ref":"start/indexing.md","articles":[]},{"title":"Distributed graph","level":"1.2.6","depth":2,"path":"start/distributed.md","ref":"start/distributed.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"start/minimal.md","mtime":"2016-09-30T14:05:32.000Z","type":"markdown"},"gitbook":{"version":"3.1.0","time":"2016-10-02T15:33:47.250Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Browser","level":"1.6.1","depth":2,"previous":{"title":"JavaScript","level":"1.6","depth":1,"path":"js/README.md","ref":"js/README.md","articles":[{"title":"Browser","level":"1.6.1","depth":2,"path":"js/browser.md","ref":"js/browser.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"js/browser.md","mtime":"2016-10-02T15:33:39.000Z","type":"markdown"},"gitbook":{"version":"3.1.0","time":"2016-10-02T15:33:47.250Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
