@@ -4,11 +4,13 @@ import io.undertow.connector.ByteBufferPool;
 import io.undertow.server.DefaultByteBufferPool;
 import io.undertow.websockets.client.WebSocketClient;
 import io.undertow.websockets.core.*;
-import org.mwg.utility.Base64;
 import org.mwg.chunk.Chunk;
+import org.mwg.plugin.Job;
+import org.mwg.plugin.SchedulerAffinity;
 import org.mwg.plugin.Storage;
 import org.mwg.struct.Buffer;
 import org.mwg.struct.BufferIterator;
+import org.mwg.utility.Base64;
 import org.xnio.*;
 
 import java.io.IOException;
@@ -28,11 +30,13 @@ public class WSClient implements Storage {
 
     private Graph graph;
 
-    private Map<Integer, Callback> callbacks;
+//    private Map<Integer, Callback> callbacks;
+    private Map<Integer, InternalJob> jobs;
 
     public WSClient(String p_url) {
         this.url = p_url;
-        this.callbacks = new HashMap<Integer, Callback>();
+//        this.callbacks = new HashMap<Integer, Callback>();
+        this.jobs = new HashMap<Integer, InternalJob>();
     }
 
     @Override
@@ -148,7 +152,8 @@ public class WSClient implements Storage {
         buffer.write(code);
         buffer.write(Constants.BUFFER_SEP);
         int hash = callback.hashCode();
-        callbacks.put(hash, callback);
+//        callbacks.put(hash, callback);
+        jobs.put(hash,new InternalJob(callback));
         Base64.encodeIntToBuffer(hash, buffer);
         if (payload != null) {
             buffer.write(Constants.BUFFER_SEP);
@@ -202,8 +207,9 @@ public class WSClient implements Storage {
                 Buffer callbackCodeView = it.next();
                 if (callbackCodeView != null) {
                     int callbackCode = Base64.decodeToIntWithBounds(callbackCodeView, 0, callbackCodeView.length());
-                    Callback resolvedCallback = callbacks.get(callbackCode);
-                    if (resolvedCallback != null) {
+//                    Callback resolvedCallback = callbacks.get(callbackCode);
+                    InternalJob resolvedJob = jobs.get(callbackCode);
+                    if (resolvedJob != null) {
                         if (firstCode == WSConstants.RESP_LOCK || firstCode == WSConstants.RESP_GET) {
                             Buffer newBuf = graph.newBuffer();//will be free by the core
                             boolean isFirst = true;
@@ -215,15 +221,39 @@ public class WSClient implements Storage {
                                 }
                                 newBuf.writeAll(it.next().data());
                             }
-                            resolvedCallback.on(newBuf);
+//                            resolvedCallback.on(newBuf);
+                            resolvedJob.runWith(newBuf);
                         } else {
-                            resolvedCallback.on(true);
+//                            resolvedCallback.on(true);
+                            resolvedJob.runWith(true);
                         }
+                        graph.scheduler().dispatch(SchedulerAffinity.ANY_LOCAL_THREAD,resolvedJob);
                     }
                 }
             }
         }
         payloadBuf.free();
     }
+
+    private static final class InternalJob implements Job {
+        private final Callback callback;
+        private Object result;
+
+        InternalJob(Callback callback) {
+            this.callback = callback;
+        }
+
+        void runWith(Object result){
+            this.result = result;
+        }
+
+
+        @Override
+        public void run() {
+            callback.on(result);
+        }
+    }
+
+
 
 }
