@@ -1,7 +1,7 @@
 package org.mwg.core.task;
 
 import org.mwg.Node;
-import org.mwg.plugin.AbstractNode;
+import org.mwg.base.BaseNode;
 import org.mwg.task.TaskResult;
 import org.mwg.task.TaskResultIterator;
 
@@ -31,7 +31,7 @@ class CoreTaskResult<A> implements TaskResult<A> {
             if (protect) {
                 for (int i = 0; i < _size; i++) {
                     Object loopObj = castedToWrap[i];
-                    if (loopObj instanceof AbstractNode) {
+                    if (loopObj instanceof BaseNode) {
                         Node loopNode = (Node) loopObj;
                         _backend[i] = loopNode.graph().cloneNode(loopNode);
                     } else {
@@ -82,7 +82,7 @@ class CoreTaskResult<A> implements TaskResult<A> {
                 if (protect) {
                     for (int i = 0; i < _size; i++) {
                         Object loopObj = other._backend[i];
-                        if (loopObj instanceof AbstractNode) {
+                        if (loopObj instanceof BaseNode) {
                             Node loopNode = (Node) loopObj;
                             _backend[i] = loopNode.graph().cloneNode(loopNode);
                         } else {
@@ -98,7 +98,7 @@ class CoreTaskResult<A> implements TaskResult<A> {
                 _backend = new Object[1];
                 _capacity = 1;
                 _size = 1;
-                if (toWrap instanceof AbstractNode) {
+                if (toWrap instanceof BaseNode) {
                     Node toWrapNode = (Node) toWrap;
                     if (protect) {
                         _backend[0] = toWrapNode.graph().cloneNode(toWrapNode);
@@ -172,7 +172,7 @@ class CoreTaskResult<A> implements TaskResult<A> {
     @Override
     public void free() {
         for (int i = 0; i < _capacity; i++) {
-            if (_backend[i] instanceof AbstractNode) {
+            if (_backend[i] instanceof BaseNode) {
                 ((Node) _backend[i]).free();
             }
         }

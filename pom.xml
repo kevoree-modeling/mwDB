@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.kevoree.mwg</groupId>
     <artifactId>mwg</artifactId>
@@ -91,18 +92,25 @@
     </developers>
 
     <modules>
+        <!--
         <module>api</module>
+        -->
         <module>core</module>
 
+
         <!-- Plugins Java & JS -->
+        <!--
         <module>plugins/websocket</module>
         <module>plugins/structure</module>
         <module>plugins/ml</module>
+        -->
 
         <!-- Plugin Java -->
         <!--
         <module>plugins/mlext</module>
         -->
+
+        <!--
         <module>plugins/memory</module>
         <module>plugins/importer</module>
 
@@ -111,12 +119,15 @@
 
         <module>plugins/rest</module>
         <module>plugins/model</module>
+        -->
 
         <!-- Outside release-->
         <!--<module>plugins/debug</module>-->
+
+        <!--
         <module>plugins/visualizer</module>
         <module>plugins/mlx</module>
-
+        -->
 
     </modules>
 

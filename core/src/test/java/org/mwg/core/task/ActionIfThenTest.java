@@ -2,12 +2,9 @@ package org.mwg.core.task;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.mwg.task.Action;
-import org.mwg.task.Task;
-import org.mwg.task.TaskContext;
-import org.mwg.task.TaskFunctionConditional;
+import org.mwg.task.*;
 
-import static org.mwg.task.Actions.*;
+import static org.mwg.core.task.Actions.*;
 
 public class ActionIfThenTest extends AbstractActionTest {
 
@@ -16,14 +13,14 @@ public class ActionIfThenTest extends AbstractActionTest {
         initGraph();
         final boolean[] result = {false, false};
 
-        Task modifyResult0 = then(new Action() {
+        Task modifyResult0 = then(new ActionFunction() {
             @Override
             public void eval(TaskContext context) {
                 result[0] = true;
             }
         });
 
-        Task modifyResult1 = then(new Action() {
+        Task modifyResult1 = then(new ActionFunction() {
             @Override
             public void eval(TaskContext context) {
                 result[0] = true;
@@ -52,7 +49,7 @@ public class ActionIfThenTest extends AbstractActionTest {
     @Test
     public void testChainAfterIfThen() {
         initGraph();
-        Task addVarInContext = inject(5).asGlobalVar("variable").then(new Action() {
+        Task addVarInContext = inject(5).asGlobalVar("variable").then(new ActionFunction() {
             @Override
             public void eval(TaskContext context) {
                 context.continueTask();
@@ -65,7 +62,7 @@ public class ActionIfThenTest extends AbstractActionTest {
             public boolean eval(TaskContext context) {
                 return true;
             }
-        }, addVarInContext).fromVar("variable").then(new Action() {
+        }, addVarInContext).fromVar("variable").then(new ActionFunction() {
             @Override
             public void eval(TaskContext context) {
                 Integer val = (Integer) context.result().get(0);
@@ -78,7 +75,7 @@ public class ActionIfThenTest extends AbstractActionTest {
     @Test
     public void accessContextVariableInThenTask() {
         initGraph();
-        Task accessVar = then(new Action() {
+        Task accessVar = then(new ActionFunction() {
             @Override
             public void eval(TaskContext context) {
                 Integer variable = (Integer) context.variable("variable").get(0);

@@ -1,9 +1,9 @@
 package org.mwg.core.task;
 
-import org.mwg.plugin.AbstractTaskAction;
+import org.mwg.base.AbstractAction;
 import org.mwg.task.TaskContext;
 
-class ActionTraverseTimeRange extends AbstractTaskAction {
+class ActionTraverseTimeRange extends AbstractAction {
 
     private final String _from;
     private final String _to;
@@ -30,7 +30,7 @@ class ActionTraverseTimeRange extends AbstractTaskAction {
         final int previousSize = previous.size();
         for (int i = 0; i < previousSize; i++) {
             Object loopObj = previous.get(i);
-            if (loopObj instanceof AbstractNode) {
+            if (loopObj instanceof BaseNode) {
                 Node castedPreviousNode = (Node) loopObj;
                 final int finalIndex = i;
                 castedPreviousNode.jump(parsedTime, new Callback<Node>() {

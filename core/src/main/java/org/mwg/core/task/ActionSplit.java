@@ -1,10 +1,10 @@
 package org.mwg.core.task;
 
-import org.mwg.plugin.AbstractTaskAction;
+import org.mwg.base.AbstractAction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-class ActionSplit extends AbstractTaskAction {
+class ActionSplit extends AbstractAction {
 
     private String _splitPattern;
 

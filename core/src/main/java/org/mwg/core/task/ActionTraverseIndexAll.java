@@ -3,18 +3,21 @@ package org.mwg.core.task;
 import org.mwg.Callback;
 import org.mwg.DeferCounter;
 import org.mwg.Node;
-import org.mwg.plugin.AbstractNode;
-import org.mwg.plugin.AbstractTaskAction;
+import org.mwg.base.BaseNode;
+import org.mwg.base.AbstractAction;
 import org.mwg.plugin.Job;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-class ActionTraverseIndexAll extends AbstractTaskAction {
+class ActionTraverseIndexAll extends AbstractAction {
 
     private final String _indexName;
 
     ActionTraverseIndexAll(final String indexName) {
         super();
+        if (indexName == null) {
+            throw new RuntimeException("indexName should not be null");
+        }
         this._indexName = indexName;
     }
 
@@ -28,7 +31,7 @@ class ActionTraverseIndexAll extends AbstractTaskAction {
             final DeferCounter defer = context.graph().newCounter(previousSize);
             for (int i = 0; i < previousSize; i++) {
                 final Object loop = previousResult.get(i);
-                if (loop instanceof AbstractNode) {
+                if (loop instanceof BaseNode) {
                     final Node casted = (Node) loop;
                     casted.findAll(flatName, new Callback<Node[]>() {
                         @Override

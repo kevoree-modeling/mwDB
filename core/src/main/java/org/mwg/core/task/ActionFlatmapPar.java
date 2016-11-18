@@ -2,7 +2,7 @@ package org.mwg.core.task;
 
 import org.mwg.Callback;
 import org.mwg.DeferCounter;
-import org.mwg.plugin.AbstractTaskAction;
+import org.mwg.base.AbstractAction;
 import org.mwg.plugin.Job;
 import org.mwg.plugin.SchedulerAffinity;
 import org.mwg.task.Task;
@@ -11,7 +11,7 @@ import org.mwg.task.TaskResult;
 import org.mwg.task.TaskResultIterator;
 import org.mwg.utility.Tuple;
 
-class ActionFlatmapPar extends AbstractTaskAction {
+class ActionFlatmapPar extends AbstractAction {
 
     private final Task _subTask;
 

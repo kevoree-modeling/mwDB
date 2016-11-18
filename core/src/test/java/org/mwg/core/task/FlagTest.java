@@ -9,8 +9,8 @@ import org.mwg.Node;
 import org.mwg.core.scheduler.NoopScheduler;
 import org.mwg.task.*;
 
-import static org.mwg.task.Actions.newTask;
-import static org.mwg.task.Actions.setTime;
+import static org.mwg.core.task.Actions.newTask;
+import static org.mwg.core.task.Actions.setTime;
 
 public class FlagTest {
     @Test
@@ -69,7 +69,7 @@ public class FlagTest {
 
             Task traverse = newTask();
 
-            traverse.asGlobalVar("parent").traverse(relName).then(new Action() {
+            traverse.asGlobalVar("parent").traverse(relName).then(new ActionFunction() {
                 @Override
                 public void eval(TaskContext context) {
 
@@ -163,7 +163,7 @@ public class FlagTest {
 
             Task traverse = newTask();
 
-            traverse.asGlobalVar("parent").traverseOrKeep(relName).then(new Action() {
+            traverse.asGlobalVar("parent").traverseOrKeep(relName).then(new ActionFunction() {
                 @Override
                 public void eval(TaskContext context) {
                     TaskResult<Integer> count = context.variable("count");

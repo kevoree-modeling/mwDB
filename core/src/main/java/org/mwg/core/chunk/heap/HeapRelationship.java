@@ -3,8 +3,6 @@ package org.mwg.core.chunk.heap;
 import org.mwg.Constants;
 import org.mwg.struct.Relationship;
 
-import java.util.Arrays;
-
 class HeapRelationship implements Relationship {
 
     private long[] _back;

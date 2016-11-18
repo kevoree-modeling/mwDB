@@ -3,10 +3,10 @@ package org.mwg.core.task;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mwg.*;
-import org.mwg.task.Action;
+import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 
-import static org.mwg.task.Actions.newTask;
+import static org.mwg.core.task.Actions.newTask;
 
 public class ActionIndexOrUnindexNodeTest {
 
@@ -23,7 +23,7 @@ public class ActionIndexOrUnindexNodeTest {
                         .indexNode("indexName", "name")
                         .asGlobalVar("nodeIndexed")
                         .fromIndexAll("indexName")
-                        .then(new Action() {
+                        .then(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 Assert.assertNotNull(context.result());
@@ -35,7 +35,7 @@ public class ActionIndexOrUnindexNodeTest {
                         })
                         .unindexNode("indexName", "name")
                         .fromIndexAll("indexName")
-                        .then(new Action() {
+                        .then(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 Assert.assertNotNull(context.result());
@@ -72,7 +72,7 @@ public class ActionIndexOrUnindexNodeTest {
                         .indexNode("indexName", "name")
                         .asVar("nodeIndexed")
                         .fromIndexAll("indexName")
-                        .then(new Action() {
+                        .then(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 Assert.assertNotNull(context.result());
@@ -88,7 +88,7 @@ public class ActionIndexOrUnindexNodeTest {
                         })
                         .unindexNode("indexName", "name")
                         .fromIndexAll("indexName")
-                        .then(new Action() {
+                        .then(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 Assert.assertNotNull(context.result());

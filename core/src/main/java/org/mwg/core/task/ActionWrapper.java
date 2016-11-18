@@ -1,15 +1,18 @@
 package org.mwg.core.task;
 
-import org.mwg.plugin.AbstractTaskAction;
-import org.mwg.task.Action;
+import org.mwg.base.AbstractAction;
+import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 
-class ActionWrapper extends AbstractTaskAction {
+class ActionWrapper extends AbstractAction {
 
-    private final Action _wrapped;
+    private final ActionFunction _wrapped;
 
-    ActionWrapper(final Action p_wrapped) {
+    ActionWrapper(final ActionFunction p_wrapped) {
         super();
+        if (p_wrapped == null) {
+            throw new RuntimeException("action should not be null");
+        }
         this._wrapped = p_wrapped;
     }
 

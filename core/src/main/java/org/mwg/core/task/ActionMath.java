@@ -1,17 +1,17 @@
 package org.mwg.core.task;
 
 import org.mwg.Node;
+import org.mwg.base.BaseNode;
 import org.mwg.core.task.math.CoreMathExpressionEngine;
 import org.mwg.core.task.math.MathExpressionEngine;
-import org.mwg.plugin.AbstractNode;
-import org.mwg.plugin.AbstractTaskAction;
+import org.mwg.base.AbstractAction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
 import java.util.HashMap;
 import java.util.Map;
 
-class ActionMath extends AbstractTaskAction {
+class ActionMath extends AbstractAction {
 
     final private MathExpressionEngine _engine;
     final private String _expression;
@@ -33,9 +33,9 @@ class ActionMath extends AbstractTaskAction {
             variables.put("PI", Math.PI);
             variables.put("TRUE", 1.0);
             variables.put("FALSE", 0.0);
-            if (loop instanceof AbstractNode) {
+            if (loop instanceof BaseNode) {
                 next.add(_engine.eval((Node) loop, context, variables));
-                ((AbstractNode) loop).free();
+                ((BaseNode) loop).free();
             } else {
                 next.add(_engine.eval(null, context, variables));
             }

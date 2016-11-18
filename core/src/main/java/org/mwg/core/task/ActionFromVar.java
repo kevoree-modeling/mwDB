@@ -1,10 +1,10 @@
 package org.mwg.core.task;
 
-import org.mwg.plugin.AbstractTaskAction;
+import org.mwg.base.AbstractAction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-class ActionFromVar extends AbstractTaskAction {
+class ActionFromVar extends AbstractAction {
 
     private final String _name;
     private final int _index;

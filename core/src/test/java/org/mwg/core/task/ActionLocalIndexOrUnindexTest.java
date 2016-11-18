@@ -6,9 +6,8 @@ import org.mwg.Callback;
 import org.mwg.Graph;
 import org.mwg.GraphBuilder;
 import org.mwg.Type;
-import org.mwg.plugin.AbstractNode;
-import org.mwg.task.Action;
-import org.mwg.task.Actions;
+import org.mwg.base.BaseNode;
+import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
@@ -37,22 +36,22 @@ public class ActionLocalIndexOrUnindexTest {
                         .localIndex("idxRelation","name","child")
                         .fromIndexAll("rootIdx")
                         .traverseIndexAll("idxRelation")
-                        .then(new Action() {
+                        .then(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 TaskResult result = context.result();
                                 Assert.assertEquals(3,result.size());
 
-                                Assert.assertEquals("child1",((AbstractNode)result.get(0)).get("name"));
-                                Assert.assertEquals("child2",((AbstractNode)result.get(1)).get("name"));
-                                Assert.assertEquals("child3",((AbstractNode)result.get(2)).get("name"));
+                                Assert.assertEquals("child1",((BaseNode)result.get(0)).get("name"));
+                                Assert.assertEquals("child2",((BaseNode)result.get(1)).get("name"));
+                                Assert.assertEquals("child3",((BaseNode)result.get(2)).get("name"));
                             }
                         })
                         .fromIndexAll("rootIdx")
                         .localUnindex("idxRelation","name","child")
                         .fromIndexAll("rootIdx")
                         .traverseIndexAll("idxRelation")
-                        .then(new Action() {
+                        .then(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 TaskResult result = context.result();

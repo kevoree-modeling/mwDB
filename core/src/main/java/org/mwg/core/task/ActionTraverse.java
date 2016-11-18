@@ -1,8 +1,8 @@
 package org.mwg.core.task;
 
 import org.mwg.*;
-import org.mwg.plugin.AbstractNode;
-import org.mwg.plugin.AbstractTaskAction;
+import org.mwg.base.BaseNode;
+import org.mwg.base.AbstractAction;
 import org.mwg.plugin.Job;
 import org.mwg.struct.Relationship;
 import org.mwg.task.TaskContext;
@@ -10,7 +10,7 @@ import org.mwg.task.TaskResult;
 
 import java.util.ArrayList;
 
-class ActionTraverse extends AbstractTaskAction {
+class ActionTraverse extends AbstractAction {
 
     private final String _name;
 
@@ -32,7 +32,7 @@ class ActionTraverse extends AbstractTaskAction {
             long time = Constants.NULL_LONG;
             for (int i = 0; i < previousSize; i++) {
                 final Object loop = previousResult.get(i);
-                if (loop instanceof AbstractNode) {
+                if (loop instanceof BaseNode) {
                     final Node casted = (Node) loop;
                     if (time == Constants.NULL_LONG) {
                         time = casted.time();
@@ -52,7 +52,7 @@ class ActionTraverse extends AbstractTaskAction {
                 final ArrayList<Long> collected = new ArrayList<Long>();
                 for (int i = 0; i < previousSize; i++) {
                     final Object loop = previousResult.get(i);
-                    if (loop instanceof AbstractNode) {
+                    if (loop instanceof BaseNode) {
                         final Node casted = (Node) loop;
                         if (casted.type(flatName) == Type.RELATION) {
                             Relationship flatRel = (Relationship) casted.get(flatName);
@@ -82,7 +82,7 @@ class ActionTraverse extends AbstractTaskAction {
                 final DeferCounter defer = context.graph().newCounter(previousSize);
                 for (int i = 0; i < previousSize; i++) {
                     final Object loop = previousResult.get(i);
-                    if (loop instanceof AbstractNode) {
+                    if (loop instanceof BaseNode) {
                         final Node casted = (Node) loop;
                         casted.rel(flatName, new Callback<Node[]>() {
                             @Override

@@ -2,18 +2,18 @@ package org.mwg.core.task;
 
 import org.mwg.Callback;
 import org.mwg.DeferCounter;
-import org.mwg.plugin.AbstractTaskAction;
+import org.mwg.base.AbstractAction;
 import org.mwg.plugin.Job;
 import org.mwg.plugin.SchedulerAffinity;
 import org.mwg.task.Task;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-class ActionSubTasksPar extends AbstractTaskAction {
+class ActionSubTasksPar extends AbstractAction {
 
     private final Task[] _subTasks;
 
-    ActionSubTasksPar(final Task[] p_subTasks) {
+    ActionSubTasksPar(final Task... p_subTasks) {
         super();
         _subTasks = p_subTasks;
     }

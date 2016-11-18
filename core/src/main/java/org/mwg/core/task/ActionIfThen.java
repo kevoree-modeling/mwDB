@@ -1,19 +1,25 @@
 package org.mwg.core.task;
 
 import org.mwg.Callback;
-import org.mwg.plugin.AbstractTaskAction;
+import org.mwg.base.AbstractAction;
 import org.mwg.plugin.SchedulerAffinity;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskFunctionConditional;
 import org.mwg.task.TaskResult;
 
-class ActionIfThen extends AbstractTaskAction {
+class ActionIfThen extends AbstractAction {
 
     private TaskFunctionConditional _condition;
     private org.mwg.task.Task _action;
 
     ActionIfThen(final TaskFunctionConditional cond, final org.mwg.task.Task action) {
         super();
+        if (cond == null) {
+            throw new RuntimeException("condition should not be null");
+        }
+        if (action == null) {
+            throw new RuntimeException("subTask should not be null");
+        }
         this._condition = cond;
         this._action = action;
     }

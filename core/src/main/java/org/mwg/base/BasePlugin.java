@@ -1,12 +1,13 @@
-package org.mwg.plugin;
+package org.mwg.base;
 
+import org.mwg.plugin.*;
 import org.mwg.task.TaskActionFactory;
 import org.mwg.task.TaskHookFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class AbstractPlugin implements Plugin {
+public class BasePlugin implements Plugin {
 
     private final Map<String, NodeFactory> _nodeTypes = new HashMap<String, NodeFactory>();
 

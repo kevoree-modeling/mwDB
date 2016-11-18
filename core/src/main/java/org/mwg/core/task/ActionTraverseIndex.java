@@ -5,19 +5,25 @@ import org.mwg.DeferCounter;
 import org.mwg.Node;
 import org.mwg.Query;
 import org.mwg.core.CoreConstants;
-import org.mwg.plugin.AbstractNode;
-import org.mwg.plugin.AbstractTaskAction;
+import org.mwg.base.BaseNode;
+import org.mwg.base.AbstractAction;
 import org.mwg.plugin.Job;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-class ActionTraverseIndex extends AbstractTaskAction {
+class ActionTraverseIndex extends AbstractAction {
     private String _indexName;
     private String[] _queryParams;
     private String[] _resolvedQueryParams;
 
     ActionTraverseIndex(final String indexName, final String... queryParams) {
         super();
+        if (indexName == null) {
+            throw new RuntimeException("indexName should not be null");
+        }
+        if (queryParams.length % 2 != 0) {
+            throw new RuntimeException("The number of arguments in the queryParams MUST be even, because it should be a sequence of \"key\",\"value\". Current size: " + queryParams.length);
+        }
         this._queryParams = queryParams;
         this._indexName = indexName;
         _resolvedQueryParams = new String[queryParams.length];
@@ -47,7 +53,7 @@ class ActionTraverseIndex extends AbstractTaskAction {
             final DeferCounter defer = context.graph().newCounter(previousSize);
             for (int i = 0; i < previousSize; i++) {
                 final Object loop = previousResult.get(i);
-                if (loop instanceof AbstractNode) {
+                if (loop instanceof BaseNode) {
                     final Node casted = (Node) loop;
                     casted.findByQuery(query, new Callback<Node[]>() {
                         @Override

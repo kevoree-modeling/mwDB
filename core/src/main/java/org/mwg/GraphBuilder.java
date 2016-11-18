@@ -3,7 +3,9 @@ package org.mwg;
 import org.mwg.plugin.Plugin;
 import org.mwg.plugin.Scheduler;
 import org.mwg.plugin.Storage;
-import org.mwg.task.Task;
+import org.mwg.core.BlackHoleStorage;
+import org.mwg.core.scheduler.TrampolineScheduler;
+import org.mwg.core.utility.ReadOnlyStorage;
 
 /**
  * Creates an instance of a Graph, with several customizable features.
@@ -15,16 +17,6 @@ public class GraphBuilder {
     private Plugin[] _plugins = null;
     private long _memorySize = -1;
     private boolean _readOnly = false;
-
-    private static InternalBuilder _internalBuilder = null;
-
-    public interface InternalBuilder {
-
-        Graph newGraph(Storage storage, boolean readOnly, Scheduler scheduler, Plugin[] plugins, long memorySize);
-
-        Task newTask();
-
-    }
 
     /**
      * Sets the storage system to the given parameter.
@@ -90,27 +82,20 @@ public class GraphBuilder {
         return this;
     }
 
-    /**
-     * To call oce all options have been set, to actually create a graph instance.
-     *
-     * @return the {@link Graph}
-     * @native ts
-     * if (org.mwg.GraphBuilder._internalBuilder == null) {
-     * org.mwg.GraphBuilder._internalBuilder = new org.mwg.core.Builder();
-     * }
-     * return org.mwg.GraphBuilder._internalBuilder.newGraph(this._storage, this._readOnly, this._scheduler, this._plugins, this._memorySize);
-     */
     public Graph build() {
-        if (_internalBuilder == null) {
-            synchronized (this) {
-                try {
-                    _internalBuilder = (InternalBuilder) getClass().getClassLoader().loadClass("org.mwg.core.Builder").newInstance();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+        if (_storage == null) {
+            _storage = new BlackHoleStorage();
         }
-        return _internalBuilder.newGraph(_storage, _readOnly, _scheduler, _plugins, _memorySize);
+        if (_readOnly) {
+            _storage = new ReadOnlyStorage(_storage);
+        }
+        if (_scheduler == null) {
+            _scheduler = new TrampolineScheduler();
+        }
+        if (_memorySize == -1) {
+            _memorySize = 100000;
+        }
+        return new org.mwg.core.CoreGraph(_storage, _memorySize, _scheduler, _plugins);
     }
 
 }

@@ -3,12 +3,12 @@ package org.mwg.core.task;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mwg.Node;
-import org.mwg.task.Action;
+import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-import static org.mwg.task.Actions.newTask;
-import static org.mwg.task.Actions.then;
+import static org.mwg.core.task.Actions.newTask;
+import static org.mwg.core.task.Actions.then;
 
 public class ActionJumpTest extends AbstractActionTest {
 
@@ -19,7 +19,7 @@ public class ActionJumpTest extends AbstractActionTest {
         newTask()
                 .fromIndexAll("nodes")
                 .asGlobalVar("nodes")
-                .foreach(then(new Action() {
+                .foreach(then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         TaskResult<Node> nodes = context.resultAsNodes();
@@ -29,7 +29,7 @@ public class ActionJumpTest extends AbstractActionTest {
                 }))
                 .fromVar("nodes")
                 .jump("10")
-                .foreach(then(new Action() {
+                .foreach(then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         TaskResult<Node> nodes = context.resultAsNodes();

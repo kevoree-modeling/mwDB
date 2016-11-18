@@ -7,7 +7,7 @@ import org.mwg.Callback;
 import org.mwg.Node;
 import org.mwg.task.*;
 
-import static org.mwg.task.Actions.*;
+import static org.mwg.core.task.Actions.*;
 
 public class ActionWhileDoTest extends AbstractActionTest {
 
@@ -67,7 +67,7 @@ public class ActionWhileDoTest extends AbstractActionTest {
                             public boolean eval(TaskContext context) {
                                 return context.resultAsNodes().get(0).get("child") != null;
                             }
-                        }, traverse("child"), then(new Action() {
+                        }, traverse("child"), then(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 //System.out.println("if is false");

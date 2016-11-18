@@ -4,8 +4,7 @@ import org.mwg.Callback;
 import org.mwg.Constants;
 import org.mwg.DeferCounterSync;
 import org.mwg.Graph;
-import org.mwg.core.task.math.MathConditional;
-import org.mwg.plugin.AbstractTaskAction;
+import org.mwg.base.AbstractAction;
 import org.mwg.plugin.Job;
 import org.mwg.plugin.SchedulerAffinity;
 import org.mwg.task.*;
@@ -14,415 +13,97 @@ import java.util.Map;
 
 public class CoreTask implements org.mwg.task.Task {
 
-    private AbstractTaskAction _first = null;
-    private AbstractTaskAction _last = null;
+    public static Task task() {
+        return new CoreTask();
+    }
+
+    private AbstractAction _first = null;
+    private AbstractAction _last = null;
     private TaskHookFactory _hookFactory = null;
 
-    private void addAction(AbstractTaskAction nextAction) {
+    @Override
+    public Task then(Action nextAction) {
         if (_first == null) {
-            _first = nextAction;
+            _first = (AbstractAction) nextAction;
             _last = _first;
         } else {
-            _last.setNext(nextAction);
-            _last = nextAction;
+            _last.setNext((AbstractAction) nextAction);
+            _last = (AbstractAction) nextAction;
         }
-    }
-
-    @Override
-    public final org.mwg.task.Task setWorld(String template) {
-        addAction(new ActionWorld(template));
         return this;
     }
 
     @Override
-    public final org.mwg.task.Task setTime(String template) {
-        addAction(new ActionTime(template));
-        return this;
+    public Task thenDo(ActionFunction nextActionFunction) {
+        return then(new ActionWrapper(nextActionFunction));
     }
 
     @Override
-    public final org.mwg.task.Task fromIndex(String indexName, String query) {
-        if (indexName == null) {
-            throw new RuntimeException("indexName should not be null");
-        }
-        if (query == null) {
-            throw new RuntimeException("query should not be null");
-        }
-        addAction(new ActionFromIndex(indexName, query));
-        return this;
+    public Task doWhile(Task task, TaskFunctionConditional cond) {
+        return then(new ActionDoWhile(task, cond));
     }
 
     @Override
-    public final org.mwg.task.Task fromIndexAll(String indexName) {
-        if (indexName == null) {
-            throw new RuntimeException("indexName should not be null");
-        }
-        addAction(new ActionFromIndexAll(indexName));
-        return this;
+    public Task loop(String from, String to, Task subTask) {
+        return then(new ActionLoop(from, to, subTask));
     }
 
     @Override
-    public Task indexNode(String indexName, String flatKeyAttributes) {
-        addAction(new ActionIndexOrUnindexNode(indexName, flatKeyAttributes, true));
-        return this;
+    public Task loopPar(String from, String to, Task subTask) {
+        return then(new ActionLoopPar(from, to, subTask));
     }
 
     @Override
-    public Task indexNodeAt(String world, String time, String indexName, String flatKeyAttributes) {
-        addAction(new ActionIndexOrUnindexNodeAt(world, time, indexName, flatKeyAttributes, true));
-        return this;
+    public Task forEach(Task subTask) {
+        return then(new ActionForEach(subTask));
     }
 
     @Override
-    public Task localIndex(String indexedRelation, String flatKeyAttributes, String varNodeToAdd) {
-        addAction(new ActionLocalIndexOrUnindex(indexedRelation, flatKeyAttributes, varNodeToAdd, true));
-        return this;
+    public Task forEachPar(Task subTask) {
+        return then(new ActionForEachPar(subTask));
     }
 
     @Override
-    public Task unindexNodeAt(String world, String time, String indexName, String flatKeyAttributes) {
-        addAction(new ActionIndexOrUnindexNodeAt(world, time, indexName, flatKeyAttributes, true));
-        return this;
+    public Task flatMap(Task subTask) {
+        return then(new ActionFlatmap(subTask));
     }
 
     @Override
-    public Task unindexNode(String indexName, String flatKeyAttributes) {
-        addAction(new ActionIndexOrUnindexNode(indexName, flatKeyAttributes, false));
-        return this;
+    public Task flatMapPar(Task subTask) {
+        return then(new ActionFlatmap(subTask));
     }
 
     @Override
-    public Task localUnindex(String indexedRelation, String flatKeyAttributes, String varNodeToAdd) {
-        addAction(new ActionLocalIndexOrUnindex(indexedRelation, flatKeyAttributes, varNodeToAdd, false));
-        return this;
+    public Task ifThen(TaskFunctionConditional cond, Task then) {
+        return then(new ActionIfThen(cond, then));
     }
 
     @Override
-    public Task indexesNames() {
-        addAction(new ActionIndexesNames());
-        return this;
+    public Task ifThenElse(TaskFunctionConditional cond, Task thenSub, Task elseSub) {
+        return then(new ActionIfThenElse(cond, thenSub, elseSub));
     }
 
     @Override
-    public final org.mwg.task.Task selectWith(String name, String pattern) {
-        if (pattern == null) {
-            throw new RuntimeException("pattern should not be null");
-        }
-        addAction(new ActionWith(name, pattern));
-        return this;
+    public Task whileDo(TaskFunctionConditional cond, Task then) {
+        return then(new ActionWhileDo(cond, then));
     }
 
     @Override
-    public final org.mwg.task.Task selectWithout(String name, String pattern) {
-        if (pattern == null) {
-            throw new RuntimeException("pattern should not be null");
-        }
-        addAction(new ActionWithout(name, pattern));
-        return this;
-    }
-
-    @Override
-    public final org.mwg.task.Task asGlobalVar(String variableName) {
-        if (variableName == null) {
-            throw new RuntimeException("variableName should not be null");
-        }
-        addAction(new ActionAsVar(variableName, true));
-        return this;
-    }
-
-    @Override
-    public final org.mwg.task.Task asVar(String variableName) {
-        if (variableName == null) {
-            throw new RuntimeException("variableName should not be null");
-        }
-        addAction(new ActionAsVar(variableName, false));
-        return this;
-    }
-
-    @Override
-    public final org.mwg.task.Task defineVar(String variableName) {
-        if (variableName == null) {
-            throw new RuntimeException("variableName should not be null");
-        }
-        addAction(new ActionDefineVar(variableName));
-        return this;
-    }
-
-    @Override
-    public Task addToGlobalVar(String variableName) {
-        if (variableName == null) {
-            throw new RuntimeException("variableName should not be null");
-        }
-        addAction(new ActionAddToVar(variableName, true));
-        return this;
-    }
-
-    @Override
-    public Task addToVar(String variableName) {
-        if (variableName == null) {
-            throw new RuntimeException("variableName should not be null");
-        }
-        addAction(new ActionAddToVar(variableName, false));
-        return this;
-    }
-
-    @Override
-    public final org.mwg.task.Task fromVar(String variableName) {
-        if (variableName == null) {
-            throw new RuntimeException("variableName should not be null");
-        }
-        addAction(new ActionFromVar(variableName, -1));
-        return this;
-    }
-
-    @Override
-    public final org.mwg.task.Task fromVarAt(String variableName, int index) {
-        if (variableName == null) {
-            throw new RuntimeException("variableName should not be null");
-        }
-        addAction(new ActionFromVar(variableName, index));
-        return this;
-    }
-
-    @Override
-    public final org.mwg.task.Task select(TaskFunctionSelect filter) {
-        if (filter == null) {
-            throw new RuntimeException("filter should not be null");
-        }
-        addAction(new ActionSelect(filter));
-        return this;
-    }
-
-    @Override
-    public final Task selectObject(TaskFunctionSelectObject filterFunction) {
-        if (filterFunction == null) {
-            throw new RuntimeException("filterFunction should not be null");
-        }
-        addAction(new ActionSelectObject(filterFunction));
-        return this;
-    }
-
-    @Override
-    public final org.mwg.task.Task selectWhere(org.mwg.task.Task subTask) {
-        throw new RuntimeException("Not implemented yet");
-    }
-
-    @Override
-    public final Task get(String name) {
-        addAction(new ActionGet(name));
-        return this;
-    }
-
-    @Override
-    public final org.mwg.task.Task traverse(String relationName) {
-        addAction(new ActionTraverse(relationName));
-        return this;
-    }
-
-    @Override
-    public Task traverseTimeRange(String from, String to) {
-        addAction(new ActionTraverseTimeRange(from,to));
-        return this;
-    }
-
-    @Override
-    public final Task traverseOrKeep(String relationName) {
-        addAction(new ActionTraverseOrKeep(relationName));
-        return this;
-    }
-
-    @Override
-    public final org.mwg.task.Task traverseIndex(String indexName, String... queryParams) {
-        if (indexName == null) {
-            throw new RuntimeException("indexName should not be null");
-        }
-        if (queryParams.length % 2 != 0) {
-            throw new RuntimeException("The number of arguments in the queryParams MUST be even, because it should be a sequence of \"key\",\"value\". Current size: " + queryParams.length);
-        }
-        addAction(new ActionTraverseIndex(indexName, queryParams));
-        return this;
-    }
-
-    @Override
-    public final org.mwg.task.Task traverseIndexAll(String indexName) {
-        if (indexName == null) {
-            throw new RuntimeException("indexName should not be null");
-        }
-        addAction(new ActionTraverseIndexAll(indexName));
-        return this;
-    }
-
-    @Override
-    public final org.mwg.task.Task map(TaskFunctionMap mapFunction) {
-        if (mapFunction == null) {
-            throw new RuntimeException("mapFunction should not be null");
-        }
-        addAction(new ActionMap(mapFunction));
-        return this;
-    }
-
-    @Override
-    public final org.mwg.task.Task group(TaskFunctionGroup groupFunction) {
-        throw new RuntimeException("Not implemented yet");
-    }
-
-    @Override
-    public final org.mwg.task.Task groupWhere(Task groupSubTask) {
-        throw new RuntimeException("Not implemented yet");
-    }
-
-    @Override
-    public final org.mwg.task.Task inject(Object inputValue) {
-        if (inputValue == null) {
-            throw new RuntimeException("inputValue should not be null");
-
-        }
-        addAction(new ActionInject(inputValue));
-        return this;
-    }
-
-    @Override
-    public final org.mwg.task.Task subTask(Task subTask) {
-        if (subTask == null) {
-            throw new RuntimeException("subTask should not be null");
-        }
-        addAction(new ActionSubTask(subTask));
+    public Task map(Task... subTasks) {
+        then(new ActionSubTasks(subTasks));
         return this;
     }
 
     @Override
     public Task isolate(Task subTask) {
-        if (subTask == null) {
-            throw new RuntimeException("subTask should not be null");
-        }
-        addAction(new ActionIsolate(subTask));
+        then(new ActionIsolate(subTask));
         return this;
     }
 
-    @Override
-    public Task subTasks(Task[] subTasks) {
-        if (subTasks == null) {
-            throw new RuntimeException("subTask should not be null");
-        }
-        addAction(new ActionSubTasks(subTasks));
-        return this;
-    }
 
     @Override
-    public Task subTasksPar(Task[] subTasks) {
-        if (subTasks == null) {
-            throw new RuntimeException("subTask should not be null");
-        }
-        addAction(new ActionSubTasksPar(subTasks));
-        return this;
-    }
-
-    @Override
-    public final org.mwg.task.Task ifThen(TaskFunctionConditional cond, Task then) {
-        if (cond == null) {
-            throw new RuntimeException("condition should not be null");
-        }
-        if (then == null) {
-            throw new RuntimeException("subTask should not be null");
-        }
-        addAction(new ActionIfThen(cond, then));
-        return this;
-    }
-
-    @Override
-    public Task ifThenElse(TaskFunctionConditional cond, Task thenSub, Task elseSub) {
-        if (cond == null) {
-            throw new RuntimeException("condition should not be null");
-        }
-        if (thenSub == null) {
-            throw new RuntimeException("thenSub should not be null");
-        }
-        if (elseSub == null) {
-            throw new RuntimeException("elseSub should not be null");
-        }
-        addAction(new ActionIfThenElse(cond, thenSub, elseSub));
-        return this;
-    }
-
-    @Override
-    public final org.mwg.task.Task whileDo(TaskFunctionConditional cond, org.mwg.task.Task then) {
-        addAction(new ActionWhileDo(cond, then));
-        return this;
-        //throw new RuntimeException("Not implemented yet");
-    }
-
-    @Override
-    public final org.mwg.task.Task doWhile(Task then, TaskFunctionConditional cond) {
-        addAction(new ActionDoWhile(then, cond));
-        return this;
-    }
-
-    @Override
-    public final org.mwg.task.Task then(Action p_action) {
-        if (p_action == null) {
-            throw new RuntimeException("action should not be null");
-        }
-        addAction(new ActionWrapper(p_action));
-        return this;
-    }
-
-    @Override
-    public final org.mwg.task.Task foreach(Task subTask) {
-        if (subTask == null) {
-            throw new RuntimeException("subTask should not be null");
-        }
-        addAction(new ActionForeach(subTask));
-        return this;
-    }
-
-    @Override
-    public Task flatmap(Task subTask) {
-        if (subTask == null) {
-            throw new RuntimeException("subTask should not be null");
-        }
-        addAction(new ActionFlatmap(subTask));
-        return this;
-    }
-
-    @Override
-    public final org.mwg.task.Task foreachPar(Task subTask) {
-        if (subTask == null) {
-            throw new RuntimeException("subTask should not be null");
-        }
-        addAction(new ActionForeachPar(subTask));
-        return this;
-    }
-
-    @Override
-    public Task flatmapPar(Task subTask) {
-        if (subTask == null) {
-            throw new RuntimeException("subTask should not be null");
-        }
-        addAction(new ActionFlatmapPar(subTask));
-        return this;
-    }
-
-    @Override
-    public Task save() {
-        addAction(new ActionSave());
-        return this;
-    }
-
-    @Override
-    public Task clear() {
-        addAction(new ActionClear());
-        return this;
-    }
-
-    @Override
-    public Task lookup(String nodeId) {
-        addAction(new ActionLookup(nodeId));
-        return this;
-    }
-
-    @Override
-    public Task lookupAll(String nodeId) {
-        addAction(new ActionLookupAll(nodeId));
+    public Task mapPar(Task... subTasks) {
+        then(new ActionSubTasksPar(subTasks));
         return this;
     }
 
@@ -539,18 +220,6 @@ public class CoreTask implements org.mwg.task.Task {
     }
 
     @Override
-    public Task action(String name, String flatParams) {
-        if (name == null) {
-            throw new RuntimeException("name should not be null");
-        }
-        if (flatParams == null) {
-            throw new RuntimeException("flatParams should not be null");
-        }
-        addAction(new ActionPlugin(name, flatParams));
-        return this;
-    }
-
-    @Override
     public Task parse(final String flat) {
         if (flat == null) {
             throw new RuntimeException("flat should not be null");
@@ -576,7 +245,7 @@ public class CoreTask implements org.mwg.task.Task {
                 case Constants.TASK_SEP:
                     if (!isClosed) {
                         String getName = flat.substring(previous, cursor);
-                        action("get", getName);//default action
+                        new ActionPlugin("get", getName);//default action
                     }
                     actionName = null;
                     isEscaped = false;
@@ -594,7 +263,7 @@ public class CoreTask implements org.mwg.task.Task {
                     } else {
                         extracted = flat.substring(previous, cursor);
                     }
-                    action(actionName, extracted);
+                    new ActionPlugin(actionName, extracted);
                     actionName = null;
                     previous = cursor + 1;
                     isClosed = true;
@@ -606,147 +275,9 @@ public class CoreTask implements org.mwg.task.Task {
         if (!isClosed) {
             String getName = flat.substring(previous, cursor);
             if (getName.length() > 0) {
-                action("get", getName);//default action
+                new ActionPlugin("get", getName);//default action
             }
         }
-        return this;
-    }
-
-    @Override
-    public Task newNode() {
-        addAction(new ActionNewNode(null));
-        return this;
-    }
-
-    @Override
-    public Task newTypedNode(String typeNode) {
-        addAction(new ActionNewNode(typeNode));
-        return this;
-    }
-
-    @Override
-    public Task setProperty(String propertyName, byte propertyType, String variableNameToSet) {
-        if (propertyName == null) {
-            throw new RuntimeException("propertyName should not be null");
-        }
-        if (variableNameToSet == null) {
-            throw new RuntimeException("variableNameToSet should not be null");
-        }
-        addAction(new ActionSetProperty(propertyName, propertyType, variableNameToSet, false));
-        return this;
-    }
-
-    @Override
-    public Task forceProperty(String propertyName, byte propertyType, String variableNameToSet) {
-        if (propertyName == null) {
-            throw new RuntimeException("propertyName should not be null");
-        }
-        if (variableNameToSet == null) {
-            throw new RuntimeException("variableNameToSet should not be null");
-        }
-        addAction(new ActionSetProperty(propertyName, propertyType, variableNameToSet, true));
-        return this;
-    }
-
-    @Override
-    public Task removeProperty(String propertyName) {
-        if (propertyName == null) {
-            throw new RuntimeException("propertyName should not be null");
-        }
-        addAction(new ActionRemoveProperty(propertyName));
-        return this;
-    }
-
-    @Override
-    public Task add(String relationName, String variableNameToAdd) {
-        if (relationName == null) {
-            throw new RuntimeException("relationName should not be null");
-        }
-        if (variableNameToAdd == null) {
-            throw new RuntimeException("variableNameToAdd should not be null");
-        }
-        addAction(new ActionAdd(relationName, variableNameToAdd));
-        return this;
-    }
-
-    @Override
-    public Task addTo(String relationName, String variableNameTarget) {
-        if (relationName == null) {
-            throw new RuntimeException("relationName should not be null");
-        }
-        if (variableNameTarget == null) {
-            throw new RuntimeException("variableNameTarget should not be null");
-        }
-        addAction(new ActionAddTo(relationName, variableNameTarget));
-        return this;
-    }
-
-    @Override
-    public Task propertiesWithTypes(byte filter) {
-        addAction(new ActionProperties(filter));
-        return this;
-    }
-
-    @Override
-    public Task properties() {
-        addAction(new ActionProperties((byte) -1));
-        return this;
-    }
-
-    @Override
-    public Task remove(String relationName, String variableNameToRemove) {
-        if (relationName == null) {
-            throw new RuntimeException("relationName should not be null");
-        }
-        if (variableNameToRemove == null) {
-            throw new RuntimeException("variableNameToRemove should not be null");
-        }
-        addAction(new ActionRemove(relationName, variableNameToRemove));
-        return this;
-    }
-
-    @Override
-    public Task jump(String time) {
-        if (time == null) {
-            throw new RuntimeException("time should not be null");
-        }
-        addAction(new ActionJump(time));
-        return this;
-    }
-
-    @Override
-    public Task math(String expression) {
-        addAction(new ActionMath(expression));
-        return this;
-    }
-
-    @Override
-    public Task split(String splitPattern) {
-        addAction(new ActionSplit(splitPattern));
-        return this;
-    }
-
-    @Override
-    public Task loop(String from, String to, Task subTask) {
-        addAction(new ActionLoop(from, to, subTask));
-        return this;
-    }
-
-    @Override
-    public Task loopPar(String from, String to, Task subTask) {
-        addAction(new ActionLoopPar(from, to, subTask));
-        return this;
-    }
-
-    @Override
-    public Task print(String name) {
-        addAction(new ActionPrint(name,false));
-        return this;
-    }
-
-    @Override
-    public Task println(String name) {
-        addAction(new ActionPrint(name,true));
         return this;
     }
 
@@ -761,15 +292,10 @@ public class CoreTask implements org.mwg.task.Task {
         return new CoreTaskResult(null, false);
     }
 
-    @Override
-    public TaskFunctionConditional mathConditional(String mathExpression) {
-        return new MathConditional(mathExpression).conditional();
-    }
-
     public static void fillDefault(Map<String, TaskActionFactory> registry) {
         registry.put("get", new TaskActionFactory() { //DefaultTask
             @Override
-            public TaskAction create(String[] params) {
+            public Action create(String[] params) {
                 if (params.length != 1) {
                     throw new RuntimeException("get action need one parameter");
                 }
@@ -778,7 +304,7 @@ public class CoreTask implements org.mwg.task.Task {
         });
         registry.put("math", new TaskActionFactory() { //DefaultTask
             @Override
-            public TaskAction create(String[] params) {
+            public Action create(String[] params) {
                 if (params.length != 1) {
                     throw new RuntimeException("math action need one parameter");
                 }
@@ -787,7 +313,7 @@ public class CoreTask implements org.mwg.task.Task {
         });
         registry.put("traverse", new TaskActionFactory() {
             @Override
-            public TaskAction create(String[] params) {
+            public Action create(String[] params) {
                 if (params.length != 1) {
                     throw new RuntimeException("traverse action need one parameter");
                 }
@@ -796,7 +322,7 @@ public class CoreTask implements org.mwg.task.Task {
         });
         registry.put("traverseOrKeep", new TaskActionFactory() {
             @Override
-            public TaskAction create(String[] params) {
+            public Action create(String[] params) {
                 if (params.length != 1) {
                     throw new RuntimeException("traverseOrKeep action need one parameter");
                 }
@@ -805,7 +331,7 @@ public class CoreTask implements org.mwg.task.Task {
         });
         registry.put("fromIndexAll", new TaskActionFactory() {
             @Override
-            public TaskAction create(String[] params) {
+            public Action create(String[] params) {
                 if (params.length != 1) {
                     throw new RuntimeException("fromIndexAll action need one parameter");
                 }
@@ -814,7 +340,7 @@ public class CoreTask implements org.mwg.task.Task {
         });
         registry.put("fromIndex", new TaskActionFactory() {
             @Override
-            public TaskAction create(String[] params) {
+            public Action create(String[] params) {
                 if (params.length != 2) {
                     throw new RuntimeException("fromIndex action need two parameter");
                 }
@@ -823,7 +349,7 @@ public class CoreTask implements org.mwg.task.Task {
         });
         registry.put("with", new TaskActionFactory() {
             @Override
-            public TaskAction create(String[] params) {
+            public Action create(String[] params) {
                 if (params.length != 2) {
                     throw new RuntimeException("with action need two parameter");
                 }
@@ -832,7 +358,7 @@ public class CoreTask implements org.mwg.task.Task {
         });
         registry.put("without", new TaskActionFactory() {
             @Override
-            public TaskAction create(String[] params) {
+            public Action create(String[] params) {
                 if (params.length != 2) {
                     throw new RuntimeException("without action need two parameter");
                 }

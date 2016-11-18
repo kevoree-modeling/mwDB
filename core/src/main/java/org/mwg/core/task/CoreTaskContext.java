@@ -5,8 +5,8 @@ import org.mwg.Graph;
 import org.mwg.Node;
 import org.mwg.core.task.math.CoreMathExpressionEngine;
 import org.mwg.core.task.math.MathExpressionEngine;
-import org.mwg.plugin.AbstractNode;
-import org.mwg.plugin.AbstractTaskAction;
+import org.mwg.base.BaseNode;
+import org.mwg.base.AbstractAction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskHook;
 import org.mwg.task.TaskResult;
@@ -26,7 +26,7 @@ class CoreTaskContext implements TaskContext {
 
     private Map<String, TaskResult> _localVariables = null;
     private Map<String, TaskResult> _nextVariables = null;
-    private AbstractTaskAction _current;
+    private AbstractAction _current;
     TaskResult _result;
     private long _world;
     private long _time;
@@ -213,14 +213,14 @@ class CoreTaskContext implements TaskContext {
                 TaskResult casted = (TaskResult) value;
                 for (int i = 0; i < casted.size(); i++) {
                     final Object loop = casted.get(i);
-                    if (loop instanceof AbstractNode) {
+                    if (loop instanceof BaseNode) {
                         final Node castedNode = (Node) loop;
                         previous.add(castedNode.graph().cloneNode(castedNode));
                     } else {
                         previous.add(loop);
                     }
                 }
-            } else if (value instanceof AbstractNode) {
+            } else if (value instanceof BaseNode) {
                 final Node castedNode = (Node) value;
                 previous.add(castedNode.graph().cloneNode(castedNode));
             } else {
@@ -248,14 +248,14 @@ class CoreTaskContext implements TaskContext {
                 TaskResult casted = (TaskResult) value;
                 for (int i = 0; i < casted.size(); i++) {
                     final Object loop = casted.get(i);
-                    if (loop instanceof AbstractNode) {
+                    if (loop instanceof BaseNode) {
                         final Node castedNode = (Node) loop;
                         previous.add(castedNode.graph().cloneNode(castedNode));
                     } else {
                         previous.add(loop);
                     }
                 }
-            } else if (value instanceof AbstractNode) {
+            } else if (value instanceof BaseNode) {
                 final Node castedNode = (Node) value;
                 previous.add(castedNode.graph().cloneNode(castedNode));
             } else {
@@ -307,7 +307,7 @@ class CoreTaskContext implements TaskContext {
         if (this._hook != null) {
             this._hook.afterAction(_current, this);
         }
-        final AbstractTaskAction nextAction = _current.next();
+        final AbstractAction nextAction = _current.next();
         _current = nextAction;
         if (nextAction == null) {
             /* Clean */
@@ -355,7 +355,7 @@ class CoreTaskContext implements TaskContext {
         }
     }
 
-    final void execute(AbstractTaskAction initialTaskAction) {
+    final void execute(AbstractAction initialTaskAction) {
         this._current = initialTaskAction;
         if (this._hook != null) {
             if (_parent == null) {

@@ -2,11 +2,11 @@ package org.mwg.core.task;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.mwg.task.Action;
+import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskFunctionSelectObject;
 
-import static org.mwg.task.Actions.newTask;
+import static org.mwg.core.task.Actions.newTask;
 
 public class ActionSelectObjectTest extends AbstractActionTest {
 
@@ -21,7 +21,7 @@ public class ActionSelectObjectTest extends AbstractActionTest {
                         return false;
                     }
                 })
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertEquals(context.result().size(),0);
@@ -36,7 +36,7 @@ public class ActionSelectObjectTest extends AbstractActionTest {
                         return true;
                     }
                 })
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertNotEquals(context.result().size(),0);
@@ -52,7 +52,7 @@ public class ActionSelectObjectTest extends AbstractActionTest {
                         return (Integer) object == 55;
                     }
                 })
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertNotEquals(context.result().size(),0);
@@ -79,7 +79,7 @@ public class ActionSelectObjectTest extends AbstractActionTest {
                         return false;
                     }
                 })
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Object[] objects = (Object[]) context.result();
@@ -96,7 +96,7 @@ public class ActionSelectObjectTest extends AbstractActionTest {
                         return true;
                     }
                 })
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertNotNull(context.result());
@@ -115,7 +115,7 @@ public class ActionSelectObjectTest extends AbstractActionTest {
                         return (Integer) object % 2 == 0;
                     }
                 })
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertNotNull(context.result());
@@ -142,7 +142,7 @@ public class ActionSelectObjectTest extends AbstractActionTest {
                         return false;
                     }
                 })
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Object[] objects = (Object[]) context.result();
@@ -160,7 +160,7 @@ public class ActionSelectObjectTest extends AbstractActionTest {
                         return true;
                     }
                 })
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertNotNull(context.result());
@@ -177,7 +177,7 @@ public class ActionSelectObjectTest extends AbstractActionTest {
                         return (Integer) object % 2 == 0;
                     }
                 })
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertNotNull(context.result());
@@ -218,7 +218,7 @@ public class ActionSelectObjectTest extends AbstractActionTest {
                         return false;
                     }
                 })
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Object[] objects = (Object[]) context.result();
@@ -236,7 +236,7 @@ public class ActionSelectObjectTest extends AbstractActionTest {
                         return true;
                     }
                 })
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         ActionSelectObjectTest.this.compareArray(toInject, (Object[]) context.result());
@@ -250,10 +250,10 @@ public class ActionSelectObjectTest extends AbstractActionTest {
                 .selectObject(new TaskFunctionSelectObject() {
                     @Override
                     public boolean select(Object object) {
-                        return object instanceof AbstractNode;
+                        return object instanceof BaseNode;
                     }
                 })
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Object[] result = new Object[2];
@@ -286,7 +286,7 @@ public class ActionSelectObjectTest extends AbstractActionTest {
         for (int i = 0; i < expected.length; i++) {
             if (expected[i] instanceof Object[]) {
                 compareArray((Object[]) expected[i], (Object[]) result[i]);
-            } else if (expected[i] instanceof AbstractNode) {
+            } else if (expected[i] instanceof BaseNode) {
                 Assert.assertEquals(((Node) expected[i]).id(), ((Node) result[i]).id());
             } else {
                 Assert.assertEquals(expected[i], result[i]);

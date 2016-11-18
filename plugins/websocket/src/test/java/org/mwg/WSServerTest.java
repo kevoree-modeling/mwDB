@@ -3,7 +3,7 @@ package org.mwg;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mwg.chunk.StateChunk;
-import org.mwg.plugin.AbstractNode;
+import org.mwg.base.BaseNode;
 import org.mwg.struct.Buffer;
 
 import java.io.IOException;
@@ -43,7 +43,7 @@ public class WSServerTest {
                     public void on(Node result) {
                         System.out.println(result.toString());
 
-                        StateChunk chunk = (StateChunk) graph.space().get(((AbstractNode) result)._index_stateChunk);
+                        StateChunk chunk = (StateChunk) graph.space().get(((BaseNode) result)._index_stateChunk);
 
                         Buffer buffer = graph.newBuffer();
                         chunk.save(buffer);

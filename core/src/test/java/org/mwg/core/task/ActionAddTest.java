@@ -5,11 +5,11 @@ import org.junit.Test;
 import org.mwg.Callback;
 import org.mwg.Node;
 import org.mwg.struct.Relationship;
-import org.mwg.task.Action;
+import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-import static org.mwg.task.Actions.*;
+import static org.mwg.core.task.Actions.*;
 
 public class ActionAddTest extends AbstractActionTest {
 
@@ -25,7 +25,7 @@ public class ActionAddTest extends AbstractActionTest {
         newNode()
                 .inject(relatedNode).asGlobalVar("x")
                 .add("friend", "x")
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Node node = (Node) context.result().get(0);
@@ -52,7 +52,7 @@ public class ActionAddTest extends AbstractActionTest {
 
         final long[] ids = new long[5];
         inject(relatedNode).asGlobalVar("x")
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Node[] nodes = new Node[5];
@@ -63,7 +63,7 @@ public class ActionAddTest extends AbstractActionTest {
                     }
                 })
                 .add("friend", "x")
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         TaskResult<Node> nodes = context.resultAsNodes();
@@ -93,14 +93,14 @@ public class ActionAddTest extends AbstractActionTest {
 
         final boolean[] nextCalled = new boolean[1];
 
-        then(new Action() {
+        then(new ActionFunction() {
             @Override
             public void eval(TaskContext context) {
                 context.continueWith(null);
             }
         }).inject(relatedNode).asGlobalVar("x")
                 .add("friend", "x")
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         nextCalled[0] = true;

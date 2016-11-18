@@ -9,8 +9,8 @@ import org.mwg.Node;
 import org.mwg.task.Task;
 import org.mwg.task.TaskResult;
 
-import static org.mwg.task.Actions.asVar;
-import static org.mwg.task.Actions.newTask;
+import static org.mwg.core.task.Actions.asVar;
+import static org.mwg.core.task.Actions.newTask;
 
 public class DFSTest {
 
@@ -115,7 +115,7 @@ public class DFSTest {
 
                 dfs/*.hook(VerboseHook.instance())/*/ /*.hook(VerboseHook.instance())/*.hook(new TaskHook() {
                     @Override
-                    public void on(TaskAction previous, TaskAction next, TaskContext context) {
+                    public void on(Action previous, Action next, TaskContext context) {
                         System.out.println(next);
                     }
                 })*/.executeWith(n1.graph(), initialResult, result -> Assert.assertEquals(result.toString(), "[2,4,5,7]"));

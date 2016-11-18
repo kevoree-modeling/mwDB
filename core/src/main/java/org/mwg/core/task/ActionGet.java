@@ -4,13 +4,13 @@ import org.mwg.Callback;
 import org.mwg.DeferCounter;
 import org.mwg.Node;
 import org.mwg.Type;
-import org.mwg.plugin.AbstractNode;
-import org.mwg.plugin.AbstractTaskAction;
+import org.mwg.base.BaseNode;
+import org.mwg.base.AbstractAction;
 import org.mwg.plugin.Job;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-class ActionGet extends AbstractTaskAction {
+class ActionGet extends AbstractAction {
 
     private final String _name;
 
@@ -29,7 +29,7 @@ class ActionGet extends AbstractTaskAction {
             final DeferCounter defer = context.graph().newCounter(previousSize);
             for (int i = 0; i < previousSize; i++) {
                 final Object loop = previousResult.get(i);
-                if (loop instanceof AbstractNode) {
+                if (loop instanceof BaseNode) {
                     final Node casted = (Node) loop;
                     if (casted.type(flatName) == Type.RELATION) {
                         casted.rel(flatName, new Callback<Node[]>() {

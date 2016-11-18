@@ -1,4 +1,6 @@
-package org.mwg.plugin;
+package org.mwg.base;
+
+import org.mwg.plugin.Job;
 
 public abstract class AbstractExternalAttribute {
 

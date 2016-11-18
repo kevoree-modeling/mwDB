@@ -3,16 +3,22 @@ package org.mwg.core.task;
 import org.mwg.Callback;
 import org.mwg.Constants;
 import org.mwg.Node;
-import org.mwg.plugin.AbstractTaskAction;
+import org.mwg.base.AbstractAction;
 import org.mwg.task.TaskContext;
 
-class ActionFromIndex extends AbstractTaskAction {
+class ActionFromIndex extends AbstractAction {
 
     private final String _indexName;
     private final String _query;
 
     ActionFromIndex(final String p_indexName, final String p_query) {
         super();
+        if (p_indexName == null) {
+            throw new RuntimeException("indexName should not be null");
+        }
+        if (p_query == null) {
+            throw new RuntimeException("query should not be null");
+        }
         _indexName = p_indexName;
         _query = p_query;
     }

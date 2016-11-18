@@ -1,8 +1,8 @@
 package org.mwg.utility;
 
-import org.mwg.plugin.AbstractPlugin;
+import org.mwg.base.BasePlugin;
 
-public class VerbosePlugin extends AbstractPlugin {
+public class VerbosePlugin extends BasePlugin {
 
     public VerbosePlugin() {
         super();

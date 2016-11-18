@@ -2,10 +2,10 @@ package org.mwg.core.task;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.mwg.task.Action;
+import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 
-import static org.mwg.task.Actions.setWorld;
+import static org.mwg.core.task.Actions.setWorld;
 
 public class ActionWorldTest extends AbstractActionTest {
 
@@ -13,7 +13,7 @@ public class ActionWorldTest extends AbstractActionTest {
     public void test() {
         initGraph();
         setWorld("10")
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertEquals(context.world(), 10);

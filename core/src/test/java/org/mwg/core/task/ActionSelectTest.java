@@ -3,7 +3,7 @@ package org.mwg.core.task;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mwg.Node;
-import org.mwg.task.Action;
+import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskFunctionSelect;
 import org.mwg.utility.HashHelper;
@@ -21,7 +21,7 @@ public class ActionSelectTest extends AbstractActionTest {
                         return HashHelper.equals(node.get("name").toString(), "root");
                     }
                 })
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertEquals(context.resultAsNodes().get(0).get("name"), "root");
@@ -42,7 +42,7 @@ public class ActionSelectTest extends AbstractActionTest {
                         return false;
                     }
                 })
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertEquals(context.result().size(), 0);
@@ -63,7 +63,7 @@ public class ActionSelectTest extends AbstractActionTest {
                         return true;
                     }
                 })
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertEquals(context.result().size(), 3);

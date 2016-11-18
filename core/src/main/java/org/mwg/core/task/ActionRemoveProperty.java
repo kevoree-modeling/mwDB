@@ -1,12 +1,12 @@
 package org.mwg.core.task;
 
 import org.mwg.Node;
-import org.mwg.plugin.AbstractNode;
-import org.mwg.plugin.AbstractTaskAction;
+import org.mwg.base.BaseNode;
+import org.mwg.base.AbstractAction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-class ActionRemoveProperty extends AbstractTaskAction {
+class ActionRemoveProperty extends AbstractAction {
 
     private final String _propertyName;
 
@@ -22,7 +22,7 @@ class ActionRemoveProperty extends AbstractTaskAction {
             final String flatRelationName = context.template(_propertyName);
             for (int i = 0; i < previousResult.size(); i++) {
                 Object loopObj = previousResult.get(i);
-                if (loopObj instanceof AbstractNode) {
+                if (loopObj instanceof BaseNode) {
                     Node loopNode = (Node) loopObj;
                     loopNode.removeProperty(flatRelationName);
                 }

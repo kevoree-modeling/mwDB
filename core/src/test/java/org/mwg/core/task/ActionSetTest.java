@@ -5,11 +5,11 @@ import org.junit.Test;
 import org.mwg.Callback;
 import org.mwg.Node;
 import org.mwg.Type;
-import org.mwg.task.Action;
+import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-import static org.mwg.task.Actions.inject;
+import static org.mwg.core.task.Actions.inject;
 
 public class ActionSetTest extends ActionNewNodeTest {
 
@@ -24,7 +24,7 @@ public class ActionSetTest extends ActionNewNodeTest {
         inject("node").asGlobalVar("nodeName")
                 .newNode()
                 .setProperty("name", Type.STRING, "{{nodeName}}")
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Node node = (Node) context.result().get(0);
@@ -47,7 +47,7 @@ public class ActionSetTest extends ActionNewNodeTest {
     public void testWithArray() {
         final long[] ids = new long[5];
         inject("node").asGlobalVar("nodeName")
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Node[] nodes = new Node[5];
@@ -58,7 +58,7 @@ public class ActionSetTest extends ActionNewNodeTest {
                     }
                 })
                 .setProperty("name", Type.STRING, "{{nodeName}}")
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         TaskResult<Node> nodes = context.resultAsNodes();
@@ -84,14 +84,14 @@ public class ActionSetTest extends ActionNewNodeTest {
     public void testWithNull() {
         final boolean[] nextCalled = new boolean[1];
         inject("node").asGlobalVar("nodeName")
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         context.continueWith(null);
                     }
                 })
                 .setProperty("name", Type.STRING, "node")
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         nextCalled[0] = true;

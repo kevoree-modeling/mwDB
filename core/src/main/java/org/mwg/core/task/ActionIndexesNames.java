@@ -1,10 +1,10 @@
 package org.mwg.core.task;
 
 import org.mwg.Callback;
-import org.mwg.plugin.AbstractTaskAction;
+import org.mwg.base.AbstractAction;
 import org.mwg.task.TaskContext;
 
-class ActionIndexesNames extends AbstractTaskAction {
+class ActionIndexesNames extends AbstractAction {
 
     @Override
     public void eval(TaskContext context) {

@@ -1,9 +1,9 @@
 package org.mwg.core.task;
 
-import org.mwg.plugin.AbstractTaskAction;
+import org.mwg.base.AbstractAction;
 import org.mwg.task.TaskContext;
 
-class ActionPrint extends AbstractTaskAction {
+class ActionPrint extends AbstractAction {
 
     private final String _name;
 

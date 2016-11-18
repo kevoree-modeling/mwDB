@@ -6,8 +6,8 @@ import org.mwg.Callback;
 import org.mwg.Graph;
 import org.mwg.GraphBuilder;
 import org.mwg.Node;
-import org.mwg.task.Action;
-import org.mwg.task.Actions;
+import org.mwg.task.ActionFunction;
+import org.mwg.core.task.Actions;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
@@ -75,7 +75,7 @@ public class MathEngineTest {
             public void on(Boolean result) {
                 Actions.newTask()
                         .inject(55).asGlobalVar("aVar")
-                        .then(new Action() {
+                        .then(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 String computedValue = context.template("{{=aVar * 2}}");
@@ -84,7 +84,7 @@ public class MathEngineTest {
                             }
                         })
                         .inject(new int[]{1, 2}).asGlobalVar("anArray")
-                        .then(new Action() {
+                        .then(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 String computedValue = context.template("{{=anArray[0] +  anArray[1] * 2}}");
@@ -93,7 +93,7 @@ public class MathEngineTest {
                             }
                         })
                         .inject(new int[]{1}).asGlobalVar("anArray")
-                        .then(new Action() {
+                        .then(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 String computedValue = context.template("{{=anArray * 2}}");
@@ -102,7 +102,7 @@ public class MathEngineTest {
                             }
                         })
                         .inject(new int[]{1, 2, 3})
-                        .then(new Action() {
+                        .then(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 String computedValue = context.template("{{=result[2] * 2}}");
@@ -111,7 +111,7 @@ public class MathEngineTest {
                             }
                         })
                         .inject(8)
-                        .then(new Action() {
+                        .then(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 String computedValue = context.template("{{=result * 2}}");

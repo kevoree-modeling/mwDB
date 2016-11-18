@@ -4,13 +4,14 @@ import org.mwg.Callback;
 import org.mwg.Graph;
 import org.mwg.GraphBuilder;
 import org.mwg.core.scheduler.ExecutorScheduler;
-import org.mwg.task.Action;
+import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
 import java.util.Random;
 
-import static org.mwg.task.Actions.*;
+import static org.mwg.core.task.Actions.*;
+import static org.mwg.core.task.CoreTask.task;
 
 /**
  * @ignore ts
@@ -28,17 +29,20 @@ public class Benchmark5Test {
             public void on(Boolean result) {
 
                 final long previous = System.currentTimeMillis();
-
-                loopPar("0", "999", loop("0", "999", newTask().then(new Action() {
-                    @Override
-                    public void eval(TaskContext context) {
-                        Random random = new Random();
-                        for (int i = 0; i < 100; i++) {
-                            random.nextFloat();
-                        }
-                        context.continueTask();
-                    }
-                }))).then(new Action() {
+                task().loopPar("0", "999",
+                        task().loop("0", "999",
+                                task().thenDo(new ActionFunction() {
+                                    @Override
+                                    public void eval(TaskContext context) {
+                                        Random random = new Random();
+                                        for (int i = 0; i < 100; i++) {
+                                            random.nextFloat();
+                                        }
+                                        context.continueTask();
+                                    }
+                                })
+                        )
+                ).thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         System.out.println("End " + (System.currentTimeMillis() - previous) + " ms");

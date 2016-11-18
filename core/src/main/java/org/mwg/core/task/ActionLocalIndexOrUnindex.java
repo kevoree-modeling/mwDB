@@ -3,14 +3,14 @@ package org.mwg.core.task;
 import org.mwg.Callback;
 import org.mwg.DeferCounter;
 import org.mwg.Node;
+import org.mwg.base.BaseNode;
 import org.mwg.core.utility.CoreDeferCounter;
-import org.mwg.plugin.AbstractNode;
-import org.mwg.plugin.AbstractTaskAction;
+import org.mwg.base.AbstractAction;
 import org.mwg.plugin.Job;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-class ActionLocalIndexOrUnindex extends AbstractTaskAction {
+class ActionLocalIndexOrUnindex extends AbstractAction {
     private final String _indexedRelation;
     private final String _flatKeyAttributes;
     private final boolean _isIndexation;
@@ -53,11 +53,11 @@ class ActionLocalIndexOrUnindex extends AbstractTaskAction {
 
             for(int targetNodeIdx = 0; targetNodeIdx < toAdd.size(); targetNodeIdx++) {
                 final Object targetNode = toAdd.get(targetNodeIdx);
-                if(targetNode instanceof AbstractNode && srcNode instanceof AbstractNode) {
+                if(targetNode instanceof BaseNode && srcNode instanceof BaseNode) {
                     if(_isIndexation) {
-                        ((AbstractNode) srcNode).index(templatedIndexName, (AbstractNode) targetNode, templatedKeyAttributes, end);
+                        ((BaseNode) srcNode).index(templatedIndexName, (BaseNode) targetNode, templatedKeyAttributes, end);
                     } else {
-                        ((AbstractNode) srcNode).unindex(templatedIndexName, (AbstractNode) targetNode, templatedKeyAttributes, end);
+                        ((BaseNode) srcNode).unindex(templatedIndexName, (BaseNode) targetNode, templatedKeyAttributes, end);
                     }
                 } else {
                     counter.count();

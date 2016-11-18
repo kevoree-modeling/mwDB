@@ -6,8 +6,7 @@ import org.mwg.Callback;
 import org.mwg.Graph;
 import org.mwg.GraphBuilder;
 import org.mwg.Node;
-import org.mwg.task.Action;
-import org.mwg.task.Actions;
+import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
@@ -30,7 +29,7 @@ public class ActionIndexesNamesTest {
                 graph.index(indexes[2],root1,"name",null);
 
                 Actions.indexesNames()
-                        .then(new Action() {
+                        .then(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 Assert.assertArrayEquals(indexes,context.result().asArray());

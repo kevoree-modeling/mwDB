@@ -1,7 +1,7 @@
 package org.mwg.core.task;
 
 import org.mwg.Callback;
-import org.mwg.plugin.AbstractTaskAction;
+import org.mwg.base.AbstractAction;
 import org.mwg.plugin.SchedulerAffinity;
 import org.mwg.task.Task;
 import org.mwg.task.TaskContext;
@@ -9,18 +9,18 @@ import org.mwg.task.TaskResult;
 import org.mwg.task.TaskResultIterator;
 import org.mwg.utility.Tuple;
 
-class ActionForeach extends AbstractTaskAction {
+class ActionForEach extends AbstractAction {
 
     private final Task _subTask;
 
-    ActionForeach(final Task p_subTask) {
+    ActionForEach(final Task p_subTask) {
         super();
         _subTask = p_subTask;
     }
 
     @Override
     public void eval(final TaskContext context) {
-        final ActionForeach selfPointer = this;
+        final ActionForEach selfPointer = this;
         final TaskResult previousResult = context.result();
         if (previousResult == null) {
             context.continueTask();

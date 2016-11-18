@@ -1,6 +1,7 @@
 package org.mwg.core;
 
 import org.mwg.*;
+import org.mwg.base.BaseNode;
 import org.mwg.chunk.*;
 import org.mwg.core.memory.HeapMemoryFactory;
 import org.mwg.core.task.CoreTask;
@@ -20,7 +21,7 @@ import org.mwg.utility.KeyHelper;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-class CoreGraph implements org.mwg.Graph {
+public class CoreGraph implements org.mwg.Graph {
 
     private final Storage _storage;
     private final ChunkSpace _space;
@@ -41,7 +42,7 @@ class CoreGraph implements org.mwg.Graph {
     private GenChunk _nodeKeyCalculator = null;
     private GenChunk _worldKeyCalculator = null;
 
-    CoreGraph(final Storage p_storage, long memorySize, Scheduler p_scheduler, Plugin[] p_plugins) {
+    public CoreGraph(final Storage p_storage, long memorySize, Scheduler p_scheduler, Plugin[] p_plugins) {
         final Graph selfPointer = this;
         //First round, find relevant
         MemoryFactory memoryFactory = null;
@@ -128,7 +129,7 @@ class CoreGraph implements org.mwg.Graph {
         if (!_isConnected.get()) {
             throw new RuntimeException(CoreConstants.DISCONNECTED_ERROR);
         }
-        final org.mwg.Node newNode = new CoreNode(world, time, this._nodeKeyCalculator.newKey(), this);
+        final org.mwg.Node newNode = new BaseNode(world, time, this._nodeKeyCalculator.newKey(), this);
         this._resolver.initNode(newNode, Constants.NULL_LONG);
         return newNode;
     }
@@ -143,12 +144,12 @@ class CoreGraph implements org.mwg.Graph {
         }
         final long extraCode = _resolver.stringToHash(nodeType, false);
         final NodeFactory resolvedFactory = factoryByCode(extraCode);
-        AbstractNode newNode;
+        BaseNode newNode;
         if (resolvedFactory == null) {
             System.out.println("WARNING: UnKnow NodeType " + nodeType + ", missing plugin configuration in the builder ? Using generic node as a fallback");
-            newNode = new CoreNode(world, time, this._nodeKeyCalculator.newKey(), this);
+            newNode = new BaseNode(world, time, this._nodeKeyCalculator.newKey(), this);
         } else {
-            newNode = (AbstractNode) resolvedFactory.create(world, time, this._nodeKeyCalculator.newKey(), this);
+            newNode = (BaseNode) resolvedFactory.create(world, time, this._nodeKeyCalculator.newKey(), this);
         }
         this._resolver.initNode(newNode, extraCode);
         return newNode;
@@ -162,7 +163,7 @@ class CoreGraph implements org.mwg.Graph {
         if (!_isConnected.get()) {
             throw new RuntimeException(CoreConstants.DISCONNECTED_ERROR);
         }
-        final AbstractNode casted = (AbstractNode) origin;
+        final BaseNode casted = (BaseNode) origin;
         casted.cacheLock();
         if (casted._dead) {
             casted.cacheUnlock();
@@ -176,11 +177,11 @@ class CoreGraph implements org.mwg.Graph {
             //Create the cloned node
             final WorldOrderChunk worldOrderChunk = (WorldOrderChunk) this._space.get(casted._index_worldOrder);
             final NodeFactory resolvedFactory = factoryByCode(worldOrderChunk.extra());
-            AbstractNode newNode;
+            BaseNode newNode;
             if (resolvedFactory == null) {
-                newNode = new CoreNode(origin.world(), origin.time(), origin.id(), this);
+                newNode = new BaseNode(origin.world(), origin.time(), origin.id(), this);
             } else {
-                newNode = (AbstractNode) resolvedFactory.create(origin.world(), origin.time(), origin.id(), this);
+                newNode = (BaseNode) resolvedFactory.create(origin.world(), origin.time(), origin.id(), this);
             }
             //Init the cloned node with clonee resolver cache
             newNode._index_stateChunk = casted._index_stateChunk;
@@ -645,7 +646,7 @@ class CoreGraph implements org.mwg.Graph {
                 } else {
                     LongLongMap globalIndexContent;
                     if (globalIndexNodeUnsafe == null) {
-                        globalIndexNodeUnsafe = new CoreNode(world, time, CoreConstants.END_OF_TIME, selfPointer);
+                        globalIndexNodeUnsafe = new BaseNode(world, time, CoreConstants.END_OF_TIME, selfPointer);
                         selfPointer._resolver.initNode(globalIndexNodeUnsafe, CoreConstants.NULL_LONG);
                         globalIndexContent = (LongLongMap) globalIndexNodeUnsafe.getOrCreate(CoreConstants.INDEX_ATTRIBUTE, Type.LONG_TO_LONG_MAP);
                     } else {

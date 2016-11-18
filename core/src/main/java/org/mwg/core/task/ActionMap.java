@@ -1,16 +1,19 @@
 package org.mwg.core.task;
 
-import org.mwg.plugin.AbstractTaskAction;
+import org.mwg.base.AbstractAction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskFunctionMap;
 import org.mwg.task.TaskResult;
 
-class ActionMap extends AbstractTaskAction {
+class ActionMap extends AbstractAction {
 
     private final TaskFunctionMap _map;
 
     ActionMap(final TaskFunctionMap p_map) {
         super();
+        if (p_map == null) {
+            throw new RuntimeException("mapFunction should not be null");
+        }
         this._map = p_map;
     }
 

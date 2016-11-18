@@ -4,11 +4,11 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.mwg.Callback;
 import org.mwg.Node;
-import org.mwg.task.Action;
+import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-import static org.mwg.task.Actions.inject;
+import static org.mwg.core.task.Actions.inject;
 
 public class ActionNewNodeTest extends AbstractActionTest {
 
@@ -22,7 +22,7 @@ public class ActionNewNodeTest extends AbstractActionTest {
         final long id[] = new long[1];
         inject(15).asGlobalVar("world").setWorld("{{world}}").
                 inject(587).asGlobalVar("time").setTime("{{time[0]}}").newNode()
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertNotNull(context.result());

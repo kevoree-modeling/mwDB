@@ -8,8 +8,8 @@ import org.mwg.*;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskFunctionConditional;
 
-import static org.mwg.task.Actions.inject;
-import static org.mwg.task.Actions.setProperty;
+import static org.mwg.core.task.Actions.inject;
+import static org.mwg.core.task.Actions.setProperty;
 
 
 public class RobustnessTests {

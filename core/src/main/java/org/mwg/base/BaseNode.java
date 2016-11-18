@@ -1,6 +1,9 @@
-package org.mwg.plugin;
+package org.mwg.base;
 
 import org.mwg.*;
+import org.mwg.plugin.NodeState;
+import org.mwg.plugin.NodeStateCallback;
+import org.mwg.plugin.Resolver;
 import org.mwg.struct.*;
 
 import java.lang.reflect.Field;
@@ -10,7 +13,7 @@ import java.util.Set;
 /**
  * Base implementation to develop NodeFactory plugins without overriding every methods
  */
-public abstract class AbstractNode implements Node {
+public class BaseNode implements Node {
 
     /**
      * @ignore ts
@@ -34,7 +37,7 @@ public abstract class AbstractNode implements Node {
     public volatile boolean _dead = false;
     private volatile int _lock;
 
-    public AbstractNode(long p_world, long p_time, long p_id, Graph p_graph) {
+    public BaseNode(long p_world, long p_time, long p_id, Graph p_graph) {
         this._world = p_world;
         this._time = p_time;
         this._id = p_id;
@@ -61,7 +64,7 @@ public abstract class AbstractNode implements Node {
             }
         }
         try {
-            _lockOffset = unsafe.objectFieldOffset(AbstractNode.class.getDeclaredField("_lock"));
+            _lockOffset = unsafe.objectFieldOffset(BaseNode.class.getDeclaredField("_lock"));
         } catch (Exception ex) {
             throw new Error(ex);
         }
@@ -457,17 +460,17 @@ public abstract class AbstractNode implements Node {
         }
         final LongLongArrayMap indexMap = (LongLongArrayMap) currentNodeState.get(this._resolver.stringToHash(indexName, false));
         if (indexMap != null) {
-            final AbstractNode selfPointer = this;
+            final BaseNode selfPointer = this;
             final long[] foundIds = indexMap.get(query.hash());
             if (foundIds == null) {
-                callback.on(new org.mwg.plugin.AbstractNode[0]);
+                callback.on(new BaseNode[0]);
                 return;
             }
             selfPointer._resolver.lookupAll(queryWorld, queryTime, foundIds, new Callback<Node[]>() {
                 @Override
                 public void on(Node[] resolved) {
                     //select
-                    Node[] resultSet = new org.mwg.plugin.AbstractNode[foundIds.length];
+                    Node[] resultSet = new BaseNode[foundIds.length];
                     int resultSetIndex = 0;
                     for (int i = 0; i < resultSet.length; i++) {
                         final org.mwg.Node resolvedNode = resolved[i];
@@ -514,14 +517,14 @@ public abstract class AbstractNode implements Node {
                     if (resultSet.length == resultSetIndex) {
                         callback.on(resultSet);
                     } else {
-                        Node[] trimmedResultSet = new org.mwg.plugin.AbstractNode[resultSetIndex];
+                        Node[] trimmedResultSet = new BaseNode[resultSetIndex];
                         System.arraycopy(resultSet, 0, trimmedResultSet, 0, resultSetIndex);
                         callback.on(trimmedResultSet);
                     }
                 }
             });
         } else {
-            callback.on(new org.mwg.plugin.AbstractNode[0]);
+            callback.on(new BaseNode[0]);
         }
     }
 
@@ -560,7 +563,7 @@ public abstract class AbstractNode implements Node {
                 }
             });
         } else {
-            callback.on(new org.mwg.plugin.AbstractNode[0]);
+            callback.on(new BaseNode[0]);
         }
     }
 

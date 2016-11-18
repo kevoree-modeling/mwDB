@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.mwg.*;
 import org.mwg.task.*;
 
-import static org.mwg.task.Actions.propertiesWithTypes;
+import static org.mwg.core.task.Actions.propertiesWithTypes;
 
 public class ActionPropertiesTest {
     private Graph graph;
@@ -39,7 +39,7 @@ public class ActionPropertiesTest {
         initGraph();
         Actions.fromIndexAll("root")
                 .properties()
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         TaskResult<String> result = context.result();
@@ -61,7 +61,7 @@ public class ActionPropertiesTest {
         initGraph();
         Actions.fromIndexAll("root")
                 .subTasks(new Task[]{propertiesWithTypes(Type.RELATION),propertiesWithTypes(Type.LONG_TO_LONG_ARRAY_MAP)})
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         TaskResult<String> result = context.result();

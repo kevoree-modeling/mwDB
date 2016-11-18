@@ -3,18 +3,18 @@ package org.mwg.core.task;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mwg.Callback;
-import org.mwg.task.Action;
+import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-import static org.mwg.task.Actions.inject;
+import static org.mwg.core.task.Actions.inject;
 
 public class ActionAsVarTest extends AbstractActionTest {
 
     @Test
     public void test() {
         initGraph();
-        inject("hello").asGlobalVar("myVar").then(new Action() {
+        inject("hello").asGlobalVar("myVar").then(new ActionFunction() {
             @Override
             public void eval(TaskContext context) {
                 Assert.assertEquals(context.result().get(0), "hello");

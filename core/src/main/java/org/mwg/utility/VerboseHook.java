@@ -1,6 +1,6 @@
 package org.mwg.utility;
 
-import org.mwg.task.TaskAction;
+import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskHook;
 
@@ -18,7 +18,7 @@ class VerboseHook implements TaskHook {
     }
 
     @Override
-    public synchronized void beforeAction(TaskAction action, TaskContext context) {
+    public synchronized void beforeAction(Action action, TaskContext context) {
         Integer currentPrefix = ctxIdents.get(context);
         for (int i = 0; i < currentPrefix; i++) {
             System.out.print("\t");
@@ -33,7 +33,7 @@ class VerboseHook implements TaskHook {
     }
 
     @Override
-    public synchronized void afterAction(TaskAction action, TaskContext context) {
+    public synchronized void afterAction(Action action, TaskContext context) {
         //NOOP
     }
 

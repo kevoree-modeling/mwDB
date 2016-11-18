@@ -29,7 +29,7 @@ loop("1","2",
 Without black magic, actions are just chained by `.` as any fluent DSL an initial action can be transparently built using a global static import.
 
 ```java
-import static org.mwg.task.Actions.*;
+import static org.mwg.core.task.Actions.*;
 ```
 
 The result graph can be represented as follow:

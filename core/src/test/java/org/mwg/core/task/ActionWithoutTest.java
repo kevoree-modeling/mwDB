@@ -2,10 +2,10 @@ package org.mwg.core.task;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.mwg.task.Action;
+import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 
-import static org.mwg.task.Actions.fromIndexAll;
+import static org.mwg.core.task.Actions.fromIndexAll;
 
 public class ActionWithoutTest extends AbstractActionTest {
 
@@ -14,7 +14,7 @@ public class ActionWithoutTest extends AbstractActionTest {
         initGraph();
         fromIndexAll("nodes")
                 .selectWithout("name", "n0")
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertEquals(context.resultAsNodes().get(0).get("name"), "n1");
@@ -25,7 +25,7 @@ public class ActionWithoutTest extends AbstractActionTest {
 
         fromIndexAll("nodes")
                 .selectWithout("name", "n.*")
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertEquals(context.resultAsNodes().get(0).get("name"), "root");

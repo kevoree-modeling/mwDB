@@ -1,7 +1,6 @@
 package org.mwg.task;
 
-public interface TaskAction {
-
+@FunctionalInterface
+public interface ActionFunction {
     void eval(TaskContext context);
-
 }

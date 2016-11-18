@@ -1,6 +1,7 @@
 package org.mwg.core;
 
 import org.mwg.*;
+import org.mwg.base.BaseNode;
 import org.mwg.chunk.*;
 import org.mwg.plugin.*;
 import org.mwg.struct.Buffer;
@@ -45,7 +46,7 @@ final class MWGResolver implements Resolver {
 
     @Override
     public final long typeCode(Node node) {
-        final AbstractNode casted = (AbstractNode) node;
+        final BaseNode casted = (BaseNode) node;
         final WorldOrderChunk worldOrderChunk = (WorldOrderChunk) this._space.get(casted._index_worldOrder);
         if (worldOrderChunk == null) {
             return Constants.NULL_LONG;
@@ -55,7 +56,7 @@ final class MWGResolver implements Resolver {
 
     @Override
     public final void initNode(final org.mwg.Node node, final long codeType) {
-        final AbstractNode casted = (AbstractNode) node;
+        final BaseNode casted = (BaseNode) node;
         final StateChunk cacheEntry = (StateChunk) this._space.createAndMark(STATE_CHUNK, node.world(), node.time(), node.id());
         //declare dirty now because potentially no insert could be done
         this._space.notifyUpdate(cacheEntry.index());
@@ -95,7 +96,7 @@ final class MWGResolver implements Resolver {
 
     @Override
     public final void freeNode(org.mwg.Node node) {
-        final AbstractNode casted = (AbstractNode) node;
+        final BaseNode casted = (BaseNode) node;
         casted.cacheLock();
         if (!casted._dead) {
             this._space.unmark(casted._index_stateChunk);
@@ -163,11 +164,11 @@ final class MWGResolver implements Resolver {
                                                             if (extraCode != Constants.NULL_LONG) {
                                                                 resolvedFactory = ((CoreGraph) selfPointer._graph).factoryByCode(extraCode);
                                                             }
-                                                            AbstractNode resolvedNode;
+                                                            BaseNode resolvedNode;
                                                             if (resolvedFactory == null) {
-                                                                resolvedNode = new CoreNode(world, time, id, selfPointer._graph);
+                                                                resolvedNode = new BaseNode(world, time, id, selfPointer._graph);
                                                             } else {
-                                                                resolvedNode = (AbstractNode) resolvedFactory.create(world, time, id, selfPointer._graph);
+                                                                resolvedNode = (BaseNode) resolvedFactory.create(world, time, id, selfPointer._graph);
                                                             }
                                                             resolvedNode._dead = false;
                                                             resolvedNode._index_stateChunk = theObjectChunk.index();
@@ -266,11 +267,11 @@ final class MWGResolver implements Resolver {
                                                             if (extraCode != Constants.NULL_LONG) {
                                                                 resolvedFactory = ((CoreGraph) selfPointer._graph).factoryByCode(extraCode);
                                                             }
-                                                            AbstractNode resolvedNode;
+                                                            BaseNode resolvedNode;
                                                             if (resolvedFactory == null) {
                                                                 resolvedNode = new CoreNode(world, time, id, selfPointer._graph);
                                                             } else {
-                                                                resolvedNode = (AbstractNode) resolvedFactory.create(world, time, id, selfPointer._graph);
+                                                                resolvedNode = (BaseNode) resolvedFactory.create(world, time, id, selfPointer._graph);
                                                             }
                                                             resolvedNode._dead = false;
                                                             resolvedNode._index_stateChunk = theObjectChunk.index();
@@ -433,11 +434,11 @@ final class MWGResolver implements Resolver {
                                                                                 if (extraCode != Constants.NULL_LONG) {
                                                                                     resolvedFactory = ((CoreGraph) selfPointer._graph).factoryByCode(extraCode);
                                                                                 }
-                                                                                AbstractNode resolvedNode;
+                                                                                BaseNode resolvedNode;
                                                                                 if (resolvedFactory == null) {
-                                                                                    resolvedNode = new CoreNode(world, time, ids[i], selfPointer._graph);
+                                                                                    resolvedNode = new BaseNode(world, time, ids[i], selfPointer._graph);
                                                                                 } else {
-                                                                                    resolvedNode = (AbstractNode) resolvedFactory.create(world, time, ids[i], selfPointer._graph);
+                                                                                    resolvedNode = (BaseNode) resolvedFactory.create(world, time, ids[i], selfPointer._graph);
                                                                                 }
                                                                                 resolvedNode._dead = false;
                                                                                 resolvedNode._index_stateChunk = theObjectChunks[i].index();
@@ -608,7 +609,7 @@ final class MWGResolver implements Resolver {
         //OK NOW WE HAVE THE TOKEN globally FOR the node ID
         StateChunk resultState = null;
         try {
-            AbstractNode castedNode = (AbstractNode) node;
+            BaseNode castedNode = (BaseNode) node;
             //protection against deleted Node
             long[] previousResolveds = castedNode._previousResolveds.get();
             if (previousResolveds == null) {
@@ -803,7 +804,7 @@ final class MWGResolver implements Resolver {
     }
 
     private StateChunk internal_resolveState(final org.mwg.Node node, final boolean safe) {
-        final AbstractNode castedNode = (AbstractNode) node;
+        final BaseNode castedNode = (BaseNode) node;
         StateChunk stateResult = null;
         if (safe) {
             castedNode.cacheLock();
@@ -890,7 +891,7 @@ final class MWGResolver implements Resolver {
 
     @Override
     public final NodeState alignState(final org.mwg.Node node) {
-        final AbstractNode castedNode = (AbstractNode) node;
+        final BaseNode castedNode = (BaseNode) node;
         castedNode.cacheLock();
         if (castedNode._dead) {
             castedNode.cacheUnlock();
@@ -1009,11 +1010,11 @@ final class MWGResolver implements Resolver {
 
     @Override
     public NodeState newState(Node node, long world, long time) {
-        final AbstractNode castedNode = (AbstractNode) node;
+        final BaseNode castedNode = (BaseNode) node;
         NodeState resolved;
         castedNode.cacheLock();
 
-        AbstractNode fakeNode = new CoreNode(world, time, node.id(), node.graph());
+        BaseNode fakeNode = new BaseNode(world, time, node.id(), node.graph());
         fakeNode._index_worldOrder = castedNode._index_worldOrder;
         fakeNode._index_superTimeTree = castedNode._index_superTimeTree;
         fakeNode._index_timeTree = castedNode._index_timeTree;

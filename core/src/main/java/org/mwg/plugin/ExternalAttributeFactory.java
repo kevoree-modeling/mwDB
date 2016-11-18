@@ -2,6 +2,6 @@ package org.mwg.plugin;
 
 public interface ExternalAttributeFactory {
 
-    AbstractExternalAttribute create();
+    org.mwg.base.AbstractExternalAttribute create();
 
 }

@@ -2,10 +2,10 @@ package org.mwg.core.task;
 
 import org.mwg.Callback;
 import org.mwg.Node;
-import org.mwg.plugin.AbstractTaskAction;
+import org.mwg.base.AbstractAction;
 import org.mwg.task.TaskContext;
 
-class ActionLookupAll extends AbstractTaskAction {
+class ActionLookupAll extends AbstractAction {
 
     private final String _ids;
 

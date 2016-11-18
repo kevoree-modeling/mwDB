@@ -5,11 +5,11 @@ import org.junit.Test;
 import org.mwg.Callback;
 import org.mwg.Node;
 import org.mwg.struct.Relationship;
-import org.mwg.task.Action;
+import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-import static org.mwg.task.Actions.*;
+import static org.mwg.core.task.Actions.*;
 
 public class ActionRemoveTest extends AbstractActionTest {
 
@@ -27,7 +27,7 @@ public class ActionRemoveTest extends AbstractActionTest {
                 .inject(relatedNode).asGlobalVar("x")
                 .add("friend", "x")
                 .remove("friend", "x")
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertNotNull(context.result());
@@ -53,7 +53,7 @@ public class ActionRemoveTest extends AbstractActionTest {
 
         final long[] ids = new long[5];
         inject(relatedNode).asGlobalVar("x")
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Node[] nodes = new Node[5];
@@ -65,7 +65,7 @@ public class ActionRemoveTest extends AbstractActionTest {
                 })
                 .add("friend", "x")
                 .remove("friend", "x")
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertNotNull(context.result());
@@ -92,7 +92,7 @@ public class ActionRemoveTest extends AbstractActionTest {
         Node relatedNode = graph.newNode(0, 0);
 
         final boolean[] nextCalled = new boolean[1];
-        then(new Action() {
+        then(new ActionFunction() {
             @Override
             public void eval(TaskContext context) {
                 context.continueWith(null);
@@ -100,7 +100,7 @@ public class ActionRemoveTest extends AbstractActionTest {
         }).inject(relatedNode).asGlobalVar("x")
                 .add("friend", "x")
                 .remove("friend", "x")
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         nextCalled[0] = true;

@@ -1,10 +1,10 @@
 package org.mwg.core.task;
 
 import org.mwg.Node;
-import org.mwg.plugin.AbstractTaskAction;
+import org.mwg.base.AbstractAction;
 import org.mwg.task.TaskContext;
 
-class ActionNewNode extends AbstractTaskAction {
+class ActionNewNode extends AbstractAction {
 
     private final String _typeNode;
 

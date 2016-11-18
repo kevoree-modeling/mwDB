@@ -4,10 +4,10 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.mwg.Callback;
 import org.mwg.Node;
-import org.mwg.task.Action;
+import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 
-import static org.mwg.task.Actions.inject;
+import static org.mwg.core.task.Actions.inject;
 
 public class ActionInjectTest extends AbstractActionTest {
 
@@ -15,7 +15,7 @@ public class ActionInjectTest extends AbstractActionTest {
     public void test() {
         initGraph();
         inject("uselessPayload")
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertEquals(context.resultAsStrings().get(0), "uselessPayload");
@@ -39,7 +39,7 @@ public class ActionInjectTest extends AbstractActionTest {
                         (String) result[2].get("name")};
 
                 inject(result)
-                        .then(new Action() {
+                        .then(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 //empty task
@@ -75,7 +75,7 @@ public class ActionInjectTest extends AbstractActionTest {
                 Assert.assertEquals(1, result.length);
 
                 inject(result[0])
-                        .then(new Action() {
+                        .then(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 //empty task

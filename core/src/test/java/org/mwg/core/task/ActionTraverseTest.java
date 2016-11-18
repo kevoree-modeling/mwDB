@@ -5,10 +5,10 @@ import org.junit.Test;
 import org.mwg.Callback;
 import org.mwg.Node;
 import org.mwg.Type;
-import org.mwg.task.Action;
+import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 
-import static org.mwg.task.Actions.*;
+import static org.mwg.core.task.Actions.*;
 
 public class ActionTraverseTest extends AbstractActionTest {
 
@@ -17,7 +17,7 @@ public class ActionTraverseTest extends AbstractActionTest {
         initGraph();
         fromIndexAll("nodes")
                 .traverse("children")
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertEquals(context.resultAsNodes().get(0).get("name"), "n0");
@@ -32,7 +32,7 @@ public class ActionTraverseTest extends AbstractActionTest {
     public void testParse() {
         initGraph();
         parse("fromIndexAll(nodes).traverse(children)")
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertEquals(context.resultAsNodes().get(0).get("name"), "n0");
@@ -79,7 +79,7 @@ public class ActionTraverseTest extends AbstractActionTest {
 
         fromIndex("rootIndex", "name=root2")
                 .traverseIndex("childrenIndexed", "name","node2")
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertEquals(1, context.result().size());
@@ -89,7 +89,7 @@ public class ActionTraverseTest extends AbstractActionTest {
 
         fromIndex("rootIndex", "name=root2")
                 .traverseIndex("childrenIndexed", "name","node3")
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertEquals(0, context.result().size());
@@ -99,7 +99,7 @@ public class ActionTraverseTest extends AbstractActionTest {
         inject(12).asGlobalVar("time").setTime("{{time}}")
                 .fromIndex("rootIndex", "name=root2")
                 .traverseIndex("childrenIndexed", "name","node2")
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertEquals(1, context.result().size());
@@ -109,7 +109,7 @@ public class ActionTraverseTest extends AbstractActionTest {
 
         fromIndex("rootIndex", "name=root2")
                 .traverseIndexAll("childrenIndexed")
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertEquals(2, context.result().size());
@@ -121,7 +121,7 @@ public class ActionTraverseTest extends AbstractActionTest {
         inject(13).asGlobalVar("time").setTime("{{time}}")
                 .fromIndex("rootIndex", "name=root2")
                 .traverseIndexAll("childrenIndexed")
-                .then(new Action() {
+                .then(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertEquals(3, context.result().size());

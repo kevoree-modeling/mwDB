@@ -7,7 +7,7 @@ import org.mwg.Type;
 import org.mwg.core.scheduler.HybridScheduler;
 import org.mwg.task.TaskResult;
 
-import static org.mwg.task.Actions.*;
+import static org.mwg.core.task.Actions.*;
 
 /**
  * @ignore ts

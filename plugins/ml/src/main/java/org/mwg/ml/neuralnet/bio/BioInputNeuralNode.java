@@ -2,11 +2,8 @@ package org.mwg.ml.neuralnet.bio;
 
 import org.mwg.Callback;
 import org.mwg.Graph;
-import org.mwg.Node;
-import org.mwg.ml.neuralnet.NeuralNode;
 import org.mwg.plugin.AbstractNode;
 import org.mwg.plugin.Job;
-import org.mwg.plugin.Scheduler;
 import org.mwg.plugin.SchedulerAffinity;
 import org.mwg.struct.LongLongArrayMap;
 import org.mwg.struct.LongLongMap;

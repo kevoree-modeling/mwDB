@@ -1,7 +1,7 @@
 package org.mwg.core.task;
 
 import org.mwg.Callback;
-import org.mwg.plugin.AbstractTaskAction;
+import org.mwg.base.AbstractAction;
 import org.mwg.plugin.SchedulerAffinity;
 import org.mwg.task.Task;
 import org.mwg.task.TaskContext;
@@ -9,11 +9,11 @@ import org.mwg.task.TaskResult;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-class ActionSubTasks extends AbstractTaskAction {
+class ActionSubTasks extends AbstractAction {
 
     private final Task[] _subTasks;
 
-    ActionSubTasks(final Task[] p_subTasks) {
+    ActionSubTasks(final Task... p_subTasks) {
         super();
         _subTasks = p_subTasks;
     }
