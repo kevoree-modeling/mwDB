@@ -7,16 +7,19 @@ import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
+import static org.mwg.core.task.Actions.fromIndexAll;
+import static org.mwg.core.task.Actions.traverseOrKeep;
+import static org.mwg.core.task.CoreTask.task;
+
 public class ActionTraverseOrKeepTest extends AbstractActionTest {
 
     @Test
     public void test() {
         initGraph();
-        new CoreTask()
-                .fromIndexAll("nodes")
-                .traverseOrKeep("children")
-                .traverseOrKeep("children")
-                .then(new ActionFunction() {
+        task().then(fromIndexAll("nodes"))
+                .then(traverseOrKeep("children"))
+                .then(traverseOrKeep("children"))
+                .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         TaskResult<Node> nodes = context.resultAsNodes();

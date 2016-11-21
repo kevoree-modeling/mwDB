@@ -11,6 +11,8 @@ import org.mwg.task.TaskContext;
 import org.mwg.task.TaskFunctionSelect;
 
 import static org.mwg.core.task.Actions.inject;
+import static org.mwg.core.task.Actions.select;
+import static org.mwg.core.task.CoreTask.task;
 
 public class ContextCleanTest {
 
@@ -57,14 +59,9 @@ public class ContextCleanTest {
                 final String[] flat = {""};
                 Node n0 = graph.newNode(0, 0);
                 Node n1 = graph.newNode(0, 0);
-                inject(new Node[]{n0, n1})
-                        .select(new TaskFunctionSelect() {
-                            @Override
-                            public boolean select(Node node,TaskContext context) {
-                                return true;
-                            }
-                        })
-                        .then(new ActionFunction() {
+                task().then(inject(new Node[]{n0, n1}))
+                        .then(select((node, context) -> true))
+                        .thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 retention[0] = context;

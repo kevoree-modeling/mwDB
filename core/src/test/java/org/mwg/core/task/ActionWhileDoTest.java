@@ -8,6 +8,7 @@ import org.mwg.Node;
 import org.mwg.task.*;
 
 import static org.mwg.core.task.Actions.*;
+import static org.mwg.core.task.CoreTask.task;
 
 public class ActionWhileDoTest extends AbstractActionTest {
 
@@ -19,19 +20,20 @@ public class ActionWhileDoTest extends AbstractActionTest {
 
                 final long cache1 = graph.space().available();
 
-                Task whiletask = newTask()
-                        .inject(root)
+                Task whiletask = task()
+                        .then(inject(root))
                         .whileDo(context -> context.result().size() != 0,
-                                flatmap(
-                                        ifThenElse(context -> context.resultAsNodes().get(0).get("child") != null,
-                                                traverse("child"), then(context -> {
+                                task().flatMap(
+                                        task().ifThenElse(context -> context.resultAsNodes().get(0).get("child") != null,
+                                                task().then(traverse("child")),
+                                                task().thenDo(context -> {
                                                     //System.out.println("if is false");
                                                     context.addToGlobalVariable("leaves", context.wrap(context.resultAsNodes().get(0).id()));
                                                     context.continueWith(null);
                                                 })
                                         )
                                 )
-                        ).fromVar("leaves");
+                        ).then(fromVar("leaves"));
 
                 whiletask.execute(graph, new Callback<TaskResult>() {
                     @Override
@@ -61,13 +63,13 @@ public class ActionWhileDoTest extends AbstractActionTest {
             public void on(Node root) {
 
                 final long cache1 = graph.space().available();
-                Task whiletask = newTask().inject(root).doWhile(
-                        flatmap(ifThenElse(new TaskFunctionConditional() {
+                Task whiletask = task().then(inject(root)).doWhile(
+                        task().flatMap(task().ifThenElse(new TaskFunctionConditional() {
                             @Override
                             public boolean eval(TaskContext context) {
                                 return context.resultAsNodes().get(0).get("child") != null;
                             }
-                        }, traverse("child"), then(new ActionFunction() {
+                        }, task().then(traverse("child")), task().thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 //System.out.println("if is false");
@@ -82,7 +84,7 @@ public class ActionWhileDoTest extends AbstractActionTest {
                                 return context.result().size() != 0;
                             }
                         }
-                ).fromVar("leaves");
+                ).then(fromVar("leaves"));
 
 
                 whiletask.execute(graph, new Callback<TaskResult>() {

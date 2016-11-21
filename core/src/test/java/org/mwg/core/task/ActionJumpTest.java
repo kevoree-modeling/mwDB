@@ -7,8 +7,9 @@ import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-import static org.mwg.core.task.Actions.newTask;
-import static org.mwg.core.task.Actions.then;
+import static org.mwg.core.task.Actions.*;
+import static org.mwg.core.task.CoreTask.task;
+import static org.mwg.task.Actions.then;
 
 public class ActionJumpTest extends AbstractActionTest {
 
@@ -16,10 +17,9 @@ public class ActionJumpTest extends AbstractActionTest {
     public void testJump() {
         initGraph();
 
-        newTask()
-                .fromIndexAll("nodes")
-                .asGlobalVar("nodes")
-                .foreach(then(new ActionFunction() {
+        task().then(fromIndexAll("nodes"))
+                .then(asGlobalVar("nodes"))
+                .forEach(task().thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         TaskResult<Node> nodes = context.resultAsNodes();
@@ -27,9 +27,9 @@ public class ActionJumpTest extends AbstractActionTest {
                         context.continueWith(null);
                     }
                 }))
-                .fromVar("nodes")
-                .jump("10")
-                .foreach(then(new ActionFunction() {
+                .then(fromVar("nodes"))
+                .then(jump("10"))
+                .forEach(task().thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         TaskResult<Node> nodes = context.resultAsNodes();

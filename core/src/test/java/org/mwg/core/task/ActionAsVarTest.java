@@ -7,14 +7,16 @@ import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
+import static org.mwg.core.task.Actions.asGlobalVar;
 import static org.mwg.core.task.Actions.inject;
+import static org.mwg.core.task.CoreTask.task;
 
 public class ActionAsVarTest extends AbstractActionTest {
 
     @Test
     public void test() {
         initGraph();
-        inject("hello").asGlobalVar("myVar").then(new ActionFunction() {
+        task().then(inject("hello")).then(asGlobalVar("myVar")).thenDo(new ActionFunction() {
             @Override
             public void eval(TaskContext context) {
                 Assert.assertEquals(context.result().get(0), "hello");

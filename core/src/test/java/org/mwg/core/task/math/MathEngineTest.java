@@ -14,6 +14,10 @@ import org.mwg.task.TaskResult;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.mwg.core.task.Actions.asGlobalVar;
+import static org.mwg.core.task.Actions.inject;
+import static org.mwg.core.task.CoreTask.task;
+
 public class MathEngineTest {
     @Test
     public void expression() {
@@ -73,9 +77,10 @@ public class MathEngineTest {
         graph.connect(new Callback<Boolean>() {
             @Override
             public void on(Boolean result) {
-                Actions.newTask()
-                        .inject(55).asGlobalVar("aVar")
-                        .then(new ActionFunction() {
+                task()
+                        .then(inject(55))
+                        .then(asGlobalVar("aVar"))
+                        .thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 String computedValue = context.template("{{=aVar * 2}}");
@@ -83,8 +88,9 @@ public class MathEngineTest {
                                 context.continueTask();
                             }
                         })
-                        .inject(new int[]{1, 2}).asGlobalVar("anArray")
-                        .then(new ActionFunction() {
+                        .then(inject(new int[]{1, 2}))
+                        .then(asGlobalVar("anArray"))
+                        .thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 String computedValue = context.template("{{=anArray[0] +  anArray[1] * 2}}");
@@ -92,8 +98,9 @@ public class MathEngineTest {
                                 context.continueTask();
                             }
                         })
-                        .inject(new int[]{1}).asGlobalVar("anArray")
-                        .then(new ActionFunction() {
+                        .then(inject(new int[]{1}))
+                        .then(asGlobalVar("anArray"))
+                        .thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 String computedValue = context.template("{{=anArray * 2}}");
@@ -101,8 +108,8 @@ public class MathEngineTest {
                                 context.continueTask();
                             }
                         })
-                        .inject(new int[]{1, 2, 3})
-                        .then(new ActionFunction() {
+                        .then(inject(new int[]{1, 2, 3}))
+                        .thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 String computedValue = context.template("{{=result[2] * 2}}");
@@ -110,8 +117,8 @@ public class MathEngineTest {
                                 context.continueTask();
                             }
                         })
-                        .inject(8)
-                        .then(new ActionFunction() {
+                        .then(inject(8))
+                        .thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 String computedValue = context.template("{{=result * 2}}");

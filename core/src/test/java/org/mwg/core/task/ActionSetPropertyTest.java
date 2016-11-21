@@ -9,8 +9,8 @@ import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-import static org.mwg.core.task.Actions.inject;
-import static org.mwg.core.task.Actions.then;
+import static org.mwg.core.task.Actions.*;
+import static org.mwg.core.task.CoreTask.task;
 
 public class ActionSetPropertyTest extends AbstractActionTest {
 
@@ -22,10 +22,12 @@ public class ActionSetPropertyTest extends AbstractActionTest {
     @Test
     public void testWithOneNode() {
         final long[] id = new long[1];
-        inject("node").asGlobalVar("nodeName")
-                .newNode()
-                .setProperty("name", Type.STRING, "{{nodeName}}")
-                .then(new ActionFunction() {
+        task()
+                .then(inject("node"))
+                .then(asGlobalVar("nodeName"))
+                .then(newNode())
+                .then(setProperty("name", Type.STRING, "{{nodeName}}"))
+                .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertNotNull(context.result());
@@ -46,8 +48,10 @@ public class ActionSetPropertyTest extends AbstractActionTest {
     @Test
     public void testWithArray() {
         final long[] ids = new long[5];
-        inject("node").asGlobalVar("nodeName")
-                .then(new ActionFunction() {
+        task()
+                .then(inject("node"))
+                .then(asGlobalVar("nodeName"))
+                .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Node[] nodes = new Node[5];
@@ -57,8 +61,8 @@ public class ActionSetPropertyTest extends AbstractActionTest {
                         context.continueWith(context.wrap(nodes));
                     }
                 })
-                .setProperty("name", Type.STRING, "{{nodeName}}")
-                .then(new ActionFunction() {
+                .then(setProperty("name", Type.STRING, "{{nodeName}}"))
+                .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertNotNull(context.result());
@@ -83,13 +87,15 @@ public class ActionSetPropertyTest extends AbstractActionTest {
     @Test
     public void testWithNull() {
         final boolean[] nextCalled = new boolean[1];
-        then(new ActionFunction() {
-            @Override
-            public void eval(TaskContext context) {
-                context.continueWith(null);
-            }
-        }).setProperty("name", Type.STRING, "node")
-                .then(new ActionFunction() {
+        task()
+                .thenDo(new ActionFunction() {
+                    @Override
+                    public void eval(TaskContext context) {
+                        context.continueWith(null);
+                    }
+                })
+                .then(setProperty("name", Type.STRING, "node"))
+                .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         nextCalled[0] = true;

@@ -10,7 +10,8 @@ import org.mwg.task.Task;
 import org.mwg.task.TaskResult;
 
 import static org.mwg.core.task.Actions.asVar;
-import static org.mwg.core.task.Actions.newTask;
+import static org.mwg.core.task.Actions.fromVar;
+import static org.mwg.core.task.CoreTask.task;
 
 public class DFSTest {
 
@@ -78,39 +79,44 @@ public class DFSTest {
 
             if (n1 != null) {
                 //DO BFS from n1
-                Task dfs = newTask();
-                dfs.foreach(asVar("parent")
-                        .traverse("left").asVar("left")
-                        .fromVar("parent").traverse("right").asVar("right")
-                        .then(context -> {
-                            Node left = null;
-                            if (context.variable("left").size() > 0) {
-                                left = (Node) context.variable("left").get(0);
-                            }
-                            Node right = null;
-                            if (context.variable("right").size() > 0) {
-                                right = (Node) context.variable("right").get(0);
-                            }
-                            TaskResult<Node> nextStep = context.newResult();
-                            if (left != null && right != null) {
-                                if (left.id() < right.id()) {
-                                    nextStep.add(left.graph().cloneNode(left));
-                                    nextStep.add(right.graph().cloneNode(right));
-                                } else {
-                                    nextStep.add(left.graph().cloneNode(left));
-                                    nextStep.add(right.graph().cloneNode(right));
-                                }
-                            } else if (left != null) {
-                                nextStep.add(left.graph().cloneNode(left));
-                            }
-                            if (left != null) {
-                                context.addToGlobalVariable("nnl", context.wrap(left.id()));
-                                context.addToGlobalVariable("nnld", context.wrap(left.id() / 2));
-                            }
-                            context.continueWith(nextStep);
-                        }).ifThen(context -> (context.result().size() > 0), dfs).then(context -> context.continueTask())).fromVar("nnl");
+                Task dfs = task();
+                dfs.forEach(
+                        task()
+                                .then(asVar("parent"))
+                                .then(Actions.traverse("left"))
+                                .then(asVar("left"))
+                                .then(fromVar("parent"))
+                                .then(Actions.traverse("right"))
+                                .then(asVar("right"))
+                                .thenDo(context -> {
+                                    Node left = null;
+                                    if (context.variable("left").size() > 0) {
+                                        left = (Node) context.variable("left").get(0);
+                                    }
+                                    Node right = null;
+                                    if (context.variable("right").size() > 0) {
+                                        right = (Node) context.variable("right").get(0);
+                                    }
+                                    TaskResult<Node> nextStep = context.newResult();
+                                    if (left != null && right != null) {
+                                        if (left.id() < right.id()) {
+                                            nextStep.add(left.graph().cloneNode(left));
+                                            nextStep.add(right.graph().cloneNode(right));
+                                        } else {
+                                            nextStep.add(left.graph().cloneNode(left));
+                                            nextStep.add(right.graph().cloneNode(right));
+                                        }
+                                    } else if (left != null) {
+                                        nextStep.add(left.graph().cloneNode(left));
+                                    }
+                                    if (left != null) {
+                                        context.addToGlobalVariable("nnl", context.wrap(left.id()));
+                                        context.addToGlobalVariable("nnld", context.wrap(left.id() / 2));
+                                    }
+                                    context.continueWith(nextStep);
+                                }).ifThen(context -> (context.result().size() > 0), dfs).thenDo(context -> context.continueTask())).then(fromVar("nnl"));
 
-                TaskResult initialResult = newTask().emptyResult();
+                TaskResult initialResult = task().emptyResult();
                 initialResult.add(n1);
 
                 dfs/*.hook(VerboseHook.instance())/*/ /*.hook(VerboseHook.instance())/*.hook(new TaskHook() {

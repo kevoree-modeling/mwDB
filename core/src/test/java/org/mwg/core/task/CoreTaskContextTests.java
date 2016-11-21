@@ -8,7 +8,11 @@ import org.mwg.GraphBuilder;
 import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 
-import static org.mwg.core.task.Actions.newTask;
+import static org.mwg.core.task.Actions.asGlobalVar;
+import static org.mwg.core.task.Actions.fromVar;
+import static org.mwg.core.task.Actions.inject;
+import static org.mwg.core.task.CoreTask.task;
+
 
 public class CoreTaskContextTests {
 
@@ -18,11 +22,13 @@ public class CoreTaskContextTests {
         graph.connect(new Callback<Boolean>() {
             @Override
             public void on(Boolean result) {
-                newTask()
-                        .inject(4).asGlobalVar("i")
-                        .inject(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9}).asGlobalVar("array")
-                        .fromVar("array")
-                        .then(new ActionFunction() {
+                task()
+                        .then(inject(4))
+                        .then(asGlobalVar("i"))
+                        .then(inject(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9}))
+                        .then(asGlobalVar("array"))
+                        .then(fromVar("array"))
+                        .thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 Assert.assertEquals("5", context.template("{{array[4]}}"));

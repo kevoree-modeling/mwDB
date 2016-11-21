@@ -6,15 +6,18 @@ import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 
 import static org.mwg.core.task.Actions.fromIndexAll;
+import static org.mwg.core.task.Actions.selectWith;
+import static org.mwg.core.task.CoreTask.task;
 
 public class ActionWithTest extends AbstractActionTest {
 
     @Test
     public void test() {
         initGraph();
-        fromIndexAll("nodes")
-                .selectWith("name", "n0")
-                .then(new ActionFunction() {
+        task()
+                .then(fromIndexAll("nodes"))
+                .then(selectWith("name", "n0"))
+                .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertEquals(context.resultAsNodes().get(0).get("name"), "n0");
@@ -22,9 +25,9 @@ public class ActionWithTest extends AbstractActionTest {
                 })
                 .execute(graph, null);
 
-        fromIndexAll("nodes")
-                .selectWith("name", "n.*")
-                .then(new ActionFunction() {
+        task().then(fromIndexAll("nodes"))
+                .then(selectWith("name", "n.*"))
+                .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertEquals(context.resultAsNodes().get(0).get("name"), "n0");

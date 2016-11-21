@@ -9,7 +9,8 @@ import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-import static org.mwg.core.task.Actions.inject;
+import static org.mwg.core.task.Actions.*;
+import static org.mwg.core.task.CoreTask.task;
 
 public class ActionRemovePropertyTest extends AbstractActionTest {
 
@@ -22,11 +23,13 @@ public class ActionRemovePropertyTest extends AbstractActionTest {
     public void testWithOneNode() {
         final long[] id = new long[1];
 
-        inject("nodeName").asGlobalVar("name")
-                .newNode()
-                .setProperty("name", Type.STRING, "nodeName")
-                .removeProperty("name")
-                .then(new ActionFunction() {
+        task()
+                .then(inject("nodeName"))
+                .then(asGlobalVar("name"))
+                .then(newNode())
+                .then(setProperty("name", Type.STRING, "nodeName"))
+                .then(removeProperty("name"))
+                .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         TaskResult<Node> nodes = context.resultAsNodes();
@@ -34,7 +37,8 @@ public class ActionRemovePropertyTest extends AbstractActionTest {
                         Assert.assertNull(nodes.get(0).get("name"));
                         id[0] = nodes.get(0).id();
                     }
-                }).execute(graph, null);
+                })
+                .execute(graph, null);
 
         graph.lookup(0, 0, id[0], new Callback<Node>() {
             @Override
@@ -47,8 +51,10 @@ public class ActionRemovePropertyTest extends AbstractActionTest {
     @Test
     public void testWithArray() {
         final long[] ids = new long[5];
-        inject("node").asGlobalVar("nodeName")
-                .then(new ActionFunction() {
+        task()
+                .then(inject("node"))
+                .then(asGlobalVar("nodeName"))
+                .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Node[] nodes = new Node[5];
@@ -58,9 +64,9 @@ public class ActionRemovePropertyTest extends AbstractActionTest {
                         context.continueWith(context.wrap(nodes));
                     }
                 })
-                .setProperty("name", Type.STRING, "nodeName")
-                .removeProperty("name")
-                .then(new ActionFunction() {
+                .then(setProperty("name", Type.STRING, "nodeName"))
+                .then(removeProperty("name"))
+                .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         TaskResult<Node> nodes = context.resultAsNodes();
@@ -86,14 +92,16 @@ public class ActionRemovePropertyTest extends AbstractActionTest {
     @Test
     public void testWithNull() {
         final boolean[] nextCalled = new boolean[1];
-        then(new ActionFunction() {
-            @Override
-            public void eval(TaskContext context) {
-                context.continueWith(null);
-            }
-        }).setProperty("name", Type.STRING, "node")
-                .removeProperty("name")
-                .then(new ActionFunction() {
+        task()
+                .thenDo(new ActionFunction() {
+                    @Override
+                    public void eval(TaskContext context) {
+                        context.continueWith(null);
+                    }
+                })
+                .then(setProperty("name", Type.STRING, "node"))
+                .then(removeProperty("name"))
+                .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         nextCalled[0] = true;

@@ -9,16 +9,18 @@ import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 
 import static org.mwg.core.task.Actions.*;
+import static org.mwg.core.task.CoreTask.task;
 
 public class ActionGetTest extends AbstractActionTest {
 
     @Test
     public void test() {
         initGraph();
-        fromIndexAll("nodes")
-                .get("children")
-                .get("name")
-                .then(new ActionFunction() {
+        task()
+                .then(fromIndexAll("nodes"))
+                .then(get("children"))
+                .then(get("name"))
+                .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertEquals(context.result().get(0), "n0");
@@ -32,9 +34,10 @@ public class ActionGetTest extends AbstractActionTest {
     @Test
     public void testDefaultSynthax() {
         initGraph();
-        fromIndexAll("nodes")
+        task()
+                .then(fromIndexAll("nodes"))
                 .parse("children.name")
-                .then(new ActionFunction() {
+                .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertEquals(context.result().get(0), "n0");
@@ -49,8 +52,9 @@ public class ActionGetTest extends AbstractActionTest {
     @Test
     public void testParse() {
         initGraph();
-        parse("fromIndexAll(nodes).traverse(children)")
-                .then(new ActionFunction() {
+        task()
+                .parse("fromIndexAll(nodes).traverse(children)")
+                .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertEquals(context.resultAsNodes().get(0).get("name"), "n0");
@@ -108,9 +112,10 @@ public class ActionGetTest extends AbstractActionTest {
                 }).execute(graph, null);
 */
 
-        fromIndex("rootIndex", "name=root2")
-                .traverseIndex("childrenIndexed", "name","node3")
-                .then(new ActionFunction() {
+        task()
+                .then(fromIndex("rootIndex", "name=root2"))
+                .then(traverseIndex("childrenIndexed", "name", "node3"))
+                .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertEquals(0, context.result().size());

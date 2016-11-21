@@ -6,7 +6,9 @@ import org.mwg.*;
 import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 
-import static org.mwg.core.task.Actions.newTask;
+import static org.mwg.core.task.Actions.newNode;
+import static org.mwg.core.task.CoreTask.task;
+import static org.mwg.task.Actions.*;
 
 public class ActionIndexOrUnindexNodeTest {
 
@@ -17,13 +19,13 @@ public class ActionIndexOrUnindexNodeTest {
         graph.connect(new Callback<Boolean>() {
             @Override
             public void on(Boolean result) {
-                newTask()
-                        .newNode()
-                        .setProperty("name", Type.STRING, "root")
-                        .indexNode("indexName", "name")
-                        .asGlobalVar("nodeIndexed")
-                        .fromIndexAll("indexName")
-                        .then(new ActionFunction() {
+                task()
+                        .then(newNode())
+                        .then(Actions.setProperty("name", Type.STRING, "root"))
+                        .then(Actions.indexNode("indexName", "name"))
+                        .then(Actions.asGlobalVar("nodeIndexed"))
+                        .then(Actions.fromIndexAll("indexName"))
+                        .thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 Assert.assertNotNull(context.result());
@@ -33,9 +35,9 @@ public class ActionIndexOrUnindexNodeTest {
                                 context.continueTask();
                             }
                         })
-                        .unindexNode("indexName", "name")
-                        .fromIndexAll("indexName")
-                        .then(new ActionFunction() {
+                        .then(Actions.unindexNode("indexName", "name"))
+                        .then(Actions.fromIndexAll("indexName"))
+                        .thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 Assert.assertNotNull(context.result());

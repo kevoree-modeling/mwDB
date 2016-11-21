@@ -5,16 +5,19 @@ import org.junit.Test;
 import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 
+import static org.mwg.core.task.Actions.fromIndex;
 import static org.mwg.core.task.Actions.inject;
+import static org.mwg.core.task.CoreTask.task;
 
 public class ActionFromIndexTest extends AbstractActionTest {
 
     @Test
     public void test() {
         initGraph();
-        inject("uselessPayload")
-                .fromIndex("nodes", "name=n0")
-                .then(new ActionFunction() {
+        task()
+                .then(inject("uselessPayload"))
+                .then(fromIndex("nodes", "name=n0"))
+                .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertEquals(context.resultAsNodes().get(0).get("name"), "n0");

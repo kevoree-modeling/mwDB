@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mwg.core.task.Actions.*;
+import static org.mwg.core.task.CoreTask.task;
 
 public class ActionForeachTest extends AbstractActionTest {
 
@@ -18,16 +19,20 @@ public class ActionForeachTest extends AbstractActionTest {
     public void testForeachWhere() {
         initGraph();
         final long[] i = {0};
-        inject(new long[]{1, 2, 3})
-                .foreach(then(new ActionFunction() {
-                    @Override
-                    public void eval(TaskContext context) {
-                        i[0]++;
-                        Assert.assertEquals(context.result().get(0), i[0]);
-                        context.continueTask();
-                    }
-                }))
-                .then(new ActionFunction() {
+
+        task()
+                .then(inject(new long[]{1, 2, 3}))
+                .forEach(
+                        task().thenDo(new ActionFunction() {
+                            @Override
+                            public void eval(TaskContext context) {
+                                i[0]++;
+                                Assert.assertEquals(context.result().get(0), i[0]);
+                                context.continueTask();
+                            }
+                        })
+                )
+                .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         TaskResult<Long> result = context.result();
@@ -39,41 +44,45 @@ public class ActionForeachTest extends AbstractActionTest {
                 })
                 .execute(graph, null);
 
-        fromIndexAll("nodes").foreach(then(new ActionFunction() {
-            @Override
-            public void eval(TaskContext context) {
-                context.continueTask();
-            }
-        })).then(new ActionFunction() {
-            @Override
-            public void eval(TaskContext context) {
-                TaskResult<Node> nodes = context.resultAsNodes();
-                Assert.assertEquals(nodes.size(), 3);
-                Assert.assertEquals(nodes.get(0).get("name"), "n0");
-                Assert.assertEquals(nodes.get(1).get("name"), "n1");
-                Assert.assertEquals(nodes.get(2).get("name"), "root");
-            }
-        }).execute(graph, null);
+        task()
+                .then(fromIndexAll("nodes"))
+                .forEach(
+                        task()
+                                .thenDo(context -> context.continueTask())
+                )
+                .thenDo(context -> {
+                    TaskResult<Node> nodes = context.resultAsNodes();
+                    Assert.assertEquals(nodes.size(), 3);
+                    Assert.assertEquals(nodes.get(0).get("name"), "n0");
+                    Assert.assertEquals(nodes.get(1).get("name"), "n1");
+                    Assert.assertEquals(nodes.get(2).get("name"), "root");
+                }).execute(graph, null);
 
         List<String> paramIterable = new ArrayList<String>();
         paramIterable.add("n0");
         paramIterable.add("n1");
         paramIterable.add("root");
-        inject(paramIterable).foreach(then(new ActionFunction() {
-            @Override
-            public void eval(TaskContext context) {
-                context.continueTask();
-            }
-        })).then(new ActionFunction() {
-            @Override
-            public void eval(TaskContext context) {
-                TaskResult<String> names = context.result();
-                Assert.assertEquals(names.size(), 3);
-                Assert.assertEquals(names.get(0), "n0");
-                Assert.assertEquals(names.get(1), "n1");
-                Assert.assertEquals(names.get(2), "root");
-            }
-        }).execute(graph, null);
+        task()
+                .then(inject(paramIterable))
+                .forEach(
+                        task()
+                                .thenDo(new ActionFunction() {
+                                    @Override
+                                    public void eval(TaskContext context) {
+                                        context.continueTask();
+                                    }
+                                })
+                )
+                .thenDo(new ActionFunction() {
+                    @Override
+                    public void eval(TaskContext context) {
+                        TaskResult<String> names = context.result();
+                        Assert.assertEquals(names.size(), 3);
+                        Assert.assertEquals(names.get(0), "n0");
+                        Assert.assertEquals(names.get(1), "n1");
+                        Assert.assertEquals(names.get(2), "root");
+                    }
+                }).execute(graph, null);
 
         removeGraph();
     }

@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mwg.task.*;
 
 import static org.mwg.core.task.Actions.*;
+import static org.mwg.core.task.CoreTask.task;
 
 public class ActionIfThenTest extends AbstractActionTest {
 
@@ -13,28 +14,28 @@ public class ActionIfThenTest extends AbstractActionTest {
         initGraph();
         final boolean[] result = {false, false};
 
-        Task modifyResult0 = then(new ActionFunction() {
+        Task modifyResult0 = task().thenDo(new ActionFunction() {
             @Override
             public void eval(TaskContext context) {
                 result[0] = true;
             }
         });
 
-        Task modifyResult1 = then(new ActionFunction() {
+        Task modifyResult1 = task().thenDo(new ActionFunction() {
             @Override
             public void eval(TaskContext context) {
                 result[0] = true;
             }
         });
 
-        ifThen(new TaskFunctionConditional() {
+        task().ifThen(new TaskFunctionConditional() {
             @Override
             public boolean eval(TaskContext context) {
                 return true;
             }
         }, modifyResult0).execute(graph, null);
 
-        ifThen(new TaskFunctionConditional() {
+        task().ifThen(new TaskFunctionConditional() {
             @Override
             public boolean eval(TaskContext context) {
                 return false;
@@ -49,7 +50,7 @@ public class ActionIfThenTest extends AbstractActionTest {
     @Test
     public void testChainAfterIfThen() {
         initGraph();
-        Task addVarInContext = inject(5).asGlobalVar("variable").then(new ActionFunction() {
+        Task addVarInContext = task().then(inject(5)).then(asGlobalVar("variable")).thenDo(new ActionFunction() {
             @Override
             public void eval(TaskContext context) {
                 context.continueTask();
@@ -57,25 +58,26 @@ public class ActionIfThenTest extends AbstractActionTest {
             }
         });
 
-        ifThen(new TaskFunctionConditional() {
+        task().ifThen(new TaskFunctionConditional() {
             @Override
             public boolean eval(TaskContext context) {
                 return true;
             }
-        }, addVarInContext).fromVar("variable").then(new ActionFunction() {
-            @Override
-            public void eval(TaskContext context) {
-                Integer val = (Integer) context.result().get(0);
-                Assert.assertEquals(5, (int) val);
-            }
-        }).execute(graph, null);
+        }, addVarInContext).then(fromVar("variable"))
+                .thenDo(new ActionFunction() {
+                    @Override
+                    public void eval(TaskContext context) {
+                        Integer val = (Integer) context.result().get(0);
+                        Assert.assertEquals(5, (int) val);
+                    }
+                }).execute(graph, null);
         removeGraph();
     }
 
     @Test
     public void accessContextVariableInThenTask() {
         initGraph();
-        Task accessVar = then(new ActionFunction() {
+        Task accessVar = task().thenDo(new ActionFunction() {
             @Override
             public void eval(TaskContext context) {
                 Integer variable = (Integer) context.variable("variable").get(0);
@@ -84,7 +86,7 @@ public class ActionIfThenTest extends AbstractActionTest {
             }
         });
 
-        inject(5).asGlobalVar("variable").ifThen(new TaskFunctionConditional() {
+        task().then(inject(5)).then(asGlobalVar("variable")).ifThen(new TaskFunctionConditional() {
             @Override
             public boolean eval(TaskContext context) {
                 return true;

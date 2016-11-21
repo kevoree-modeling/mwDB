@@ -5,8 +5,7 @@ import org.mwg.core.task.math.MathConditional;
 import org.mwg.task.*;
 
 public class Actions {
-
-
+    
     /**
      * Sets the task context to a particular world.
      *

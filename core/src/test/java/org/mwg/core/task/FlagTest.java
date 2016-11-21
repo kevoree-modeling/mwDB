@@ -9,8 +9,8 @@ import org.mwg.Node;
 import org.mwg.core.scheduler.NoopScheduler;
 import org.mwg.task.*;
 
-import static org.mwg.core.task.Actions.newTask;
-import static org.mwg.core.task.Actions.setTime;
+import static org.mwg.core.task.Actions.*;
+import static org.mwg.core.task.CoreTask.task;
 
 public class FlagTest {
     @Test
@@ -66,10 +66,8 @@ public class FlagTest {
             graph.save(null);
             Assert.assertTrue(graph.space().available() == initcache);
 
-
-            Task traverse = newTask();
-
-            traverse.asGlobalVar("parent").traverse(relName).then(new ActionFunction() {
+            Task traverse = task();
+            traverse.then(asGlobalVar("parent")).then(Actions.traverse(relName)).thenDo(new ActionFunction() {
                 @Override
                 public void eval(TaskContext context) {
 
@@ -88,7 +86,7 @@ public class FlagTest {
             }, traverse);
 
 
-            Task mainTask = setTime("13").setWorld("0").inject(n1).subTask(traverse);
+            Task mainTask = task().then(setTime("13")).then(setWorld("0")).then(inject(n1)).map(traverse);
             mainTask.execute(graph, new Callback<TaskResult>() {
                 @Override
                 public void on(TaskResult result) {
@@ -161,26 +159,29 @@ public class FlagTest {
             Assert.assertTrue(graph.space().available() == initcache);
 
 
-            Task traverse = newTask();
+            Task traverse = task();
 
-            traverse.asGlobalVar("parent").traverseOrKeep(relName).then(new ActionFunction() {
-                @Override
-                public void eval(TaskContext context) {
-                    TaskResult<Integer> count = context.variable("count");
-                    int c = 0;
-                    if (count != null) {
-                        c = count.get(0) + 1;
-                    }
-                    context.setGlobalVariable("count", context.wrap(c));
+            traverse
+                    .then(asGlobalVar("parent"))
+                    .then(Actions.traverseOrKeep(relName))
+                    .thenDo(new ActionFunction() {
+                        @Override
+                        public void eval(TaskContext context) {
+                            TaskResult<Integer> count = context.variable("count");
+                            int c = 0;
+                            if (count != null) {
+                                c = count.get(0) + 1;
+                            }
+                            context.setGlobalVariable("count", context.wrap(c));
 
-                    TaskResult<Node> children = context.resultAsNodes();
-                    if (children != null && children.size() != 0) {
-                        context.continueWith(context.wrapClone(children.get(0)));
-                    } else {
-                        context.continueWith(null);
-                    }
-                }
-            }).ifThen(new TaskFunctionConditional() {
+                            TaskResult<Node> children = context.resultAsNodes();
+                            if (children != null && children.size() != 0) {
+                                context.continueWith(context.wrapClone(children.get(0)));
+                            } else {
+                                context.continueWith(null);
+                            }
+                        }
+                    }).ifThen(new TaskFunctionConditional() {
                 @Override
                 public boolean eval(TaskContext context) {
                     int x = (int) context.variable("count").get(0);
@@ -188,7 +189,7 @@ public class FlagTest {
                 }
             }, traverse);
 
-            Task mainTask = setTime("13").setWorld("0").inject(n1).subTask(traverse);
+            Task mainTask = task().then(setTime("13")).then(setWorld("0")).then(inject(n1)).map(traverse);
             mainTask.execute(graph, new Callback<TaskResult>() {
                 @Override
                 public void on(TaskResult result) {

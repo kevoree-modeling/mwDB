@@ -8,14 +8,16 @@ import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 
 import static org.mwg.core.task.Actions.inject;
+import static org.mwg.core.task.CoreTask.task;
 
 public class ActionInjectTest extends AbstractActionTest {
 
     @Test
     public void test() {
         initGraph();
-        inject("uselessPayload")
-                .then(new ActionFunction() {
+        task()
+                .then(inject("uselessPayload"))
+                .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Assert.assertEquals(context.resultAsStrings().get(0), "uselessPayload");
@@ -38,8 +40,9 @@ public class ActionInjectTest extends AbstractActionTest {
                         (String) result[1].get("name"),
                         (String) result[2].get("name")};
 
-                inject(result)
-                        .then(new ActionFunction() {
+                task()
+                        .then(inject(result))
+                        .thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 //empty task
@@ -74,8 +77,9 @@ public class ActionInjectTest extends AbstractActionTest {
             public void on(Node[] result) {
                 Assert.assertEquals(1, result.length);
 
-                inject(result[0])
-                        .then(new ActionFunction() {
+                task()
+                        .then(inject(result[0]))
+                        .thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 //empty task

@@ -6,6 +6,7 @@ import org.mwg.GraphBuilder;
 import org.mwg.task.TaskResult;
 
 import static org.mwg.core.task.Actions.*;
+import static org.mwg.core.task.CoreTask.task;
 
 /**
  * @ignore ts
@@ -18,7 +19,7 @@ public class HybridSchedulerTest {
         g.connect(new Callback<Boolean>() {
             @Override
             public void on(Boolean result) {
-                loopPar("0","99", loop("0","99",print("{{result}}"))).execute(g, new Callback<TaskResult>() {
+                task().loopPar("0","99", task().loop("0","99", task().then(print("{{result}}")))).execute(g, new Callback<TaskResult>() {
                     @Override
                     public void on(TaskResult result) {
                         System.out.println();

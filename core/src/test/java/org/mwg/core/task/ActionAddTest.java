@@ -10,6 +10,7 @@ import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
 import static org.mwg.core.task.Actions.*;
+import static org.mwg.core.task.CoreTask.task;
 
 public class ActionAddTest extends AbstractActionTest {
 
@@ -22,10 +23,11 @@ public class ActionAddTest extends AbstractActionTest {
     public void testWithOneNode() {
         Node relatedNode = graph.newNode(0, 0);
         final long[] id = new long[1];
-        newNode()
-                .inject(relatedNode).asGlobalVar("x")
-                .add("friend", "x")
-                .then(new ActionFunction() {
+        task().then(newNode())
+                .then(inject(relatedNode))
+                .then(asGlobalVar("x"))
+                .then(add("friend", "x"))
+                .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Node node = (Node) context.result().get(0);
@@ -51,8 +53,10 @@ public class ActionAddTest extends AbstractActionTest {
         Node relatedNode = graph.newNode(0, 0);
 
         final long[] ids = new long[5];
-        inject(relatedNode).asGlobalVar("x")
-                .then(new ActionFunction() {
+        task()
+                .then(inject(relatedNode))
+                .then(asGlobalVar("x"))
+                .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         Node[] nodes = new Node[5];
@@ -62,8 +66,8 @@ public class ActionAddTest extends AbstractActionTest {
                         context.continueWith(context.wrap(nodes));
                     }
                 })
-                .add("friend", "x")
-                .then(new ActionFunction() {
+                .then(add("friend", "x"))
+                .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         TaskResult<Node> nodes = context.resultAsNodes();
@@ -93,14 +97,16 @@ public class ActionAddTest extends AbstractActionTest {
 
         final boolean[] nextCalled = new boolean[1];
 
-        then(new ActionFunction() {
+        task().thenDo(new ActionFunction() {
             @Override
             public void eval(TaskContext context) {
                 context.continueWith(null);
             }
-        }).inject(relatedNode).asGlobalVar("x")
-                .add("friend", "x")
-                .then(new ActionFunction() {
+        })
+                .then(inject(relatedNode))
+                .then(asGlobalVar("x"))
+                .then(add("friend", "x"))
+                .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         nextCalled[0] = true;

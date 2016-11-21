@@ -6,7 +6,9 @@ import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskFunctionSelectObject;
 
-import static org.mwg.core.task.Actions.newTask;
+import static org.mwg.core.task.Actions.inject;
+import static org.mwg.core.task.Actions.selectObject;
+import static org.mwg.core.task.CoreTask.task;
 
 public class ActionSelectObjectTest extends AbstractActionTest {
 
@@ -14,48 +16,41 @@ public class ActionSelectObjectTest extends AbstractActionTest {
     public void testSelectOneObject() {
         initGraph();
         startMemoryLeakTest();
-        newTask().inject(55)
-                .selectObject(new TaskFunctionSelectObject() {
-                    @Override
-                    public boolean select(Object object, TaskContext context) {
-                        return false;
-                    }
-                })
-                .then(new ActionFunction() {
-                    @Override
-                    public void eval(TaskContext context) {
-                        Assert.assertEquals(context.result().size(),0);
-                    }
-                })
+        task()
+                .then(inject(55))
+                .then(selectObject((object, context) -> false))
+                .thenDo(context -> Assert.assertEquals(context.result().size(), 0))
                 .execute(graph, null);
 
-        newTask().inject(55)
-                .selectObject(new TaskFunctionSelectObject() {
+        task()
+                .then(inject(55))
+                .then(selectObject(new TaskFunctionSelectObject() {
                     @Override
                     public boolean select(Object object, TaskContext context) {
                         return true;
                     }
-                })
-                .then(new ActionFunction() {
+                }))
+                .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
-                        Assert.assertNotEquals(context.result().size(),0);
+                        Assert.assertNotEquals(context.result().size(), 0);
                         Assert.assertEquals(55, context.result().get(0));
                     }
                 })
                 .execute(graph, null);
 
-        newTask().inject(55)
-                .selectObject(new TaskFunctionSelectObject() {
+        task()
+                .then(inject(55))
+                .then(selectObject(new TaskFunctionSelectObject() {
                     @Override
                     public boolean select(Object object, TaskContext context) {
                         return (Integer) object == 55;
                     }
-                })
-                .then(new ActionFunction() {
+                }))
+                .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
-                        Assert.assertNotEquals(context.result().size(),0);
+                        Assert.assertNotEquals(context.result().size(), 0);
                         Assert.assertEquals(55, context.result().get(0));
                     }
                 })
