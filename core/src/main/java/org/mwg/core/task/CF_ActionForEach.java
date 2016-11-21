@@ -2,7 +2,6 @@ package org.mwg.core.task;
 
 import org.mwg.Callback;
 import org.mwg.base.AbstractAction;
-import org.mwg.plugin.Job;
 import org.mwg.plugin.SchedulerAffinity;
 import org.mwg.task.Task;
 import org.mwg.task.TaskContext;
@@ -10,46 +9,36 @@ import org.mwg.task.TaskResult;
 import org.mwg.task.TaskResultIterator;
 import org.mwg.utility.Tuple;
 
-class ActionFlatmap extends AbstractAction {
+class CF_ActionForEach extends AbstractAction {
 
     private final Task _subTask;
 
-    ActionFlatmap(final Task p_subTask) {
+    CF_ActionForEach(final Task p_subTask) {
         super();
         _subTask = p_subTask;
     }
 
     @Override
     public void eval(final TaskContext context) {
-        final ActionFlatmap selfPointer = this;
+        final CF_ActionForEach selfPointer = this;
         final TaskResult previousResult = context.result();
         if (previousResult == null) {
             context.continueTask();
         } else {
             final TaskResultIterator it = previousResult.iterator();
-            final TaskResult finalResult = context.newResult();
-            finalResult.allocate(previousResult.size());
             final Callback[] recursiveAction = new Callback[1];
-            final TaskResult[] loopRes = new TaskResult[1];
             recursiveAction[0] = new Callback<TaskResult>() {
                 @Override
                 public void on(final TaskResult res) {
+                    //we don't keep result
                     if (res != null) {
-                        for (int i = 0; i < res.size(); i++) {
-                            finalResult.add(res.get(i));
-                        }
+                        res.free();
                     }
-                    loopRes[0].free();
                     final Tuple<Integer, Object> nextResult = it.nextWithIndex();
-                    if (nextResult != null) {
-                        loopRes[0] = context.wrap(nextResult.right());
-                    } else {
-                        loopRes[0] = null;
-                    }
                     if (nextResult == null) {
-                        context.continueWith(finalResult);
+                        context.continueTask();
                     } else {
-                        selfPointer._subTask.executeFromUsing(context, loopRes[0], SchedulerAffinity.SAME_THREAD, new Callback<TaskContext>() {
+                        selfPointer._subTask.executeFromUsing(context, context.wrap(nextResult.right()), SchedulerAffinity.SAME_THREAD, new Callback<TaskContext>() {
                             @Override
                             public void on(TaskContext result) {
                                 result.defineVariable("i", nextResult.left());
@@ -60,27 +49,21 @@ class ActionFlatmap extends AbstractAction {
             };
             final Tuple<Integer, Object> nextRes = it.nextWithIndex();
             if (nextRes != null) {
-                loopRes[0] = context.wrap(nextRes.right());
-                context.graph().scheduler().dispatch(SchedulerAffinity.SAME_THREAD, new Job() {
+                _subTask.executeFromUsing(context, context.wrap(nextRes.right()), SchedulerAffinity.SAME_THREAD, new Callback<TaskContext>() {
                     @Override
-                    public void run() {
-                        _subTask.executeFromUsing(context, loopRes[0], SchedulerAffinity.SAME_THREAD, new Callback<TaskContext>() {
-                            @Override
-                            public void on(TaskContext result) {
-                                result.defineVariable("i", nextRes.left());
-                            }
-                        }, recursiveAction[0]);
+                    public void on(TaskContext result) {
+                        result.defineVariable("i", nextRes.left());
                     }
-                });
+                }, recursiveAction[0]);
             } else {
-                context.continueWith(finalResult);
+                context.continueTask();
             }
         }
     }
 
     @Override
     public String toString() {
-        return "flatMap()";
+        return "foreach()";
     }
 
 

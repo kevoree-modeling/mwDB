@@ -11,11 +11,11 @@ import org.mwg.task.TaskResult;
 import org.mwg.task.TaskResultIterator;
 import org.mwg.utility.Tuple;
 
-class ActionForEachPar extends AbstractAction {
+class CF_ActionFlatMapPar extends AbstractAction {
 
     private final Task _subTask;
 
-    ActionForEachPar(final Task p_subTask) {
+    CF_ActionFlatMapPar(final Task p_subTask) {
         super();
         _subTask = p_subTask;
     }
@@ -23,11 +23,13 @@ class ActionForEachPar extends AbstractAction {
     @Override
     public void eval(final TaskContext context) {
         final TaskResult previousResult = context.result();
+        final TaskResult finalResult = context.wrap(null);
         final TaskResultIterator it = previousResult.iterator();
         final int previousSize = previousResult.size();
         if (previousSize == -1) {
             throw new RuntimeException("Foreach on non array structure are not supported yet!");
         }
+        finalResult.allocate(previousSize);
         final DeferCounter waiter = context.graph().newCounter(previousSize);
         final Job[] dequeueJob = new Job[1];
         dequeueJob[0] = new Job() {
@@ -44,7 +46,9 @@ class ActionForEachPar extends AbstractAction {
                         @Override
                         public void on(TaskResult result) {
                             if (result != null) {
-                                result.free();
+                                for (int i = 0; i < result.size(); i++) {
+                                    finalResult.add(result.get(i));
+                                }
                             }
                             waiter.count();
                             dequeueJob[0].run();
@@ -60,14 +64,14 @@ class ActionForEachPar extends AbstractAction {
         waiter.then(new Job() {
             @Override
             public void run() {
-                context.continueTask();
+                context.continueWith(finalResult);
             }
         });
     }
 
     @Override
     public String toString() {
-        return "foreachPar()";
+        return "flatMapPar()";
     }
 
 }

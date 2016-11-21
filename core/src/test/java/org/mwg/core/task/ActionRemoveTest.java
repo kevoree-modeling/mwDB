@@ -27,8 +27,8 @@ public class ActionRemoveTest extends AbstractActionTest {
         task().then(createNode())
                 .then(inject(relatedNode))
                 .then(asGlobalVar("x"))
-                .then(add("friend", "x"))
-                .then(remove("friend", "x"))
+                .then(addToRelationship("friend", "x"))
+                .then(removeFromRelationship("friend", "x"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
@@ -67,8 +67,8 @@ public class ActionRemoveTest extends AbstractActionTest {
                         context.continueWith(context.wrap(nodes));
                     }
                 })
-                .then(add("friend", "x"))
-                .then(remove("friend", "x"))
+                .then(addToRelationship("friend", "x"))
+                .then(removeFromRelationship("friend", "x"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
@@ -105,8 +105,8 @@ public class ActionRemoveTest extends AbstractActionTest {
                 })
                 .then(inject(relatedNode))
                 .then(asGlobalVar("x"))
-                .then(add("friend", "x"))
-                .then(remove("friend", "x"))
+                .then(addToRelationship("friend", "x"))
+                .then(removeFromRelationship("friend", "x"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {

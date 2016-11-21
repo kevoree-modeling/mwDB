@@ -18,7 +18,7 @@ public class CoreTask implements org.mwg.task.Task {
     private TaskHookFactory _hookFactory = null;
 
     @Override
-    public Task then(Action nextAction) {
+    public final Task then(Action nextAction) {
         if (_first == null) {
             _first = (AbstractAction) nextAction;
             _last = _first;
@@ -30,76 +30,75 @@ public class CoreTask implements org.mwg.task.Task {
     }
 
     @Override
-    public Task thenDo(ActionFunction nextActionFunction) {
-        return then(new ActionWrapper(nextActionFunction));
+    public final Task thenDo(ActionFunction nextActionFunction) {
+        return then(new CF_ActionThenDo(nextActionFunction));
     }
 
     @Override
     public Task doWhile(Task task, TaskFunctionConditional cond) {
-        return then(new ActionDoWhile(task, cond));
+        return then(new CF_ActionDoWhile(task, cond));
     }
 
     @Override
     public Task loop(String from, String to, Task subTask) {
-        return then(new ActionLoop(from, to, subTask));
+        return then(new CF_ActionLoop(from, to, subTask));
     }
 
     @Override
     public Task loopPar(String from, String to, Task subTask) {
-        return then(new ActionLoopPar(from, to, subTask));
+        return then(new CF_ActionLoopPar(from, to, subTask));
     }
 
     @Override
     public Task forEach(Task subTask) {
-        return then(new ActionForEach(subTask));
+        return then(new CF_ActionForEach(subTask));
     }
 
     @Override
     public Task forEachPar(Task subTask) {
-        return then(new ActionForEachPar(subTask));
+        return then(new CF_ActionForEachPar(subTask));
     }
 
     @Override
     public Task flatMap(Task subTask) {
-        return then(new ActionFlatmap(subTask));
+        return then(new CF_ActionFlatMap(subTask));
     }
 
     @Override
     public Task flatMapPar(Task subTask) {
-        return then(new ActionFlatmap(subTask));
+        return then(new CF_ActionFlatMapPar(subTask));
     }
 
     @Override
     public Task ifThen(TaskFunctionConditional cond, Task then) {
-        return then(new ActionIfThen(cond, then));
+        return then(new CF_ActionIfThen(cond, then));
     }
 
     @Override
     public Task ifThenElse(TaskFunctionConditional cond, Task thenSub, Task elseSub) {
-        return then(new ActionIfThenElse(cond, thenSub, elseSub));
+        return then(new CF_ActionIfThenElse(cond, thenSub, elseSub));
     }
 
     @Override
     public Task whileDo(TaskFunctionConditional cond, Task then) {
-        return then(new ActionWhileDo(cond, then));
+        return then(new CF_ActionWhileDo(cond, then));
     }
 
     @Override
     public Task map(Task... subTasks) {
-        then(new ActionSubTasks(subTasks));
+        then(new CF_ActionMap(subTasks));
+        return this;
+    }
+
+    @Override
+    public Task mapPar(Task... subTasks) {
+        then(new CF_ActionMapPar(subTasks));
         return this;
     }
 
     @Override
     public Task isolate(Task subTask) {
-        then(new ActionIsolate(subTask));
-        return this;
-    }
-
-
-    @Override
-    public Task mapPar(Task... subTasks) {
-        then(new ActionSubTasksPar(subTasks));
+        then(new CF_ActionIsolate(subTask));
         return this;
     }
 

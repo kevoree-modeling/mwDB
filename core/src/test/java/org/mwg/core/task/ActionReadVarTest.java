@@ -8,7 +8,7 @@ import org.mwg.task.TaskContext;
 import static org.mwg.core.task.Actions.*;
 import static org.mwg.core.task.Actions.task;
 
-public class ActionFromVarTest extends AbstractActionTest {
+public class ActionReadVarTest extends AbstractActionTest {
 
     @Test
     public void test() {
@@ -29,5 +29,25 @@ public class ActionFromVarTest extends AbstractActionTest {
                 .execute(graph, null);
         removeGraph();
     }
+
+    @Test
+    public void testIndex() {
+        initGraph();
+        task()
+                .then(readIndexAll("nodes"))
+                .then(asGlobalVar("x"))
+                .then(inject("uselessPayload"))
+                .then(readVar("x[0]"))
+                .thenDo(new ActionFunction() {
+                    @Override
+                    public void eval(TaskContext context) {
+                        Assert.assertEquals(context.resultAsNodes().get(0).get("name"), "n0");
+                        Assert.assertEquals(1, context.resultAsNodes().size());
+                    }
+                })
+                .execute(graph, null);
+        removeGraph();
+    }
+
 
 }

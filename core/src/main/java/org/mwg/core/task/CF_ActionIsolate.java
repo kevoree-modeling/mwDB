@@ -7,11 +7,11 @@ import org.mwg.task.Task;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-class ActionIsolate extends AbstractAction {
+class CF_ActionIsolate extends AbstractAction {
 
     private final Task _subTask;
 
-    ActionIsolate(final Task p_subTask) {
+    CF_ActionIsolate(final Task p_subTask) {
         super();
         if (p_subTask == null) {
             throw new RuntimeException("subTask should not be null");

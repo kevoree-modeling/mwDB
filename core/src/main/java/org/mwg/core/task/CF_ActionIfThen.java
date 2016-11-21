@@ -7,12 +7,12 @@ import org.mwg.task.TaskContext;
 import org.mwg.task.TaskFunctionConditional;
 import org.mwg.task.TaskResult;
 
-class ActionIfThen extends AbstractAction {
+class CF_ActionIfThen extends AbstractAction {
 
     private TaskFunctionConditional _condition;
     private org.mwg.task.Task _action;
 
-    ActionIfThen(final TaskFunctionConditional cond, final org.mwg.task.Task action) {
+    CF_ActionIfThen(final TaskFunctionConditional cond, final org.mwg.task.Task action) {
         super();
         if (cond == null) {
             throw new RuntimeException("condition should not be null");

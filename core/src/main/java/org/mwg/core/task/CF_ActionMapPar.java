@@ -9,11 +9,11 @@ import org.mwg.task.Task;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-class ActionSubTasksPar extends AbstractAction {
+class CF_ActionMapPar extends AbstractAction {
 
     private final Task[] _subTasks;
 
-    ActionSubTasksPar(final Task... p_subTasks) {
+    CF_ActionMapPar(final Task... p_subTasks) {
         super();
         _subTasks = p_subTasks;
     }

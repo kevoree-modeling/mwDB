@@ -49,24 +49,64 @@ public class Actions {
     }
 
     /**
-     * Retrieves a stored variable
+     * Initialise a new scope context for a variable (copy the parent and isolate all set, such as re-definition in imperative languages)
+     *
+     * @param variableName identifier of this result
+     * @return this task to chain actions (fluent API)
+     */
+    public static Action defineAsVar(String variableName) {
+        return new ActionDefineAsVar(variableName);
+    }
+
+    /**
+     * Declare a new local variable.
+     *
+     * @param variableName
+     * @return this task to chain actions (fluent API)
+     */
+    public static Action declareVar(String variableName) {
+        return new ActionDeclareVar(variableName);
+    }
+
+    /**
+     * Declare a new global variable. Every store instructions past this point using this varName will be stored globally.
+     *
+     * @param variableName
+     * @return this task to chain actions (fluent API)
+     */
+    public static Action declareGlobalVar(String variableName) {
+        return new ActionDeclareGlobalVar(variableName);
+    }
+
+    /**
+     * Retrieves a stored variable. To reach a particular index, classic array notation can be used.
+     * Therefore A[B] will be interpreted as: extract value stored at index B from the variable stored at name A.
      *
      * @param name interpreted as a template
      * @return this task to chain actions (fluent API)
      */
     public static Action readVar(String name) {
-        return new ActionReadVar(name, -1);
+        return new ActionReadVar(name);
     }
 
     /**
-     * Retrieves a stored variable and extract specific index (because all variable are arrays)
+     * Stores the current task result into a named variable
      *
-     * @param name  interpreted as a template
-     * @param index
+     * @param variableName identifier of this result
      * @return this task to chain actions (fluent API)
      */
-    public static Action readVarIndex(String name, int index) {
-        return new ActionReadVar(name, index);
+    public static Action setAsVar(String variableName) {
+        return new ActionAsVar(variableName);
+    }
+
+    /**
+     * Add the current task result to the named variable
+     *
+     * @param variableName identifier of this result
+     * @return this task to chain actions (fluent API)
+     */
+    public static Action addToVar(String variableName) {
+        return new ActionAddToVar(variableName);
     }
 
 
@@ -97,6 +137,71 @@ public class Actions {
     public static Action forceAttribute(String name, byte type, String value) {
         return new ActionSetAttribute(name, type, value, true);
     }
+
+    /**
+     * Removes an attribute from a node or an array of nodes.
+     * The node (or the array) should be init in the previous task
+     *
+     * @param attributeName The name of the attribute to remove.
+     * @return this task to chain actions (fluent API)
+     */
+    public static Action removeAttribute(String attributeName) {
+        return new ActionRemoveAttribute(attributeName);
+    }
+
+    /**
+     * Remove nodes present in the named variable from the named relationship, in all nodes present in current result.
+     *
+     * @param relationName The name of the relation.
+     * @param variableName will be interpreted as a template.
+     * @return this task to chain actions (fluent API)
+     */
+    public static Action removeFromRelationship(String relationName, String variableName) {
+        return new ActionRemove(relationName, variableName);
+    }
+
+    /**
+     * Add nodes present in the named variable from the named relationship, in all nodes present in current result.
+     *
+     * @param relationName The name of the relation.
+     * @param variableName will be interpreted as a template.
+     * @return this task to chain actions (fluent API)
+     */
+    public static Action addToRelationship(String relationName, String variableName) {
+        return new ActionAdd(relationName, variableName);
+    }
+
+    /**
+     * Get all the attributes names of nodes present in the previous result
+     *
+     * @return this task to chain actions (fluent API)
+     */
+    public static Action attributes() {
+        return new ActionAttributes((byte) -1);
+    }
+
+    /**
+     * Get and filter all the attributes names of nodes present in the previous result. <br>
+     *
+     * @param filterType type of attributes to filter
+     * @return this task to chain actions (fluent API)
+     */
+    public static Action attributesWithTypes(byte filterType) {
+        return new ActionAttributes(filterType);
+    }
+
+    /**
+     * Retrieve any attribute/relationship of nodes presents in current result.
+     *
+     * @param name of property to retrieve
+     * @return this task to chain actions (fluent API)
+     */
+    public static Action get(String name) {
+        return new ActionGet(name);
+    }
+
+
+    //Index manipulation zone
 
     /**
      * Retrieves all nodes from a named index
@@ -193,60 +298,6 @@ public class Actions {
     }
 
     /**
-     * Stores the current task result into a named variable with a global scope
-     *
-     * @param variableName identifier of this result
-     * @return this task to chain actions (fluent API)
-     */
-    public static Action asGlobalVar(String variableName) {
-        return new ActionAsVar(variableName, true);
-    }
-
-    /**
-     * Add the current task result to the global named variable
-     *
-     * @param variableName identifier of this result
-     * @return this task to chain actions (fluent API)
-     */
-    public static Action addToGlobalVar(String variableName) {
-        return new ActionAddToVar(variableName, true);
-    }
-
-    /**
-     * Stores the current task result into a named variable with a local scope
-     *
-     * @param variableName identifier of this result
-     * @return this task to chain actions (fluent API)
-     */
-    public static Action asVar(String variableName) {
-        return new ActionAsVar(variableName, false);
-    }
-
-    /**
-     * Initialise a new scope context for a variable (copy the parent and isolate all set, such as re-definition in imperative languages)
-     *
-     * @param variableName identifier of this result
-     * @return this task to chain actions (fluent API)
-     */
-    public static Action defineVar(String variableName) {
-        return new ActionDefineVar(variableName);
-    }
-
-    /**
-     * Add the current task result to the local named variable
-     *
-     * @param variableName identifier of this result
-     * @return this task to chain actions (fluent API)
-     */
-    public static Action addToVar(String variableName) {
-        return new ActionAddToVar(variableName, false);
-    }
-
-    public static Action map(TaskFunctionMap mapFunction) {
-        return new ActionMap(mapFunction);
-    }
-
-    /**
      * Filters the previous result to keep nodes which named attribute has a specific value
      *
      * @param name    the name of the attribute used to filter
@@ -289,33 +340,12 @@ public class Actions {
     }
 
     /**
-     * Traverse the specified relation
-     *
-     * @param relationName relation to traverse
-     * @return this task to chain actions (fluent API)
-     */
-    public static Action traverse(String relationName) {
-        return new ActionTraverse(relationName);
-    }
-
-    /**
      * Traverse in times all nodes in current context
      *
      * @return this task to chain actions (fluent API)
      */
     public static Action traverseTimeRange(String from, String to) {
         return new ActionTraverseTimeRange(from, to);
-    }
-
-    /**
-     * Retrieve any property given a precise name.
-     * If the property is a relationship, it is traversed an related nodes are retrieved.
-     *
-     * @param name of property to retrieve
-     * @return this task to chain actions (fluent API)
-     */
-    public static Action get(String name) {
-        return new ActionGet(name);
     }
 
     /**
@@ -349,6 +379,9 @@ public class Actions {
         return new ActionTraverseIndexAll(indexName);
     }
 
+
+    //Helper zone
+
     public static Action print(String name) {
         return new ActionPrint(name, false);
     }
@@ -356,6 +389,9 @@ public class Actions {
     public static Action println(String name) {
         return new ActionPrint(name, false);
     }
+
+
+    //Execution manipulation zone
 
     /**
      * Execute a executeExpression expression on all nodes given from previous step
@@ -377,69 +413,6 @@ public class Actions {
      */
     public static Action pluginAction(String name, String params) {
         return new ActionPlugin(name, params);
-    }
-
-    /**
-     * Removes a node from a relation of a node or of an array of nodes.
-     *
-     * @param relationName         The name of the relation.
-     * @param variableNameToRemove The name of the property to add, should be stored previously as a variable in task context.
-     * @return this task to chain actions (fluent API)
-     */
-    public static Action remove(String relationName, String variableNameToRemove) {
-        return new ActionRemove(relationName, variableNameToRemove);
-    }
-
-    /**
-     * Adds a node to a relation of a node or of an array of nodes.
-     *
-     * @param relationName      The name of the relation.
-     * @param variableNameToAdd The name of the property to add, should be stored previously as a variable in task context.
-     * @return this task to chain actions (fluent API)
-     */
-    public static Action add(String relationName, String variableNameToAdd) {
-        return new ActionAdd(relationName, variableNameToAdd);
-    }
-
-    /**
-     * Adds a node to a relation of a node or of an array of nodes.
-     *
-     * @param relationName   The name of the relation.
-     * @param variableTarget The name of the property to add, should be stored previously as a variable in task context.
-     * @return this task to chain actions (fluent API)
-     */
-    public static Action addTo(String relationName, String variableTarget) {
-        return new ActionAddTo(relationName, variableTarget);
-    }
-
-    /**
-     * Get all the attributes names of nodes present in the previous result
-     *
-     * @return this task to chain actions (fluent API)
-     */
-    public static Action attributes() {
-        return new ActionAttributes((byte) -1);
-    }
-
-    /**
-     * Get and filter all the attributes names of nodes present in the previous result. <br>
-     *
-     * @param filterType type of attributes to filter
-     * @return this task to chain actions (fluent API)
-     */
-    public static Action attributesWithTypes(byte filterType) {
-        return new ActionAttributes(filterType);
-    }
-
-    /**
-     * Removes an attribute from a node or an array of nodes.
-     * The node (or the array) should be init in the previous task
-     *
-     * @param attributeName The name of the attribute to remove.
-     * @return this task to chain actions (fluent API)
-     */
-    public static Action removeAttribute(String attributeName) {
-        return new ActionRemoveAttribute(attributeName);
     }
 
     /**

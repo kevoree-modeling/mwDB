@@ -8,12 +8,12 @@ import org.mwg.task.TaskContext;
 import org.mwg.task.TaskFunctionConditional;
 import org.mwg.task.TaskResult;
 
-class ActionDoWhile extends AbstractAction {
+class CF_ActionDoWhile extends AbstractAction {
 
     private final TaskFunctionConditional _cond;
     private final Task _then;
 
-    ActionDoWhile(final Task p_then, final TaskFunctionConditional p_cond) {
+    CF_ActionDoWhile(final Task p_then, final TaskFunctionConditional p_cond) {
         super();
         this._cond = p_cond;
         this._then = p_then;
@@ -22,7 +22,7 @@ class ActionDoWhile extends AbstractAction {
     @Override
     public void eval(final TaskContext context) {
         final CoreTaskContext coreTaskContext = (CoreTaskContext) context;
-        final ActionDoWhile selfPointer = this;
+        final CF_ActionDoWhile selfPointer = this;
         final Callback[] recursiveAction = new Callback[1];
         recursiveAction[0] = new Callback<TaskResult>() {
             @Override

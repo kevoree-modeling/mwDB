@@ -9,14 +9,14 @@ import org.mwg.task.TaskResult;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-class ActionLoop extends AbstractAction {
+class CF_ActionLoop extends AbstractAction {
 
     private final Task _subTask;
 
     private final String _lower;
     private final String _upper;
 
-    ActionLoop(final String p_lower, final String p_upper, final Task p_subTask) {
+    CF_ActionLoop(final String p_lower, final String p_upper, final Task p_subTask) {
         super();
         this._subTask = p_subTask;
         this._lower = p_lower;
@@ -31,7 +31,7 @@ class ActionLoop extends AbstractAction {
         final int lower = (int) Double.parseDouble(context.template(lowerString));
         final int upper = (int) Double.parseDouble(context.template(upperString));
         final TaskResult previous = context.result();
-        final ActionLoop selfPointer = this;
+        final CF_ActionLoop selfPointer = this;
         final AtomicInteger cursor = new AtomicInteger(lower);
         if ((upper - lower) >= 0) {
             final Callback[] recursiveAction = new Callback[1];

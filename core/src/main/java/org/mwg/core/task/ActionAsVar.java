@@ -7,15 +7,13 @@ import org.mwg.task.TaskResult;
 class ActionAsVar extends AbstractAction {
 
     private final String _name;
-    private final boolean _global;
 
-    ActionAsVar(final String p_name, final boolean p_global) {
+    ActionAsVar(final String p_name) {
         super();
         if (p_name == null) {
             throw new RuntimeException("variableName should not be null");
         }
         this._name = p_name;
-        this._global = p_global;
     }
 
     @Override

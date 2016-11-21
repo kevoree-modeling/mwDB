@@ -9,11 +9,11 @@ import org.mwg.task.TaskResult;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-class ActionSubTasks extends AbstractAction {
+class CF_ActionMap extends AbstractAction {
 
     private final Task[] _subTasks;
 
-    ActionSubTasks(final Task... p_subTasks) {
+    CF_ActionMap(final Task... p_subTasks) {
         super();
         _subTasks = p_subTasks;
     }

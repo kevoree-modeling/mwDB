@@ -31,7 +31,7 @@ public class MicroWorldTest {
                                         task()
                                                 .then(createNode())
                                                 .then(setAttribute("sensor", Type.STRING, "sensor_{{i}}"))
-                                                .then(addTo("sensors", "parentRoom"))
+                                        //.then(addTo("sensors", "parentRoom"))
                                 )
                 ).execute(g, null);
 

@@ -9,14 +9,14 @@ import org.mwg.task.Task;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-class ActionLoopPar extends AbstractAction {
+class CF_ActionLoopPar extends AbstractAction {
 
     private final Task _subTask;
 
     private final String _lower;
     private final String _upper;
 
-    ActionLoopPar(final String p_lower, final String p_upper, final Task p_subTask) {
+    CF_ActionLoopPar(final String p_lower, final String p_upper, final Task p_subTask) {
         super();
         this._subTask = p_subTask;
         this._lower = p_lower;

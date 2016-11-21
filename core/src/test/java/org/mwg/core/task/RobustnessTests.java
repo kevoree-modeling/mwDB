@@ -427,7 +427,7 @@ public class RobustnessTests {
         //relationName
         boolean exceptionCaught = false;
         try {
-            task().then(inject(_graph.newNode(0, 0))).then(asGlobalVar("x")).then(add(null, "x")).execute(_graph, null);
+            task().then(inject(_graph.newNode(0, 0))).then(asGlobalVar("x")).then(addToRelationship(null, "x")).execute(_graph, null);
         } catch (RuntimeException e) {
             exceptionCaught = true;
         } catch (Exception e) {
@@ -438,7 +438,7 @@ public class RobustnessTests {
         //relatedNode
         exceptionCaught = false;
         try {
-            task().then(add("", null)).execute(_graph, null);
+            task().then(addToRelationship("", null)).execute(_graph, null);
         } catch (RuntimeException e) {
             exceptionCaught = true;
         } catch (Exception e) {
@@ -452,7 +452,7 @@ public class RobustnessTests {
         //relationName
         boolean exceptionCaught = false;
         try {
-            task().then(inject(_graph.newNode(0, 0))).then(asGlobalVar("x")).then(remove(null, "x")).execute(_graph, null);
+            task().then(inject(_graph.newNode(0, 0))).then(asGlobalVar("x")).then(removeFromRelationship(null, "x")).execute(_graph, null);
         } catch (RuntimeException e) {
             exceptionCaught = true;
         } catch (Exception e) {
@@ -463,7 +463,7 @@ public class RobustnessTests {
         //relatedNode
         exceptionCaught = false;
         try {
-            task().then(remove("", null)).execute(_graph, null);
+            task().then(removeFromRelationship("", null)).execute(_graph, null);
         } catch (RuntimeException e) {
             exceptionCaught = true;
         } catch (Exception e) {

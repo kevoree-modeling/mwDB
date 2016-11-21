@@ -6,6 +6,7 @@ import org.mwg.Callback;
 import org.mwg.Node;
 import org.mwg.struct.Relationship;
 import org.mwg.task.ActionFunction;
+import org.mwg.task.Task;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
@@ -23,12 +24,11 @@ public class ActionAddTest extends AbstractActionTest {
     public void testWithOneNode() {
         Node relatedNode = graph.newNode(0, 0);
         final long[] id = new long[1];
-
         task()
                 .then(createNode())
                 .then(inject(relatedNode))
                 .then(asGlobalVar("x"))
-                .then(add("friend", "x"))
+                .then(addToRelationship("friend", "x"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
@@ -68,7 +68,7 @@ public class ActionAddTest extends AbstractActionTest {
                         context.continueWith(context.wrap(nodes));
                     }
                 })
-                .then(add("friend", "x"))
+                .then(addToRelationship("friend", "x"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
@@ -108,7 +108,7 @@ public class ActionAddTest extends AbstractActionTest {
                 })
                 .then(inject(relatedNode))
                 .then(asGlobalVar("x"))
-                .then(add("friend", "x"))
+                .then(addToRelationship("friend", "x"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
