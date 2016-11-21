@@ -19,18 +19,23 @@ public class ActionForeachParTest extends AbstractActionTest {
     public void test() {
         initGraph();
         final long[] i = {0};
-        task().then(inject(new long[]{1, 2, 3})).forEachPar(task().thenDo(context -> {
-            i[0]++;
-            Assert.assertEquals(context.result().get(0), i[0]);
-            context.continueTask();
-        }).thenDo(context -> {
-            TaskResult<Long> longs = context.result();
-            Assert.assertEquals(longs.size(), 3);
-            Assert.assertEquals(longs.get(0), (Long) 1l);
-            Assert.assertEquals(longs.get(1), (Long) 2l);
-            Assert.assertEquals(longs.get(2), (Long) 3l);
-        })).execute(graph, null);
-
+        task()
+                .then(inject(new long[]{1, 2, 3}))
+                .forEachPar(
+                        task().thenDo(context -> {
+                            i[0]++;
+                            Assert.assertEquals(context.result().get(0), i[0]);
+                            context.continueTask();
+                        })
+                )
+                .thenDo(context -> {
+                    TaskResult<Long> longs = context.result();
+                    Assert.assertEquals(longs.size(), 3);
+                    Assert.assertEquals(longs.get(0), (Long) 1l);
+                    Assert.assertEquals(longs.get(1), (Long) 2l);
+                    Assert.assertEquals(longs.get(2), (Long) 3l);
+                })
+                .execute(graph, null);
 
         task().then(fromIndexAll("nodes"))
                 .forEachPar(

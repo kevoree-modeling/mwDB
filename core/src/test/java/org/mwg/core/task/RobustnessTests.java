@@ -308,6 +308,7 @@ public class RobustnessTests {
         Assert.assertEquals(true, exceptionCaught);
     }
 
+    /*
     @Test
     public void robustnessThen() {
         boolean exceptionCaught = false;
@@ -319,7 +320,7 @@ public class RobustnessTests {
             Assert.fail("Unexpected exception thrown");
         }
         Assert.assertEquals(true, exceptionCaught);
-    }
+    }*/
 
     @Test
     public void robustnessParse() {

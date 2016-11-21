@@ -245,7 +245,7 @@ public class CoreTask implements org.mwg.task.Task {
                 case Constants.TASK_SEP:
                     if (!isClosed) {
                         String getName = flat.substring(previous, cursor);
-                        new ActionPlugin("get", getName);//default action
+                        then(new ActionPlugin("get", getName));//default action
                     }
                     actionName = null;
                     isEscaped = false;
@@ -263,7 +263,7 @@ public class CoreTask implements org.mwg.task.Task {
                     } else {
                         extracted = flat.substring(previous, cursor);
                     }
-                    new ActionPlugin(actionName, extracted);
+                    then(new ActionPlugin(actionName, extracted));
                     actionName = null;
                     previous = cursor + 1;
                     isClosed = true;
@@ -275,7 +275,7 @@ public class CoreTask implements org.mwg.task.Task {
         if (!isClosed) {
             String getName = flat.substring(previous, cursor);
             if (getName.length() > 0) {
-                new ActionPlugin("get", getName);//default action
+                then(new ActionPlugin("get", getName));//default action
             }
         }
         return this;
