@@ -8,7 +8,7 @@ import org.mwg.task.TaskFunctionSelectObject;
 
 import static org.mwg.core.task.Actions.inject;
 import static org.mwg.core.task.Actions.selectObject;
-import static org.mwg.core.task.CoreTask.task;
+import static org.mwg.core.task.Actions.task;
 
 public class ActionSelectObjectTest extends AbstractActionTest {
 

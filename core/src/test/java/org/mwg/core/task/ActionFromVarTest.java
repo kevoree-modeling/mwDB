@@ -6,7 +6,7 @@ import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 
 import static org.mwg.core.task.Actions.*;
-import static org.mwg.core.task.CoreTask.task;
+import static org.mwg.core.task.Actions.task;
 
 public class ActionFromVarTest extends AbstractActionTest {
 
@@ -14,10 +14,10 @@ public class ActionFromVarTest extends AbstractActionTest {
     public void test() {
         initGraph();
         task()
-                .then(fromIndexAll("nodes"))
+                .then(readIndexAll("nodes"))
                 .then(asGlobalVar("x"))
                 .then(inject("uselessPayload"))
-                .then(fromVar("x"))
+                .then(readVar("x"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {

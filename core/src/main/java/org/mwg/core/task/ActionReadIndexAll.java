@@ -5,11 +5,11 @@ import org.mwg.Node;
 import org.mwg.base.AbstractAction;
 import org.mwg.task.TaskContext;
 
-class ActionFromIndexAll extends AbstractAction {
+class ActionReadIndexAll extends AbstractAction {
 
     private final String _indexName;
 
-    ActionFromIndexAll(final String p_indexName) {
+    ActionReadIndexAll(final String p_indexName) {
         super();
         if (p_indexName == null) {
             throw new RuntimeException("indexName should not be null");
@@ -30,7 +30,7 @@ class ActionFromIndexAll extends AbstractAction {
 
     @Override
     public String toString() {
-        return "fromIndexAll(\'" + _indexName + "\')";
+        return "readIndexAll(\'" + _indexName + "\')";
     }
 
 }

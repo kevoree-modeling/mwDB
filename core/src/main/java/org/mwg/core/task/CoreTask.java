@@ -13,10 +13,6 @@ import java.util.Map;
 
 public class CoreTask implements org.mwg.task.Task {
 
-    public static Task task() {
-        return new CoreTask();
-    }
-
     private AbstractAction _first = null;
     private AbstractAction _last = null;
     private TaskHookFactory _hookFactory = null;
@@ -143,7 +139,7 @@ public class CoreTask implements org.mwg.task.Task {
             });
         } else {
             if (callback != null) {
-                callback.on(emptyResult());
+                callback.on(Actions.emptyResult());
             }
         }
     }
@@ -177,7 +173,7 @@ public class CoreTask implements org.mwg.task.Task {
         } else {
             CoreTaskContext casted = (CoreTaskContext) preparedContext;
             if (casted._callback != null) {
-                casted._callback.on(emptyResult());
+                casted._callback.on(Actions.emptyResult());
             }
         }
     }
@@ -194,7 +190,7 @@ public class CoreTask implements org.mwg.task.Task {
             });
         } else {
             if (callback != null) {
-                callback.on(emptyResult());
+                callback.on(Actions.emptyResult());
             }
         }
     }
@@ -214,7 +210,7 @@ public class CoreTask implements org.mwg.task.Task {
             });
         } else {
             if (callback != null) {
-                callback.on(emptyResult());
+                callback.on(Actions.emptyResult());
             }
         }
     }
@@ -287,11 +283,6 @@ public class CoreTask implements org.mwg.task.Task {
         return this;
     }
 
-    @Override
-    public TaskResult emptyResult() {
-        return new CoreTaskResult(null, false);
-    }
-
     public static void fillDefault(Map<String, TaskActionFactory> registry) {
         registry.put("get", new TaskActionFactory() { //DefaultTask
             @Override
@@ -302,13 +293,13 @@ public class CoreTask implements org.mwg.task.Task {
                 return new ActionGet(params[0]);
             }
         });
-        registry.put("math", new TaskActionFactory() { //DefaultTask
+        registry.put("executeExpression", new TaskActionFactory() { //DefaultTask
             @Override
             public Action create(String[] params) {
                 if (params.length != 1) {
-                    throw new RuntimeException("math action need one parameter");
+                    throw new RuntimeException("executeExpression action need one parameter");
                 }
-                return new ActionMath(params[0]);
+                return new ActionExecuteExpression(params[0]);
             }
         });
         registry.put("traverse", new TaskActionFactory() {
@@ -329,22 +320,22 @@ public class CoreTask implements org.mwg.task.Task {
                 return new ActionTraverseOrKeep(params[0]);
             }
         });
-        registry.put("fromIndexAll", new TaskActionFactory() {
+        registry.put("readIndexAll", new TaskActionFactory() {
             @Override
             public Action create(String[] params) {
                 if (params.length != 1) {
-                    throw new RuntimeException("fromIndexAll action need one parameter");
+                    throw new RuntimeException("readIndexAll action need one parameter");
                 }
-                return new ActionFromIndexAll(params[0]);
+                return new ActionReadIndexAll(params[0]);
             }
         });
-        registry.put("fromIndex", new TaskActionFactory() {
+        registry.put("readIndex", new TaskActionFactory() {
             @Override
             public Action create(String[] params) {
                 if (params.length != 2) {
-                    throw new RuntimeException("fromIndex action need two parameter");
+                    throw new RuntimeException("readIndex action need two parameter");
                 }
-                return new ActionFromIndex(params[0], params[1]);
+                return new ActionReadIndex(params[0], params[1]);
             }
         });
         registry.put("with", new TaskActionFactory() {

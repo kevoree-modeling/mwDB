@@ -6,25 +6,22 @@ import org.mwg.*;
 import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 
-import static org.mwg.core.task.Actions.newNode;
-import static org.mwg.core.task.CoreTask.task;
-import static org.mwg.task.Actions.*;
+import static org.mwg.core.task.Actions.*;
 
 public class ActionIndexOrUnindexNodeTest {
 
     @Test
     public void testIndexOneNode() {
         Graph graph = new GraphBuilder().build();
-
         graph.connect(new Callback<Boolean>() {
             @Override
             public void on(Boolean result) {
                 task()
-                        .then(newNode())
-                        .then(Actions.setProperty("name", Type.STRING, "root"))
+                        .then(createNode())
+                        .then(Actions.setAttribute("name", Type.STRING, "root"))
                         .then(Actions.indexNode("indexName", "name"))
                         .then(Actions.asGlobalVar("nodeIndexed"))
-                        .then(Actions.fromIndexAll("indexName"))
+                        .then(Actions.readIndexAll("indexName"))
                         .thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
@@ -36,7 +33,7 @@ public class ActionIndexOrUnindexNodeTest {
                             }
                         })
                         .then(Actions.unindexNode("indexName", "name"))
-                        .then(Actions.fromIndexAll("indexName"))
+                        .then(Actions.readIndexAll("indexName"))
                         .thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
@@ -73,7 +70,7 @@ public class ActionIndexOrUnindexNodeTest {
                         .inject(complexArray)
                         .indexNode("indexName", "name")
                         .asVar("nodeIndexed")
-                        .fromIndexAll("indexName")
+                        .readIndexAll("indexName")
                         .then(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
@@ -89,7 +86,7 @@ public class ActionIndexOrUnindexNodeTest {
                             }
                         })
                         .unindexNode("indexName", "name")
-                        .fromIndexAll("indexName")
+                        .readIndexAll("indexName")
                         .then(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {

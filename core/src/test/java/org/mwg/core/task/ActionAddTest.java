@@ -10,7 +10,7 @@ import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
 import static org.mwg.core.task.Actions.*;
-import static org.mwg.core.task.CoreTask.task;
+import static org.mwg.core.task.Actions.task;
 
 public class ActionAddTest extends AbstractActionTest {
 
@@ -23,7 +23,9 @@ public class ActionAddTest extends AbstractActionTest {
     public void testWithOneNode() {
         Node relatedNode = graph.newNode(0, 0);
         final long[] id = new long[1];
-        task().then(newNode())
+
+        task()
+                .then(createNode())
                 .then(inject(relatedNode))
                 .then(asGlobalVar("x"))
                 .then(add("friend", "x"))
@@ -97,12 +99,13 @@ public class ActionAddTest extends AbstractActionTest {
 
         final boolean[] nextCalled = new boolean[1];
 
-        task().thenDo(new ActionFunction() {
-            @Override
-            public void eval(TaskContext context) {
-                context.continueWith(null);
-            }
-        })
+        task()
+                .thenDo(new ActionFunction() {
+                    @Override
+                    public void eval(TaskContext context) {
+                        context.continueWith(null);
+                    }
+                })
                 .then(inject(relatedNode))
                 .then(asGlobalVar("x"))
                 .then(add("friend", "x"))
@@ -111,7 +114,8 @@ public class ActionAddTest extends AbstractActionTest {
                     public void eval(TaskContext context) {
                         nextCalled[0] = true;
                     }
-                }).execute(graph, null);
+                })
+                .execute(graph, null);
 
         Assert.assertTrue(nextCalled[0]);
     }

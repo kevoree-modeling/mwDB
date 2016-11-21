@@ -91,20 +91,20 @@ public interface Task {
     Task map(Task... subTasks);
 
     /**
-     * Execute subTask in an isolated environment
-     *
-     * @param subTask
-     * @return
-     */
-    Task isolate(Task subTask);
-
-    /**
      * Execute and wait various sub tasks, result of this sub task is immediately enqueue and available for next
      *
      * @param subTasks that have to be executed
      * @return this task to chain actions (fluent API)
      */
     Task mapPar(Task... subTasks);
+
+    /**
+     * Execute subTask in an isolated environment
+     *
+     * @param subTask
+     * @return
+     */
+    Task isolate(Task subTask);
 
     /**
      * Parse a string to build the current task. Syntax is as follow: actionName(param).actionName2(param2)...
@@ -131,7 +131,5 @@ public interface Task {
     void executeFrom(final TaskContext parentContext, final TaskResult initial, final byte affinity, final Callback<TaskResult> callback);
 
     void executeFromUsing(final TaskContext parentContext, final TaskResult initial, final byte affinity, final Callback<TaskContext> contextInitializer, final Callback<TaskResult> callback);
-
-    TaskResult emptyResult();
 
 }

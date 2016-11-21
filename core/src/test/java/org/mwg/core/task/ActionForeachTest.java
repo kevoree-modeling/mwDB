@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mwg.core.task.Actions.*;
-import static org.mwg.core.task.CoreTask.task;
+import static org.mwg.core.task.Actions.task;
 
 public class ActionForeachTest extends AbstractActionTest {
 
@@ -45,7 +45,7 @@ public class ActionForeachTest extends AbstractActionTest {
                 .execute(graph, null);
 
         task()
-                .then(fromIndexAll("nodes"))
+                .then(readIndexAll("nodes"))
                 .forEach(
                         task()
                                 .thenDo(context -> context.continueTask())
@@ -103,13 +103,13 @@ public class ActionForeachTest extends AbstractActionTest {
         }).execute(graph,null);
 
         index[0] = 0;
-        new CoreTask().fromIndexAll("nodes").foreachThen(new Callback<Node>() {
+        new CoreTask().readIndexAll("nodes").foreachThen(new Callback<Node>() {
             @Override
             public void on(Node object) {
                 object.set("name", "node" + index[0]);
                 index[0]++;
             }
-        }).fromIndexAll("nodes").then(new ActionFunction() {
+        }).readIndexAll("nodes").then(new ActionFunction() {
             @Override
             public void eval(TaskContext context) {
                 Node[] result = (Node[]) context.result();
@@ -139,19 +139,19 @@ public class ActionForeachTest extends AbstractActionTest {
         paramIterable.add("n0");
         paramIterable.add("n1");
         paramIterable.add("root");
-        inject(paramIterable).foreach(forEachTask).fromVar("param0").then(new ActionFunction() {
+        inject(paramIterable).foreach(forEachTask).readVar("param0").then(new ActionFunction() {
             @Override
             public void eval(TaskContext context) {
                 Object result = (String) context.result();
                 Assert.assertEquals("n0", result);
             }
-        }).fromVar("param1").then(new ActionFunction() {
+        }).readVar("param1").then(new ActionFunction() {
             @Override
             public void eval(TaskContext context) {
                 Object result = (String) context.result();
                 Assert.assertEquals("n1", result);
             }
-        }).fromVar("param2").then(new ActionFunction() {
+        }).readVar("param2").then(new ActionFunction() {
             @Override
             public void eval(TaskContext context) {
                 Object result = (String) context.result();

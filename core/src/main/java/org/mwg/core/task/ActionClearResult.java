@@ -3,7 +3,7 @@ package org.mwg.core.task;
 import org.mwg.base.AbstractAction;
 import org.mwg.task.TaskContext;
 
-class ActionClear extends AbstractAction {
+class ActionClearResult extends AbstractAction {
 
     @Override
     public void eval(final TaskContext context) {
@@ -12,7 +12,7 @@ class ActionClear extends AbstractAction {
 
     @Override
     public String toString() {
-        return "clear()";
+        return "clearResult()";
     }
 
 }

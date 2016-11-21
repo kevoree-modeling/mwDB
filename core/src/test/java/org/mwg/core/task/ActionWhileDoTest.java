@@ -8,7 +8,7 @@ import org.mwg.Node;
 import org.mwg.task.*;
 
 import static org.mwg.core.task.Actions.*;
-import static org.mwg.core.task.CoreTask.task;
+import static org.mwg.core.task.Actions.task;
 
 public class ActionWhileDoTest extends AbstractActionTest {
 
@@ -33,7 +33,7 @@ public class ActionWhileDoTest extends AbstractActionTest {
                                                 })
                                         )
                                 )
-                        ).then(fromVar("leaves"));
+                        ).then(readVar("leaves"));
 
                 whiletask.execute(graph, new Callback<TaskResult>() {
                     @Override
@@ -84,7 +84,7 @@ public class ActionWhileDoTest extends AbstractActionTest {
                                 return context.result().size() != 0;
                             }
                         }
-                ).then(fromVar("leaves"));
+                ).then(readVar("leaves"));
 
 
                 whiletask.execute(graph, new Callback<TaskResult>() {

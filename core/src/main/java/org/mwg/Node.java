@@ -179,7 +179,7 @@ public interface Node {
     void index(String indexName, Node nodeToIndex, String flatKeyAttributes, Callback<Boolean> callback);
 
     /**
-     * Removes an element fromVar an index of nodes.<br>
+     * Removes an element from an index of nodes.<br>
      * Indexes are special relationships for quick access to referred nodes based on some of their attributes values.<br>
      * Index names must be unique within the indexed relation names.
      *
@@ -191,7 +191,7 @@ public interface Node {
     void unindex(String indexName, Node nodeToIndex, String flatKeyAttributes, Callback<Boolean> callback);
 
     /**
-     * Retrieves nodes fromVar an index that satisfies a query at the current node world and the current node time<br>
+     * Retrieves nodes from an index that satisfies a query at the current node world and the current node time<br>
      * The query is composed by &lt;key, value&gt; tuples, separated by commas.
      *
      * @param indexName The name of the index (should be unique per relation)
@@ -238,7 +238,7 @@ public interface Node {
     void rephase();
 
     /**
-     * Retrieves all timePoints fromVar the timeLine of this node when alterations occurred.<br>
+     * Retrieves all timePoints from the timeLine of this node when alterations occurred.<br>
      * This method also jumps over the world hierarchy to collect all available timepoints.<br>
      * To unbound the search, please use {@link Constants#BEGINNING_OF_TIME} and {@link Constants#END_OF_TIME} as bounds.
      *
@@ -249,7 +249,7 @@ public interface Node {
     void timepoints(long beginningOfSearch, long endOfSearch, Callback<long[]> callback);
 
     /**
-     * Informs mwDB memory manager that this node object can be freed fromVar the memory.<br>
+     * Informs mwDB memory manager that this node object can be freed from the memory.<br>
      * <b>Warning: this MUST be the last method called on this node.</b><br>
      * To work with the node afterwards, a new lookup is mandatory.
      */

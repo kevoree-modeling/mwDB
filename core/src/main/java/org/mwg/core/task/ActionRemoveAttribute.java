@@ -6,11 +6,11 @@ import org.mwg.base.AbstractAction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-class ActionRemoveProperty extends AbstractAction {
+class ActionRemoveAttribute extends AbstractAction {
 
     private final String _propertyName;
 
-    ActionRemoveProperty(final String propertyName) {
+    ActionRemoveAttribute(final String propertyName) {
         super();
         this._propertyName = propertyName;
     }
@@ -33,7 +33,7 @@ class ActionRemoveProperty extends AbstractAction {
 
     @Override
     public String toString() {
-        return "removeProperty(\'" + _propertyName + "\')";
+        return "removeAttribute(\'" + _propertyName + "\')";
     }
 
 

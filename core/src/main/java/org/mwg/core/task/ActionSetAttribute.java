@@ -8,14 +8,14 @@ import org.mwg.base.AbstractAction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-class ActionSetProperty extends AbstractAction {
+class ActionSetAttribute extends AbstractAction {
 
     private final String _relationName;
     private final String _variableNameToSet;
     private final byte _propertyType;
     private final boolean _force;
 
-    ActionSetProperty(final String relationName, final byte propertyType, final String variableNameToSet, final boolean force) {
+    ActionSetAttribute(final String relationName, final byte propertyType, final String variableNameToSet, final boolean force) {
         super();
         this._relationName = relationName;
         this._variableNameToSet = variableNameToSet;
@@ -63,7 +63,7 @@ class ActionSetProperty extends AbstractAction {
 
     @Override
     public String toString() {
-        return "setProperty(\'" + _relationName + "\'" + Constants.QUERY_SEP + "\'" + _propertyType + "\'" + Constants.QUERY_SEP + "\'" + _variableNameToSet + "\')";
+        return "setAttribute(\'" + _relationName + "\'" + Constants.QUERY_SEP + "\'" + _propertyType + "\'" + Constants.QUERY_SEP + "\'" + _variableNameToSet + "\')";
     }
 
     private boolean parseBoolean(String booleanValue) {

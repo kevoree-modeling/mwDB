@@ -10,7 +10,7 @@ import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
 import static org.mwg.core.task.Actions.*;
-import static org.mwg.core.task.CoreTask.task;
+import static org.mwg.core.task.Actions.task;
 
 public class ActionRemovePropertyTest extends AbstractActionTest {
 
@@ -26,9 +26,9 @@ public class ActionRemovePropertyTest extends AbstractActionTest {
         task()
                 .then(inject("nodeName"))
                 .then(asGlobalVar("name"))
-                .then(newNode())
-                .then(setProperty("name", Type.STRING, "nodeName"))
-                .then(removeProperty("name"))
+                .then(createNode())
+                .then(setAttribute("name", Type.STRING, "nodeName"))
+                .then(removeAttribute("name"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
@@ -64,8 +64,8 @@ public class ActionRemovePropertyTest extends AbstractActionTest {
                         context.continueWith(context.wrap(nodes));
                     }
                 })
-                .then(setProperty("name", Type.STRING, "nodeName"))
-                .then(removeProperty("name"))
+                .then(setAttribute("name", Type.STRING, "nodeName"))
+                .then(removeAttribute("name"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
@@ -99,8 +99,8 @@ public class ActionRemovePropertyTest extends AbstractActionTest {
                         context.continueWith(null);
                     }
                 })
-                .then(setProperty("name", Type.STRING, "node"))
-                .then(removeProperty("name"))
+                .then(setAttribute("name", Type.STRING, "node"))
+                .then(removeAttribute("name"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {

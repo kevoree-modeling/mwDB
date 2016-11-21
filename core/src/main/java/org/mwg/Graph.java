@@ -113,7 +113,7 @@ public interface Graph {
     void connect(Callback<Boolean> callback);
 
     /**
-     * Disconnects the current graph fromVar its storage (a save will be trigger safely before the exit)
+     * Disconnects the current graph from its storage (a save will be trigger safely before the exit)
      *
      * @param callback Called when the disconnection is completed. The parameter specifies whether or not the disconnection succeeded.
      */

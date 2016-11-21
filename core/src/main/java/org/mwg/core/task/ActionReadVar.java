@@ -4,12 +4,12 @@ import org.mwg.base.AbstractAction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-class ActionFromVar extends AbstractAction {
+class ActionReadVar extends AbstractAction {
 
     private final String _name;
     private final int _index;
 
-    ActionFromVar(String p_name, int p_index) {
+    ActionReadVar(String p_name, int p_index) {
         super();
         this._name = p_name;
         this._index = p_index;
@@ -32,7 +32,7 @@ class ActionFromVar extends AbstractAction {
 
     @Override
     public String toString() {
-        return "fromVar(\'" + _name + "\')";
+        return "readVar(\'" + _name + "\')";
     }
 
 }

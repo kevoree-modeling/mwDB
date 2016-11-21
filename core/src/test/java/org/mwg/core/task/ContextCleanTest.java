@@ -8,11 +8,10 @@ import org.mwg.Node;
 import org.mwg.core.scheduler.NoopScheduler;
 import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
-import org.mwg.task.TaskFunctionSelect;
 
 import static org.mwg.core.task.Actions.inject;
 import static org.mwg.core.task.Actions.select;
-import static org.mwg.core.task.CoreTask.task;
+import static org.mwg.core.task.Actions.task;
 
 public class ContextCleanTest {
 

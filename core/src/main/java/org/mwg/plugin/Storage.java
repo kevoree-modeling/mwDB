@@ -10,7 +10,7 @@ import org.mwg.struct.Buffer;
 public interface Storage {
 
     /**
-     * Used to retrieve objects fromVar the storage.<br>
+     * Used to retrieve objects from the storage.<br>
      * The {@code keys} buffer is a sequential list of keys, assembled in a flat buffer and separator by BUFFER_SEP<br>
      *
      * @param keys     The buffer of keys as specified above.
@@ -29,7 +29,7 @@ public interface Storage {
     void put(Buffer stream, Callback<Boolean> callback);
 
     /**
-     * Called to remove objects fromVar the storage.
+     * Called to remove objects from the storage.
      * The {@code keys} array is a sequential list of &lt;world, timepoint, id&gt; tuples organized as follows:<br>
      * Say you wanna remove objects &lt;1, 2, 3&gt; and &lt;1, 5, 6&gt;, the array will be: [1,2,3,1,5,6]
      *

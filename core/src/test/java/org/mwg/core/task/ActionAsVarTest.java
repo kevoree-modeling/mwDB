@@ -9,7 +9,7 @@ import org.mwg.task.TaskResult;
 
 import static org.mwg.core.task.Actions.asGlobalVar;
 import static org.mwg.core.task.Actions.inject;
-import static org.mwg.core.task.CoreTask.task;
+import static org.mwg.core.task.Actions.task;
 
 public class ActionAsVarTest extends AbstractActionTest {
 

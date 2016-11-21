@@ -4,11 +4,11 @@ import org.mwg.Node;
 import org.mwg.base.AbstractAction;
 import org.mwg.task.TaskContext;
 
-class ActionNewNode extends AbstractAction {
+class ActionCreateNode extends AbstractAction {
 
     private final String _typeNode;
 
-    ActionNewNode(final String typeNode) {
+    ActionCreateNode(final String typeNode) {
         super();
         this._typeNode = typeNode;
     }
@@ -28,9 +28,9 @@ class ActionNewNode extends AbstractAction {
     @Override
     public String toString() {
         if (_typeNode != null) {
-            return "newTypedNode(\'" + _typeNode + "\')";
+            return "createTypedNode(\'" + _typeNode + "\')";
         } else {
-            return "newNode()";
+            return "createNode()";
         }
     }
 

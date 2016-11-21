@@ -9,10 +9,10 @@ import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
 
-class ActionProperties extends AbstractAction {
+class ActionAttributes extends AbstractAction {
     private final byte _filter;
 
-    ActionProperties(byte filterType) {
+    ActionAttributes(byte filterType) {
         super();
         this._filter = filterType;
     }

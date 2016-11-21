@@ -42,7 +42,7 @@ public interface Buffer {
     long length();
 
     /**
-     * Free the buffer fromVar memory, this method should be the last called
+     * Free the buffer from memory, this method should be the last called
      */
     void free();
 

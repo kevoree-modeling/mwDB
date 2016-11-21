@@ -5,9 +5,9 @@ import org.junit.Test;
 import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 
-import static org.mwg.core.task.Actions.fromIndexAll;
+import static org.mwg.core.task.Actions.readIndexAll;
 import static org.mwg.core.task.Actions.selectWith;
-import static org.mwg.core.task.CoreTask.task;
+import static org.mwg.core.task.Actions.task;
 
 public class ActionWithTest extends AbstractActionTest {
 
@@ -15,7 +15,7 @@ public class ActionWithTest extends AbstractActionTest {
     public void test() {
         initGraph();
         task()
-                .then(fromIndexAll("nodes"))
+                .then(readIndexAll("nodes"))
                 .then(selectWith("name", "n0"))
                 .thenDo(new ActionFunction() {
                     @Override
@@ -25,7 +25,7 @@ public class ActionWithTest extends AbstractActionTest {
                 })
                 .execute(graph, null);
 
-        task().then(fromIndexAll("nodes"))
+        task().then(readIndexAll("nodes"))
                 .then(selectWith("name", "n.*"))
                 .thenDo(new ActionFunction() {
                     @Override

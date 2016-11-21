@@ -12,7 +12,7 @@ import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
 import static org.mwg.core.task.Actions.*;
-import static org.mwg.core.task.CoreTask.task;
+import static org.mwg.core.task.Actions.task;
 
 public class ActionLocalIndexOrUnindexTest {
 
@@ -24,20 +24,20 @@ public class ActionLocalIndexOrUnindexTest {
             @Override
             public void on(Boolean succeed) {
                 task()
-                        .then(newNode())
-                        .then(setProperty("name", Type.STRING, "child1"))
+                        .then(createNode())
+                        .then(setAttribute("name", Type.STRING, "child1"))
                         .then(addToVar("child"))
-                        .then(newNode())
-                        .then(setProperty("name", Type.STRING, "child2"))
+                        .then(createNode())
+                        .then(setAttribute("name", Type.STRING, "child2"))
                         .then(addToVar("child"))
-                        .then(newNode())
-                        .then(setProperty("name", Type.STRING, "child3"))
+                        .then(createNode())
+                        .then(setAttribute("name", Type.STRING, "child3"))
                         .then(addToVar("child"))
-                        .then(newNode())
-                        .then(setProperty("name", Type.STRING, "root"))
+                        .then(createNode())
+                        .then(setAttribute("name", Type.STRING, "root"))
                         .then(indexNode("rootIdx", "name"))
                         .then(localIndex("idxRelation","name","child"))
-                        .then(fromIndexAll("rootIdx"))
+                        .then(readIndexAll("rootIdx"))
                         .then(traverseIndexAll("idxRelation"))
                         .thenDo(new ActionFunction() {
                             @Override
@@ -50,9 +50,9 @@ public class ActionLocalIndexOrUnindexTest {
                                 Assert.assertEquals("child3",((BaseNode)result.get(2)).get("name"));
                             }
                         })
-                        .then(fromIndexAll("rootIdx"))
+                        .then(readIndexAll("rootIdx"))
                         .then(localUnindex("idxRelation","name","child"))
-                        .then(fromIndexAll("rootIdx"))
+                        .then(readIndexAll("rootIdx"))
                         .then(traverseIndexAll("idxRelation"))
                         .thenDo(new ActionFunction() {
                             @Override

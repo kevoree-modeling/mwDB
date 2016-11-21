@@ -11,12 +11,12 @@ import org.mwg.task.TaskResult;
 import java.util.HashMap;
 import java.util.Map;
 
-class ActionMath extends AbstractAction {
+class ActionExecuteExpression extends AbstractAction {
 
     final private MathExpressionEngine _engine;
     final private String _expression;
 
-    ActionMath(final String mathExpression) {
+    ActionExecuteExpression(final String mathExpression) {
         super();
         this._expression = mathExpression;
         this._engine = CoreMathExpressionEngine.parse(mathExpression);
@@ -47,7 +47,7 @@ class ActionMath extends AbstractAction {
 
     @Override
     public String toString() {
-        return "math(\'" + _expression + "\')";
+        return "executeExpression(\'" + _expression + "\')";
     }
 
 }

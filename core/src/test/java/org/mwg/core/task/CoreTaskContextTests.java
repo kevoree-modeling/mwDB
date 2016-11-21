@@ -9,9 +9,9 @@ import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 
 import static org.mwg.core.task.Actions.asGlobalVar;
-import static org.mwg.core.task.Actions.fromVar;
+import static org.mwg.core.task.Actions.readVar;
 import static org.mwg.core.task.Actions.inject;
-import static org.mwg.core.task.CoreTask.task;
+import static org.mwg.core.task.Actions.task;
 
 
 public class CoreTaskContextTests {
@@ -27,7 +27,7 @@ public class CoreTaskContextTests {
                         .then(asGlobalVar("i"))
                         .then(inject(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9}))
                         .then(asGlobalVar("array"))
-                        .then(fromVar("array"))
+                        .then(readVar("array"))
                         .thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {

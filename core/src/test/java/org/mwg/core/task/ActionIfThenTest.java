@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.mwg.task.*;
 
 import static org.mwg.core.task.Actions.*;
-import static org.mwg.core.task.CoreTask.task;
+import static org.mwg.core.task.Actions.task;
 
 public class ActionIfThenTest extends AbstractActionTest {
 
@@ -58,12 +58,7 @@ public class ActionIfThenTest extends AbstractActionTest {
             }
         });
 
-        task().ifThen(new TaskFunctionConditional() {
-            @Override
-            public boolean eval(TaskContext context) {
-                return true;
-            }
-        }, addVarInContext).then(fromVar("variable"))
+        task().ifThen(context -> true, addVarInContext).then(readVar("variable"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {

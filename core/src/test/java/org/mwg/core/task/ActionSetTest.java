@@ -10,7 +10,7 @@ import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
 import static org.mwg.core.task.Actions.*;
-import static org.mwg.core.task.CoreTask.task;
+import static org.mwg.core.task.Actions.task;
 
 public class ActionSetTest extends ActionNewNodeTest {
 
@@ -23,8 +23,8 @@ public class ActionSetTest extends ActionNewNodeTest {
     public void testWithOneNode() {
         final long[] id = new long[1];
         task().then(inject("node")).then(asGlobalVar("nodeName"))
-                .then(newNode())
-                .then(setProperty("name", Type.STRING, "{{nodeName}}"))
+                .then(createNode())
+                .then(setAttribute("name", Type.STRING, "{{nodeName}}"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
@@ -60,7 +60,7 @@ public class ActionSetTest extends ActionNewNodeTest {
                         context.continueWith(context.wrap(nodes));
                     }
                 })
-                .then(setProperty("name", Type.STRING, "{{nodeName}}"))
+                .then(setAttribute("name", Type.STRING, "{{nodeName}}"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
@@ -95,7 +95,7 @@ public class ActionSetTest extends ActionNewNodeTest {
                         context.continueWith(null);
                     }
                 })
-                .then(setProperty("name", Type.STRING, "node"))
+                .then(setAttribute("name", Type.STRING, "node"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {

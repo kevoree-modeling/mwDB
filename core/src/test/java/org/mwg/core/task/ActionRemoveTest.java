@@ -10,7 +10,7 @@ import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
 import static org.mwg.core.task.Actions.*;
-import static org.mwg.core.task.CoreTask.task;
+import static org.mwg.core.task.Actions.task;
 
 public class ActionRemoveTest extends AbstractActionTest {
 
@@ -24,7 +24,7 @@ public class ActionRemoveTest extends AbstractActionTest {
         Node relatedNode = graph.newNode(0, 0);
 
         final long[] id = new long[1];
-        task().then(newNode())
+        task().then(createNode())
                 .then(inject(relatedNode))
                 .then(asGlobalVar("x"))
                 .then(add("friend", "x"))

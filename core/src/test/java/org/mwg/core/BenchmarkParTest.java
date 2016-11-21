@@ -8,7 +8,7 @@ import org.mwg.core.scheduler.HybridScheduler;
 import org.mwg.task.TaskResult;
 
 import static org.mwg.core.task.Actions.*;
-import static org.mwg.core.task.CoreTask.task;
+import static org.mwg.core.task.Actions.task;
 
 /**
  * @ignore ts
@@ -30,15 +30,15 @@ public class BenchmarkParTest {
                 final long previousCache = g.space().available();
                 task().loopPar("0", "9999",
                         task()
-                                .then(newNode())
-                                .then(setProperty("name", Type.STRING, "node_{{i}}"))
+                                .then(createNode())
+                                .then(setAttribute("name", Type.STRING, "node_{{i}}"))
                                 .then(print("{{result}}"))
                                 .then(indexNode("nodes", "name"))
                                 .loop("0", "999",
-                                        task().then(jump("{{i}}")).then(setProperty("val", Type.INT, "{{i}}")).then(clear()))
+                                        task().then(jump("{{i}}")).then(setAttribute("val", Type.INT, "{{i}}")).then(clearResult()))
                                 .ifThen(cond("i % 100 == 0"), task().then(save()))
-                                .then(clear())
-                ).then(save()).then(fromIndexAll("nodes")).execute(g, new Callback<TaskResult>() {
+                                .then(clearResult())
+                ).then(save()).then(readIndexAll("nodes")).execute(g, new Callback<TaskResult>() {
                     @Override
                     public void on(TaskResult result) {
                         System.out.println("indexSize=" + result.size());

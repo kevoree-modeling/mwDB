@@ -9,7 +9,7 @@ import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 
 import static org.mwg.core.task.Actions.*;
-import static org.mwg.core.task.CoreTask.task;
+import static org.mwg.core.task.Actions.task;
 
 public class ActionGetTest extends AbstractActionTest {
 
@@ -17,7 +17,7 @@ public class ActionGetTest extends AbstractActionTest {
     public void test() {
         initGraph();
         task()
-                .then(fromIndexAll("nodes"))
+                .then(readIndexAll("nodes"))
                 .then(get("children"))
                 .then(get("name"))
                 .thenDo(new ActionFunction() {
@@ -35,7 +35,7 @@ public class ActionGetTest extends AbstractActionTest {
     public void testDefaultSynthax() {
         initGraph();
         task()
-                .then(fromIndexAll("nodes"))
+                .then(readIndexAll("nodes"))
                 .parse("children.name")
                 .thenDo(new ActionFunction() {
                     @Override
@@ -53,7 +53,7 @@ public class ActionGetTest extends AbstractActionTest {
     public void testParse() {
         initGraph();
         task()
-                .parse("fromIndexAll(nodes).traverse(children)")
+                .parse("readIndexAll(nodes).traverse(children)")
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
@@ -101,7 +101,7 @@ public class ActionGetTest extends AbstractActionTest {
         });
 
         /*
-        fromIndex("rootIndex", "name=root2")
+        readIndex("rootIndex", "name=root2")
                 .traverseIndex("childrenIndexed", "name","node2")
                 .then(new ActionFunction() {
                     @Override
@@ -113,7 +113,7 @@ public class ActionGetTest extends AbstractActionTest {
 */
 
         task()
-                .then(fromIndex("rootIndex", "name=root2"))
+                .then(readIndex("rootIndex", "name=root2"))
                 .then(traverseIndex("childrenIndexed", "name", "node3"))
                 .thenDo(new ActionFunction() {
                     @Override
@@ -124,7 +124,7 @@ public class ActionGetTest extends AbstractActionTest {
 
         /*
         inject(12).asGlobalVar("time").setTime("{{time}}")
-                .fromIndex("rootIndex", "name=root2")
+                .readIndex("rootIndex", "name=root2")
                 .traverseIndex("childrenIndexed", "name=node2")
                 .then(new ActionFunction() {
                     @Override
@@ -134,7 +134,7 @@ public class ActionGetTest extends AbstractActionTest {
                     }
                 }).execute(graph, null);
 
-        fromIndex("rootIndex", "name=root2")
+        readIndex("rootIndex", "name=root2")
                 .traverseIndexAll("childrenIndexed")
                 .then(new ActionFunction() {
                     @Override
@@ -146,7 +146,7 @@ public class ActionGetTest extends AbstractActionTest {
                 }).execute(graph, null);
 
         inject(13).asGlobalVar("time").setTime("{{time}}")
-                .fromIndex("rootIndex", "name=root2")
+                .readIndex("rootIndex", "name=root2")
                 .traverseIndexAll("childrenIndexed")
                 .then(new ActionFunction() {
                     @Override

@@ -9,7 +9,7 @@ import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
 import static org.mwg.core.task.Actions.*;
-import static org.mwg.core.task.CoreTask.task;
+import static org.mwg.core.task.Actions.task;
 
 public class ActionNewNodeTest extends AbstractActionTest {
 
@@ -28,7 +28,7 @@ public class ActionNewNodeTest extends AbstractActionTest {
                 .then(inject(587))
                 .then(asGlobalVar("time"))
                 .then(setTime("{{time[0]}}"))
-                .then(newNode())
+                .then(createNode())
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {

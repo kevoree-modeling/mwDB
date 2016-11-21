@@ -685,7 +685,7 @@ final class MWGResolver implements Resolver {
                     //TODO second iterate that can be avoided, however we need the median point to create the right tree
                     //we iterate over the tree selectWithout boundaries for values, but selectWith boundaries for number of collected times
                     final TimeTreeChunk finalRightTree = rightTree;
-                    //rang iterate fromVar the end of the tree
+                    //rang iterate from the end of the tree
                     nodeTimeTree.range(Constants.BEGINNING_OF_TIME, Constants.END_OF_TIME, nodeTimeTree.size() / 2, new TreeWalker() {
                         @Override
                         public void elem(long t) {
@@ -966,7 +966,7 @@ final class MWGResolver implements Resolver {
                 //TODO second iterate that can be avoided, however we need the median point to create the right tree
                 //we iterate over the tree selectWithout boundaries for values, but selectWith boundaries for number of collected times
                 final TimeTreeChunk finalRightTree = rightTree;
-                //rang iterate fromVar the end of the tree
+                //rang iterate readVar the end of the tree
                 timeTree.range(CoreConstants.BEGINNING_OF_TIME, CoreConstants.END_OF_TIME, timeTree.size() / 2, new TreeWalker() {
                     @Override
                     public void elem(long t) {

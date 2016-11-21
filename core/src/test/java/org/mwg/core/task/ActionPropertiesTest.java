@@ -6,10 +6,10 @@ import org.junit.Test;
 import org.mwg.*;
 import org.mwg.task.*;
 
-import static org.mwg.core.task.Actions.fromIndexAll;
-import static org.mwg.core.task.Actions.properties;
-import static org.mwg.core.task.Actions.propertiesWithTypes;
-import static org.mwg.core.task.CoreTask.task;
+import static org.mwg.core.task.Actions.readIndexAll;
+import static org.mwg.core.task.Actions.attributes;
+import static org.mwg.core.task.Actions.attributesWithTypes;
+import static org.mwg.core.task.Actions.task;
 
 public class ActionPropertiesTest {
     private Graph graph;
@@ -41,8 +41,8 @@ public class ActionPropertiesTest {
     public void testNormalRelations() {
         initGraph();
         task()
-                .then(fromIndexAll("root"))
-                .then(properties())
+                .then(readIndexAll("root"))
+                .then(attributes())
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
@@ -64,10 +64,10 @@ public class ActionPropertiesTest {
     public void testLocalIndex() {
         initGraph();
         task()
-                .then(fromIndexAll("root"))
+                .then(readIndexAll("root"))
                 .map(
-                        task().then(propertiesWithTypes(Type.RELATION)),
-                        task().then(propertiesWithTypes(Type.LONG_TO_LONG_ARRAY_MAP))
+                        task().then(attributesWithTypes(Type.RELATION)),
+                        task().then(attributesWithTypes(Type.LONG_TO_LONG_ARRAY_MAP))
                 )
                 .thenDo(new ActionFunction() {
                     @Override

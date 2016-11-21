@@ -5,7 +5,9 @@ import org.mwg.core.task.math.MathConditional;
 import org.mwg.task.*;
 
 public class Actions {
-    
+
+    //Context manipulation zone
+
     /**
      * Sets the task context to a particular world.
      *
@@ -27,9 +29,19 @@ public class Actions {
     }
 
     /**
-     * Method to initialise a task with any object
+     * Jump the node , or the array of nodes, in the result to the given time
      *
-     * @param input object used as source of a task
+     * @param time Time to jump for each nodes
+     * @return this task to chain actions (fluent API)
+     */
+    public static Action jump(String time) {
+        return new ActionJump(time);
+    }
+
+    /**
+     * Inject external object to current task
+     *
+     * @param input object to be injected
      * @return this task to chain actions (fluent API)
      */
     public static Action inject(Object input) {
@@ -37,24 +49,53 @@ public class Actions {
     }
 
     /**
-     * Retrieves a stored variable and stack it for next sub tasks.
+     * Retrieves a stored variable
      *
-     * @param variableName identifying a variable
+     * @param name interpreted as a template
      * @return this task to chain actions (fluent API)
      */
-    public static Action fromVar(String variableName) {
-        return new ActionFromVar(variableName, -1);
+    public static Action readVar(String name) {
+        return new ActionReadVar(name, -1);
     }
 
     /**
-     * Retrieves a stored array and stack the element at the specified index for next sub tasks.
+     * Retrieves a stored variable and extract specific index (because all variable are arrays)
      *
-     * @param variableName identifying a previous array
-     * @param index        the index element in the array
+     * @param name interpreted as a template
+     * @param index
      * @return this task to chain actions (fluent API)
      */
-    public static Action fromVarAt(String variableName, int index) {
-        return new ActionFromVar(variableName, index);
+    public static Action readVarIndex(String name, int index) {
+        return new ActionReadVar(name, index);
+    }
+
+
+    //Attribute manipulation zone
+
+    /**
+     * Sets the value of an attribute for all node present in the current result.
+     * If value is similar to previously stored one, nodes will remain unmodified.
+     *
+     * @param name  Must be unique per node.
+     * @param type  Must be one of {@link Type} int value.
+     * @param value Will be interpreted as template.
+     * @return this task to chain actions (fluent API)
+     */
+    public static Action setAttribute(String name, byte type, String value) {
+        return new ActionSetAttribute(name, type, value, false);
+    }
+
+    /**
+     * Force the value of an attribute for all node present in the current result.
+     * If value is similar to previously stored one, nodes will still be modified and their timeline will be affected.
+     *
+     * @param name  Must be unique per node.
+     * @param type  Must be one of {@link Type} int value.
+     * @param value Will be interpreted as template.
+     * @return this task to chain actions (fluent API)
+     */
+    public static Action forceAttribute(String name, byte type, String value) {
+        return new ActionSetAttribute(name, type, value, true);
     }
 
     /**
@@ -63,8 +104,8 @@ public class Actions {
      * @param indexName name of the index
      * @return this task to chain actions (fluent API)
      */
-    public static Action fromIndexAll(String indexName) {
-        return new ActionFromIndexAll(indexName);
+    public static Action readIndexAll(String indexName) {
+        return new ActionReadIndexAll(indexName);
     }
 
     /**
@@ -74,8 +115,8 @@ public class Actions {
      * @param query     query to filter nodes, such as name=FOO
      * @return this task to chain actions (fluent API)
      */
-    public static Action fromIndex(String indexName, String query) {
-        return new ActionFromIndex(indexName, query);
+    public static Action readIndex(String indexName, String query) {
+        return new ActionReadIndex(indexName, query);
     }
 
     /**
@@ -317,39 +358,13 @@ public class Actions {
     }
 
     /**
-     * Sets the value of an attribute of a node or an array of nodes with a variable value
-     * The node (or the array) should be init in the previous task
+     * Execute a executeExpression expression on all nodes given from previous step
      *
-     * @param propertyName      The name of the attribute. Must be unique per node.
-     * @param propertyType      The type of the attribute. Must be one of {@link Type} int value.
-     * @param variableNameToSet The name of the property to set, should be stored previously as a variable in task context.
+     * @param expression executeExpression expression to execute
      * @return this task to chain actions (fluent API)
      */
-    public static Action setProperty(String propertyName, byte propertyType, String variableNameToSet) {
-        return new ActionSetProperty(propertyName, propertyType, variableNameToSet, false);
-    }
-
-    /**
-     * Force the value of an attribute of a node or an array of nodes with a variable value
-     * The node (or the array) should be init in the previous task
-     *
-     * @param propertyName      The name of the attribute. Must be unique per node.
-     * @param propertyType      The type of the attribute. Must be one of {@link Type} int value.
-     * @param variableNameToSet The name of the property to set, should be stored previously as a variable in task context.
-     * @return this task to chain actions (fluent API)
-     */
-    public static Action forceProperty(String propertyName, byte propertyType, String variableNameToSet) {
-        return new ActionSetProperty(propertyName, propertyType, variableNameToSet, true);
-    }
-
-    /**
-     * Execute a math expression on all nodes given from previous step
-     *
-     * @param expression math expression to execute
-     * @return this task to chain actions (fluent API)
-     */
-    public static Action math(String expression) {
-        return new ActionMath(expression);
+    public static Action executeExpression(String expression) {
+        return new ActionExecuteExpression(expression);
     }
 
     /**
@@ -398,43 +413,33 @@ public class Actions {
     }
 
     /**
-     * Get all the properties names of nodes present in the previous result
+     * Get all the attributes names of nodes present in the previous result
      *
      * @return this task to chain actions (fluent API)
      */
-    public static Action properties() {
-        return new ActionProperties((byte) -1);
+    public static Action attributes() {
+        return new ActionAttributes((byte) -1);
     }
 
     /**
-     * Get and filter all the properties names of nodes present in the previous result. <br>
+     * Get and filter all the attributes names of nodes present in the previous result. <br>
      *
-     * @param filterType type of properties to filter
+     * @param filterType type of attributes to filter
      * @return this task to chain actions (fluent API)
      */
-    public static Action propertiesWithTypes(byte filterType) {
-        return new ActionProperties(filterType);
-    }
-
-    /**
-     * Jump the node , or the array of nodes, in the result to the given time
-     *
-     * @param time Time to jump for each nodes
-     * @return this task to chain actions (fluent API)
-     */
-    public static Action jump(String time) {
-        return new ActionJump(time);
+    public static Action attributesWithTypes(byte filterType) {
+        return new ActionAttributes(filterType);
     }
 
     /**
      * Removes an attribute from a node or an array of nodes.
      * The node (or the array) should be init in the previous task
      *
-     * @param propertyName The name of the attribute to remove.
+     * @param attributeName The name of the attribute to remove.
      * @return this task to chain actions (fluent API)
      */
-    public static Action removeProperty(String propertyName) {
-        return new ActionRemoveProperty(propertyName);
+    public static Action removeAttribute(String attributeName) {
+        return new ActionRemoveAttribute(attributeName);
     }
 
     /**
@@ -442,8 +447,8 @@ public class Actions {
      *
      * @return this task to chain actions (fluent API)
      */
-    public static Action newNode() {
-        return new ActionNewNode(null);
+    public static Action createNode() {
+        return new ActionCreateNode(null);
     }
 
     /**
@@ -452,17 +457,18 @@ public class Actions {
      * @param nodeType the type name of the node
      * @return this task to chain actions (fluent API)
      */
-    public static Action newTypedNode(String nodeType) {
-        return new ActionNewNode(nodeType);
+    public static Action createTypedNode(String nodeType) {
+        return new ActionCreateNode(nodeType);
     }
 
     public static Action save() {
         return new ActionSave();
     }
 
+    /*
     public static Action split(String splitPattern) {
         return new ActionSplit(splitPattern);
-    }
+    }*/
 
     public static Action lookup(String nodeId) {
         return new ActionLookup(nodeId);
@@ -472,12 +478,31 @@ public class Actions {
         return new ActionLookupAll(nodeIds);
     }
 
-    public static Action clear() {
-        return new ActionClear();
+    public static Action clearResult() {
+        return new ActionClearResult();
     }
 
     public static TaskFunctionConditional cond(String mathExpression) {
         return new MathConditional(mathExpression).conditional();
     }
+
+    public static Task task() {
+        return new CoreTask();
+    }
+
+    public static TaskResult emptyResult() {
+        return new CoreTaskResult(null, false);
+    }
+
+    /*
+    public static Task then(Action startingAction) {
+        return new CoreTask().then(startingAction);
+    }
+
+    public static Task thenDo(ActionFunction startingActionFct) {
+        return new CoreTask().thenDo(startingActionFct);
+    }
+    */
+
 
 }

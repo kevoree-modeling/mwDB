@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mwg.core.task.Actions.*;
-import static org.mwg.core.task.CoreTask.task;
+import static org.mwg.core.task.Actions.task;
 
 public class ActionForeachParTest extends AbstractActionTest {
 
@@ -37,7 +37,7 @@ public class ActionForeachParTest extends AbstractActionTest {
                 })
                 .execute(graph, null);
 
-        task().then(fromIndexAll("nodes"))
+        task().then(readIndexAll("nodes"))
                 .forEachPar(
                         task().thenDo(new ActionFunction() {
                             @Override

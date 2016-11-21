@@ -9,9 +9,7 @@ import org.mwg.Node;
 import org.mwg.task.Task;
 import org.mwg.task.TaskResult;
 
-import static org.mwg.core.task.Actions.asVar;
-import static org.mwg.core.task.Actions.fromVar;
-import static org.mwg.core.task.CoreTask.task;
+import static org.mwg.core.task.Actions.*;
 
 public class DFSTest {
 
@@ -85,7 +83,7 @@ public class DFSTest {
                                 .then(asVar("parent"))
                                 .then(Actions.traverse("left"))
                                 .then(asVar("left"))
-                                .then(fromVar("parent"))
+                                .then(readVar("parent"))
                                 .then(Actions.traverse("right"))
                                 .then(asVar("right"))
                                 .thenDo(context -> {
@@ -114,9 +112,9 @@ public class DFSTest {
                                         context.addToGlobalVariable("nnld", context.wrap(left.id() / 2));
                                     }
                                     context.continueWith(nextStep);
-                                }).ifThen(context -> (context.result().size() > 0), dfs).thenDo(context -> context.continueTask())).then(fromVar("nnl"));
+                                }).ifThen(context -> (context.result().size() > 0), dfs).thenDo(context -> context.continueTask())).then(readVar("nnl"));
 
-                TaskResult initialResult = task().emptyResult();
+                TaskResult initialResult = emptyResult();
                 initialResult.add(n1);
 
                 dfs/*.hook(VerboseHook.instance())/*/ /*.hook(VerboseHook.instance())/*.hook(new TaskHook() {
