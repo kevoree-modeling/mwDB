@@ -4,7 +4,7 @@ import org.mwg.struct.Relationship;
 
 /**
  * Node is the base element contained in the {@link Graph}.<br>
- * They belong to a world and time, have attributes, relationships, and indexes.
+ * They belong to a world and time, have attributes (e.g. primitives, relationships, and indexes).
  */
 public interface Node {
 
@@ -33,30 +33,30 @@ public interface Node {
     /**
      * Returns the value of an attribute of the node.
      *
-     * @param propertyName The name of the attribute to be read.
+     * @param name The name of the attribute to be read.
      * @return The value of the required attribute in this node for the current timepoint and world.
      * The type of the returned object (i.e.: of the attribute) is given by {@link #type(String)}
      * (typed by one of the Type)
      */
-    Object get(String propertyName);
+    Object get(String name);
 
     /**
      * Returns the value of an attribute of the node.
      *
-     * @param propIndex The long of the attribute to be read.
+     * @param index index of attribute.
      * @return The value of the required attribute in this node for the current timepoint and world.
      * The type of the returned object (i.e.: of the attribute) is given by {@link #type(String)}
      * (typed by one of the Type)
      */
-    Object getByIndex(long propIndex);
+    Object getByIndex(long index);
 
     /**
      * Allows to know the type of an attribute. The returned value is one of {@link Type}.
      *
-     * @param propertyName The name of the attribute for which the type is asked.
+     * @param name The name of the attribute for which the type is asked.
      * @return The type of the attribute inform of an int belonging to {@link Type}.
      */
-    byte type(String propertyName);
+    byte type(String name);
 
     /**
      * Allows to know the type name of the current node (case of typed node).
@@ -69,69 +69,69 @@ public interface Node {
      * Sets the value of an attribute of this node, for its current world and time.<br>
      * This method hasField to be used for primitive types.
      *
-     * @param propertyName  The name of the attribute. Must be unique per node.
-     * @param propertyValue The value of the attribute. Must be consistent with the propertyType.
+     * @param name  The name of the attribute. Must be unique per node.
+     * @param value The value of the attribute. Must be consistent with the propertyType.
      */
-    void set(String propertyName, Object propertyValue);
+    void set(String name, Object value);
 
     /**
      * Sets the value of an attribute of this node, for its current world and time.<br>
      * This method hasField to be used for primitive types.
      *
-     * @param propertyName  The name of the attribute. Must be unique per node.
-     * @param propertyType  The type of the attribute. Must be one of {@link Type} int value.
-     * @param propertyValue The value of the attribute. Must be consistent with the propertyType.
+     * @param name  Must be unique per node.
+     * @param type  Must be one of {@link Type} int value.
+     * @param value Must be consistent with the propertyType.
      */
-    void setProperty(String propertyName, byte propertyType, Object propertyValue);
+    void setAttribute(String name, byte type, Object value);
 
     /**
      * Sets the value of an attribute of this node, for its current world and time.<br>
      * This method hasField to be used for primitive types.
      *
-     * @param propertyName  The name of the attribute. Must be unique per node.
-     * @param propertyType  The type of the attribute. Must be one of {@link Type} int value.
-     * @param propertyValue The value of the attribute. Must be consistent with the propertyType.
+     * @param name  Must be unique per node.
+     * @param type  Must be one of {@link Type} int value.
+     * @param value Must be consistent with the propertyType.
      */
-    void forceProperty(String propertyName, byte propertyType, Object propertyValue);
+    void forceAttribute(String name, byte type, Object value);
 
     /**
      * Sets the value of an attribute of this node, for its current world and time.<br>
      * This method hasField to be used for primitive types.
      *
-     * @param propIndex     The index of the attribute. Must be unique per node.
-     * @param propertyType  The type of the attribute. Must be one of {@link Type} int value.
-     * @param propertyValue The value of the attribute. Must be consistent with the propertyType.
+     * @param index Must be unique per node.
+     * @param type  Must be one of {@link Type} int value.
+     * @param value Must be consistent with the propertyType.
      */
-    void setPropertyByIndex(long propIndex, byte propertyType, Object propertyValue);
+    void setAttributeByIndex(long index, byte type, Object value);
 
     /**
-     * Gets or creates atomically a complex type (such as Maps).<br>
+     * Gets or creates atomically a complex attribute (such as Maps).<br>
      * It returns a mutable Map.
      *
-     * @param propertyName The name of the object to create. Must be unique per node.
-     * @param propertyType The type of the attribute. Must be one of {@link Type} int value.
+     * @param name The name of the object to create. Must be unique per node.
+     * @param type The type of the attribute. Must be one of {@link Type} int value.
      * @return A Map instance that can be altered at the current world and time.
      */
-    Object getOrCreate(String propertyName, byte propertyType);
+    Object getOrCreate(String name, byte type);
 
     /**
      * Gets or creates atomically a complex type (such as Maps).<br>
      * It returns a mutable Map.
      *
-     * @param propertyName The name of the object to create. Must be unique per node.
+     * @param name                  The name of the object to create. Must be unique per node.
      * @param externalAttributeType The type of the external attribute type.
      * @return A Map instance that can be altered at the current world and time.
      */
-    Object getOrCreateExternal(String propertyName, String externalAttributeType);
+    Object getOrCreateExternal(String name, String externalAttributeType);
 
-    Relationship getOrCreateRel(String propertyName);
+    Relationship getOrCreateRel(String name);
 
     /**
      * Removes an attribute from the node.
      *
-     * @param propertyName The name of the attribute to remove.
+     * @param name The name of the attribute to remove.
      */
-    void removeProperty(String propertyName);
+    void removeAttribute(String name);
 
     /**
      * Retrieves asynchronously the nodes contained in a traverseIndex.

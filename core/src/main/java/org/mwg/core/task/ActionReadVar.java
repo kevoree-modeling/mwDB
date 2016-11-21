@@ -19,12 +19,12 @@ class ActionReadVar extends AbstractAction {
     public void eval(final TaskContext context) {
         final String evaluatedName = context.template(_name);
         TaskResult varResult;
-        if(_index != -1) {
+        if (_index != -1) {
             varResult = context.wrap(context.variable(evaluatedName).get(_index));
         } else {
             varResult = context.variable(evaluatedName);
         }
-        if(varResult != null){
+        if (varResult != null) {
             varResult = varResult.clone();
         }
         context.continueWith(varResult);

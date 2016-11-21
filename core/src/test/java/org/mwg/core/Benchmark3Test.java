@@ -79,7 +79,7 @@ public class Benchmark3Test {
                     graph.lookup(0, time, node.id(), new Callback<org.mwg.Node>() {
                         @Override
                         public void on(Node timedNode) {
-                            timedNode.setProperty("value", Type.DOUBLE, value);
+                            timedNode.setAttribute("value", Type.DOUBLE, value);
                             counter.count();
                             timedNode.free();//free the node, for cache management
                         }

@@ -140,19 +140,19 @@ public class BaseNode implements Node {
     /**
      * {@native ts
      * if (typeof propertyValue === 'string' || propertyValue instanceof String) {
-     * this.setProperty(propertyName, org.mwg.Type.STRING, propertyValue);
+     * this.setAttribute(propertyName, org.mwg.Type.STRING, propertyValue);
      * } else if(typeof propertyValue === 'number' || propertyValue instanceof Number) {
      * if(((<number>propertyValue) % 1) != 0) {
-     * this.setProperty(propertyName, org.mwg.Type.DOUBLE, propertyValue);
+     * this.setAttribute(propertyName, org.mwg.Type.DOUBLE, propertyValue);
      * } else {
-     * this.setProperty(propertyName, org.mwg.Type.LONG, propertyValue);
+     * this.setAttribute(propertyName, org.mwg.Type.LONG, propertyValue);
      * }
      * } else if(typeof propertyValue === 'boolean' || propertyValue instanceof Boolean) {
-     * this.setProperty(propertyName, org.mwg.Type.BOOL, propertyValue);
+     * this.setAttribute(propertyName, org.mwg.Type.BOOL, propertyValue);
      * } else if (propertyValue instanceof Int32Array) {
-     * this.setProperty(propertyName, org.mwg.Type.LONG_ARRAY, propertyValue);
+     * this.setAttribute(propertyName, org.mwg.Type.LONG_ARRAY, propertyValue);
      * } else if (propertyValue instanceof Float64Array) {
-     * this.setProperty(propertyName, org.mwg.Type.DOUBLE_ARRAY, propertyValue);
+     * this.setAttribute(propertyName, org.mwg.Type.DOUBLE_ARRAY, propertyValue);
      * } else {
      * throw new Error("Invalid property type: " + propertyValue + ", please use a Type listed in org.mwg.Type");
      * }
@@ -161,52 +161,52 @@ public class BaseNode implements Node {
     @Override
     public final void set(String propertyName, Object propertyValue) {
         if (propertyValue instanceof String) {
-            setProperty(propertyName, Type.STRING, propertyValue);
+            setAttribute(propertyName, Type.STRING, propertyValue);
         } else if (propertyValue instanceof Double) {
-            setProperty(propertyName, Type.DOUBLE, propertyValue);
+            setAttribute(propertyName, Type.DOUBLE, propertyValue);
         } else if (propertyValue instanceof Long) {
-            setProperty(propertyName, Type.LONG, propertyValue);
+            setAttribute(propertyName, Type.LONG, propertyValue);
         } else if (propertyValue instanceof Float) {
-            setProperty(propertyName, Type.DOUBLE, (double) ((Float) propertyValue));
+            setAttribute(propertyName, Type.DOUBLE, (double) ((Float) propertyValue));
         } else if (propertyValue instanceof Integer) {
-            setProperty(propertyName, Type.INT, propertyValue);
+            setAttribute(propertyName, Type.INT, propertyValue);
         } else if (propertyValue instanceof Boolean) {
-            setProperty(propertyName, Type.BOOL, propertyValue);
+            setAttribute(propertyName, Type.BOOL, propertyValue);
         } else if (propertyValue instanceof int[]) {
-            setProperty(propertyName, Type.INT_ARRAY, propertyValue);
+            setAttribute(propertyName, Type.INT_ARRAY, propertyValue);
         } else if (propertyValue instanceof double[]) {
-            setProperty(propertyName, Type.DOUBLE_ARRAY, propertyValue);
+            setAttribute(propertyName, Type.DOUBLE_ARRAY, propertyValue);
         } else if (propertyValue instanceof long[]) {
-            setProperty(propertyName, Type.LONG_ARRAY, propertyValue);
+            setAttribute(propertyName, Type.LONG_ARRAY, propertyValue);
         } else {
             throw new RuntimeException("Invalid property type: " + propertyValue + ", please use a Type listed in org.mwg.Type");
         }
     }
 
     @Override
-    public void forceProperty(String propertyName, byte propertyType, Object propertyValue) {
-        final long hashed = this._resolver.stringToHash(propertyName, true);
+    public void forceAttribute(String name, byte type, Object value) {
+        final long hashed = this._resolver.stringToHash(name, true);
         final NodeState preciseState = this._resolver.alignState(this);
         if (preciseState != null) {
-            preciseState.set(hashed, propertyType, propertyValue);
+            preciseState.set(hashed, type, value);
         } else {
             throw new RuntimeException(Constants.CACHE_MISS_ERROR);
         }
     }
 
     @Override
-    public void setProperty(String propertyName, byte propertyType, Object propertyValue) {
+    public void setAttribute(String name, byte type, Object value) {
         //hash the property a single time
-        final long hashed = this._resolver.stringToHash(propertyName, true);
+        final long hashed = this._resolver.stringToHash(name, true);
         final NodeState unPhasedState = this._resolver.resolveState(this);
-        boolean isDiff = (propertyType != unPhasedState.getType(hashed));
+        boolean isDiff = (type != unPhasedState.getType(hashed));
         if (!isDiff) {
-            isDiff = !isEquals(unPhasedState.get(hashed), propertyValue, propertyType);
+            isDiff = !isEquals(unPhasedState.get(hashed), value, type);
         }
         if (isDiff) {
             final NodeState preciseState = this._resolver.alignState(this);
             if (preciseState != null) {
-                preciseState.set(hashed, propertyType, propertyValue);
+                preciseState.set(hashed, type, value);
             } else {
                 throw new RuntimeException(Constants.CACHE_MISS_ERROR);
             }
@@ -285,7 +285,7 @@ public class BaseNode implements Node {
     }
 
     @Override
-    public Object getOrCreateExternal(String propertyName, String externalAttributeType) {
+    public final Object getOrCreateExternal(String propertyName, String externalAttributeType) {
         final NodeState preciseState = this._resolver.alignState(this);
         if (preciseState != null) {
             return preciseState.getOrCreateExternal(this._resolver.stringToHash(propertyName, true), externalAttributeType);
@@ -295,7 +295,7 @@ public class BaseNode implements Node {
     }
 
     @Override
-    public byte type(String propertyName) {
+    public final byte type(String propertyName) {
         final NodeState resolved = this._resolver.resolveState(this);
         if (resolved != null) {
             return resolved.getType(this._resolver.stringToHash(propertyName, false));
@@ -304,8 +304,8 @@ public class BaseNode implements Node {
     }
 
     @Override
-    public final void removeProperty(String attributeName) {
-        setProperty(attributeName, Type.INT, null);
+    public final void removeAttribute(String name) {
+        setAttribute(name, Type.INT, null);
     }
 
     @Override
@@ -335,35 +335,6 @@ public class BaseNode implements Node {
                         callback.on(result);
                     }
                 });
-
-                /*
-                final Node[] result = new Node[relSize];
-                final DeferCounter counter = _graph.newCounter(relSize);
-                final int[] resultIndex = new int[1];
-                for (int i = 0; i < relSize; i++) {
-                    this._resolver.lookup(_world, _time, relationArray.get(i), new Callback<Node>() {
-                        @Override
-                        public void on(Node kNode) {
-                            if (kNode != null) {
-                                result[resultIndex[0]] = kNode;
-                                resultIndex[0]++;
-                            }
-                            counter.count();
-                        }
-                    });
-                }
-                counter.then(new Job() {
-                    @Override
-                    public void run() {
-                        if (resultIndex[0] == result.length) {
-                            callback.on(result);
-                        } else {
-                            Node[] toSend = new Node[resultIndex[0]];
-                            System.arraycopy(result, 0, toSend, 0, toSend.length);
-                            callback.on(toSend);
-                        }
-                    }
-                });*/
             }
         } else {
             callback.on(new Node[0]);
@@ -441,7 +412,7 @@ public class BaseNode implements Node {
     }
 
     @Override
-    public void findByQuery(final Query query, final Callback<Node[]> callback) {
+    public final void findByQuery(final Query query, final Callback<Node[]> callback) {
         final NodeState currentNodeState = this._resolver.resolveState(this);
         if (currentNodeState == null) {
             throw new RuntimeException(Constants.CACHE_MISS_ERROR);
@@ -529,7 +500,7 @@ public class BaseNode implements Node {
     }
 
     @Override
-    public void find(String indexName, String query, Callback<Node[]> callback) {
+    public final void find(String indexName, String query, Callback<Node[]> callback) {
         final Query queryObj = _graph.newQuery();
         queryObj.setWorld(world());
         queryObj.setTime(time());
@@ -539,7 +510,7 @@ public class BaseNode implements Node {
     }
 
     @Override
-    public void findAll(final String indexName, final Callback<Node[]> callback) {
+    public final void findAll(final String indexName, final Callback<Node[]> callback) {
         final NodeState currentNodeState = this._resolver.resolveState(this);
         if (currentNodeState == null) {
             throw new RuntimeException(Constants.CACHE_MISS_ERROR);
@@ -568,7 +539,7 @@ public class BaseNode implements Node {
     }
 
     @Override
-    public void index(String indexName, org.mwg.Node nodeToIndex, String flatKeyAttributes, Callback<Boolean> callback) {
+    public final void index(String indexName, org.mwg.Node nodeToIndex, String flatKeyAttributes, Callback<Boolean> callback) {
         final String[] keyAttributes = flatKeyAttributes.split(Constants.QUERY_SEP + "");
         final long hashName = this._resolver.stringToHash(indexName, true);
         Query flatQuery = _graph.newQuery();
@@ -605,7 +576,7 @@ public class BaseNode implements Node {
     }
 
     @Override
-    public void unindex(String indexName, org.mwg.Node nodeToIndex, String flatKeyAttributes, Callback<Boolean> callback) {
+    public final void unindex(String indexName, org.mwg.Node nodeToIndex, String flatKeyAttributes, Callback<Boolean> callback) {
         final String[] keyAttributes = flatKeyAttributes.split(Constants.QUERY_SEP + "");
         final NodeState currentNodeState = this._resolver.alignState(this);
         if (currentNodeState == null) {
@@ -869,7 +840,8 @@ public class BaseNode implements Node {
     }
 
     @Override
-    public void setPropertyByIndex(long propIndex, byte propertyType, Object propertyValue) {
-        _resolver.alignState(this).set(propIndex, propertyType, propertyValue);
+    public void setAttributeByIndex(final long index, final byte type, final Object value) {
+        _resolver.alignState(this).set(index, type, value);
     }
+
 }

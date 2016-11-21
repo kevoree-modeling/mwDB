@@ -20,8 +20,8 @@ public class ActionPropertiesTest {
             @Override
             public void on(Boolean result) {
                 Node root = graph.newNode(0, 0);
-                root.setProperty("id", Type.INT, 1);
-                root.setProperty("attribute", Type.BOOL, false);
+                root.setAttribute("id", Type.INT, 1);
+                root.setAttribute("attribute", Type.BOOL, false);
                 graph.index("root", root, "id", null);
 
                 Node child1 = graph.newNode(0, 0);

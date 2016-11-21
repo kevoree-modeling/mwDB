@@ -18,15 +18,15 @@ public abstract class AbstractActionTest {
 
                 //create graph nodes
                 Node n0 = selfPointer.graph.newNode(0, 0);
-                n0.setProperty("name", Type.STRING, "n0");
-                n0.setProperty("value", Type.INT, 8);
+                n0.setAttribute("name", Type.STRING, "n0");
+                n0.setAttribute("value", Type.INT, 8);
 
                 Node n1 = selfPointer.graph.newNode(0, 0);
-                n1.setProperty("name", Type.STRING, "n1");
-                n1.setProperty("value", Type.INT, 3);
+                n1.setAttribute("name", Type.STRING, "n1");
+                n1.setAttribute("value", Type.INT, 3);
 
                 Node root = selfPointer.graph.newNode(0, 0);
-                root.setProperty("name", Type.STRING, "root");
+                root.setAttribute("name", Type.STRING, "root");
                 root.add("children", n0);
                 root.add("children", n1);
 

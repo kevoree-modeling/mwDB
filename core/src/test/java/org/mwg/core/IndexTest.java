@@ -42,10 +42,10 @@ public class IndexTest {
             @Override
             public void on(Boolean result) {
                 final org.mwg.Node node_t0 = graph.newNode(0, 0);
-                node_t0.setProperty("name", Type.STRING, "MyName");
+                node_t0.setAttribute("name", Type.STRING, "MyName");
 
                 final org.mwg.Node node_t1 = graph.newNode(0, 0);
-                node_t1.setProperty("name", Type.STRING, "MyName2");
+                node_t1.setAttribute("name", Type.STRING, "MyName2");
 
                 node_t1.add("children", node_t0);
                 graph.index("bigram", node_t1, "children", null);
@@ -84,7 +84,7 @@ public class IndexTest {
             @Override
             public void on(Boolean o) {
                 org.mwg.Node node_t0 = graph.newNode(0, 0);
-                node_t0.setProperty("name", Type.STRING, "MyName");
+                node_t0.setAttribute("name", Type.STRING, "MyName");
 
                 graph.findAll(0, 0, "nodes", new Callback<org.mwg.Node[]>() {
                     @Override
@@ -131,8 +131,8 @@ public class IndexTest {
 
 
                 org.mwg.Node node_t1 = graph.newNode(0, 0);
-                node_t1.setProperty("name", Type.STRING, "MyName");
-                node_t1.setProperty("version", Type.STRING, "1.0");
+                node_t1.setAttribute("name", Type.STRING, "MyName");
+                node_t1.setAttribute("version", Type.STRING, "1.0");
 
                 graph.index("nodes", node_t1, "name,version", new Callback<Boolean>() {
                     @Override

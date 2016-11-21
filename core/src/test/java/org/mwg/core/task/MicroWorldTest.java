@@ -39,7 +39,7 @@ public class MicroWorldTest {
                 /*
                 loop("0", "3",
                         newNode()
-                        .setProperty("name", Type.STRING, "node_{{i}}")
+                        .setAttribute("name", Type.STRING, "node_{{i}}")
                         .print("{{result}}")
                 )
                 .execute(g,null);

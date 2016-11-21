@@ -33,16 +33,16 @@ public class HelloWorldTest {
                         node0.set("name", "MyName");
                         Assert.assertTrue(HashHelper.equals("MyName", node0.get("name").toString()));
 
-                        node0.removeProperty("name");
+                        node0.removeAttribute("name");
                         Assert.assertTrue(node0.get("name") == null);
-                        node0.setProperty("name", Type.STRING, "MyName");
+                        node0.setAttribute("name", Type.STRING, "MyName");
 
-                        node0.setProperty("value", Type.STRING, "MyValue");
+                        node0.setAttribute("value", Type.STRING, "MyValue");
                         Assert.assertTrue(HashHelper.equals("MyValue", node0.get("value").toString()));
                         //check that other attribute name is not affected
                         Assert.assertTrue(HashHelper.equals("MyName", node0.get("name").toString()));
 
-                        node0.setProperty("name", Type.STRING, "MyName2");
+                        node0.setAttribute("name", Type.STRING, "MyName2");
                         Assert.assertTrue(HashHelper.equals("MyName2", node0.get("name").toString()));
                         Assert.assertTrue(HashHelper.equals("MyValue", node0.get("value").toString()));
 

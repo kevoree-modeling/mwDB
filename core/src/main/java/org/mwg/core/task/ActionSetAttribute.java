@@ -51,9 +51,9 @@ class ActionSetAttribute extends AbstractAction {
                 if (loopObj instanceof BaseNode) {
                     Node loopNode = (Node) loopObj;
                     if(_force){
-                        loopNode.forceProperty(flatRelationName, _propertyType, toSet);
+                        loopNode.forceAttribute(flatRelationName, _propertyType, toSet);
                     } else {
-                        loopNode.setProperty(flatRelationName, _propertyType, toSet);
+                        loopNode.setAttribute(flatRelationName, _propertyType, toSet);
                     }
                 }
             }

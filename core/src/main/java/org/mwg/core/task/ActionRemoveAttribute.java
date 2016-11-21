@@ -24,7 +24,7 @@ class ActionRemoveAttribute extends AbstractAction {
                 Object loopObj = previousResult.get(i);
                 if (loopObj instanceof BaseNode) {
                     Node loopNode = (Node) loopObj;
-                    loopNode.removeProperty(flatRelationName);
+                    loopNode.removeAttribute(flatRelationName);
                 }
             }
         }
