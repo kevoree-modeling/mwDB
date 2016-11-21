@@ -61,7 +61,7 @@ public class Actions {
     /**
      * Retrieves a stored variable and extract specific index (because all variable are arrays)
      *
-     * @param name interpreted as a template
+     * @param name  interpreted as a template
      * @param index
      * @return this task to chain actions (fluent API)
      */

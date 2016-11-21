@@ -129,57 +129,57 @@ public class BaseNode implements Node {
     }
 
     @Override
-    public Object get(String propertyName) {
+    public Object get(String name) {
         final NodeState resolved = this._resolver.resolveState(this);
         if (resolved != null) {
-            return resolved.get(this._resolver.stringToHash(propertyName, false));
+            return resolved.get(this._resolver.stringToHash(name, false));
         }
         return null;
     }
 
     /**
      * {@native ts
-     * if (typeof propertyValue === 'string' || propertyValue instanceof String) {
-     * this.setAttribute(propertyName, org.mwg.Type.STRING, propertyValue);
-     * } else if(typeof propertyValue === 'number' || propertyValue instanceof Number) {
-     * if(((<number>propertyValue) % 1) != 0) {
-     * this.setAttribute(propertyName, org.mwg.Type.DOUBLE, propertyValue);
+     * if (typeof value === 'string' || value instanceof String) {
+     * this.setAttribute(name, org.mwg.Type.STRING, value);
+     * } else if(typeof value === 'number' || value instanceof Number) {
+     * if(((<number>value) % 1) != 0) {
+     * this.setAttribute(name, org.mwg.Type.DOUBLE, value);
      * } else {
-     * this.setAttribute(propertyName, org.mwg.Type.LONG, propertyValue);
+     * this.setAttribute(name, org.mwg.Type.LONG, value);
      * }
-     * } else if(typeof propertyValue === 'boolean' || propertyValue instanceof Boolean) {
-     * this.setAttribute(propertyName, org.mwg.Type.BOOL, propertyValue);
-     * } else if (propertyValue instanceof Int32Array) {
-     * this.setAttribute(propertyName, org.mwg.Type.LONG_ARRAY, propertyValue);
-     * } else if (propertyValue instanceof Float64Array) {
-     * this.setAttribute(propertyName, org.mwg.Type.DOUBLE_ARRAY, propertyValue);
+     * } else if(typeof value === 'boolean' || value instanceof Boolean) {
+     * this.setAttribute(name, org.mwg.Type.BOOL, value);
+     * } else if (value instanceof Int32Array) {
+     * this.setAttribute(name, org.mwg.Type.LONG_ARRAY, value);
+     * } else if (value instanceof Float64Array) {
+     * this.setAttribute(name, org.mwg.Type.DOUBLE_ARRAY, value);
      * } else {
-     * throw new Error("Invalid property type: " + propertyValue + ", please use a Type listed in org.mwg.Type");
+     * throw new Error("Invalid property type: " + value + ", please use a Type listed in org.mwg.Type");
      * }
      * }
      */
     @Override
-    public final void set(String propertyName, Object propertyValue) {
-        if (propertyValue instanceof String) {
-            setAttribute(propertyName, Type.STRING, propertyValue);
-        } else if (propertyValue instanceof Double) {
-            setAttribute(propertyName, Type.DOUBLE, propertyValue);
-        } else if (propertyValue instanceof Long) {
-            setAttribute(propertyName, Type.LONG, propertyValue);
-        } else if (propertyValue instanceof Float) {
-            setAttribute(propertyName, Type.DOUBLE, (double) ((Float) propertyValue));
-        } else if (propertyValue instanceof Integer) {
-            setAttribute(propertyName, Type.INT, propertyValue);
-        } else if (propertyValue instanceof Boolean) {
-            setAttribute(propertyName, Type.BOOL, propertyValue);
-        } else if (propertyValue instanceof int[]) {
-            setAttribute(propertyName, Type.INT_ARRAY, propertyValue);
-        } else if (propertyValue instanceof double[]) {
-            setAttribute(propertyName, Type.DOUBLE_ARRAY, propertyValue);
-        } else if (propertyValue instanceof long[]) {
-            setAttribute(propertyName, Type.LONG_ARRAY, propertyValue);
+    public final void set(String name, Object value) {
+        if (value instanceof String) {
+            setAttribute(name, Type.STRING, value);
+        } else if (value instanceof Double) {
+            setAttribute(name, Type.DOUBLE, value);
+        } else if (value instanceof Long) {
+            setAttribute(name, Type.LONG, value);
+        } else if (value instanceof Float) {
+            setAttribute(name, Type.DOUBLE, (double) ((Float) value));
+        } else if (value instanceof Integer) {
+            setAttribute(name, Type.INT, value);
+        } else if (value instanceof Boolean) {
+            setAttribute(name, Type.BOOL, value);
+        } else if (value instanceof int[]) {
+            setAttribute(name, Type.INT_ARRAY, value);
+        } else if (value instanceof double[]) {
+            setAttribute(name, Type.DOUBLE_ARRAY, value);
+        } else if (value instanceof long[]) {
+            setAttribute(name, Type.LONG_ARRAY, value);
         } else {
-            throw new RuntimeException("Invalid property type: " + propertyValue + ", please use a Type listed in org.mwg.Type");
+            throw new RuntimeException("Invalid property type: " + value + ", please use a Type listed in org.mwg.Type");
         }
     }
 
@@ -275,30 +275,30 @@ public class BaseNode implements Node {
     }
 
     @Override
-    public final Object getOrCreate(String propertyName, byte propertyType) {
+    public final Object getOrCreate(String name, byte type) {
         final NodeState preciseState = this._resolver.alignState(this);
         if (preciseState != null) {
-            return preciseState.getOrCreate(this._resolver.stringToHash(propertyName, true), propertyType);
+            return preciseState.getOrCreate(this._resolver.stringToHash(name, true), type);
         } else {
             throw new RuntimeException(Constants.CACHE_MISS_ERROR);
         }
     }
 
     @Override
-    public final Object getOrCreateExternal(String propertyName, String externalAttributeType) {
+    public final Object getOrCreateExternal(String name, String externalAttributeType) {
         final NodeState preciseState = this._resolver.alignState(this);
         if (preciseState != null) {
-            return preciseState.getOrCreateExternal(this._resolver.stringToHash(propertyName, true), externalAttributeType);
+            return preciseState.getOrCreateExternal(this._resolver.stringToHash(name, true), externalAttributeType);
         } else {
             throw new RuntimeException(Constants.CACHE_MISS_ERROR);
         }
     }
 
     @Override
-    public final byte type(String propertyName) {
+    public final byte type(String name) {
         final NodeState resolved = this._resolver.resolveState(this);
         if (resolved != null) {
-            return resolved.getType(this._resolver.stringToHash(propertyName, false));
+            return resolved.getType(this._resolver.stringToHash(name, false));
         }
         return -1;
     }
@@ -830,8 +830,8 @@ public class BaseNode implements Node {
 
 
     @Override
-    public Relationship getOrCreateRel(String propertyName) {
-        return (Relationship) getOrCreate(propertyName, Type.RELATION);
+    public Relationship getOrCreateRel(String name) {
+        return (Relationship) getOrCreate(name, Type.RELATION);
     }
 
     @Override

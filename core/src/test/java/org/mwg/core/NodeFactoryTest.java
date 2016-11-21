@@ -26,11 +26,11 @@ public class NodeFactoryTest {
         }
 
         @Override
-        public Object get(String propertyName) {
-            if (propertyName.equals("hello")) {
+        public Object get(String name) {
+            if (name.equals("hello")) {
                 return "world";
             }
-            return super.get(propertyName);
+            return super.get(name);
         }
 
         @Override

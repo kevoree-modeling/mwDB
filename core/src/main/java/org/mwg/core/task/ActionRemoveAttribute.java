@@ -8,18 +8,18 @@ import org.mwg.task.TaskResult;
 
 class ActionRemoveAttribute extends AbstractAction {
 
-    private final String _propertyName;
+    private final String _name;
 
-    ActionRemoveAttribute(final String propertyName) {
+    ActionRemoveAttribute(final String name) {
         super();
-        this._propertyName = propertyName;
+        this._name = name;
     }
 
     @Override
     public void eval(final TaskContext context) {
         final TaskResult previousResult = context.result();
         if (previousResult != null) {
-            final String flatRelationName = context.template(_propertyName);
+            final String flatRelationName = context.template(_name);
             for (int i = 0; i < previousResult.size(); i++) {
                 Object loopObj = previousResult.get(i);
                 if (loopObj instanceof BaseNode) {
@@ -33,7 +33,7 @@ class ActionRemoveAttribute extends AbstractAction {
 
     @Override
     public String toString() {
-        return "removeAttribute(\'" + _propertyName + "\')";
+        return "removeAttribute(\'" + _name + "\')";
     }
 
 
