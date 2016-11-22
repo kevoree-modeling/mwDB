@@ -31,16 +31,25 @@ public abstract class AbstractActionTest {
                 root.add("children", n1);
 
                 //create some index
-                selfPointer.graph.index("roots", root, "name", null);
-                selfPointer.graph.index("nodes", n0, "name", null);
-                selfPointer.graph.index("nodes", n1, "name", null);
-                selfPointer.graph.index("nodes", root, "name", null);
-
+                selfPointer.graph.index(0, 0, "roots", new Callback<NodeIndex>() {
+                    @Override
+                    public void on(NodeIndex rootsIndex) {
+                        rootsIndex.add(root, "name");
+                    }
+                });
+                selfPointer.graph.index(0, 0, "nodes", new Callback<NodeIndex>() {
+                    @Override
+                    public void on(NodeIndex nodesIndex) {
+                        nodesIndex.add(n0, "name");
+                        nodesIndex.add(n1, "name");
+                        nodesIndex.add(root, "name");
+                    }
+                });
             }
         });
     }
 
-    protected void initComplexGraph(Callback<Node> callback){
+    protected void initComplexGraph(Callback<Node> callback) {
         graph = new GraphBuilder().withScheduler(new NoopScheduler()).build();
         final AbstractActionTest selfPointer = this;
         graph.connect(new Callback<Boolean>() {
@@ -100,7 +109,6 @@ public abstract class AbstractActionTest {
 
     }
 
-
     protected void removeGraph() {
         graph.disconnect(new Callback<Boolean>() {
             @Override
@@ -114,7 +122,7 @@ public abstract class AbstractActionTest {
         graph.save(new Callback<Boolean>() {
             @Override
             public void on(Boolean result) {
-               startMemory = graph.space().available();
+                startMemory = graph.space().available();
             }
         });
     }
@@ -123,7 +131,7 @@ public abstract class AbstractActionTest {
         graph.save(new Callback<Boolean>() {
             @Override
             public void on(Boolean result) {
-                Assert.assertEquals(startMemory,graph.space().available());
+                Assert.assertEquals(startMemory, graph.space().available());
             }
         });
     }

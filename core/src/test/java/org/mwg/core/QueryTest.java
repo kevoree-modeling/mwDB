@@ -128,47 +128,13 @@ public class QueryTest implements Resolver, Graph {
     }
 
     @Override
-    public void index(String indexName, Node nodeToIndex, String flatKeyAttributes, Callback<Boolean> callback) {
+    public void index(long world, long time, String name, Callback<NodeIndex> callback) {
 
     }
 
-    @Override
-    public void indexAt(long world, long time, String indexName, Node nodeToIndex, String flatKeyAttributes, Callback<Boolean> callback) {
-
-    }
-
-    @Override
-    public void unindex(String indexName, Node nodeToUnindex, String flatKeyAttributes, Callback<Boolean> callback) {
-
-    }
-
-    @Override
-    public void unindexAt(long world, long time, String indexName, Node nodeToUnindex, String flatKeyAttributes, Callback<Boolean> callback) {
-
-    }
 
     @Override
     public void indexes(long world, long time, Callback<String[]> callback) {
-
-    }
-
-    @Override
-    public void find(long world, long time, String indexName, String query, Callback<Node[]> callback) {
-
-    }
-
-    @Override
-    public void findByQuery(Query query, Callback<Node[]> callback) {
-
-    }
-
-    @Override
-    public void findAll(long world, long time, String indexName, Callback<Node[]> callback) {
-
-    }
-
-    @Override
-    public void getIndexNode(long world, long time, String indexName, Callback<Node> callback) {
 
     }
 

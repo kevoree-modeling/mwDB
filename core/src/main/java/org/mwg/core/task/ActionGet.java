@@ -7,6 +7,7 @@ import org.mwg.Type;
 import org.mwg.base.BaseNode;
 import org.mwg.base.AbstractAction;
 import org.mwg.plugin.Job;
+import org.mwg.struct.IndexedRelationship;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
@@ -31,26 +32,49 @@ class ActionGet extends AbstractAction {
                 final Object loop = previousResult.get(i);
                 if (loop instanceof BaseNode) {
                     final Node casted = (Node) loop;
-                    if (casted.type(flatName) == Type.RELATION) {
-                        casted.rel(flatName, new Callback<Node[]>() {
-                            @Override
-                            public void on(Node[] result) {
-                                if (result != null) {
-                                    for (int j = 0; j < result.length; j++) {
-                                        finalResult.add(result[j]);
+
+                    switch (casted.type(flatName)) {
+                        case Type.RELATION:
+                            casted.rel(flatName, new Callback<Node[]>() {
+                                @Override
+                                public void on(Node[] result) {
+                                    if (result != null) {
+                                        for (int j = 0; j < result.length; j++) {
+                                            finalResult.add(result[j]);
+                                        }
                                     }
+                                    casted.free();
+                                    defer.count();
                                 }
-                                casted.free();
+                            });
+                            break;
+                        case Type.INDEXED_RELATION:
+                            IndexedRelationship relationship = (IndexedRelationship) casted.get(flatName);
+                            if (relationship != null) {
+                                casted.graph().lookupAll(casted.world(), casted.time(), relationship.all(), new Callback<Node[]>() {
+                                    @Override
+                                    public void on(Node[] result) {
+                                        if (result != null) {
+                                            for (int j = 0; j < result.length; j++) {
+                                                finalResult.add(result[j]);
+                                            }
+                                        }
+                                        casted.free();
+                                        defer.count();
+                                    }
+                                });
+                            } else {
                                 defer.count();
                             }
-                        });
-                    } else {
-                        Object resolved = casted.get(flatName);
-                        if (resolved != null) {
-                            finalResult.add(resolved);
-                        }
-                        casted.free();
-                        defer.count();
+                            break;
+                        default:
+                            Object resolved = casted.get(flatName);
+                            if (resolved != null) {
+                                finalResult.add(resolved);
+                            }
+                            casted.free();
+                            defer.count();
+                            break;
                     }
                 } else {
                     //TODO add closable management

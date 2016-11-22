@@ -26,10 +26,11 @@ public class ActionIndexesNamesTest {
                 root1.set("name", 1);
 
                 String[] indexes = new String[]{"idx1", "idx2", "idx3"};
-
-                graph.index(indexes[0], root1, "name", null);
-                graph.index(indexes[1], root1, "name", null);
-                graph.index(indexes[2], root1, "name", null);
+                for (int i = 0; i < indexes.length; i++) {
+                    graph.index(0, 0, indexes[i], indexNode -> {
+                        indexNode.add(root1, "name");
+                    });
+                }
 
                 task()
                         .then(indexesNames())

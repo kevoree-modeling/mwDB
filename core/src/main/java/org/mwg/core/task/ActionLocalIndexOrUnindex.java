@@ -50,20 +50,22 @@ class ActionLocalIndexOrUnindex extends AbstractAction {
 
         for (int srcNodeIdx = 0; srcNodeIdx < previousResult.size(); srcNodeIdx++) {
             final Object srcNode = previousResult.get(srcNodeIdx);
-
             for(int targetNodeIdx = 0; targetNodeIdx < toAdd.size(); targetNodeIdx++) {
                 final Object targetNode = toAdd.get(targetNodeIdx);
                 if(targetNode instanceof BaseNode && srcNode instanceof BaseNode) {
+                    /*
                     if(_isIndexation) {
                         ((BaseNode) srcNode).index(templatedIndexName, (BaseNode) targetNode, templatedKeyAttributes, end);
                     } else {
                         ((BaseNode) srcNode).unindex(templatedIndexName, (BaseNode) targetNode, templatedKeyAttributes, end);
                     }
+                    */
                 } else {
                     counter.count();
                 }
             }
         }
+
         counter.then(new Job() {
             @Override
             public void run() {

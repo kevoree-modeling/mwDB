@@ -4,6 +4,7 @@ package org.mwg.core.task;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mwg.*;
+import org.mwg.struct.IndexedRelationship;
 import org.mwg.task.*;
 
 import static org.mwg.core.task.Actions.readIndexAll;
@@ -22,13 +23,16 @@ public class ActionPropertiesTest {
                 Node root = graph.newNode(0, 0);
                 root.setAttribute("id", Type.INT, 1);
                 root.setAttribute("attribute", Type.BOOL, false);
-                graph.index("root", root, "id", null);
+
+                graph.index(0, 0, "root", rootIndex -> {
+                    rootIndex.add(root, "id");
+                });
 
                 Node child1 = graph.newNode(0, 0);
                 child1.set("name", "child1");
                 root.add("rel1", child1);
 
-                root.index("localIindex1", child1, "name", null);
+                ((IndexedRelationship) root.getOrCreate("localIindex1", Type.INDEXED_RELATION)).add(child1, "name");
             }
         });
     }

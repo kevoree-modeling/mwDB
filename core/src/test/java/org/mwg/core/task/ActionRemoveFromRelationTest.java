@@ -6,16 +6,15 @@ import org.mwg.Callback;
 import org.mwg.Node;
 import org.mwg.struct.Relationship;
 import org.mwg.task.ActionFunction;
-import org.mwg.task.Task;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
 import static org.mwg.core.task.Actions.*;
 import static org.mwg.core.task.Actions.task;
 
-public class ActionAddTest extends AbstractActionTest {
+public class ActionRemoveFromRelationTest extends AbstractActionTest {
 
-    public ActionAddTest() {
+    public ActionRemoveFromRelationTest() {
         super();
         initGraph();
     }
@@ -23,29 +22,29 @@ public class ActionAddTest extends AbstractActionTest {
     @Test
     public void testWithOneNode() {
         Node relatedNode = graph.newNode(0, 0);
+
         final long[] id = new long[1];
-        task()
-                .then(createNode())
+        task().then(createNode())
                 .then(inject(relatedNode))
                 .then(defineAsGlobalVar("x"))
                 .then(addToRelationship("friend", "x"))
+                .then(removeFromRelationship("friend", "x"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
-                        Node node = (Node) context.result().get(0);
-                        Assert.assertNotNull(node);
-                        Assert.assertEquals(1, ((Relationship) node.get("friend")).size());
+                        Assert.assertNotNull(context.result());
+                        Node node = context.resultAsNodes().get(0);
+                        Assert.assertEquals(((Relationship) node.get("friend")).size(), 0);
                         id[0] = node.id();
                     }
-                }).execute(graph, new Callback<TaskResult>() {
+                }).execute(graph, null);
+
+
+        graph.lookup(0, 0, id[0], new Callback<Node>() {
             @Override
-            public void on(TaskResult result) {
-                graph.lookup(0, 0, id[0], new Callback<Node>() {
-                    @Override
-                    public void on(Node result) {
-                        Assert.assertEquals(1, ((long[]) result.get("friend")).length);
-                    }
-                });
+            public void on(Node result) {
+                Assert.assertEquals(((Relationship) result.get("friend")).size(), 0);
+                result.free();
             }
         });
     }
@@ -69,13 +68,14 @@ public class ActionAddTest extends AbstractActionTest {
                     }
                 })
                 .then(addToRelationship("friend", "x"))
+                .then(removeFromRelationship("friend", "x"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
+                        Assert.assertNotNull(context.result());
                         TaskResult<Node> nodes = context.resultAsNodes();
-                        Assert.assertNotNull(nodes);
                         for (int i = 0; i < 5; i++) {
-                            Assert.assertEquals(1, ((Relationship) nodes.get(i).get("friend")).size());
+                            Assert.assertEquals(((Relationship) nodes.get(i).get("friend")).size(), 0);
                             ids[i] = nodes.get(i).id();
                         }
                     }
@@ -85,12 +85,10 @@ public class ActionAddTest extends AbstractActionTest {
             graph.lookup(0, 0, ids[i], new Callback<Node>() {
                 @Override
                 public void on(Node result) {
-                    Assert.assertEquals(1, ((Relationship) result.get("friend")).size());
+                    Assert.assertEquals(((Relationship) result.get("friend")).size(), 0);
                 }
             });
         }
-
-
     }
 
     @Test
@@ -98,7 +96,6 @@ public class ActionAddTest extends AbstractActionTest {
         Node relatedNode = graph.newNode(0, 0);
 
         final boolean[] nextCalled = new boolean[1];
-
         task()
                 .thenDo(new ActionFunction() {
                     @Override
@@ -109,13 +106,13 @@ public class ActionAddTest extends AbstractActionTest {
                 .then(inject(relatedNode))
                 .then(defineAsGlobalVar("x"))
                 .then(addToRelationship("friend", "x"))
+                .then(removeFromRelationship("friend", "x"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         nextCalled[0] = true;
                     }
-                })
-                .execute(graph, null);
+                }).execute(graph, null);
 
         Assert.assertTrue(nextCalled[0]);
     }

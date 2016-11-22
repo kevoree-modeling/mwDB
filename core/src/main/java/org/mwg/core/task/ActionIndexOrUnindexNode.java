@@ -41,11 +41,13 @@ class ActionIndexOrUnindexNode extends AbstractAction {
         for (int i = 0; i < previousResult.size(); i++) {
             final Object loop = previousResult.get(i);
             if (loop instanceof BaseNode) {
+                /*
                 if (_isIndexation) {
                     context.graph().index(templatedIndexName, (Node) loop, templatedKeyAttributes, end);
                 } else {
                     context.graph().unindex(templatedIndexName, (Node) loop, templatedKeyAttributes, end);
                 }
+                */
             } else {
                 counter.count();
             }

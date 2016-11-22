@@ -8,10 +8,7 @@ import org.mwg.core.task.CoreTask;
 import org.mwg.core.utility.CoreDeferCounter;
 import org.mwg.core.utility.CoreDeferCounterSync;
 import org.mwg.plugin.*;
-import org.mwg.struct.Buffer;
-import org.mwg.struct.BufferIterator;
-import org.mwg.struct.LongLongMap;
-import org.mwg.struct.LongLongMapCallBack;
+import org.mwg.struct.*;
 import org.mwg.task.TaskActionFactory;
 import org.mwg.task.TaskHookFactory;
 import org.mwg.utility.Base64;
@@ -87,8 +84,8 @@ public class CoreGraph implements org.mwg.Graph {
         _taskActions = new HashMap<String, TaskActionFactory>();
         _externalAttributes = new HashMap<Long, ExternalAttributeFactory>();
         CoreTask.fillDefault(this._taskActions);
+        this._nodeTypes = new HashMap<Long, NodeFactory>();
         if (p_plugins != null) {
-            this._nodeTypes = new HashMap<Long, NodeFactory>();
             for (int i = 0; i < p_plugins.length; i++) {
                 final Plugin loopPlugin = p_plugins[i];
                 final String[] plugin_names = loopPlugin.nodeTypes();
@@ -108,9 +105,14 @@ public class CoreGraph implements org.mwg.Graph {
                     _externalAttributes.put(_resolver.stringToHash(ext_name, false), loopPlugin.externalAttribute(ext_name));
                 }
             }
-        } else {
-            this._nodeTypes = null;
         }
+        //init default node types
+        this._nodeTypes.put(_resolver.stringToHash(CoreNodeIndex.NAME, false), new NodeFactory() {
+            @Override
+            public Node create(long world, long time, long id, Graph graph) {
+                return new CoreNodeIndex(world, time, id, graph);
+            }
+        });
         //variables init
         this._isConnected = new AtomicBoolean(false);
         this._lock = new AtomicBoolean(false);
@@ -430,73 +432,31 @@ public class CoreGraph implements org.mwg.Graph {
     }
 
     @Override
-    public void index(final String indexName, final org.mwg.Node toIndexNode, final String flatKeyAttributes, final Callback<Boolean> callback) {
-        indexAt(toIndexNode.world(), toIndexNode.time(), indexName, toIndexNode, flatKeyAttributes, callback);
-    }
-
-    @Override
-    public synchronized void indexAt(long world, long time, String indexName, Node nodeToIndex, String flatKeyAttributes, Callback<Boolean> callback) {
-        if (indexName == null) {
-            throw new RuntimeException("indexName should not be null");
-        }
-        if (nodeToIndex == null) {
-            throw new RuntimeException("toIndexNode should not be null");
-        }
-        if (flatKeyAttributes == null) {
-            throw new RuntimeException("flatKeyAttributes should not be null");
-        }
-        getIndexOrCreate(world, time, indexName, true, new Callback<org.mwg.Node>() {
+    public synchronized void index(long world, long time, String name, Callback<NodeIndex> callback) {
+        final CoreGraph selfPointer = this;
+        final long indexNameCoded = this._resolver.stringToHash(name, true);
+        this._resolver.lookup(world, time, CoreConstants.END_OF_TIME, new Callback<org.mwg.Node>() {
             @Override
-            public void on(final org.mwg.Node foundIndex) {
-                if (foundIndex == null) {
-                    throw new RuntimeException("Index creation failed, cache is probably full !!!");
-                }
-                foundIndex.index(CoreConstants.INDEX_ATTRIBUTE, nodeToIndex, flatKeyAttributes, new Callback<Boolean>() {
-                    @Override
-                    public void on(Boolean result) {
-                        foundIndex.free();
-                        if (HashHelper.isDefined(callback)) {
-                            callback.on(result);
-                        }
-                    }
-                });
-            }
-        });
-    }
-
-    @Override
-    public void unindex(final String indexName, final org.mwg.Node nodeToUnindex, final String flatKeyAttributes, final Callback<Boolean> callback) {
-        unindexAt(nodeToUnindex.world(), nodeToUnindex.time(), indexName, nodeToUnindex, flatKeyAttributes, callback);
-    }
-
-    @Override
-    public synchronized void unindexAt(long world, long time, String indexName, Node nodeToUnindex, String flatKeyAttributes, Callback<Boolean> callback) {
-        if (indexName == null) {
-            throw new RuntimeException("indexName should not be null");
-        }
-        if (nodeToUnindex == null) {
-            throw new RuntimeException("toIndexNode should not be null");
-        }
-        if (flatKeyAttributes == null) {
-            throw new RuntimeException("flatKeyAttributes should not be null");
-        }
-        getIndexOrCreate(world, time, indexName, false, new Callback<org.mwg.Node>() {
-            @Override
-            public void on(final org.mwg.Node foundIndex) {
-                if (foundIndex != null) {
-                    foundIndex.unindex(CoreConstants.INDEX_ATTRIBUTE, nodeToUnindex, flatKeyAttributes, new Callback<Boolean>() {
-                        @Override
-                        public void on(Boolean result) {
-                            foundIndex.free();
-                            if (HashHelper.isDefined(callback)) {
-                                callback.on(result);
-                            }
-                        }
-                    });
+            public void on(org.mwg.Node globalIndexNodeUnsafe) {
+                LongLongMap globalIndexContent;
+                if (globalIndexNodeUnsafe == null) {
+                    globalIndexNodeUnsafe = new BaseNode(world, time, CoreConstants.END_OF_TIME, selfPointer);
+                    selfPointer._resolver.initNode(globalIndexNodeUnsafe, CoreConstants.NULL_LONG);
+                    globalIndexContent = (LongLongMap) globalIndexNodeUnsafe.getOrCreate(CoreConstants.INDEX_ATTRIBUTE, Type.LONG_TO_LONG_MAP);
                 } else {
-                    if (HashHelper.isDefined(callback)) {
-                        callback.on(false);
-                    }
+                    globalIndexContent = (LongLongMap) globalIndexNodeUnsafe.get(CoreConstants.INDEX_ATTRIBUTE);
+                }
+                long indexId = globalIndexContent.get(indexNameCoded);
+                globalIndexNodeUnsafe.free();
+                if (indexId == CoreConstants.NULL_LONG) {
+                    //insert null
+                    org.mwg.NodeIndex newIndexNode = (NodeIndex) selfPointer.newTypedNode(world, time, CoreNodeIndex.NAME);
+                    //newIndexNode.getOrCreate(CoreConstants.INDEX_ATTRIBUTE, Type.INDEXED_RELATION);
+                    indexId = newIndexNode.id();
+                    globalIndexContent.put(indexNameCoded, indexId);
+                    callback.on(newIndexNode);
+                } else {
+                    selfPointer._resolver.lookup(world, time, indexId, callback);
                 }
             }
         });
@@ -527,146 +487,6 @@ public class CoreGraph implements org.mwg.Graph {
                         });
                         globalIndexNodeUnsafe.free();
                         callback.on(result);
-                    }
-                }
-            }
-        });
-    }
-
-    @Override
-    public void find(final long world, final long time, final String indexName, final String query, final Callback<org.mwg.Node[]> callback) {
-        if (indexName == null) {
-            throw new RuntimeException("indexName should not be null");
-        }
-        if (query == null) {
-            throw new RuntimeException("query should not be null");
-        }
-        getIndexOrCreate(world, time, indexName, false, new Callback<org.mwg.Node>() {
-            @Override
-            public void on(final org.mwg.Node foundIndex) {
-                if (foundIndex == null) {
-                    if (HashHelper.isDefined(callback)) {
-                        callback.on(new Node[0]);
-                    }
-                } else {
-                    foundIndex.find(CoreConstants.INDEX_ATTRIBUTE, query, new Callback<org.mwg.Node[]>() {
-                        @Override
-                        public void on(org.mwg.Node[] collectedNodes) {
-                            foundIndex.free();
-                            if (HashHelper.isDefined(callback)) {
-                                callback.on(collectedNodes);
-                            }
-                        }
-                    });
-                }
-            }
-        });
-    }
-
-    @Override
-    public void findByQuery(final Query query, final Callback<Node[]> callback) {
-        if (query == null) {
-            throw new RuntimeException("query should not be null");
-        }
-        if (query.world() == Constants.NULL_LONG) {
-            throw new RuntimeException("Please fill world parameter in query before first usage!");
-        }
-        if (query.time() == Constants.NULL_LONG) {
-            throw new RuntimeException("Please fill time parameter in query before first usage!");
-        }
-        if (query.indexName() == null) {
-            throw new RuntimeException("Please fill indexName parameter in query before first usage!");
-        }
-        getIndexOrCreate(query.world(), query.time(), query.indexName(), false, new Callback<org.mwg.Node>() {
-            @Override
-            public void on(final org.mwg.Node foundIndex) {
-                if (foundIndex == null) {
-                    if (HashHelper.isDefined(callback)) {
-                        callback.on(new Node[0]);
-                    }
-                } else {
-                    query.setIndexName(CoreConstants.INDEX_ATTRIBUTE);
-                    foundIndex.findByQuery(query, new Callback<org.mwg.Node[]>() {
-                        @Override
-                        public void on(final org.mwg.Node[] collectedNodes) {
-                            foundIndex.free();
-                            if (HashHelper.isDefined(callback)) {
-                                callback.on(collectedNodes);
-                            }
-                        }
-                    });
-                }
-            }
-        });
-    }
-
-    @Override
-    public void findAll(final long world, final long time, final String indexName, final Callback<org.mwg.Node[]> callback) {
-        if (indexName == null) {
-            throw new RuntimeException("indexName should not be null");
-        }
-        getIndexOrCreate(world, time, indexName, false, new Callback<org.mwg.Node>() {
-            @Override
-            public void on(final org.mwg.Node foundIndex) {
-                if (foundIndex == null) {
-                    if (HashHelper.isDefined(callback)) {
-                        callback.on(new Node[0]);
-                    }
-                } else {
-                    foundIndex.findAll(CoreConstants.INDEX_ATTRIBUTE, new Callback<org.mwg.Node[]>() {
-                        @Override
-                        public void on(org.mwg.Node[] collectedNodes) {
-                            foundIndex.free();
-                            if (HashHelper.isDefined(callback)) {
-                                callback.on(collectedNodes);
-                            }
-                        }
-                    });
-                }
-            }
-        });
-    }
-
-    @Override
-    public void getIndexNode(long world, long time, String indexName, Callback<Node> callback) {
-        if (indexName == null) {
-            throw new RuntimeException("indexName should not be null");
-        }
-        getIndexOrCreate(world, time, indexName, false, callback);
-    }
-
-    private void getIndexOrCreate(final long world, final long time, final String indexName, final boolean createIfNull, final Callback<org.mwg.Node> callback) {
-        final CoreGraph selfPointer = this;
-        final long indexNameCoded = this._resolver.stringToHash(indexName, createIfNull);
-        this._resolver.lookup(world, time, CoreConstants.END_OF_TIME, new Callback<org.mwg.Node>() {
-            @Override
-            public void on(org.mwg.Node globalIndexNodeUnsafe) {
-                if (globalIndexNodeUnsafe == null && !createIfNull) {
-                    callback.on(null);
-                } else {
-                    LongLongMap globalIndexContent;
-                    if (globalIndexNodeUnsafe == null) {
-                        globalIndexNodeUnsafe = new BaseNode(world, time, CoreConstants.END_OF_TIME, selfPointer);
-                        selfPointer._resolver.initNode(globalIndexNodeUnsafe, CoreConstants.NULL_LONG);
-                        globalIndexContent = (LongLongMap) globalIndexNodeUnsafe.getOrCreate(CoreConstants.INDEX_ATTRIBUTE, Type.LONG_TO_LONG_MAP);
-                    } else {
-                        globalIndexContent = (LongLongMap) globalIndexNodeUnsafe.get(CoreConstants.INDEX_ATTRIBUTE);
-                    }
-                    long indexId = globalIndexContent.get(indexNameCoded);
-                    globalIndexNodeUnsafe.free();
-                    if (indexId == CoreConstants.NULL_LONG) {
-                        if (createIfNull) {
-                            //insert null
-                            org.mwg.Node newIndexNode = selfPointer.newNode(world, time);
-                            newIndexNode.getOrCreate(CoreConstants.INDEX_ATTRIBUTE, Type.LONG_TO_LONG_ARRAY_MAP);
-                            indexId = newIndexNode.id();
-                            globalIndexContent.put(indexNameCoded, indexId);
-                            callback.on(newIndexNode);
-                        } else {
-                            callback.on(null);
-                        }
-                    } else {
-                        selfPointer._resolver.lookup(world, time, indexId, callback);
                     }
                 }
             }

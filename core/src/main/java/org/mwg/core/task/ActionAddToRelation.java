@@ -8,21 +8,21 @@ import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 import org.mwg.task.TaskResultIterator;
 
-class ActionRemove extends AbstractAction {
+class ActionAddToRelation extends AbstractAction {
 
     private final String _relationName;
-    private final String _variableNameToRemove;
+    private final String _variableNameToAdd;
 
-    ActionRemove(final String relationName, final String variableNameToRemove) {
+    ActionAddToRelation(final String relationName, final String variableNameToAdd) {
         super();
         this._relationName = relationName;
-        this._variableNameToRemove = variableNameToRemove;
+        this._variableNameToAdd = variableNameToAdd;
     }
 
     @Override
     public void eval(final TaskContext context) {
         final TaskResult previousResult = context.result();
-        final TaskResult savedVar = context.variable(context.template(_variableNameToRemove));
+        final TaskResult savedVar = context.variable(context.template(_variableNameToAdd));
         if (previousResult != null && savedVar != null) {
             final String relName = context.template(_relationName);
             final TaskResultIterator previousResultIt = previousResult.iterator();
@@ -30,12 +30,12 @@ class ActionRemove extends AbstractAction {
             while (iter != null) {
                 if (iter instanceof BaseNode) {
                     final TaskResultIterator savedVarIt = savedVar.iterator();
-                    Object toRemoveIter = savedVarIt.next();
-                    while (toRemoveIter != null) {
-                        if (toRemoveIter instanceof BaseNode) {
-                            ((Node) iter).remove(relName, (Node) toRemoveIter);
+                    Object toAddIter = savedVarIt.next();
+                    while (toAddIter != null) {
+                        if (toAddIter instanceof BaseNode) {
+                            ((Node) iter).add(relName, (Node) toAddIter);
                         }
-                        toRemoveIter = savedVarIt.next();
+                        toAddIter = savedVarIt.next();
                     }
                 }
                 iter = previousResultIt.next();
@@ -46,7 +46,7 @@ class ActionRemove extends AbstractAction {
 
     @Override
     public String toString() {
-        return "remove(\'" + _relationName + "\'" + Constants.QUERY_SEP + "\'" + _variableNameToRemove + "\')";
+        return "add(\'" + _relationName + "\'" + Constants.QUERY_SEP + "\'" + _variableNameToAdd + "\')";
     }
-    
+
 }

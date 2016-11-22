@@ -3,6 +3,7 @@ package org.mwg;
 import org.mwg.chunk.ChunkSpace;
 import org.mwg.plugin.*;
 import org.mwg.struct.Buffer;
+import org.mwg.struct.IndexedRelationship;
 import org.mwg.task.TaskActionFactory;
 import org.mwg.task.TaskHookFactory;
 
@@ -120,52 +121,14 @@ public interface Graph {
     void disconnect(Callback<Boolean> callback);
 
     /**
-     * Adds the {@code nodeToIndex} to the global index identified by {@code indexName}.<br>
-     * If the index does not exist, it is created on the fly.<br>
-     * The node is referenced by its {@code keyAttributes} in the index, and can be retrieved with {@link #find(long, long, String, String, Callback)} using the same attributes.
+     * Retrieve a named global index, at a precise world and time
      *
-     * @param indexName         A string uniquely identifying the index in the {@link Graph}.
-     * @param nodeToIndex       The node to add in the index.
-     * @param flatKeyAttributes The set of attributes used as keys to index the node, given as a flat string separated by ','. The order does not matter.
-     * @param callback          Called when the indexing is done. The parameter specifies whether or not the indexing has succeeded.
+     * @param world
+     * @param time
+     * @param name
+     * @param callback
      */
-    void index(String indexName, Node nodeToIndex, String flatKeyAttributes, Callback<Boolean> callback);
-
-    /**
-     * Adds the {@code nodeToIndex} to the global index identified by {@code indexName}.<br>
-     * If the index does not exist, it is created on the fly.<br>
-     * The node is referenced by its {@code keyAttributes} in the index, and can be retrieved with {@link #find(long, long, String, String, Callback)} using the same attributes.
-     *
-     * @param world             The world in which to index
-     * @param time              The time at which to index
-     * @param indexName         A string uniquely identifying the index in the {@link Graph}.
-     * @param nodeToIndex       The node to add in the index.
-     * @param flatKeyAttributes The set of attributes used as keys to index the node, given as a flat string separated by ','. The order does not matter.
-     * @param callback          Called when the indexing is done. The parameter specifies whether or not the indexing has succeeded.
-     */
-    void indexAt(long world, long time, String indexName, Node nodeToIndex, String flatKeyAttributes, Callback<Boolean> callback);
-
-    /**
-     * Removes the {@code nodeToUnindex} from the global index identified by {@code indexName}.<br>
-     *
-     * @param indexName         A string uniquely identifying the index in the {@link Graph}.
-     * @param nodeToUnindex     The node to remove from the index.
-     * @param flatKeyAttributes The set of attributes used as keys to index the node, given as a flat string separated by ','. The order does not matter.
-     * @param callback          Called when the unindexing is done. The parameter specifies whether or not the unindexing has succeeded.
-     */
-    void unindex(String indexName, Node nodeToUnindex, String flatKeyAttributes, Callback<Boolean> callback);
-
-    /**
-     * Removes the {@code nodeToUnindex} from the global index identified by {@code indexName}.<br>
-     *
-     * @param world             The world in which to unindex
-     * @param time              The time at which to unindex
-     * @param indexName         A string uniquely identifying the index in the {@link Graph}.
-     * @param nodeToUnindex     The node to remove from the index.
-     * @param flatKeyAttributes The set of attributes used as keys to index the node, given as a flat string separated by ','. The order does not matter.
-     * @param callback          Called when the unindexing is done. The parameter specifies whether or not the unindexing has succeeded.
-     */
-    void unindexAt(long world, long time, String indexName, Node nodeToUnindex, String flatKeyAttributes, Callback<Boolean> callback);
+    void index(long world, long time, String name, Callback<NodeIndex> callback);
 
     /**
      * Retrieve the list of indexes.
@@ -175,48 +138,6 @@ public interface Graph {
      * @param callback Called when the retrieval is complete. Returns the retrieved indexes names, empty array otherwise.
      */
     void indexes(long world, long time, Callback<String[]> callback);
-
-    /**
-     * Retrieves from an index nodes that satisfy the query.<br>
-     * The query must be defined using at least a sub-set of the attributes used for the indexing.<br>
-     * The form of the query is a list of &lt;key, value&gt; tuples (i.e.: "&lt;attName&gt;=&lt;val&gt;, &lt;attName2&gt;=&lt;val2&gt;,...").<br>
-     * e.g: "name=john,age=30"
-     *
-     * @param world     The world id in which the search must be performed.
-     * @param time      The timepoint at which the search must be performed.
-     * @param indexName The name of the index in which to search.
-     * @param query     The query nodes must satisfy.
-     * @param callback  Called when the search is finished. The requested nodes are given in parameter, empty array otherwise.
-     */
-    void find(long world, long time, String indexName, String query, Callback<Node[]> callback);
-
-    /**
-     * Retrieves nodes from a global index that satisfy the query object passed as parameter.<br>
-     *
-     * @param query    The query to satisfy
-     * @param callback Called when the search is finished. The requested nodes are given in parameter, empty array otherwise.
-     */
-    void findByQuery(Query query, Callback<Node[]> callback);
-
-    /**
-     * Retrieves all nodes registered in a particular index.
-     *
-     * @param world     The world from which the index must be retrieved.
-     * @param time      The timepoint at which the index must be retrieved.
-     * @param indexName The unique identifier of the index.
-     * @param callback  Called when the retrieval is complete. Returns all nodes in the index in an array, an empty array otherwise.
-     */
-    void findAll(long world, long time, String indexName, Callback<Node[]> callback);
-
-    /**
-     * Retrieve the back-end node behind a named index.
-     *
-     * @param world     The world from which the index must be retrieved.
-     * @param time      The timepoint at which the index must be retrieved.
-     * @param indexName The unique identifier of the index.
-     * @param callback  Called when the retrieval is complete. Returns the retrieved index node, null otherwise.
-     */
-    void getIndexNode(long world, long time, String indexName, Callback<Node> callback);
 
     /**
      * Utility method to create a waiter based on a counter

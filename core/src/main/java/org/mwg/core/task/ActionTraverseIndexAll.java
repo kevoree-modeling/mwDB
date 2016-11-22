@@ -33,6 +33,7 @@ class ActionTraverseIndexAll extends AbstractAction {
                 final Object loop = previousResult.get(i);
                 if (loop instanceof BaseNode) {
                     final Node casted = (Node) loop;
+                    /*
                     casted.findAll(flatName, new Callback<Node[]>() {
                         @Override
                         public void on(Node[] result) {
@@ -47,6 +48,7 @@ class ActionTraverseIndexAll extends AbstractAction {
                             defer.count();
                         }
                     });
+                    */
                 } else {
                     //TODO add closable management
                     finalResult.add(loop);

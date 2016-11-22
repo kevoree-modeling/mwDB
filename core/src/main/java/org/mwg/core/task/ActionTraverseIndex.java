@@ -55,6 +55,7 @@ class ActionTraverseIndex extends AbstractAction {
                 final Object loop = previousResult.get(i);
                 if (loop instanceof BaseNode) {
                     final Node casted = (Node) loop;
+                    /*
                     casted.findByQuery(query, new Callback<Node[]>() {
                         @Override
                         public void on(Node[] result) {
@@ -69,6 +70,7 @@ class ActionTraverseIndex extends AbstractAction {
                             defer.count();
                         }
                     });
+                    */
                 } else {
                     //TODO add closable management
                     finalResult.add(loop);

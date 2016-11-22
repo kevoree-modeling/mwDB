@@ -67,7 +67,7 @@ public class Actions {
     public static Action defineAsVar(String variableName) {
         return new ActionDefineAsVar(variableName, false);
     }
-    
+
     /**
      * Declare a new local variable.
      *
@@ -159,28 +159,6 @@ public class Actions {
     }
 
     /**
-     * Remove nodes present in the named variable from the named relationship, in all nodes present in current result.
-     *
-     * @param relationName The name of the relation.
-     * @param variableName will be interpreted as a template.
-     * @return this task to chain actions (fluent API)
-     */
-    public static Action removeFromRelationship(String relationName, String variableName) {
-        return new ActionRemove(relationName, variableName);
-    }
-
-    /**
-     * Add nodes present in the named variable from the named relationship, in all nodes present in current result.
-     *
-     * @param relationName The name of the relation.
-     * @param variableName will be interpreted as a template.
-     * @return this task to chain actions (fluent API)
-     */
-    public static Action addToRelationship(String relationName, String variableName) {
-        return new ActionAdd(relationName, variableName);
-    }
-
-    /**
      * Get all the attributes names of nodes present in the previous result
      *
      * @return this task to chain actions (fluent API)
@@ -200,6 +178,28 @@ public class Actions {
     }
 
     /**
+     * Add nodes present in the named variable from the named relationship, in all nodes present in current result.
+     *
+     * @param relationName The name of the relation.
+     * @param variableName will be interpreted as a template.
+     * @return this task to chain actions (fluent API)
+     */
+    public static Action addToRelationship(String relationName, String variableName) {
+        return new ActionAddToRelation(relationName, variableName);
+    }
+
+    /**
+     * Remove nodes present in the named variable from the named relationship, in all nodes present in current result.
+     *
+     * @param relationName The name of the relation.
+     * @param variableName will be interpreted as a template.
+     * @return this task to chain actions (fluent API)
+     */
+    public static Action removeFromRelationship(String relationName, String variableName) {
+        return new ActionRemoveFromRelation(relationName, variableName);
+    }
+
+    /**
      * Retrieve any attribute/relationship of nodes presents in current result.
      *
      * @param name of property to retrieve
@@ -208,7 +208,6 @@ public class Actions {
     public static Action get(String name) {
         return new ActionGet(name);
     }
-
 
     //Index manipulation zone
 

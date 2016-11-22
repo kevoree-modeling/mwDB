@@ -1,7 +1,5 @@
 package org.mwg;
 
-import org.mwg.struct.Relationship;
-
 /**
  * Node is the base element contained in the {@link Graph}.<br>
  * They belong to a world and time, have attributes (e.g. primitives, relationships, and indexes).
@@ -115,7 +113,6 @@ public interface Node {
     Object getOrCreate(String name, byte type);
 
     /**
-     *
      * @param name                  The name of the object to create. Must be unique per node.
      * @param externalAttributeType The type of the external attribute type.
      * @return A Map instance that can be altered at the current world and time.
@@ -172,7 +169,7 @@ public interface Node {
      * @param flatKeyAttributes The flat list of attribute names (of the node to index, seperated by a ',') to be used as keys for indexing (order does not matter)
      * @param callback          Called when the index has been created/updated. The boolean value specifies the success of the operation.
      */
-    void index(String indexName, Node nodeToIndex, String flatKeyAttributes, Callback<Boolean> callback);
+    //void index(String indexName, Node nodeToIndex, String flatKeyAttributes, Callback<Boolean> callback);
 
     /**
      * Removes an element from an index of nodes.<br>
@@ -184,7 +181,7 @@ public interface Node {
      * @param flatKeyAttributes The list of attribute names (flat string seperated by a ',') to be used as keys for de-indexing (order does not matter)
      * @param callback          Called when the node has been de-index. The boolean value specifies the success of the operation.
      */
-    void unindex(String indexName, Node nodeToIndex, String flatKeyAttributes, Callback<Boolean> callback);
+    // void unindex(String indexName, Node nodeToIndex, String flatKeyAttributes, Callback<Boolean> callback);
 
     /**
      * Retrieves nodes from an index that satisfies a query at the current node world and the current node time<br>
@@ -194,7 +191,7 @@ public interface Node {
      * @param query     The query on the searched node's attribute (e.g.: "firstName=john,lastName=doe,age=30")
      * @param callback  Called when the task is fully processed. The parameter is the requested nodes, empty array otherwise.
      */
-    void find(String indexName, String query, Callback<Node[]> callback);
+    //void find(String indexName, String query, Callback<Node[]> callback);
 
     /**
      * Retrieves nodes from a local index that satisfies the query object passed as parameter.<br>
@@ -202,7 +199,7 @@ public interface Node {
      * @param query    The query on the searched node's attribute (e.g.: "firstname=john,lastname=doe,age=30"
      * @param callback Called when the task is fully processed. The parameter is the requested nodes, empty array otherwise.
      */
-    void findByQuery(Query query, Callback<Node[]> callback);
+    //void findByQuery(Query query, Callback<Node[]> callback);
 
     /**
      * Retrieves all nodes in a particular index at the current node world and the current node time
@@ -210,7 +207,7 @@ public interface Node {
      * @param indexName The name of the index
      * @param callback  Called whe the collection is complete. Gives the list of contained nodes in parameter.
      */
-    void findAll(String indexName, Callback<Node[]> callback);
+    //void findAll(String indexName, Callback<Node[]> callback);
 
     /**
      * Compute the time dephasing of this node, i.e. the difference between last modification and current node timepoint.

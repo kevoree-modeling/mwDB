@@ -37,10 +37,8 @@ public class RobustnessTests {
                 root.add("child", n2);
                 root.add("child", n3);
 
-                _graph.index("rootIndex", root, "name", new Callback<Boolean>() {
-                    @Override
-                    public void on(Boolean result) {
-                    }
+                _graph.index(0, 0, "rootIndex", rootIndex -> {
+                    rootIndex.add(root, "name");
                 });
             }
         });
@@ -49,9 +47,9 @@ public class RobustnessTests {
 
     @After
     public void deleteGrap() {
-        _graph.find(0, 0, "rootIndex", "name=root", new Callback<Node[]>() {
-            @Override
-            public void on(Node[] result) {
+
+        _graph.index(0, 0, "rootIndex", rootIndex -> {
+            rootIndex.findUsing(result -> {
                 for (Node r : result) {
                     final Node rr = r;
                     r.rel("child", new Callback<Node[]>() {
@@ -64,7 +62,7 @@ public class RobustnessTests {
                         }
                     });
                 }
-            }
+            }, "name", "root");
         });
     }
 

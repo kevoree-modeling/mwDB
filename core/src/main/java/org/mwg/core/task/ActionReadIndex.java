@@ -27,12 +27,13 @@ class ActionReadIndex extends AbstractAction {
     public void eval(final TaskContext context) {
         final String flatIndexName = context.template(_indexName);
         final String flatQuery = context.template(_query);
+        /*
         context.graph().find(context.world(), context.time(), flatIndexName, flatQuery, new Callback<Node[]>() {
             @Override
             public void on(Node[] result) {
                 context.continueWith(context.wrap(result));
             }
-        });
+        });*/
     }
 
     @Override

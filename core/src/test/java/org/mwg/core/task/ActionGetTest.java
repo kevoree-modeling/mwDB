@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mwg.Callback;
 import org.mwg.Node;
 import org.mwg.Type;
+import org.mwg.struct.IndexedRelationship;
 import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 
@@ -83,21 +84,23 @@ public class ActionGetTest extends AbstractActionTest {
         Node root = graph.newNode(0, 0);
         root.setAttribute("name", Type.STRING, "root2");
 
-        graph.index("rootIndex", root, "name", new Callback<Boolean>() {
-            @Override
-            public void on(Boolean result) {
-                root.index("childrenIndexed", node1, "name", null);
-                root.index("childrenIndexed", node2, "name", null);
-                root.index("childrenIndexed", node3, "name", null);
+        graph.index(0,0,"roots",rootIndex -> {
+            rootIndex.add(root,"name");
 
-                root.jump(12, new Callback<Node>() {
-                    @Override
-                    public void on(Node result) {
-                        root.index("childrenIndexed", node3, "name", null);
-                    }
-                });
+            IndexedRelationship irel = (IndexedRelationship) root.getOrCreate("childrenIndexed", Type.INDEXED_RELATION);
+            irel.add(node1, "name");
+            irel.add(node2, "name");
+            irel.add(node3, "name");
 
-            }
+            root.jump(12, new Callback<Node>() {
+                @Override
+                public void on(Node result) {
+
+                    IndexedRelationship irel12 = (IndexedRelationship) root.getOrCreate("childrenIndexed", Type.INDEXED_RELATION);
+                    irel12.add(node3, "name");
+                }
+            });
+
         });
 
         /*

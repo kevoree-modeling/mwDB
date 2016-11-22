@@ -31,9 +31,8 @@ public class ActionInjectTest extends AbstractActionTest {
     public void testFromNodes() {
         initGraph();
         final ActionInjectTest selfPointer = this;
-        graph.findAll(0, 0, "nodes", new Callback<Node[]>() {
-            @Override
-            public void on(Node[] result) {
+        graph.index(0, 0, "nodes", nodes -> {
+            graph.lookupAll(0, 0, nodes.all(), result -> {
                 Assert.assertEquals(3, result.length);
 
                 String[] expected = new String[]{(String) result[0].get("name"),
@@ -63,8 +62,9 @@ public class ActionInjectTest extends AbstractActionTest {
                 }
 
                 Assert.assertArrayEquals(expected, resultName);
-            }
+            });
         });
+
         removeGraph();
     }
 
@@ -72,9 +72,8 @@ public class ActionInjectTest extends AbstractActionTest {
     public void testFromNode() {
         initGraph();
         final ActionInjectTest selfPointer = this;
-        graph.find(0, 0, "roots", "name=root", new Callback<Node[]>() {
-            @Override
-            public void on(Node[] result) {
+        graph.index(0, 0, "roots", rootsIndex -> {
+            rootsIndex.find("name=root", result -> {
                 Assert.assertEquals(1, result.length);
 
                 task()
@@ -94,8 +93,9 @@ public class ActionInjectTest extends AbstractActionTest {
                 }
 
                 Assert.assertEquals("root", name);
-            }
+            });
         });
+
         removeGraph();
     }
 
