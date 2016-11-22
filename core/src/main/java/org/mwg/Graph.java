@@ -3,7 +3,6 @@ package org.mwg;
 import org.mwg.chunk.ChunkSpace;
 import org.mwg.plugin.*;
 import org.mwg.struct.Buffer;
-import org.mwg.struct.IndexedRelationship;
 import org.mwg.task.TaskActionFactory;
 import org.mwg.task.TaskHookFactory;
 

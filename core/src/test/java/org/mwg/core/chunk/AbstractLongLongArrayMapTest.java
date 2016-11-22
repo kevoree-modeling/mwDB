@@ -109,9 +109,6 @@ public abstract class AbstractLongLongArrayMapTest {
                 int i = order[index];
                 //for (int i : order) {
                 Query query = space.graph().newQuery();
-                query.setTime(0);
-                query.setWorld(0);
-                query.setIndexName("stations");
                 query.add("number", "" + i);
                 map.put(query.hash(), i);
             }
@@ -120,9 +117,6 @@ public abstract class AbstractLongLongArrayMapTest {
                 int i = order[index];
                 //for (int i : order) {
                 Query query = space.graph().newQuery();
-                query.setTime(0);
-                query.setWorld(0);
-                query.setIndexName("stations");
                 query.add("number", "" + i);
                 Assert.assertTrue(map.get(query.hash()).length > 0);
                 Assert.assertTrue(map.get(query.hash())[0] == i);

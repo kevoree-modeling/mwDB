@@ -3,7 +3,7 @@ package org.mwg.core;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mwg.*;
-import org.mwg.struct.Relationship;
+import org.mwg.struct.Relation;
 import org.mwg.utility.HashHelper;
 
 public class HelloWorldTest {
@@ -68,7 +68,7 @@ public class HelloWorldTest {
                         node1.addToRelation("children", node2);
                         Assert.assertTrue(HashHelper.equals("{\"world\":0,\"time\":0,\"id\":2,\"children\":[1,1,3]}", node1.toString()));
 
-                        Relationship refValuesThree = (Relationship) node1.get("children");
+                        Relation refValuesThree = (Relation) node1.get("children");
                         Assert.assertTrue(refValuesThree.size() == 3);
                         Assert.assertTrue(refValuesThree.get(0) == 1);
                         Assert.assertTrue(refValuesThree.get(1) == 1);

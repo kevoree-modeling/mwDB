@@ -4,7 +4,7 @@ import org.mwg.*;
 import org.mwg.base.BaseNode;
 import org.mwg.base.AbstractAction;
 import org.mwg.plugin.Job;
-import org.mwg.struct.IndexedRelationship;
+import org.mwg.struct.RelationIndexed;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
@@ -46,8 +46,8 @@ class ActionGet extends AbstractAction {
                                 }
                             });
                             break;
-                        case Type.INDEXED_RELATION:
-                            IndexedRelationship relationship = (IndexedRelationship) casted.get(flatName);
+                        case Type.RELATION_INDEXED:
+                            RelationIndexed relationship = (RelationIndexed) casted.get(flatName);
                             if (relationship != null) {
                                 if (_params != null && _params.length > 0) {
                                     Query query = context.graph().newQuery();

@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.mwg.*;
 import org.mwg.core.scheduler.NoopScheduler;
-import org.mwg.struct.IndexedRelationship;
+import org.mwg.struct.RelationIndexed;
 
 public class IndexTest {
 
@@ -64,7 +64,7 @@ public class IndexTest {
                 final org.mwg.Node node_t1 = graph.newNode(0, 0);
                 node_t1.set("name", Type.STRING, "MyName");
 
-                IndexedRelationship irel = (IndexedRelationship) node_t0.getOrCreate("ichildren", Type.INDEXED_RELATION);
+                RelationIndexed irel = (RelationIndexed) node_t0.getOrCreate("ichildren", Type.RELATION_INDEXED);
                 irel.add(node_t1, "name");
 
                 long[] flat = irel.all();

@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.mwg.Callback;
 import org.mwg.Node;
-import org.mwg.struct.Relationship;
+import org.mwg.struct.Relation;
 import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
@@ -34,7 +34,7 @@ public class ActionRemoveFromRelationTest extends AbstractActionTest {
                     public void eval(TaskContext context) {
                         Assert.assertNotNull(context.result());
                         Node node = context.resultAsNodes().get(0);
-                        Assert.assertEquals(((Relationship) node.get("friend")).size(), 0);
+                        Assert.assertEquals(((Relation) node.get("friend")).size(), 0);
                         id[0] = node.id();
                     }
                 }).execute(graph, null);
@@ -43,7 +43,7 @@ public class ActionRemoveFromRelationTest extends AbstractActionTest {
         graph.lookup(0, 0, id[0], new Callback<Node>() {
             @Override
             public void on(Node result) {
-                Assert.assertEquals(((Relationship) result.get("friend")).size(), 0);
+                Assert.assertEquals(((Relation) result.get("friend")).size(), 0);
                 result.free();
             }
         });
@@ -75,7 +75,7 @@ public class ActionRemoveFromRelationTest extends AbstractActionTest {
                         Assert.assertNotNull(context.result());
                         TaskResult<Node> nodes = context.resultAsNodes();
                         for (int i = 0; i < 5; i++) {
-                            Assert.assertEquals(((Relationship) nodes.get(i).get("friend")).size(), 0);
+                            Assert.assertEquals(((Relation) nodes.get(i).get("friend")).size(), 0);
                             ids[i] = nodes.get(i).id();
                         }
                     }
@@ -85,7 +85,7 @@ public class ActionRemoveFromRelationTest extends AbstractActionTest {
             graph.lookup(0, 0, ids[i], new Callback<Node>() {
                 @Override
                 public void on(Node result) {
-                    Assert.assertEquals(((Relationship) result.get("friend")).size(), 0);
+                    Assert.assertEquals(((Relation) result.get("friend")).size(), 0);
                 }
             });
         }

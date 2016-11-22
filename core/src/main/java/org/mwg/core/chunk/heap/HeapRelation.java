@@ -1,16 +1,16 @@
 package org.mwg.core.chunk.heap;
 
 import org.mwg.Constants;
-import org.mwg.struct.Relationship;
+import org.mwg.struct.Relation;
 
-class HeapRelationship implements Relationship {
+class HeapRelation implements Relation {
 
     private long[] _back;
     private volatile int _size;
     private final HeapStateChunk parent;
     private boolean aligned = true;
 
-    HeapRelationship(final HeapStateChunk p_listener, final HeapRelationship origin) {
+    HeapRelation(final HeapStateChunk p_listener, final HeapRelation origin) {
         parent = p_listener;
         if (origin != null) {
             aligned = false;
@@ -57,7 +57,7 @@ class HeapRelationship implements Relationship {
     }
 
     @Override
-    public final Relationship add(long newValue) {
+    public final Relation add(long newValue) {
         synchronized (parent) {
             if (_back == null) {
                 aligned = true;
@@ -87,7 +87,7 @@ class HeapRelationship implements Relationship {
     }
 
     @Override
-    public Relationship insert(final int targetIndex, final long newValue) {
+    public Relation insert(final int targetIndex, final long newValue) {
         synchronized (parent) {
             if (_back == null) {
                 if (targetIndex != 0) {
@@ -138,7 +138,7 @@ class HeapRelationship implements Relationship {
     }
 
     @Override
-    public Relationship remove(long oldValue) {
+    public Relation remove(long oldValue) {
         synchronized (parent) {
             int indexToRemove = -1;
             for (int i = 0; i < _size; i++) {
@@ -162,7 +162,7 @@ class HeapRelationship implements Relationship {
     }
 
     @Override
-    public Relationship delete(int toRemoveIndex) {
+    public Relation delete(int toRemoveIndex) {
         synchronized (parent) {
             if (toRemoveIndex != -1) {
                 if (!aligned) {
@@ -179,7 +179,7 @@ class HeapRelationship implements Relationship {
     }
 
     @Override
-    public Relationship clear() {
+    public Relation clear() {
         synchronized (parent) {
             _size = 0;
         }

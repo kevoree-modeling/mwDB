@@ -451,7 +451,7 @@ public class CoreGraph implements org.mwg.Graph {
                 if (indexId == CoreConstants.NULL_LONG) {
                     //insert null
                     org.mwg.NodeIndex newIndexNode = (NodeIndex) selfPointer.newTypedNode(world, time, CoreNodeIndex.NAME);
-                    //newIndexNode.getOrCreate(CoreConstants.INDEX_ATTRIBUTE, Type.INDEXED_RELATION);
+                    //newIndexNode.getOrCreate(CoreConstants.INDEX_ATTRIBUTE, Type.RELATION_INDEXED);
                     indexId = newIndexNode.id();
                     globalIndexContent.put(indexNameCoded, indexId);
                     callback.on(newIndexNode);

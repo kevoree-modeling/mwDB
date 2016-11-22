@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.mwg.Callback;
 import org.mwg.Node;
 import org.mwg.Type;
-import org.mwg.struct.IndexedRelationship;
+import org.mwg.struct.RelationIndexed;
 import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 
@@ -87,7 +87,7 @@ public class ActionGetTest extends AbstractActionTest {
         graph.index(0,0,"roots",rootIndex -> {
             rootIndex.addToIndex(root,"name");
 
-            IndexedRelationship irel = (IndexedRelationship) root.getOrCreate("childrenIndexed", Type.INDEXED_RELATION);
+            RelationIndexed irel = (RelationIndexed) root.getOrCreate("childrenIndexed", Type.RELATION_INDEXED);
             irel.add(node1, "name");
             irel.add(node2, "name");
             irel.add(node3, "name");
@@ -96,7 +96,7 @@ public class ActionGetTest extends AbstractActionTest {
                 @Override
                 public void on(Node result) {
 
-                    IndexedRelationship irel12 = (IndexedRelationship) root.getOrCreate("childrenIndexed", Type.INDEXED_RELATION);
+                    RelationIndexed irel12 = (RelationIndexed) root.getOrCreate("childrenIndexed", Type.RELATION_INDEXED);
                     irel12.add(node3, "name");
                 }
             });

@@ -231,8 +231,7 @@ public class BaseNode implements Node {
                 }
                 return true;
             case Type.RELATION:
-            case Type.INDEXED_RELATION:
-            case Type.MULTI_INDEXED_RELATION:
+            case Type.RELATION_INDEXED:
             case Type.STRING_TO_LONG_MAP:
             case Type.LONG_TO_LONG_MAP:
             case Type.LONG_TO_LONG_ARRAY_MAP:
@@ -297,7 +296,7 @@ public class BaseNode implements Node {
         }
         final NodeState resolved = this._resolver.resolveState(this);
         if (resolved != null) {
-            final Relationship relationArray = (Relationship) resolved.get(relationIndex);
+            final Relation relationArray = (Relation) resolved.get(relationIndex);
             if (relationArray == null || relationArray.size() == 0) {
                 callback.on(new Node[0]);
             } else {
@@ -326,10 +325,10 @@ public class BaseNode implements Node {
             if (preciseState != null) {
                 boolean attributesNotEmpty = (attributes != null && attributes.length > 0);
                 if (attributesNotEmpty) {
-                    IndexedRelationship indexedRel = (IndexedRelationship) preciseState.getOrCreate(relHash, Type.INDEXED_RELATION);
+                    RelationIndexed indexedRel = (RelationIndexed) preciseState.getOrCreate(relHash, Type.RELATION_INDEXED);
                     indexedRel.add(relatedNode, attributes);
                 } else {
-                    Relationship relationArray = (Relationship) preciseState.getOrCreate(relHash, Type.RELATION);
+                    Relation relationArray = (Relation) preciseState.getOrCreate(relHash, Type.RELATION);
                     relationArray.add(relatedNode.id());
                 }
             } else {
@@ -347,10 +346,10 @@ public class BaseNode implements Node {
             if (preciseState != null) {
                 boolean attributesNotEmpty = (attributes != null && attributes.length > 0);
                 if (attributesNotEmpty) {
-                    IndexedRelationship indexedRel = (IndexedRelationship) preciseState.getOrCreate(relHash, Type.INDEXED_RELATION);
+                    RelationIndexed indexedRel = (RelationIndexed) preciseState.getOrCreate(relHash, Type.RELATION_INDEXED);
                     indexedRel.remove(relatedNode, attributes);
                 } else {
-                    Relationship relationArray = (Relationship) preciseState.getOrCreate(relHash, Type.RELATION);
+                    Relation relationArray = (Relation) preciseState.getOrCreate(relHash, Type.RELATION);
                     relationArray.remove(relatedNode.id());
                 }
             } else {
@@ -493,7 +492,7 @@ public class BaseNode implements Node {
                                 builder.append(resolveName);
                                 builder.append("\":");
                                 builder.append("[");
-                                Relationship castedRelArr = (Relationship) elem;
+                                Relation castedRelArr = (Relation) elem;
                                 for (int j = 0; j < castedRelArr.size(); j++) {
                                     if (j != 0) {
                                         builder.append(",");
@@ -556,7 +555,7 @@ public class BaseNode implements Node {
                                 builder.append("}");
                                 break;
                             }
-                            case Type.INDEXED_RELATION:
+                            case Type.RELATION_INDEXED:
                             case Type.LONG_TO_LONG_ARRAY_MAP: {
                                 builder.append(",\"");
                                 builder.append(resolveName);

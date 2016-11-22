@@ -4,17 +4,17 @@ import org.mwg.Callback;
 import org.mwg.Node;
 import org.mwg.Query;
 
-public interface IndexedRelationship {
+public interface RelationIndexed {
 
     long size();
 
     long[] all();
 
-    IndexedRelationship add(Node node, String... attributeNames);
+    RelationIndexed add(Node node, String... attributeNames);
 
-    IndexedRelationship remove(Node node, String... attributeNames);
+    RelationIndexed remove(Node node, String... attributeNames);
 
-    IndexedRelationship clear();
+    RelationIndexed clear();
 
     void find(String query, Callback<Node[]> callback);
 

@@ -21,45 +21,6 @@ public interface Query {
     Query add(String attributeName, String value);
 
     /**
-     * Sets the world in which to execute the Query.
-     * @param initialWorld the world id
-     * @return the {@link Query}, for a fluent API
-     */
-    Query setWorld(long initialWorld);
-
-    /**
-     * Retrieves the world id in which the query is executed.
-     * @return the world id
-     */
-    long world();
-
-    /**
-     * Sets the time at which to execute this query.
-     * @param initialTime the time
-     * @return the {@link Query}, for a fluent API
-     */
-    Query setTime(long initialTime);
-
-    /**
-     * Retrieves the time in which the query is executed.
-     * @return the time
-     */
-    long time();
-
-    /**
-     * Sets by name the index in which the query is executed
-     * @param indexName the name of the index
-     * @return the {@link Query}, for a fluent API
-     */
-    Query setIndexName(String indexName);
-
-    /**
-     * Retrieves the index name in which the query is executed.
-     * @return the index name
-     */
-    String indexName();
-
-    /**
      * Returns the hash code of this query
      * @return the hash code
      */

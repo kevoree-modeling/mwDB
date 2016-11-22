@@ -6,24 +6,24 @@ import org.mwg.Node;
 import org.mwg.Query;
 import org.mwg.base.BaseNode;
 import org.mwg.plugin.NodeState;
-import org.mwg.struct.IndexedRelationship;
+import org.mwg.struct.RelationIndexed;
 import org.mwg.struct.LongLongArrayMapCallBack;
 
-class HeapRelationshipIndexed extends HeapLongLongArrayMap implements IndexedRelationship {
+class HeapRelationshipRelationIndexed extends HeapLongLongArrayMap implements RelationIndexed {
 
-    HeapRelationshipIndexed(HeapStateChunk p_listener) {
+    HeapRelationshipRelationIndexed(HeapStateChunk p_listener) {
         super(p_listener);
     }
 
     @Override
-    public IndexedRelationship add(Node node, String... attributeNames) {
+    public RelationIndexed add(Node node, String... attributeNames) {
         internal_add_remove(true, node, attributeNames);
 
         return this;
     }
 
     @Override
-    public IndexedRelationship remove(Node node, String... attributeNames) {
+    public RelationIndexed remove(Node node, String... attributeNames) {
         internal_add_remove(false, node, attributeNames);
         return this;
     }
@@ -48,7 +48,7 @@ class HeapRelationshipIndexed extends HeapLongLongArrayMap implements IndexedRel
     }
 
     @Override
-    public IndexedRelationship clear() {
+    public RelationIndexed clear() {
         //TODO
         return this;
     }
@@ -155,8 +155,8 @@ class HeapRelationshipIndexed extends HeapLongLongArrayMap implements IndexedRel
         return flat;
     }
 
-    HeapRelationshipIndexed cloneIRelFor(HeapStateChunk newParent) {
-        HeapRelationshipIndexed cloned = new HeapRelationshipIndexed(newParent);
+    HeapRelationshipRelationIndexed cloneIRelFor(HeapStateChunk newParent) {
+        HeapRelationshipRelationIndexed cloned = new HeapRelationshipRelationIndexed(newParent);
         cloned.mapSize = mapSize;
         cloned.capacity = capacity;
         if (keys != null) {

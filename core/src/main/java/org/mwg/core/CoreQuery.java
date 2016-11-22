@@ -17,9 +17,6 @@ public class CoreQuery implements Query {
     private String[] _values = new String[capacity];
     private int size = 0;
     private Long _hash;
-    private long _world = Constants.NULL_LONG;
-    private long _time = Constants.NULL_LONG;
-    private String _indexName = null;
 
     CoreQuery(Graph graph, Resolver p_resolver) {
         _graph = graph;
@@ -58,39 +55,6 @@ public class CoreQuery implements Query {
     public Query add(String attributeName, String value) {
         internal_add(_resolver.stringToHash(attributeName.trim(), false), value);
         return this;
-    }
-
-    @Override
-    public Query setWorld(long initialWorld) {
-        this._world = initialWorld;
-        return this;
-    }
-
-    @Override
-    public long world() {
-        return _world;
-    }
-
-    @Override
-    public Query setTime(long initialTime) {
-        this._time = initialTime;
-        return this;
-    }
-
-    @Override
-    public long time() {
-        return this._time;
-    }
-
-    @Override
-    public Query setIndexName(String indexName) {
-        _indexName = indexName;
-        return this;
-    }
-
-    @Override
-    public String indexName() {
-        return this._indexName;
     }
 
     public long hash() {

@@ -229,10 +229,10 @@ class HeapStateChunk implements StateChunk {
         Object toSet = null;
         switch (p_type) {
             case Type.RELATION:
-                toSet = new HeapRelationship(this, null);
+                toSet = new HeapRelation(this, null);
                 break;
-            case Type.INDEXED_RELATION:
-                toSet = new HeapRelationshipIndexed(this);
+            case Type.RELATION_INDEXED:
+                toSet = new HeapRelationshipRelationIndexed(this);
                 break;
             case Type.MATRIX:
                 toSet = new HeapMatrix(this, null);
@@ -332,7 +332,7 @@ class HeapStateChunk implements StateChunk {
                             }
                             break;
                         case Type.RELATION:
-                            HeapRelationship castedLongArrRel = (HeapRelationship) loopValue;
+                            HeapRelation castedLongArrRel = (HeapRelation) loopValue;
                             Base64.encodeIntToBuffer(castedLongArrRel.size(), buffer);
                             for (int j = 0; j < castedLongArrRel.size(); j++) {
                                 buffer.write(CoreConstants.CHUNK_SUB_SUB_SEP);
@@ -392,7 +392,7 @@ class HeapStateChunk implements StateChunk {
                                 }
                             });
                             break;
-                        case Type.INDEXED_RELATION:
+                        case Type.RELATION_INDEXED:
                         case Type.LONG_TO_LONG_ARRAY_MAP:
                             HeapLongLongArrayMap castedLongLongArrayMap = (HeapLongLongArrayMap) loopValue;
                             Base64.encodeLongToBuffer(castedLongLongArrayMap.size(), buffer);
@@ -470,9 +470,9 @@ class HeapStateChunk implements StateChunk {
                             _v[i] = ((HeapLongLongMap) casted._v[i]).cloneFor(this);
                         }
                         break;
-                    case Type.INDEXED_RELATION:
+                    case Type.RELATION_INDEXED:
                         if (casted._v[i] != null) {
-                            _v[i] = ((HeapRelationshipIndexed) casted._v[i]).cloneIRelFor(this);
+                            _v[i] = ((HeapRelationshipRelationIndexed) casted._v[i]).cloneIRelFor(this);
                         }
                         break;
                     case Type.LONG_TO_LONG_ARRAY_MAP:
@@ -487,7 +487,7 @@ class HeapStateChunk implements StateChunk {
                         break;
                     case Type.RELATION:
                         if (casted._v[i] != null) {
-                            _v[i] = new HeapRelationship(this, (HeapRelationship) casted._v[i]);
+                            _v[i] = new HeapRelation(this, (HeapRelation) casted._v[i]);
                         }
                         break;
                     case Type.MATRIX:
@@ -538,7 +538,7 @@ class HeapStateChunk implements StateChunk {
                         param_elem = (Matrix) p_unsafe_elem;
                         break;
                     case Type.RELATION:
-                        param_elem = (Relationship) p_unsafe_elem;
+                        param_elem = (Relation) p_unsafe_elem;
                         break;
                     case Type.EXTERNAL:
                         param_elem = p_unsafe_elem;
@@ -570,8 +570,8 @@ class HeapStateChunk implements StateChunk {
                     case Type.LONG_TO_LONG_ARRAY_MAP:
                         param_elem = (LongLongArrayMap) p_unsafe_elem;
                         break;
-                    case Type.INDEXED_RELATION:
-                        param_elem = (IndexedRelationship) p_unsafe_elem;
+                    case Type.RELATION_INDEXED:
+                        param_elem = (RelationIndexed) p_unsafe_elem;
                         break;
                     default:
                         throw new RuntimeException("Internal Exception, unknown type");
@@ -772,7 +772,7 @@ class HeapStateChunk implements StateChunk {
         int[] currentIntArr = null;
         //map sub creation variables
         HeapMatrix currentMatrix = null;
-        HeapRelationship currentRelation = null;
+        HeapRelation currentRelation = null;
         HeapStringLongMap currentStringLongMap = null;
         HeapLongLongMap currentLongLongMap = null;
         HeapLongLongArrayMap currentLongLongArrayMap = null;
@@ -841,7 +841,7 @@ class HeapStateChunk implements StateChunk {
                                 break;
                             case Type.RELATION:
                                 if (currentRelation == null) {
-                                    currentRelation = new HeapRelationship(this, null);
+                                    currentRelation = new HeapRelation(this, null);
                                     currentRelation.allocate(Base64.decodeToIntWithBounds(buffer, previousStart, cursor));
                                 } else {
                                     currentRelation.add(Base64.decodeToLongWithBounds(buffer, previousStart, cursor));
@@ -869,7 +869,7 @@ class HeapStateChunk implements StateChunk {
                                 }
                                 toInsert = currentLongLongMap;
                                 break;
-                            case Type.INDEXED_RELATION:
+                            case Type.RELATION_INDEXED:
                             case Type.LONG_TO_LONG_ARRAY_MAP:
                                 if (currentMapLongKey != CoreConstants.NULL_LONG) {
                                     currentLongLongArrayMap.put(currentMapLongKey, Base64.decodeToLongWithBounds(buffer, previousStart, cursor));
@@ -914,7 +914,7 @@ class HeapStateChunk implements StateChunk {
                             currentIntArr = new int[(int) currentSubSize];
                             break;
                         case Type.RELATION:
-                            currentRelation = new HeapRelationship(this, null);
+                            currentRelation = new HeapRelation(this, null);
                             currentRelation.allocate((int) currentSubSize);
                             break;
                         case Type.MATRIX:
@@ -933,8 +933,8 @@ class HeapStateChunk implements StateChunk {
                             currentLongLongArrayMap = new HeapLongLongArrayMap(this);
                             currentLongLongArrayMap.reallocate((int) currentSubSize);
                             break;
-                        case Type.INDEXED_RELATION:
-                            currentLongLongArrayMap = new HeapRelationshipIndexed(this);
+                        case Type.RELATION_INDEXED:
+                            currentLongLongArrayMap = new HeapRelationshipRelationIndexed(this);
                             currentLongLongArrayMap.reallocate((int) currentSubSize);
                             break;
                     }
@@ -971,7 +971,7 @@ class HeapStateChunk implements StateChunk {
                                 currentMapLongKey = CoreConstants.NULL_LONG;
                             }
                             break;
-                        case Type.INDEXED_RELATION:
+                        case Type.RELATION_INDEXED:
                         case Type.LONG_TO_LONG_ARRAY_MAP:
                             if (currentMapLongKey != CoreConstants.NULL_LONG) {
                                 currentLongLongArrayMap.put(currentMapLongKey, Base64.decodeToLongWithBounds(buffer, previousStart, cursor));
@@ -1001,7 +1001,7 @@ class HeapStateChunk implements StateChunk {
                             currentMapLongKey = CoreConstants.NULL_LONG;
                         }
                         break;
-                    case Type.INDEXED_RELATION:
+                    case Type.RELATION_INDEXED:
                     case Type.LONG_TO_LONG_ARRAY_MAP:
                         if (currentMapLongKey == CoreConstants.NULL_LONG) {
                             currentMapLongKey = Base64.decodeToLongWithBounds(buffer, previousStart, cursor);
@@ -1087,7 +1087,7 @@ class HeapStateChunk implements StateChunk {
                     }
                     toInsert = currentLongLongMap;
                     break;
-                case Type.INDEXED_RELATION:
+                case Type.RELATION_INDEXED:
                 case Type.LONG_TO_LONG_ARRAY_MAP:
                     if (currentMapLongKey != CoreConstants.NULL_LONG) {
                         currentLongLongArrayMap.put(currentMapLongKey, Base64.decodeToLongWithBounds(buffer, previousStart, cursor));

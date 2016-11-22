@@ -4,7 +4,7 @@ import org.mwg.*;
 import org.mwg.base.BaseNode;
 import org.mwg.base.AbstractAction;
 import org.mwg.plugin.Job;
-import org.mwg.struct.Relationship;
+import org.mwg.struct.Relation;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
@@ -55,7 +55,7 @@ class ActionTraverse extends AbstractAction {
                     if (loop instanceof BaseNode) {
                         final Node casted = (Node) loop;
                         if (casted.type(flatName) == Type.RELATION) {
-                            Relationship flatRel = (Relationship) casted.get(flatName);
+                            Relation flatRel = (Relation) casted.get(flatName);
                             if (flatRel != null) {
                                 for (int j = 0; j < flatRel.size(); j++) {
                                     collected.add(flatRel.get(j));

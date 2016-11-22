@@ -2,7 +2,7 @@ package org.mwg.core;
 
 import org.mwg.*;
 import org.mwg.base.BaseNode;
-import org.mwg.struct.IndexedRelationship;
+import org.mwg.struct.RelationIndexed;
 
 class CoreNodeIndex extends BaseNode implements NodeIndex {
 
@@ -14,56 +14,56 @@ class CoreNodeIndex extends BaseNode implements NodeIndex {
 
     @Override
     public void init() {
-        getOrCreate(CoreConstants.INDEX_ATTRIBUTE, Type.INDEXED_RELATION);
+        getOrCreate(CoreConstants.INDEX_ATTRIBUTE, Type.RELATION_INDEXED);
     }
 
     @Override
     public long size() {
-        return ((IndexedRelationship) get(CoreConstants.INDEX_ATTRIBUTE)).size();
+        return ((RelationIndexed) get(CoreConstants.INDEX_ATTRIBUTE)).size();
     }
 
     @Override
     public long[] all() {
-        return ((IndexedRelationship) get(CoreConstants.INDEX_ATTRIBUTE)).all();
+        return ((RelationIndexed) get(CoreConstants.INDEX_ATTRIBUTE)).all();
     }
 
     @Override
     public NodeIndex addToIndex(Node node, String... attributeNames) {
-        ((IndexedRelationship) get(CoreConstants.INDEX_ATTRIBUTE)).add(node, attributeNames);
+        ((RelationIndexed) get(CoreConstants.INDEX_ATTRIBUTE)).add(node, attributeNames);
         return this;
     }
 
     @Override
     public NodeIndex removeFromIndex(Node node, String... attributeNames) {
-        ((IndexedRelationship) get(CoreConstants.INDEX_ATTRIBUTE)).remove(node, attributeNames);
+        ((RelationIndexed) get(CoreConstants.INDEX_ATTRIBUTE)).remove(node, attributeNames);
         return this;
     }
 
     @Override
     public NodeIndex clear() {
-        ((IndexedRelationship) get(CoreConstants.INDEX_ATTRIBUTE)).clear();
+        ((RelationIndexed) get(CoreConstants.INDEX_ATTRIBUTE)).clear();
         return this;
     }
 
     @Override
     public void findAll(Callback<Node[]> callback) {
-        long[] flat = ((IndexedRelationship) get(CoreConstants.INDEX_ATTRIBUTE)).all();
+        long[] flat = ((RelationIndexed) get(CoreConstants.INDEX_ATTRIBUTE)).all();
         graph().lookupAll(world(), time(), flat, callback);
     }
 
     @Override
     public void find(String query, Callback<Node[]> callback) {
-        ((IndexedRelationship) get(CoreConstants.INDEX_ATTRIBUTE)).find(query, callback);
+        ((RelationIndexed) get(CoreConstants.INDEX_ATTRIBUTE)).find(query, callback);
     }
 
     @Override
     public void findUsing(Callback<Node[]> callback, String... params) {
-        ((IndexedRelationship) get(CoreConstants.INDEX_ATTRIBUTE)).findUsing(callback, params);
+        ((RelationIndexed) get(CoreConstants.INDEX_ATTRIBUTE)).findUsing(callback, params);
     }
 
     @Override
     public void findByQuery(Query query, Callback<Node[]> callback) {
-        ((IndexedRelationship) get(CoreConstants.INDEX_ATTRIBUTE)).findByQuery(query, callback);
+        ((RelationIndexed) get(CoreConstants.INDEX_ATTRIBUTE)).findByQuery(query, callback);
     }
 
 }

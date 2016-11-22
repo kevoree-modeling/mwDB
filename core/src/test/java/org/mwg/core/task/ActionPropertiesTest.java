@@ -4,7 +4,7 @@ package org.mwg.core.task;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mwg.*;
-import org.mwg.struct.IndexedRelationship;
+import org.mwg.struct.RelationIndexed;
 import org.mwg.task.*;
 
 import static org.mwg.core.task.Actions.readGlobalIndexAll;
@@ -32,7 +32,7 @@ public class ActionPropertiesTest {
                 child1.set("name", Type.STRING, "child1");
                 root.addToRelation("rel1", child1);
 
-                ((IndexedRelationship) root.getOrCreate("localIindex1", Type.INDEXED_RELATION)).add(child1, "name");
+                ((RelationIndexed) root.getOrCreate("localIindex1", Type.RELATION_INDEXED)).add(child1, "name");
             }
         });
     }
@@ -71,7 +71,7 @@ public class ActionPropertiesTest {
                 .then(readGlobalIndexAll("root"))
                 .map(
                         task().then(attributesWithTypes(Type.RELATION)),
-                        task().then(attributesWithTypes(Type.INDEXED_RELATION))
+                        task().then(attributesWithTypes(Type.RELATION_INDEXED))
                 )
                 .thenDo(new ActionFunction() {
                     @Override

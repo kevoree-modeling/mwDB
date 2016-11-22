@@ -24,8 +24,7 @@ public class Type {
     public static final byte LONG_TO_LONG_ARRAY_MAP = 10;
     public static final byte STRING_TO_LONG_MAP = 11;
     public static final byte RELATION = 12;
-    public static final byte INDEXED_RELATION = 13;
-    public static final byte MULTI_INDEXED_RELATION = 14;
+    public static final byte RELATION_INDEXED = 13;
     public static final byte MATRIX = 15;
     public static final byte EXTERNAL = 16;
 
@@ -64,10 +63,8 @@ public class Type {
                 return "map(string->long)";
             case Type.RELATION:
                 return "relation";
-            case Type.INDEXED_RELATION:
+            case Type.RELATION_INDEXED:
                 return "indexed_relation";
-            case Type.MULTI_INDEXED_RELATION:
-                return "multi_indexed_relation";
             case Type.MATRIX:
                 return "matrix";
             case Type.EXTERNAL:
