@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 class HeapLongLongArrayMap implements LongLongArrayMap {
 
-    private final HeapStateChunk parent;
+    final HeapStateChunk parent;
 
     int mapSize = 0;
     int capacity = 0;

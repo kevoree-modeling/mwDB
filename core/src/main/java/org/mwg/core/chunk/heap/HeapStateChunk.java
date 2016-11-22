@@ -1,6 +1,7 @@
 package org.mwg.core.chunk.heap;
 
 import org.mwg.Constants;
+import org.mwg.Graph;
 import org.mwg.Type;
 import org.mwg.chunk.ChunkType;
 import org.mwg.chunk.StateChunk;
@@ -29,6 +30,10 @@ class HeapStateChunk implements StateChunk {
     private byte[] _type;
 
     private boolean _dirty;
+
+    Graph graph(){
+        return _space.graph();
+    }
 
     HeapStateChunk(final HeapChunkSpace p_space, final long p_index) {
         _space = p_space;

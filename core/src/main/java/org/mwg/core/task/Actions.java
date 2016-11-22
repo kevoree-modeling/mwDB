@@ -67,8 +67,7 @@ public class Actions {
     public static Action defineAsVar(String variableName) {
         return new ActionDefineAsVar(variableName, false);
     }
-
-
+    
     /**
      * Declare a new local variable.
      *

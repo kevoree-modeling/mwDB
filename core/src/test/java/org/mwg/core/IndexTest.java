@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.mwg.*;
 import org.mwg.core.scheduler.NoopScheduler;
+import org.mwg.struct.IndexedRelationship;
 import org.mwg.utility.HashHelper;
 
 public class IndexTest {
@@ -12,6 +13,7 @@ public class IndexTest {
     public void heapTest() {
         test(new GraphBuilder().withScheduler(new NoopScheduler()).build());
         testRelation(new GraphBuilder().withScheduler(new NoopScheduler()).build());
+        testIndexedRelation(new GraphBuilder().withScheduler(new NoopScheduler()).build());
     }
 
     /**
@@ -58,7 +60,6 @@ public class IndexTest {
                     }
                 });
 
-
                 Query q = graph.newQuery();
                 q.setIndexName("bigram");
                 q.setTime(0);
@@ -72,6 +73,56 @@ public class IndexTest {
                     }
                 });
 
+                graph.disconnect(null);
+            }
+        });
+    }
+
+    private void testIndexedRelation(final Graph graph) {
+        graph.connect(new Callback<Boolean>() {
+            @Override
+            public void on(Boolean result) {
+                final org.mwg.Node node_t0 = graph.newNode(0, 0);
+
+                final org.mwg.Node node_t1 = graph.newNode(0, 0);
+                node_t1.setAttribute("name", Type.STRING, "MyName");
+
+                IndexedRelationship irel = (IndexedRelationship) node_t0.getOrCreate("ichildren", Type.INDEXED_RELATION);
+                irel.add(node_t1, "name");
+
+                long[] flat = irel.all();
+                Assert.assertEquals(1, flat.length);
+                Assert.assertEquals(node_t1.id(), flat[0]);
+
+                final int[] passed = {0};
+                irel.find("name=MyName", new Callback<Node[]>() {
+                    @Override
+                    public void on(Node[] result) {
+                        Assert.assertEquals(result.length, 1);
+                        Assert.assertEquals(result[0].id(), node_t1.id());
+                        passed[0]++;
+                    }
+                });
+
+                irel.findUsing(new Callback<Node[]>() {
+                    @Override
+                    public void on(Node[] result) {
+                        Assert.assertEquals(result.length, 1);
+                        Assert.assertEquals(result[0].id(), node_t1.id());
+                        passed[0]++;
+                    }
+                }, "name", "MyName");
+
+                irel.findByQuery(graph.newQuery().add("name","MyName"),new Callback<Node[]>() {
+                    @Override
+                    public void on(Node[] result) {
+                        Assert.assertEquals(result.length, 1);
+                        Assert.assertEquals(result[0].id(), node_t1.id());
+                        passed[0]++;
+                    }
+                });
+                
+                Assert.assertEquals(3, passed[0]);
 
                 graph.disconnect(null);
             }
@@ -140,7 +191,6 @@ public class IndexTest {
                         counter[0]++;
                     }
                 });
-
 
                 //test the old indexed node
                 graph.find(0, 0, "nodes", "name=MyName", new Callback<org.mwg.Node[]>() {
