@@ -1,9 +1,6 @@
 package org.mwg.core.task;
 
-import org.mwg.Callback;
-import org.mwg.DeferCounter;
-import org.mwg.Node;
-import org.mwg.Type;
+import org.mwg.*;
 import org.mwg.base.BaseNode;
 import org.mwg.base.AbstractAction;
 import org.mwg.plugin.Job;
@@ -14,10 +11,12 @@ import org.mwg.task.TaskResult;
 class ActionGet extends AbstractAction {
 
     private final String _name;
+    private final String[] _params;
 
-    ActionGet(final String p_name) {
+    ActionGet(final String p_name, final String... p_params) {
         super();
         this._name = p_name;
+        this._params = p_params;
     }
 
     @Override
@@ -32,7 +31,6 @@ class ActionGet extends AbstractAction {
                 final Object loop = previousResult.get(i);
                 if (loop instanceof BaseNode) {
                     final Node casted = (Node) loop;
-
                     switch (casted.type(flatName)) {
                         case Type.RELATION:
                             casted.rel(flatName, new Callback<Node[]>() {
@@ -51,18 +49,47 @@ class ActionGet extends AbstractAction {
                         case Type.INDEXED_RELATION:
                             IndexedRelationship relationship = (IndexedRelationship) casted.get(flatName);
                             if (relationship != null) {
-                                casted.graph().lookupAll(casted.world(), casted.time(), relationship.all(), new Callback<Node[]>() {
-                                    @Override
-                                    public void on(Node[] result) {
-                                        if (result != null) {
-                                            for (int j = 0; j < result.length; j++) {
-                                                finalResult.add(result[j]);
-                                            }
+                                if (_params != null && _params.length > 0) {
+                                    Query query = context.graph().newQuery();
+                                    String previous = null;
+                                    for (int k = 0; k < _params.length; k++) {
+                                        if (previous != null) {
+                                            query.add(previous, _params[k]);
+                                            previous = null;
+                                        } else {
+                                            previous = _params[k];
                                         }
-                                        casted.free();
-                                        defer.count();
                                     }
-                                });
+                                    relationship.findByQuery(query, new Callback<Node[]>() {
+                                        @Override
+                                        public void on(Node[] result) {
+                                            if (result != null) {
+                                                for (int j = 0; j < result.length; j++) {
+                                                    if(result[j] != null){
+                                                        finalResult.add(result[j]);
+                                                    }
+                                                }
+                                            }
+                                            casted.free();
+                                            defer.count();
+                                        }
+                                    });
+                                } else {
+                                    casted.graph().lookupAll(context.world(), context.time(), relationship.all(), new Callback<Node[]>() {
+                                        @Override
+                                        public void on(Node[] result) {
+                                            if (result != null) {
+                                                for (int j = 0; j < result.length; j++) {
+                                                    if(result[j]!=null){
+                                                        finalResult.add(result[j]);
+                                                    }
+                                                }
+                                            }
+                                            casted.free();
+                                            defer.count();
+                                        }
+                                    });
+                                }
                             } else {
                                 defer.count();
                             }

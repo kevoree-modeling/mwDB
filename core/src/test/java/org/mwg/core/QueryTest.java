@@ -134,7 +134,7 @@ public class QueryTest implements Resolver, Graph {
 
 
     @Override
-    public void indexes(long world, long time, Callback<String[]> callback) {
+    public void indexNames(long world, long time, Callback<String[]> callback) {
 
     }
 

@@ -15,7 +15,7 @@ public class Actions {
      * @return this task to chain actions (fluent API)
      */
     public static Action setWorld(String variableName) {
-        return new ActionWorld(variableName);
+        return new ActionSetWorld(variableName);
     }
 
     /**
@@ -25,7 +25,7 @@ public class Actions {
      * @return this task to chain actions (fluent API)
      */
     public static Action setTime(String variableName) {
-        return new ActionTime(variableName);
+        return new ActionSetTime(variableName);
     }
 
     /**
@@ -51,11 +51,11 @@ public class Actions {
     /**
      * Initialise a new scope context for a variable (copy the parent and isolate all set, such as re-definition in imperative languages)
      *
-     * @param variableName identifier of this result
+     * @param name identifier of this result
      * @return this task to chain actions (fluent API)
      */
-    public static Action defineAsGlobalVar(String variableName) {
-        return new ActionDefineAsVar(variableName, true);
+    public static Action defineAsGlobalVar(String name) {
+        return new ActionDefineAsVar(name, true);
     }
 
     /**
@@ -69,16 +69,6 @@ public class Actions {
     }
 
     /**
-     * Declare a new local variable.
-     *
-     * @param variableName
-     * @return this task to chain actions (fluent API)
-     */
-    public static Action declareVar(String variableName) {
-        return new ActionDeclareVar(variableName);
-    }
-
-    /**
      * Declare a new global variable. Every store instructions past this point using this varName will be stored globally.
      *
      * @param variableName
@@ -86,6 +76,16 @@ public class Actions {
      */
     public static Action declareGlobalVar(String variableName) {
         return new ActionDeclareGlobalVar(variableName);
+    }
+
+    /**
+     * Declare a new local variable.
+     *
+     * @param variableName
+     * @return this task to chain actions (fluent API)
+     */
+    public static Action declareVar(String variableName) {
+        return new ActionDeclareVar(variableName);
     }
 
     /**
@@ -106,7 +106,7 @@ public class Actions {
      * @return this task to chain actions (fluent API)
      */
     public static Action setAsVar(String variableName) {
-        return new ActionAsVar(variableName);
+        return new ActionSetAsVar(variableName);
     }
 
     /**
@@ -130,8 +130,8 @@ public class Actions {
      * @param value Will be interpreted as template.
      * @return this task to chain actions (fluent API)
      */
-    public static Action setAttribute(String name, byte type, String value) {
-        return new ActionSetAttribute(name, type, value, false);
+    public static Action set(String name, byte type, String value) {
+        return new ActionSet(name, type, value, false);
     }
 
     /**
@@ -143,19 +143,19 @@ public class Actions {
      * @param value Will be interpreted as template.
      * @return this task to chain actions (fluent API)
      */
-    public static Action forceAttribute(String name, byte type, String value) {
-        return new ActionSetAttribute(name, type, value, true);
+    public static Action force(String name, byte type, String value) {
+        return new ActionSet(name, type, value, true);
     }
 
     /**
      * Removes an attribute from a node or an array of nodes.
      * The node (or the array) should be init in the previous task
      *
-     * @param attributeName The name of the attribute to remove.
+     * @param name The name of the attribute to remove.
      * @return this task to chain actions (fluent API)
      */
-    public static Action removeAttribute(String attributeName) {
-        return new ActionRemoveAttribute(attributeName);
+    public static Action remove(String name) {
+        return new ActionRemove(name);
     }
 
     /**
@@ -180,23 +180,23 @@ public class Actions {
     /**
      * Add nodes present in the named variable from the named relationship, in all nodes present in current result.
      *
-     * @param relationName The name of the relation.
-     * @param variableName will be interpreted as a template.
+     * @param name    The name of the relation.
+     * @param varFrom will be interpreted as a template.
      * @return this task to chain actions (fluent API)
      */
-    public static Action addToRelationship(String relationName, String variableName) {
-        return new ActionAddToRelation(relationName, variableName);
+    public static Action addVarToRelation(String name, String varFrom, String... attributes) {
+        return new ActionAddRemoveVarToRelation(true, name, varFrom, attributes);
     }
 
     /**
      * Remove nodes present in the named variable from the named relationship, in all nodes present in current result.
      *
-     * @param relationName The name of the relation.
-     * @param variableName will be interpreted as a template.
+     * @param name    The name of the relation.
+     * @param varFrom will be interpreted as a template.
      * @return this task to chain actions (fluent API)
      */
-    public static Action removeFromRelationship(String relationName, String variableName) {
-        return new ActionRemoveFromRelation(relationName, variableName);
+    public static Action removeVarFromRelation(String name, String varFrom, String... attributes) {
+        return new ActionAddRemoveVarToRelation(false, name, varFrom, attributes);
     }
 
     /**
@@ -205,8 +205,8 @@ public class Actions {
      * @param name of property to retrieve
      * @return this task to chain actions (fluent API)
      */
-    public static Action get(String name) {
-        return new ActionGet(name);
+    public static Action get(String name, String... params) {
+        return new ActionGet(name, params);
     }
 
     //Index manipulation zone
@@ -217,8 +217,8 @@ public class Actions {
      * @param indexName name of the index
      * @return this task to chain actions (fluent API)
      */
-    public static Action readIndexAll(String indexName) {
-        return new ActionReadIndexAll(indexName);
+    public static Action readGlobalIndexAll(String indexName) {
+        return new ActionReadGlobalIndexAll(indexName);
     }
 
     /**
@@ -228,81 +228,22 @@ public class Actions {
      * @param query     query to filter nodes, such as name=FOO
      * @return this task to chain actions (fluent API)
      */
-    public static Action readIndex(String indexName, String query) {
-        return new ActionReadIndex(indexName, query);
+    public static Action readGlobalIndex(String indexName, String query) {
+        return new ActionReadGlobalIndex(indexName, query);
     }
 
-    /**
-     * Index the node (or the array of nodes) present in the result
-     *
-     * @param indexName         index name
-     * @param flatKeyAttributes node attributes used to index
-     * @return this task to chain actions (fluent API)
-     */
-    public static Action indexNode(String indexName, String flatKeyAttributes) {
-        return new ActionIndexOrUnindexNode(indexName, flatKeyAttributes, true);
+    public static Action addToGlobalIndex(String name, String... attributes) {
+        return new ActionAddToGlobalIndex(name, attributes);
     }
 
-    /**
-     * Index the node (or the array of nodes) present in the result
-     *
-     * @param indexName         index name
-     * @param flatKeyAttributes node attributes used to index
-     * @return this task to chain actions (fluent API)
-     */
-    public static Action indexNodeAt(String world, String time, String indexName, String flatKeyAttributes) {
-        return new ActionIndexOrUnindexNodeAt(world, time, indexName, flatKeyAttributes, true);
-    }
-
-    /**
-     * Unindex the node (or the array of nodes) present in the result
-     *
-     * @param indexName         index name
-     * @param flatKeyAttributes node attributes used to index
-     * @return this task to chain actions (fluent API)
-     */
-    public static Action unindexNode(String indexName, String flatKeyAttributes) {
-        return new ActionIndexOrUnindexNode(indexName, flatKeyAttributes, false);
-    }
-
-    /**
-     * Unindex the node (or the array of nodes) present in the result
-     *
-     * @param indexName         index name
-     * @param flatKeyAttributes node attributes used to index
-     * @return this task to chain actions (fluent API)
-     */
-    public static Action unindexNodeAt(String world, String time, String indexName, String flatKeyAttributes) {
-        return new ActionIndexOrUnindexNodeAt(world, time, indexName, flatKeyAttributes, false);
-    }
-
-    /**
-     * DRAFT
-     * Create or compliments an index of nodes. <br>
-     * These indexes are special relationships for quick access to referred nodes based on some of their attributes values.<br>
-     * Index names must be unique within a given node.
-     */
-    public static Action localIndex(String indexedRelation, String flatKeyAttributes, String varNodeToAdd) {
-        return new ActionLocalIndexOrUnindex(indexedRelation, flatKeyAttributes, varNodeToAdd, true);
-    }
-
-    /**
-     * DRAFT
-     * Create or compliments an index of nodes. <br>
-     * These indexes are special relationships for quick access to referred nodes based on some of their attributes values.<br>
-     * Index names must be unique within a given node.
-     */
-    public static Action localUnindex(String indexedRelation, String flatKeyAttributes, String varNodeToAdd) {
-        return new ActionLocalIndexOrUnindex(indexedRelation, flatKeyAttributes, varNodeToAdd, false);
-    }
 
     /**
      * Get all the index names
      *
      * @return this task to chain actions (fluent API)x
      */
-    public static Action indexesNames() {
-        return new ActionIndexesNames();
+    public static Action indexNames() {
+        return new ActionIndexNames();
     }
 
     /**
@@ -346,47 +287,6 @@ public class Actions {
     public static Action selectObject(TaskFunctionSelectObject filterFunction) {
         return new ActionSelectObject(filterFunction);
     }
-
-    /**
-     * Traverse in times all nodes in current context
-     *
-     * @return this task to chain actions (fluent API)
-     */
-    public static Action traverseTimeRange(String from, String to) {
-        return new ActionTraverseTimeRange(from, to);
-    }
-
-    /**
-     * Traverse a relation indexed by {@code indexName} and retrieve specific node thanks to the {@code query}
-     *
-     * @param indexName   index name of indexed relation
-     * @param queryParams arguments of the query. Must be an even number, in form of: "&lt;att1&gt;","&lt;value1&gt;","&lt;att2&gt;","&lt;value2&gt;"
-     * @return this task to chain actions (fluent API)
-     */
-    public static Action traverseIndex(String indexName, String... queryParams) {
-        return new ActionTraverseIndex(indexName, queryParams);
-    }
-
-    /**
-     * Traverse the specified relation if not empty, otherwise keep leaf nodes
-     *
-     * @param relationName relation to traverse if not empty
-     * @return this task to chain actions (fluent API)
-     */
-    public static Action traverseOrKeep(String relationName) {
-        return new ActionTraverseOrKeep(relationName);
-    }
-
-    /**
-     * Traverse a relation indexed by {@code indexName}
-     *
-     * @param indexName index name of indexed relation
-     * @return this task to chain actions (fluent API)
-     */
-    public static Action traverseIndexAll(String indexName) {
-        return new ActionTraverseIndexAll(indexName);
-    }
-
 
     //Helper zone
 
@@ -446,11 +346,6 @@ public class Actions {
         return new ActionSave();
     }
 
-    /*
-    public static Action split(String splitPattern) {
-        return new ActionSplit(splitPattern);
-    }*/
-
     public static Action lookup(String nodeId) {
         return new ActionLookup(nodeId);
     }
@@ -474,16 +369,5 @@ public class Actions {
     public static TaskResult emptyResult() {
         return new CoreTaskResult(null, false);
     }
-
-    /*
-    public static Task then(Action startingAction) {
-        return new CoreTask().then(startingAction);
-    }
-
-    public static Task thenDo(ActionFunction startingActionFct) {
-        return new CoreTask().thenDo(startingActionFct);
-    }
-    */
-
 
 }

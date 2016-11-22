@@ -3,11 +3,11 @@ package org.mwg.core.task;
 import org.mwg.base.AbstractAction;
 import org.mwg.task.TaskContext;
 
-class ActionTime extends AbstractAction {
+class ActionSetTime extends AbstractAction {
 
     private final String _varName;
 
-    ActionTime(final String p_varName) {
+    ActionSetTime(final String p_varName) {
         super();
         this._varName = p_varName;
     }

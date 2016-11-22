@@ -28,13 +28,13 @@ class CoreNodeIndex extends BaseNode implements NodeIndex {
     }
 
     @Override
-    public NodeIndex add(Node node, String... attributeNames) {
+    public NodeIndex addToIndex(Node node, String... attributeNames) {
         ((IndexedRelationship) get(CoreConstants.INDEX_ATTRIBUTE)).add(node, attributeNames);
         return this;
     }
 
     @Override
-    public NodeIndex remove(Node node, String... attributeNames) {
+    public NodeIndex removeFromIndex(Node node, String... attributeNames) {
         ((IndexedRelationship) get(CoreConstants.INDEX_ATTRIBUTE)).remove(node, attributeNames);
         return this;
     }

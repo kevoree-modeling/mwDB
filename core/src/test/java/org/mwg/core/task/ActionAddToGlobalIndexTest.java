@@ -8,7 +8,7 @@ import org.mwg.task.TaskContext;
 
 import static org.mwg.core.task.Actions.*;
 
-public class ActionIndexOrUnindexNodeTest {
+public class ActionAddToGlobalIndexTest {
 
     @Test
     public void testIndexOneNode() {
@@ -18,10 +18,10 @@ public class ActionIndexOrUnindexNodeTest {
             public void on(Boolean result) {
                 task()
                         .then(createNode())
-                        .then(Actions.setAttribute("name", Type.STRING, "root"))
-                        .then(Actions.indexNode("indexName", "name"))
+                        .then(Actions.set("name", Type.STRING, "root"))
+                        .then(Actions.addToGlobalIndex("indexName", "name"))
                         .then(Actions.defineAsGlobalVar("nodeIndexed"))
-                        .then(Actions.readIndexAll("indexName"))
+                        .then(Actions.readGlobalIndexAll("indexName"))
                         .thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
@@ -32,8 +32,8 @@ public class ActionIndexOrUnindexNodeTest {
                                 context.continueTask();
                             }
                         })
-                        .then(Actions.unindexNode("indexName", "name"))
-                        .then(Actions.readIndexAll("indexName"))
+                        .then(Actions.removeVarFromRelation("indexName", "name"))
+                        .then(Actions.readGlobalIndexAll("indexName"))
                         .thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {

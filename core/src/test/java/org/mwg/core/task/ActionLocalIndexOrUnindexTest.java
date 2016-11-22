@@ -25,43 +25,43 @@ public class ActionLocalIndexOrUnindexTest {
             public void on(Boolean succeed) {
                 task()
                         .then(createNode())
-                        .then(setAttribute("name", Type.STRING, "child1"))
+                        .then(set("name", Type.STRING, "child1"))
                         .then(addToVar("child"))
                         .then(createNode())
-                        .then(setAttribute("name", Type.STRING, "child2"))
+                        .then(set("name", Type.STRING, "child2"))
                         .then(addToVar("child"))
                         .then(createNode())
-                        .then(setAttribute("name", Type.STRING, "child3"))
+                        .then(set("name", Type.STRING, "child3"))
                         .then(addToVar("child"))
                         .then(createNode())
-                        .then(setAttribute("name", Type.STRING, "root"))
-                        .then(indexNode("rootIdx", "name"))
-                        .then(localIndex("idxRelation","name","child"))
-                        .then(readIndexAll("rootIdx"))
-                        .then(traverseIndexAll("idxRelation"))
+                        .then(set("name", Type.STRING, "root"))
+                        .then(addToGlobalIndex("rootIdx", "name"))
+                        .then(addVarToRelation("idxRelation", "name", "child"))
+                        .then(readGlobalIndexAll("rootIdx"))
+                        .then(get("idxRelation"))
                         .thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 TaskResult result = context.result();
-                                Assert.assertEquals(3,result.size());
+                                Assert.assertEquals(3, result.size());
 
-                                Assert.assertEquals("child1",((BaseNode)result.get(0)).get("name"));
-                                Assert.assertEquals("child2",((BaseNode)result.get(1)).get("name"));
-                                Assert.assertEquals("child3",((BaseNode)result.get(2)).get("name"));
+                                Assert.assertEquals("child1", ((BaseNode) result.get(0)).get("name"));
+                                Assert.assertEquals("child2", ((BaseNode) result.get(1)).get("name"));
+                                Assert.assertEquals("child3", ((BaseNode) result.get(2)).get("name"));
                             }
                         })
-                        .then(readIndexAll("rootIdx"))
-                        .then(localUnindex("idxRelation","name","child"))
-                        .then(readIndexAll("rootIdx"))
-                        .then(traverseIndexAll("idxRelation"))
+                        .then(readGlobalIndexAll("rootIdx"))
+                        .then(addVarToRelation("idxRelation", "name", "child"))
+                        .then(readGlobalIndexAll("rootIdx"))
+                        .then(get("idxRelation"))
                         .thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 TaskResult result = context.result();
-                                Assert.assertEquals(0,result.size());
+                                Assert.assertEquals(0, result.size());
                             }
                         })
-                        .execute(graph,null);
+                        .execute(graph, null);
 
 
             }

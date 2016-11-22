@@ -89,7 +89,7 @@ public class NodeFactoryTest {
                 Assert.assertTrue(hw.equals("world"));
 
                 Node parent = graph.newNode(0, 0);
-                parent.add("children", specializedNode);
+                parent.addToRelation("children", specializedNode);
                 parent.rel("children", new Callback<Node[]>() {
                     @Override
                     public void on(Node[] result) {

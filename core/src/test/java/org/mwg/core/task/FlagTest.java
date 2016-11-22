@@ -33,25 +33,25 @@ public class FlagTest {
             Node n3 = graph.newNode(0, 13);
             Node n4 = graph.newNode(0, 13);
 
-            n1.add(relName, n2);
-            n1.add(relName, n3);
-            n1.add(relName, n4);
+            n1.addToRelation(relName, n2);
+            n1.addToRelation(relName, n3);
+            n1.addToRelation(relName, n4);
 
 
             Node n5 = graph.newNode(0, 13);
             Node n6 = graph.newNode(0, 13);
-            n2.add(relName, n5);
-            n2.add(relName, n6);
+            n2.addToRelation(relName, n5);
+            n2.addToRelation(relName, n6);
 
             Node n7 = graph.newNode(0, 13);
             Node n8 = graph.newNode(0, 13);
-            n3.add(relName, n7);
-            n3.add(relName, n8);
+            n3.addToRelation(relName, n7);
+            n3.addToRelation(relName, n8);
 
             Node n9 = graph.newNode(0, 13);
             Node n10 = graph.newNode(0, 13);
-            n4.add(relName, n9);
-            n4.add(relName, n10);
+            n4.addToRelation(relName, n9);
+            n4.addToRelation(relName, n10);
 
             n2.free();
             n3.free();
@@ -125,25 +125,25 @@ public class FlagTest {
             Node n3 = graph.newNode(0, 13);
             Node n4 = graph.newNode(0, 13);
 
-            n1.add(relName, n2);
-            n1.add(relName, n3);
-            n1.add(relName, n4);
+            n1.addToRelation(relName, n2);
+            n1.addToRelation(relName, n3);
+            n1.addToRelation(relName, n4);
 
 
             Node n5 = graph.newNode(0, 13);
             Node n6 = graph.newNode(0, 13);
-            n2.add(relName, n5);
-            n2.add(relName, n6);
+            n2.addToRelation(relName, n5);
+            n2.addToRelation(relName, n6);
 
             Node n7 = graph.newNode(0, 13);
             Node n8 = graph.newNode(0, 13);
-            n3.add(relName, n7);
-            n3.add(relName, n8);
+            n3.addToRelation(relName, n7);
+            n3.addToRelation(relName, n8);
 
             Node n9 = graph.newNode(0, 13);
             Node n10 = graph.newNode(0, 13);
-            n4.add(relName, n9);
-            n4.add(relName, n10);
+            n4.addToRelation(relName, n9);
+            n4.addToRelation(relName, n10);
 
             n2.free();
             n3.free();
@@ -163,7 +163,7 @@ public class FlagTest {
 
             traverse
                     .then(defineAsGlobalVar("parent"))
-                    .then(Actions.traverseOrKeep(relName))
+                    .then(new ActionTraverseOrKeep(relName))
                     .thenDo(new ActionFunction() {
                         @Override
                         public void eval(TaskContext context) {

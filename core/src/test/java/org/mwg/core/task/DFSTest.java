@@ -2,10 +2,7 @@ package org.mwg.core.task;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.mwg.Callback;
-import org.mwg.Graph;
-import org.mwg.GraphBuilder;
-import org.mwg.Node;
+import org.mwg.*;
 import org.mwg.task.Task;
 import org.mwg.task.TaskResult;
 
@@ -20,41 +17,41 @@ public class DFSTest {
 
         graph.connect(result -> {
             Node n1 = graph.newNode(0, 0);
-            n1.set("name", "n1");
+            n1.set("name", Type.STRING, "n1");
 
             graph.save(null);
             long initcache = graph.space().available();
 
             Node n2 = graph.newNode(0, 0);
-            n2.set("name", "n2");
+            n2.set("name",Type.STRING, "n2");
 
             Node n3 = graph.newNode(0, 0);
-            n3.set("name", "n3");
+            n3.set("name",Type.STRING, "n3");
 
-            n1.add("left", n2);
-            n1.add("right", n3);
+            n1.addToRelation("left", n2);
+            n1.addToRelation("right", n3);
 
             Node n4 = graph.newNode(0, 0);
-            n4.set("name", "n4");
-            n2.add("left", n4);
+            n4.set("name", Type.STRING, "n4");
+            n2.addToRelation("left", n4);
 
 
             Node n5 = graph.newNode(0, 0);
-            n5.set("name", "n5");
-            n3.add("left", n5);
+            n5.set("name", Type.STRING, "n5");
+            n3.addToRelation("left", n5);
 
             Node n6 = graph.newNode(0, 0);
-            n6.set("name", "n6");
-            n3.add("right", n6);
+            n6.set("name", Type.STRING, "n6");
+            n3.addToRelation("right", n6);
 
 
             Node n7 = graph.newNode(0, 0);
-            n7.set("name", "n7");
-            n6.add("left", n7);
+            n7.set("name", Type.STRING, "n7");
+            n6.addToRelation("left", n7);
 
             Node n8 = graph.newNode(0, 0);
-            n8.set("name", "n8");
-            n6.add("right", n8);
+            n8.set("name", Type.STRING, "n8");
+            n6.addToRelation("right", n8);
 
             n2.free();
             n3.free();

@@ -6,10 +6,9 @@ public interface NodeIndex extends Node {
 
     long[] all();
 
+    NodeIndex addToIndex(Node node, String... attributeNames);
 
-    NodeIndex add(Node node, String... attributeNames);
-
-    NodeIndex remove(Node node, String... attributeNames);
+    NodeIndex removeFromIndex(Node node, String... attributeNames);
 
     NodeIndex clear();
 

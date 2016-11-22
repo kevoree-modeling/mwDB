@@ -26,7 +26,7 @@ public class ActionSetPropertyTest extends AbstractActionTest {
                 .then(inject("node"))
                 .then(defineAsGlobalVar("nodeName"))
                 .then(createNode())
-                .then(setAttribute("name", Type.STRING, "{{nodeName}}"))
+                .then(set("name", Type.STRING, "{{nodeName}}"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
@@ -61,7 +61,7 @@ public class ActionSetPropertyTest extends AbstractActionTest {
                         context.continueWith(context.wrap(nodes));
                     }
                 })
-                .then(setAttribute("name", Type.STRING, "{{nodeName}}"))
+                .then(set("name", Type.STRING, "{{nodeName}}"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
@@ -94,7 +94,7 @@ public class ActionSetPropertyTest extends AbstractActionTest {
                         context.continueWith(null);
                     }
                 })
-                .then(setAttribute("name", Type.STRING, "node"))
+                .then(set("name", Type.STRING, "node"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {

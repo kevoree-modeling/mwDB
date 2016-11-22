@@ -17,13 +17,13 @@ public class TimelineTest {
     private void test2(final Graph g) {
         g.connect(result -> {
             Node n = g.newNode(0, 0);
-            n.setAttribute("name", Type.STRING, "name");
+            n.set("name", Type.STRING, "name");
 
             n.jump(1, n_t1 -> {
                 //should be effect less
-                n_t1.setAttribute("name", Type.STRING, "name");
+                n_t1.set("name", Type.STRING, "name");
                 Assert.assertEquals(n_t1.timeDephasing(), 1);
-                n_t1.setAttribute("name", Type.STRING, "newName");
+                n_t1.set("name", Type.STRING, "newName");
                 Assert.assertEquals(n_t1.timeDephasing(), 0);
             });
         });
@@ -47,7 +47,7 @@ public class TimelineTest {
                     }
                 });
                 //do a simple modification
-                node_t0.setAttribute("name", Type.STRING, "MyName");
+                node_t0.set("name", Type.STRING, "MyName");
                 Assert.assertTrue(node_t0.timeDephasing() == 0);
                 //check the unmodified time tree
                 node_t0.timepoints(Constants.BEGINNING_OF_TIME, Constants.END_OF_TIME, new Callback<long[]>() {
@@ -69,7 +69,7 @@ public class TimelineTest {
                         Assert.assertTrue(node_t1.timeDephasing() == 0); //node should be in phase now
                         Assert.assertTrue(HashHelper.equals("{\"world\":0,\"time\":1,\"id\":1,\"name\":\"MyName\"}", node_t1.toString()));
 
-                        node_t1.setAttribute("name", Type.STRING, "MyName@t1");
+                        node_t1.set("name", Type.STRING, "MyName@t1");
                         Assert.assertTrue(HashHelper.equals("{\"world\":0,\"time\":1,\"id\":1,\"name\":\"MyName@t1\"}", node_t1.toString()));
                         Assert.assertTrue(HashHelper.equals("{\"world\":0,\"time\":0,\"id\":1,\"name\":\"MyName\"}", node_t0.toString()));
 
@@ -109,7 +109,7 @@ public class TimelineTest {
                                         Assert.assertTrue(longs[1] == 0);
                                     }
                                 });
-                                node_t1_w0.setAttribute("name", Type.STRING, "MyName@t1@w1");
+                                node_t1_w0.set("name", Type.STRING, "MyName@t1@w1");
                                 Assert.assertTrue(HashHelper.equals("{\"world\":1,\"time\":2,\"id\":1,\"name\":\"MyName@t1@w1\"}", node_t1_w0.toString()));
                                 //test the new timeline
                                 node_t1_w0.timepoints(Constants.BEGINNING_OF_TIME, Constants.END_OF_TIME, new Callback<long[]>() {

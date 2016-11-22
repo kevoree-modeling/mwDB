@@ -4,11 +4,11 @@ import org.mwg.Callback;
 import org.mwg.base.AbstractAction;
 import org.mwg.task.TaskContext;
 
-class ActionIndexesNames extends AbstractAction {
+class ActionIndexNames extends AbstractAction {
 
     @Override
     public void eval(TaskContext context) {
-        context.graph().indexes(context.world(), context.time(), new Callback<String[]>() {
+        context.graph().indexNames(context.world(), context.time(), new Callback<String[]>() {
             @Override
             public void on(String[] result) {
                 context.continueWith(context.wrap(result));
@@ -18,6 +18,6 @@ class ActionIndexesNames extends AbstractAction {
 
     @Override
     public String toString() {
-        return "indexesNames()";
+        return "indexNames()";
     }
 }

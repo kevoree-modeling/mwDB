@@ -7,7 +7,7 @@ import org.mwg.task.TaskContext;
 
 import static org.mwg.core.task.Actions.*;
 
-public class ActionTimeTest extends AbstractActionTest {
+public class ActionSetTimeTest extends AbstractActionTest {
 
     @Test
     public void test() {

@@ -2,10 +2,7 @@ package org.mwg.core;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.mwg.Callback;
-import org.mwg.Graph;
-import org.mwg.GraphBuilder;
-import org.mwg.Node;
+import org.mwg.*;
 import org.mwg.core.scheduler.NoopScheduler;
 import org.mwg.plugin.NodeState;
 
@@ -50,7 +47,7 @@ public class DephasingFlagTest {
                 long init = graph.space().available();
 
                 Node n0 = graph.newNode(0, 0);
-                n0.set("name", "n0");
+                n0.set("name" , Type.STRING, "n0");
 
                 n0.jump(5, new Callback<Node>() {
                     @Override

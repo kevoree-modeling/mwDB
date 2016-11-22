@@ -463,7 +463,7 @@ public class CoreGraph implements org.mwg.Graph {
     }
 
     @Override
-    public void indexes(final long world, final long time, final Callback<String[]> callback) {
+    public void indexNames(final long world, final long time, final Callback<String[]> callback) {
         final CoreGraph selfPointer = this;
         this._resolver.lookup(world, time, CoreConstants.END_OF_TIME, new Callback<org.mwg.Node>() {
             @Override

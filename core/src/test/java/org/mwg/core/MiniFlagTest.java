@@ -2,10 +2,7 @@ package org.mwg.core;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.mwg.Callback;
-import org.mwg.Graph;
-import org.mwg.GraphBuilder;
-import org.mwg.Node;
+import org.mwg.*;
 
 public class MiniFlagTest {
 
@@ -24,7 +21,7 @@ public class MiniFlagTest {
                 long available = graph.space().available();
 
                 Node node = graph.newNode(0, 0);
-                node.set("name", "hello");
+                node.set("name", Type.STRING, "hello");
 
                 //   ((HeapChunkSpace) graph.space()).printMarked();
 

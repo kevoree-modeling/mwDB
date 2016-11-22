@@ -4,11 +4,11 @@ import org.mwg.base.AbstractAction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-class ActionAsVar extends AbstractAction {
+class ActionSetAsVar extends AbstractAction {
 
     private final String _name;
 
-    ActionAsVar(final String p_name) {
+    ActionSetAsVar(final String p_name) {
         super();
         if (p_name == null) {
             throw new RuntimeException("variableName should not be null");
@@ -29,7 +29,7 @@ class ActionAsVar extends AbstractAction {
 
     @Override
     public String toString() {
-        return "asVar(\'" + _name + "\')";
+        return "setAsVar(\'" + _name + "\')";
     }
 
 }

@@ -2,10 +2,7 @@ package org.mwg.core;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.mwg.Callback;
-import org.mwg.Graph;
-import org.mwg.GraphBuilder;
-import org.mwg.Node;
+import org.mwg.*;
 import org.mwg.core.scheduler.NoopScheduler;
 
 public class FlagTest {
@@ -51,7 +48,7 @@ public class FlagTest {
 
                 org.mwg.Node node_t0 = graph.newNode(0, 0);
                 long node_id = node_t0.id();
-                node_t0.set("name", "MyName");
+                node_t0.set("name", Type.STRING, "MyName");
 
                 Assert.assertEquals(graph.space().available(), selfPointer.cacheSize - (4 + (1 * 4)));
 
@@ -82,7 +79,7 @@ public class FlagTest {
                         Assert.assertEquals(graph.space().available(), selfPointer.cacheSize - (4 + (1 * 4))); //chunk should be tagged again
                         counter[0]++;
 
-                        n0_w1_bis.set("name", "MyDivergedName");
+                        n0_w1_bis.set("name", Type.STRING, "MyDivergedName");
 
                         n0_w1_bis.free();
 

@@ -24,7 +24,7 @@ public class ActionSetTest extends ActionNewNodeTest {
         final long[] id = new long[1];
         task().then(inject("node")).then(defineAsGlobalVar("nodeName"))
                 .then(createNode())
-                .then(setAttribute("name", Type.STRING, "{{nodeName}}"))
+                .then(set("name", Type.STRING, "{{nodeName}}"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
@@ -60,7 +60,7 @@ public class ActionSetTest extends ActionNewNodeTest {
                         context.continueWith(context.wrap(nodes));
                     }
                 })
-                .then(setAttribute("name", Type.STRING, "{{nodeName}}"))
+                .then(set("name", Type.STRING, "{{nodeName}}"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
@@ -95,7 +95,7 @@ public class ActionSetTest extends ActionNewNodeTest {
                         context.continueWith(null);
                     }
                 })
-                .then(setAttribute("name", Type.STRING, "node"))
+                .then(set("name", Type.STRING, "node"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {

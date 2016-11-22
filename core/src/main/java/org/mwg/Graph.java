@@ -137,7 +137,7 @@ public interface Graph {
      * @param time     The timepoint at which the search must be performed.
      * @param callback Called when the retrieval is complete. Returns the retrieved indexes names, empty array otherwise.
      */
-    void indexes(long world, long time, Callback<String[]> callback);
+    void indexNames(long world, long time, Callback<String[]> callback);
 
     /**
      * Utility method to create a waiter based on a counter

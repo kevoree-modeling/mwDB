@@ -137,54 +137,13 @@ public class BaseNode implements Node {
         return null;
     }
 
-    /**
-     * {@native ts
-     * if (typeof value === 'string' || value instanceof String) {
-     * this.setAttribute(name, org.mwg.Type.STRING, value);
-     * } else if(typeof value === 'number' || value instanceof Number) {
-     * if(((<number>value) % 1) != 0) {
-     * this.setAttribute(name, org.mwg.Type.DOUBLE, value);
-     * } else {
-     * this.setAttribute(name, org.mwg.Type.LONG, value);
-     * }
-     * } else if(typeof value === 'boolean' || value instanceof Boolean) {
-     * this.setAttribute(name, org.mwg.Type.BOOL, value);
-     * } else if (value instanceof Int32Array) {
-     * this.setAttribute(name, org.mwg.Type.LONG_ARRAY, value);
-     * } else if (value instanceof Float64Array) {
-     * this.setAttribute(name, org.mwg.Type.DOUBLE_ARRAY, value);
-     * } else {
-     * throw new Error("Invalid property type: " + value + ", please use a Type listed in org.mwg.Type");
-     * }
-     * }
-     */
     @Override
-    public final void set(String name, Object value) {
-        if (value instanceof String) {
-            setAttribute(name, Type.STRING, value);
-        } else if (value instanceof Double) {
-            setAttribute(name, Type.DOUBLE, value);
-        } else if (value instanceof Long) {
-            setAttribute(name, Type.LONG, value);
-        } else if (value instanceof Float) {
-            setAttribute(name, Type.DOUBLE, (double) ((Float) value));
-        } else if (value instanceof Integer) {
-            setAttribute(name, Type.INT, value);
-        } else if (value instanceof Boolean) {
-            setAttribute(name, Type.BOOL, value);
-        } else if (value instanceof int[]) {
-            setAttribute(name, Type.INT_ARRAY, value);
-        } else if (value instanceof double[]) {
-            setAttribute(name, Type.DOUBLE_ARRAY, value);
-        } else if (value instanceof long[]) {
-            setAttribute(name, Type.LONG_ARRAY, value);
-        } else {
-            throw new RuntimeException("Invalid property type: " + value + ", please use a Type listed in org.mwg.Type");
-        }
+    public Object getByIndex(long propIndex) {
+        return _resolver.resolveState(this).get(propIndex);
     }
 
     @Override
-    public void forceAttribute(String name, byte type, Object value) {
+    public Node force(String name, byte type, Object value) {
         final long hashed = this._resolver.stringToHash(name, true);
         final NodeState preciseState = this._resolver.alignState(this);
         if (preciseState != null) {
@@ -192,25 +151,32 @@ public class BaseNode implements Node {
         } else {
             throw new RuntimeException(Constants.CACHE_MISS_ERROR);
         }
+        return this;
     }
 
     @Override
-    public void setAttribute(String name, byte type, Object value) {
-        //hash the property a single time
-        final long hashed = this._resolver.stringToHash(name, true);
+    public Node setByIndex(long index, byte type, Object value) {
         final NodeState unPhasedState = this._resolver.resolveState(this);
-        boolean isDiff = (type != unPhasedState.getType(hashed));
+        boolean isDiff = (type != unPhasedState.getType(index));
         if (!isDiff) {
-            isDiff = !isEquals(unPhasedState.get(hashed), value, type);
+            isDiff = !isEquals(unPhasedState.get(index), value, type);
         }
         if (isDiff) {
             final NodeState preciseState = this._resolver.alignState(this);
             if (preciseState != null) {
-                preciseState.set(hashed, type, value);
+                preciseState.set(index, type, value);
             } else {
                 throw new RuntimeException(Constants.CACHE_MISS_ERROR);
             }
         }
+        return this;
+    }
+
+    @Override
+    public Node set(String name, byte type, Object value) {
+        //hash the property a single time
+        final long hashed = this._resolver.stringToHash(name, true);
+        return setByIndex(hashed, type, value);
     }
 
     private boolean isEquals(Object obj1, Object obj2, byte type) {
@@ -277,20 +243,15 @@ public class BaseNode implements Node {
     }
 
     @Override
-    public final Object getOrCreate(String name, byte type) {
+    public final Object getOrCreate(String name, byte type, String... params) {
         final NodeState preciseState = this._resolver.alignState(this);
         if (preciseState != null) {
-            return preciseState.getOrCreate(this._resolver.stringToHash(name, true), type);
-        } else {
-            throw new RuntimeException(Constants.CACHE_MISS_ERROR);
-        }
-    }
+            if (type == Type.EXTERNAL) {
+                return preciseState.getOrCreateExternal(this._resolver.stringToHash(name, true), params[0]);
+            } else {
+                return preciseState.getOrCreate(this._resolver.stringToHash(name, true), type);
+            }
 
-    @Override
-    public final Object getOrCreateExternal(String name, String externalAttributeType) {
-        final NodeState preciseState = this._resolver.alignState(this);
-        if (preciseState != null) {
-            return preciseState.getOrCreateExternal(this._resolver.stringToHash(name, true), externalAttributeType);
         } else {
             throw new RuntimeException(Constants.CACHE_MISS_ERROR);
         }
@@ -306,8 +267,22 @@ public class BaseNode implements Node {
     }
 
     @Override
-    public final void removeAttribute(String name) {
-        setAttribute(name, Type.INT, null);
+    public final byte typeByIndex(final long index) {
+        final NodeState resolved = this._resolver.resolveState(this);
+        if (resolved != null) {
+            return resolved.getType(index);
+        }
+        return -1;
+    }
+
+    @Override
+    public final Node remove(String name) {
+        return set(name, Type.INT, null);
+    }
+
+    @Override
+    public final Node removeByIndex(final long index) {
+        return setByIndex(index, Type.INT, null);
     }
 
     @Override
@@ -344,33 +319,45 @@ public class BaseNode implements Node {
     }
 
     @Override
-    public final void add(String relationName, Node relatedNode) {
+    public final Node addToRelation(String relationName, Node relatedNode, String... attributes) {
         if (relatedNode != null) {
             NodeState preciseState = this._resolver.alignState(this);
             final long relHash = this._resolver.stringToHash(relationName, true);
             if (preciseState != null) {
-                Relationship relationArray = (Relationship) preciseState.getOrCreate(relHash, Type.RELATION);
-                relationArray.add(relatedNode.id());
+                boolean attributesNotEmpty = (attributes != null && attributes.length > 0);
+                if (attributesNotEmpty) {
+                    IndexedRelationship indexedRel = (IndexedRelationship) preciseState.getOrCreate(relHash, Type.INDEXED_RELATION);
+                    indexedRel.add(relatedNode, attributes);
+                } else {
+                    Relationship relationArray = (Relationship) preciseState.getOrCreate(relHash, Type.RELATION);
+                    relationArray.add(relatedNode.id());
+                }
             } else {
                 throw new RuntimeException(Constants.CACHE_MISS_ERROR);
             }
         }
+        return this;
     }
 
     @Override
-    public final void remove(String relationName, Node relatedNode) {
+    public final Node removeFromRelation(String relationName, Node relatedNode, String... attributes) {
         if (relatedNode != null) {
             final NodeState preciseState = this._resolver.alignState(this);
             final long relHash = this._resolver.stringToHash(relationName, false);
             if (preciseState != null) {
-                Relationship relationArray = (Relationship) preciseState.get(relHash);
-                if (relationArray != null) {
+                boolean attributesNotEmpty = (attributes != null && attributes.length > 0);
+                if (attributesNotEmpty) {
+                    IndexedRelationship indexedRel = (IndexedRelationship) preciseState.getOrCreate(relHash, Type.INDEXED_RELATION);
+                    indexedRel.remove(relatedNode, attributes);
+                } else {
+                    Relationship relationArray = (Relationship) preciseState.getOrCreate(relHash, Type.RELATION);
                     relationArray.remove(relatedNode.id());
                 }
             } else {
                 throw new RuntimeException(Constants.CACHE_MISS_ERROR);
             }
         }
+        return this;
     }
 
     @Override
@@ -399,8 +386,9 @@ public class BaseNode implements Node {
     }
 
     @Override
-    public final void rephase() {
+    public final Node rephase() {
         this._resolver.alignState(this);
+        return this;
     }
 
     @Override
@@ -637,16 +625,6 @@ public class BaseNode implements Node {
             builder.append("}");
         }
         return builder.toString();
-    }
-
-    @Override
-    public Object getByIndex(long propIndex) {
-        return _resolver.resolveState(this).get(propIndex);
-    }
-
-    @Override
-    public void setAttributeByIndex(final long index, final byte type, final Object value) {
-        _resolver.alignState(this).set(index, type, value);
     }
 
 }

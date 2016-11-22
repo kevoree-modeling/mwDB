@@ -43,6 +43,14 @@ class ActionAttributes extends AbstractAction {
         }
         previous.clear();
         context.continueWith(result);
+    }
 
+    @Override
+    public String toString() {
+        if(_filter == -1){
+           return "attributes()";
+        } else {
+            return "attributesWithTypes()";
+        }
     }
 }

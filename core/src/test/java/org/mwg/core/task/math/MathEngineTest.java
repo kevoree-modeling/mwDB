@@ -2,10 +2,7 @@ package org.mwg.core.task.math;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.mwg.Callback;
-import org.mwg.Graph;
-import org.mwg.GraphBuilder;
-import org.mwg.Node;
+import org.mwg.*;
 import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
@@ -62,8 +59,8 @@ public class MathEngineTest {
                 //Test Time extraction
                 engine = CoreMathExpressionEngine.parse("f1^2+f2*f1");
                 context = graph.newNode(0, 200);
-                context.set("f1", 7);
-                context.set("f2", 8);
+                context.set("f1", Type.INT, 7);
+                context.set("f2", Type.INT, 8);
                 d = engine.eval(context, null, new HashMap<String, Double>());
                 Assert.assertTrue(d == 7 * 7 + 8 * 7);
             }

@@ -6,7 +6,7 @@ import org.mwg.GraphBuilder;
 import org.mwg.Type;
 
 import static org.mwg.core.task.Actions.*;
-import static org.mwg.core.task.Actions.setAttribute;
+import static org.mwg.core.task.Actions.set;
 import static org.mwg.core.task.Actions.task;
 
 public class MicroWorldTest {
@@ -24,13 +24,13 @@ public class MicroWorldTest {
                 task().loopPar("1", "2",
                         task()
                                 .then(createNode())
-                                .then(setAttribute("name", Type.STRING, "room_{{i}}"))
-                                .then(indexNode("rooms", "name"))
+                                .then(set("name", Type.STRING, "room_{{i}}"))
+                                .then(addToGlobalIndex("rooms", "name"))
                                 .then(defineAsVar("parentRoom"))
                                 .loop("1", "3",
                                         task()
                                                 .then(createNode())
-                                                .then(setAttribute("sensor", Type.STRING, "sensor_{{i}}"))
+                                                .then(set("sensor", Type.STRING, "sensor_{{i}}"))
                                         //.then(addTo("sensors", "parentRoom"))
                                 )
                 ).execute(g, null);

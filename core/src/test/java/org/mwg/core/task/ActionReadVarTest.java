@@ -14,7 +14,7 @@ public class ActionReadVarTest extends AbstractActionTest {
     public void test() {
         initGraph();
         task()
-                .then(readIndexAll("nodes"))
+                .then(readGlobalIndexAll("nodes"))
                 .then(defineAsGlobalVar("x"))
                 .then(inject("uselessPayload"))
                 .then(readVar("x"))
@@ -34,7 +34,7 @@ public class ActionReadVarTest extends AbstractActionTest {
     public void testIndex() {
         initGraph();
         task()
-                .then(readIndexAll("nodes"))
+                .then(readGlobalIndexAll("nodes"))
                 .then(defineAsGlobalVar("x"))
                 .then(inject("uselessPayload"))
                 .then(readVar("x[0]"))

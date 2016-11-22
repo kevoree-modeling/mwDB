@@ -18,7 +18,7 @@ public class ActionGetTest extends AbstractActionTest {
     public void test() {
         initGraph();
         task()
-                .then(readIndexAll("nodes"))
+                .then(readGlobalIndexAll("nodes"))
                 .then(get("children"))
                 .then(get("name"))
                 .thenDo(new ActionFunction() {
@@ -36,7 +36,7 @@ public class ActionGetTest extends AbstractActionTest {
     public void testDefaultSynthax() {
         initGraph();
         task()
-                .then(readIndexAll("nodes"))
+                .then(readGlobalIndexAll("nodes"))
                 .parse("children.name")
                 .thenDo(new ActionFunction() {
                     @Override
@@ -70,22 +70,22 @@ public class ActionGetTest extends AbstractActionTest {
     public void testTraverseIndex() {
         initGraph();
         Node node1 = graph.newNode(0, 0);
-        node1.setAttribute("name", Type.STRING, "node1");
-        node1.setAttribute("value", Type.INT, 1);
+        node1.set("name", Type.STRING, "node1");
+        node1.set("value", Type.INT, 1);
 
         Node node2 = graph.newNode(0, 0);
-        node2.setAttribute("name", Type.STRING, "node2");
-        node2.setAttribute("value", Type.INT, 2);
+        node2.set("name", Type.STRING, "node2");
+        node2.set("value", Type.INT, 2);
 
         Node node3 = graph.newNode(0, 12);
-        node3.setAttribute("name", Type.STRING, "node3");
-        node3.setAttribute("value", Type.INT, 3);
+        node3.set("name", Type.STRING, "node3");
+        node3.set("value", Type.INT, 3);
 
         Node root = graph.newNode(0, 0);
-        root.setAttribute("name", Type.STRING, "root2");
+        root.set("name", Type.STRING, "root2");
 
         graph.index(0,0,"roots",rootIndex -> {
-            rootIndex.add(root,"name");
+            rootIndex.addToIndex(root,"name");
 
             IndexedRelationship irel = (IndexedRelationship) root.getOrCreate("childrenIndexed", Type.INDEXED_RELATION);
             irel.add(node1, "name");
@@ -116,8 +116,8 @@ public class ActionGetTest extends AbstractActionTest {
 */
 
         task()
-                .then(readIndex("rootIndex", "name=root2"))
-                .then(traverseIndex("childrenIndexed", "name", "node3"))
+                .then(readGlobalIndex("rootIndex", "name=root2"))
+                .then(get("childrenIndexed", "name", "node3"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {

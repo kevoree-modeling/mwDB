@@ -31,14 +31,14 @@ public class BenchmarkParTest {
                 task().loopPar("0", "9999",
                         task()
                                 .then(createNode())
-                                .then(setAttribute("name", Type.STRING, "node_{{i}}"))
+                                .then(set("name", Type.STRING, "node_{{i}}"))
                                 .then(print("{{result}}"))
-                                .then(indexNode("nodes", "name"))
+                                .then(addToGlobalIndex("nodes", "name"))
                                 .loop("0", "999",
-                                        task().then(jump("{{i}}")).then(setAttribute("val", Type.INT, "{{i}}")).then(clearResult()))
+                                        task().then(jump("{{i}}")).then(set("val", Type.INT, "{{i}}")).then(clearResult()))
                                 .ifThen(cond("i % 100 == 0"), task().then(save()))
                                 .then(clearResult())
-                ).then(save()).then(readIndexAll("nodes")).execute(g, new Callback<TaskResult>() {
+                ).then(save()).then(readGlobalIndexAll("nodes")).execute(g, new Callback<TaskResult>() {
                     @Override
                     public void on(TaskResult result) {
                         System.out.println("indexSize=" + result.size());

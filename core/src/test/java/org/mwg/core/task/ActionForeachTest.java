@@ -45,7 +45,7 @@ public class ActionForeachTest extends AbstractActionTest {
                 .execute(graph, null);
 
         task()
-                .then(readIndexAll("nodes"))
+                .then(readGlobalIndexAll("nodes"))
                 .forEach(
                         task()
                                 .thenDo(context -> context.continueTask())

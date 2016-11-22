@@ -62,7 +62,7 @@ public class IndexTest {
                 final org.mwg.Node node_t0 = graph.newNode(0, 0);
 
                 final org.mwg.Node node_t1 = graph.newNode(0, 0);
-                node_t1.setAttribute("name", Type.STRING, "MyName");
+                node_t1.set("name", Type.STRING, "MyName");
 
                 IndexedRelationship irel = (IndexedRelationship) node_t0.getOrCreate("ichildren", Type.INDEXED_RELATION);
                 irel.add(node_t1, "name");

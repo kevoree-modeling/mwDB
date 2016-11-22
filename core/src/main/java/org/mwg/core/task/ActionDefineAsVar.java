@@ -30,7 +30,11 @@ class ActionDefineAsVar extends AbstractAction {
 
     @Override
     public String toString() {
-        return "defineAsVar(\'" + _name + "\')";
+        if(_global){
+            return "defineAsGlobalVar(\'" + _name + "\')";
+        } else {
+            return "defineAsVar(\'" + _name + "\')";
+        }
     }
 
 }

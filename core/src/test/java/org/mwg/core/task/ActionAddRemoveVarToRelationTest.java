@@ -6,16 +6,15 @@ import org.mwg.Callback;
 import org.mwg.Node;
 import org.mwg.struct.Relationship;
 import org.mwg.task.ActionFunction;
-import org.mwg.task.Task;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
 import static org.mwg.core.task.Actions.*;
 import static org.mwg.core.task.Actions.task;
 
-public class ActionAddToRelationTest extends AbstractActionTest {
+public class ActionAddRemoveVarToRelationTest extends AbstractActionTest {
 
-    public ActionAddToRelationTest() {
+    public ActionAddRemoveVarToRelationTest() {
         super();
         initGraph();
     }
@@ -28,7 +27,7 @@ public class ActionAddToRelationTest extends AbstractActionTest {
                 .then(createNode())
                 .then(inject(relatedNode))
                 .then(defineAsGlobalVar("x"))
-                .then(addToRelationship("friend", "x"))
+                .then(addVarToRelation("friend", "x"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
@@ -68,7 +67,7 @@ public class ActionAddToRelationTest extends AbstractActionTest {
                         context.continueWith(context.wrap(nodes));
                     }
                 })
-                .then(addToRelationship("friend", "x"))
+                .then(addVarToRelation("friend", "x"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
@@ -108,7 +107,7 @@ public class ActionAddToRelationTest extends AbstractActionTest {
                 })
                 .then(inject(relatedNode))
                 .then(defineAsGlobalVar("x"))
-                .then(addToRelationship("friend", "x"))
+                .then(addVarToRelation("friend", "x"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {

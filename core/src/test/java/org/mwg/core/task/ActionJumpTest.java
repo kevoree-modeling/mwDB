@@ -16,7 +16,7 @@ public class ActionJumpTest extends AbstractActionTest {
     public void testJump() {
         initGraph();
 
-        task().then(readIndexAll("nodes"))
+        task().then(readGlobalIndexAll("nodes"))
                 .then(defineAsGlobalVar("nodes"))
                 .forEach(task().thenDo(new ActionFunction() {
                     @Override

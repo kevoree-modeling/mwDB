@@ -8,14 +8,14 @@ import org.mwg.base.AbstractAction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-class ActionSetAttribute extends AbstractAction {
+class ActionSet extends AbstractAction {
 
     private final String _relationName;
     private final String _variableNameToSet;
     private final byte _propertyType;
     private final boolean _force;
 
-    ActionSetAttribute(final String relationName, final byte propertyType, final String variableNameToSet, final boolean force) {
+    ActionSet(final String relationName, final byte propertyType, final String variableNameToSet, final boolean force) {
         super();
         this._relationName = relationName;
         this._variableNameToSet = variableNameToSet;
@@ -51,9 +51,9 @@ class ActionSetAttribute extends AbstractAction {
                 if (loopObj instanceof BaseNode) {
                     Node loopNode = (Node) loopObj;
                     if(_force){
-                        loopNode.forceAttribute(flatRelationName, _propertyType, toSet);
+                        loopNode.force(flatRelationName, _propertyType, toSet);
                     } else {
-                        loopNode.setAttribute(flatRelationName, _propertyType, toSet);
+                        loopNode.set(flatRelationName, _propertyType, toSet);
                     }
                 }
             }
@@ -63,7 +63,11 @@ class ActionSetAttribute extends AbstractAction {
 
     @Override
     public String toString() {
-        return "setAttribute(\'" + _relationName + "\'" + Constants.QUERY_SEP + "\'" + _propertyType + "\'" + Constants.QUERY_SEP + "\'" + _variableNameToSet + "\')";
+        if(_force){
+            return "force(\'" + _relationName + "\'" + Constants.QUERY_SEP + "\'" + _propertyType + "\'" + Constants.QUERY_SEP + "\'" + _variableNameToSet + "\')";
+        } else {
+            return "setAttribute(\'" + _relationName + "\'" + Constants.QUERY_SEP + "\'" + _propertyType + "\'" + Constants.QUERY_SEP + "\'" + _variableNameToSet + "\')";
+        }
     }
 
     private boolean parseBoolean(String booleanValue) {

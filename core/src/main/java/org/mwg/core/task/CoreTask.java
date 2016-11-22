@@ -325,7 +325,7 @@ public class CoreTask implements org.mwg.task.Task {
                 if (params.length != 1) {
                     throw new RuntimeException("readIndexAll action need one parameter");
                 }
-                return new ActionReadIndexAll(params[0]);
+                return new ActionReadGlobalIndexAll(params[0]);
             }
         });
         registry.put("readIndex", new TaskActionFactory() {
@@ -334,7 +334,7 @@ public class CoreTask implements org.mwg.task.Task {
                 if (params.length != 2) {
                     throw new RuntimeException("readIndex action need two parameter");
                 }
-                return new ActionReadIndex(params[0], params[1]);
+                return new ActionReadGlobalIndex(params[0], params[1]);
             }
         });
         registry.put("with", new TaskActionFactory() {

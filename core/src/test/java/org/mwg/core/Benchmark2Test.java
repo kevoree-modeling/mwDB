@@ -105,7 +105,7 @@ public class Benchmark2Test {
                                 graph.lookup(0, time, finalNodeID, new Callback<org.mwg.Node>() {
                                     @Override
                                     public void on(Node timedNode) {
-                                        timedNode.setAttribute("value", Type.DOUBLE, value);
+                                        timedNode.set("value", Type.DOUBLE, value);
                                         counter.count();
                                         timedNode.free();//free the node, for cache management
                                     }
@@ -113,7 +113,7 @@ public class Benchmark2Test {
                             }
 
 
-                            timedNode.setAttribute("value", Type.DOUBLE, value);
+                            timedNode.set("value", Type.DOUBLE, value);
                             counter.count();
                             timedNode.free();//free the node, for cache management
                         }

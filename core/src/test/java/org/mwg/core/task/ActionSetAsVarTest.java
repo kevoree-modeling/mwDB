@@ -11,7 +11,7 @@ import static org.mwg.core.task.Actions.defineAsGlobalVar;
 import static org.mwg.core.task.Actions.inject;
 import static org.mwg.core.task.Actions.task;
 
-public class ActionAsVarTest extends AbstractActionTest {
+public class ActionSetAsVarTest extends AbstractActionTest {
 
     @Test
     public void test() {

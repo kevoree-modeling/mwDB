@@ -3,15 +3,16 @@ package org.mwg.core.task;
 import org.mwg.Callback;
 import org.mwg.Constants;
 import org.mwg.Node;
+import org.mwg.NodeIndex;
 import org.mwg.base.AbstractAction;
 import org.mwg.task.TaskContext;
 
-class ActionReadIndex extends AbstractAction {
+class ActionReadGlobalIndex extends AbstractAction {
 
     private final String _indexName;
     private final String _query;
 
-    ActionReadIndex(final String p_indexName, final String p_query) {
+    ActionReadGlobalIndex(final String p_indexName, final String p_query) {
         super();
         if (p_indexName == null) {
             throw new RuntimeException("indexName should not be null");
@@ -25,15 +26,20 @@ class ActionReadIndex extends AbstractAction {
 
     @Override
     public void eval(final TaskContext context) {
-        final String flatIndexName = context.template(_indexName);
-        final String flatQuery = context.template(_query);
-        /*
-        context.graph().find(context.world(), context.time(), flatIndexName, flatQuery, new Callback<Node[]>() {
+        final String name = context.template(_indexName);
+        final String query = context.template(_query);
+        context.graph().index(context.world(), context.time(), name, new Callback<NodeIndex>() {
             @Override
-            public void on(Node[] result) {
-                context.continueWith(context.wrap(result));
+            public void on(NodeIndex resolvedIndex) {
+                resolvedIndex.find(query, new Callback<Node[]>() {
+                    @Override
+                    public void on(Node[] result) {
+                        resolvedIndex.free();
+                        context.continueWith(context.wrap(result));
+                    }
+                });
             }
-        });*/
+        });
     }
 
     @Override

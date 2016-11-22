@@ -6,11 +6,11 @@ import org.mwg.base.AbstractAction;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-class ActionRemoveAttribute extends AbstractAction {
+class ActionRemove extends AbstractAction {
 
     private final String _name;
 
-    ActionRemoveAttribute(final String name) {
+    ActionRemove(final String name) {
         super();
         this._name = name;
     }
@@ -24,7 +24,7 @@ class ActionRemoveAttribute extends AbstractAction {
                 Object loopObj = previousResult.get(i);
                 if (loopObj instanceof BaseNode) {
                     Node loopNode = (Node) loopObj;
-                    loopNode.removeAttribute(flatRelationName);
+                    loopNode.remove(flatRelationName);
                 }
             }
         }
@@ -33,7 +33,7 @@ class ActionRemoveAttribute extends AbstractAction {
 
     @Override
     public String toString() {
-        return "removeAttribute(\'" + _name + "\')";
+        return "remove(\'" + _name + "\')";
     }
 
 

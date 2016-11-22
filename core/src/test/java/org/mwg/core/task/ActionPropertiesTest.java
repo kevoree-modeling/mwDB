@@ -7,7 +7,7 @@ import org.mwg.*;
 import org.mwg.struct.IndexedRelationship;
 import org.mwg.task.*;
 
-import static org.mwg.core.task.Actions.readIndexAll;
+import static org.mwg.core.task.Actions.readGlobalIndexAll;
 import static org.mwg.core.task.Actions.attributes;
 import static org.mwg.core.task.Actions.attributesWithTypes;
 import static org.mwg.core.task.Actions.task;
@@ -21,16 +21,16 @@ public class ActionPropertiesTest {
             @Override
             public void on(Boolean result) {
                 Node root = graph.newNode(0, 0);
-                root.setAttribute("id", Type.INT, 1);
-                root.setAttribute("attribute", Type.BOOL, false);
+                root.set("id", Type.INT, 1);
+                root.set("attribute", Type.BOOL, false);
 
                 graph.index(0, 0, "root", rootIndex -> {
-                    rootIndex.add(root, "id");
+                    rootIndex.addToIndex(root, "id");
                 });
 
                 Node child1 = graph.newNode(0, 0);
-                child1.set("name", "child1");
-                root.add("rel1", child1);
+                child1.set("name", Type.STRING, "child1");
+                root.addToRelation("rel1", child1);
 
                 ((IndexedRelationship) root.getOrCreate("localIindex1", Type.INDEXED_RELATION)).add(child1, "name");
             }
@@ -45,7 +45,7 @@ public class ActionPropertiesTest {
     public void testNormalRelations() {
         initGraph();
         task()
-                .then(readIndexAll("root"))
+                .then(readGlobalIndexAll("root"))
                 .then(attributes())
                 .thenDo(new ActionFunction() {
                     @Override
@@ -68,10 +68,10 @@ public class ActionPropertiesTest {
     public void testLocalIndex() {
         initGraph();
         task()
-                .then(readIndexAll("root"))
+                .then(readGlobalIndexAll("root"))
                 .map(
                         task().then(attributesWithTypes(Type.RELATION)),
-                        task().then(attributesWithTypes(Type.LONG_TO_LONG_ARRAY_MAP))
+                        task().then(attributesWithTypes(Type.INDEXED_RELATION))
                 )
                 .thenDo(new ActionFunction() {
                     @Override
