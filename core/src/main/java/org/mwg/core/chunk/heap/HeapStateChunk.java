@@ -106,7 +106,6 @@ class HeapStateChunk implements StateChunk {
         Object result;
         if (found != -1) {
             result = _v[found];
-            //TODO optimize this
             if (result != null) {
                 switch (_type[found]) {
                     case Type.DOUBLE_ARRAY:
@@ -226,6 +225,9 @@ class HeapStateChunk implements StateChunk {
         switch (p_type) {
             case Type.RELATION:
                 toSet = new HeapRelationship(this, null);
+                break;
+            case Type.INDEXED_RELATION:
+                toSet = new HeapIndexedRelationship(this);
                 break;
             case Type.MATRIX:
                 toSet = new HeapMatrix(this, null);
@@ -385,6 +387,7 @@ class HeapStateChunk implements StateChunk {
                                 }
                             });
                             break;
+                        case Type.INDEXED_RELATION:
                         case Type.LONG_TO_LONG_ARRAY_MAP:
                             HeapLongLongArrayMap castedLongLongArrayMap = (HeapLongLongArrayMap) loopValue;
                             Base64.encodeLongToBuffer(castedLongLongArrayMap.size(), buffer);
@@ -460,6 +463,11 @@ class HeapStateChunk implements StateChunk {
                     case Type.LONG_TO_LONG_MAP:
                         if (casted._v[i] != null) {
                             _v[i] = ((HeapLongLongMap) casted._v[i]).cloneFor(this);
+                        }
+                        break;
+                    case Type.INDEXED_RELATION:
+                        if (casted._v[i] != null) {
+                            _v[i] = ((HeapIndexedRelationship) casted._v[i]).cloneIRelFor(this);
                         }
                         break;
                     case Type.LONG_TO_LONG_ARRAY_MAP:
@@ -556,6 +564,9 @@ class HeapStateChunk implements StateChunk {
                         break;
                     case Type.LONG_TO_LONG_ARRAY_MAP:
                         param_elem = (LongLongArrayMap) p_unsafe_elem;
+                        break;
+                    case Type.INDEXED_RELATION:
+                        param_elem = (IndexedRelationship) p_unsafe_elem;
                         break;
                     default:
                         throw new RuntimeException("Internal Exception, unknown type");
@@ -853,6 +864,7 @@ class HeapStateChunk implements StateChunk {
                                 }
                                 toInsert = currentLongLongMap;
                                 break;
+                            case Type.INDEXED_RELATION:
                             case Type.LONG_TO_LONG_ARRAY_MAP:
                                 if (currentMapLongKey != CoreConstants.NULL_LONG) {
                                     currentLongLongArrayMap.put(currentMapLongKey, Base64.decodeToLongWithBounds(buffer, previousStart, cursor));
@@ -916,6 +928,10 @@ class HeapStateChunk implements StateChunk {
                             currentLongLongArrayMap = new HeapLongLongArrayMap(this);
                             currentLongLongArrayMap.reallocate((int) currentSubSize);
                             break;
+                        case Type.INDEXED_RELATION:
+                            currentLongLongArrayMap = new HeapIndexedRelationship(this);
+                            currentLongLongArrayMap.reallocate((int) currentSubSize);
+                            break;
                     }
                 } else {
                     switch (currentChunkElemType) {
@@ -950,6 +966,7 @@ class HeapStateChunk implements StateChunk {
                                 currentMapLongKey = CoreConstants.NULL_LONG;
                             }
                             break;
+                        case Type.INDEXED_RELATION:
                         case Type.LONG_TO_LONG_ARRAY_MAP:
                             if (currentMapLongKey != CoreConstants.NULL_LONG) {
                                 currentLongLongArrayMap.put(currentMapLongKey, Base64.decodeToLongWithBounds(buffer, previousStart, cursor));
@@ -979,6 +996,7 @@ class HeapStateChunk implements StateChunk {
                             currentMapLongKey = CoreConstants.NULL_LONG;
                         }
                         break;
+                    case Type.INDEXED_RELATION:
                     case Type.LONG_TO_LONG_ARRAY_MAP:
                         if (currentMapLongKey == CoreConstants.NULL_LONG) {
                             currentMapLongKey = Base64.decodeToLongWithBounds(buffer, previousStart, cursor);
@@ -1064,6 +1082,7 @@ class HeapStateChunk implements StateChunk {
                     }
                     toInsert = currentLongLongMap;
                     break;
+                case Type.INDEXED_RELATION:
                 case Type.LONG_TO_LONG_ARRAY_MAP:
                     if (currentMapLongKey != CoreConstants.NULL_LONG) {
                         currentLongLongArrayMap.put(currentMapLongKey, Base64.decodeToLongWithBounds(buffer, previousStart, cursor));

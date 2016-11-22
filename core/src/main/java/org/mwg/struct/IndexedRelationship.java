@@ -1,19 +1,20 @@
 package org.mwg.struct;
 
+import org.mwg.Callback;
 import org.mwg.Node;
 
 public interface IndexedRelationship {
 
-    int size();
+    long size();
 
-    long get(int index);
+    long[] all();
 
-    void set(int index, long value);
+    IndexedRelationship add(Node node, String... attributeNames);
 
-    IndexedRelationship add(Node node, String attributeNames);
+    IndexedRelationship remove(Node node, String... attributeNames);
 
-    IndexedRelationship remove(Node node, String attributeNames);
+    IndexedRelationship find(String query, Callback<Node[]> callback);
 
     IndexedRelationship clear();
-
+    
 }

@@ -12,14 +12,14 @@ class HeapLongLongArrayMap implements LongLongArrayMap {
 
     private final HeapStateChunk parent;
 
-    private int mapSize = 0;
-    private int capacity = 0;
+    int mapSize = 0;
+    int capacity = 0;
 
-    private long[] keys = null;
-    private long[] values = null;
+    long[] keys = null;
+    long[] values = null;
 
-    private int[] nexts = null;
-    private int[] hashs = null;
+    int[] nexts = null;
+    int[] hashs = null;
 
     HeapLongLongArrayMap(final HeapStateChunk p_listener) {
         this.parent = p_listener;

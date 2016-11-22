@@ -265,6 +265,8 @@ public class BaseNode implements Node {
                 }
                 return true;
             case Type.RELATION:
+            case Type.INDEXED_RELATION:
+            case Type.MULTI_INDEXED_RELATION:
             case Type.STRING_TO_LONG_MAP:
             case Type.LONG_TO_LONG_MAP:
             case Type.LONG_TO_LONG_ARRAY_MAP:
@@ -758,6 +760,7 @@ public class BaseNode implements Node {
                                 builder.append("}");
                                 break;
                             }
+                            case Type.INDEXED_RELATION:
                             case Type.LONG_TO_LONG_ARRAY_MAP: {
                                 builder.append(",\"");
                                 builder.append(resolveName);
@@ -826,12 +829,6 @@ public class BaseNode implements Node {
             builder.append("}");
         }
         return builder.toString();
-    }
-
-
-    @Override
-    public Relationship getOrCreateRel(String name) {
-        return (Relationship) getOrCreate(name, Type.RELATION);
     }
 
     @Override

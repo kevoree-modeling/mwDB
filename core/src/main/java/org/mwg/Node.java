@@ -115,16 +115,12 @@ public interface Node {
     Object getOrCreate(String name, byte type);
 
     /**
-     * Gets or creates atomically a complex type (such as Maps).<br>
-     * It returns a mutable Map.
      *
      * @param name                  The name of the object to create. Must be unique per node.
      * @param externalAttributeType The type of the external attribute type.
      * @return A Map instance that can be altered at the current world and time.
      */
     Object getOrCreateExternal(String name, String externalAttributeType);
-
-    Relationship getOrCreateRel(String name);
 
     /**
      * Removes an attribute from the node.
