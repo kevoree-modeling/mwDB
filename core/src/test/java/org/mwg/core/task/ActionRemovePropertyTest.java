@@ -25,7 +25,7 @@ public class ActionRemovePropertyTest extends AbstractActionTest {
 
         task()
                 .then(inject("nodeName"))
-                .then(asGlobalVar("name"))
+                .then(defineAsGlobalVar("name"))
                 .then(createNode())
                 .then(setAttribute("name", Type.STRING, "nodeName"))
                 .then(removeAttribute("name"))
@@ -53,7 +53,7 @@ public class ActionRemovePropertyTest extends AbstractActionTest {
         final long[] ids = new long[5];
         task()
                 .then(inject("node"))
-                .then(asGlobalVar("nodeName"))
+                .then(defineAsGlobalVar("nodeName"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {

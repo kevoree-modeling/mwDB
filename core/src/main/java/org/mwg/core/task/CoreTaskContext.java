@@ -87,6 +87,11 @@ class CoreTaskContext implements TaskContext {
         return resolved;
     }
 
+    @Override
+    public boolean isGlobal(String name) {
+        return _globalVariables.containsKey(name);
+    }
+
     private TaskResult internal_deep_resolve(final String name) {
         TaskResult resolved = null;
         if (this._localVariables != null) {
@@ -111,7 +116,7 @@ class CoreTaskContext implements TaskContext {
         //if(input instanceof TaskResult){
         //    return (TaskResult) input;
         //} else {
-            return new CoreTaskResult(input, false);
+        return new CoreTaskResult(input, false);
         //}
     }
 

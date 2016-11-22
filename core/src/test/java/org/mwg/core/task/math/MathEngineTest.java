@@ -13,7 +13,7 @@ import org.mwg.task.TaskResult;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.mwg.core.task.Actions.asGlobalVar;
+import static org.mwg.core.task.Actions.defineAsGlobalVar;
 import static org.mwg.core.task.Actions.inject;
 import static org.mwg.core.task.Actions.task;
 
@@ -78,7 +78,7 @@ public class MathEngineTest {
             public void on(Boolean result) {
                 task()
                         .then(inject(55))
-                        .then(asGlobalVar("aVar"))
+                        .then(defineAsGlobalVar("aVar"))
                         .thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
@@ -88,7 +88,7 @@ public class MathEngineTest {
                             }
                         })
                         .then(inject(new int[]{1, 2}))
-                        .then(asGlobalVar("anArray"))
+                        .then(defineAsGlobalVar("anArray"))
                         .thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
@@ -98,7 +98,7 @@ public class MathEngineTest {
                             }
                         })
                         .then(inject(new int[]{1}))
-                        .then(asGlobalVar("anArray"))
+                        .then(defineAsGlobalVar("anArray"))
                         .thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {

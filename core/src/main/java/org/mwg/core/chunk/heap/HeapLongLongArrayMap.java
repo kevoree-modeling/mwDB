@@ -194,7 +194,7 @@ class HeapLongLongArrayMap implements LongLongArrayMap {
     }
 
     @Override
-    public final void remove(final long requestKey, final long requestValue) {
+    public final void delete(final long requestKey, final long requestValue) {
         synchronized (parent) {
             if (keys != null && mapSize != 0) {
                 long hashCapacity = capacity * 2;

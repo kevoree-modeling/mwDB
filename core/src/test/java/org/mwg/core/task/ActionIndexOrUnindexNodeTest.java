@@ -20,7 +20,7 @@ public class ActionIndexOrUnindexNodeTest {
                         .then(createNode())
                         .then(Actions.setAttribute("name", Type.STRING, "root"))
                         .then(Actions.indexNode("indexName", "name"))
-                        .then(Actions.asGlobalVar("nodeIndexed"))
+                        .then(Actions.defineAsGlobalVar("nodeIndexed"))
                         .then(Actions.readIndexAll("indexName"))
                         .thenDo(new ActionFunction() {
                             @Override

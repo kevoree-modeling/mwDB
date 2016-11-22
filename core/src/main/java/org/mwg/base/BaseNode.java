@@ -598,7 +598,7 @@ public class BaseNode implements Node {
                 }
             }
             //TODO AUTOMATIC UPDATE
-            indexMap.remove(flatQuery.hash(), nodeToIndex.id());
+            indexMap.delete(flatQuery.hash(), nodeToIndex.id());
         }
         if (Constants.isDefined(callback)) {
             callback.on(true);

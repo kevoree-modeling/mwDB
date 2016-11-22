@@ -17,6 +17,8 @@ public interface TaskContext {
 
     TaskResult variable(String name);
 
+    boolean isGlobal(String name);
+
     TaskResult wrap(Object input);
 
     TaskResult wrapClone(Object input);

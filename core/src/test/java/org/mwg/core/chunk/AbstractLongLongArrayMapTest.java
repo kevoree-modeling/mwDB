@@ -61,11 +61,11 @@ public abstract class AbstractLongLongArrayMapTest {
         Assert.assertTrue(map.get(10)[1] == 10);
 
         //make a remove call
-        map.remove(10, 10);
+        map.delete(10, 10);
         Assert.assertTrue(map.size() == CoreConstants.MAP_INITIAL_CAPACITY + 2 - 1);
         Assert.assertTrue(map.get(10).length == 1);
 
-        map.remove(CoreConstants.BEGINNING_OF_TIME, 0);
+        map.delete(CoreConstants.BEGINNING_OF_TIME, 0);
         Assert.assertTrue(map.size() == CoreConstants.MAP_INITIAL_CAPACITY + 2 - 2);
         getRes = map.get(CoreConstants.BEGINNING_OF_TIME);
         Assert.assertTrue(getRes.length == CoreConstants.MAP_INITIAL_CAPACITY - 1);

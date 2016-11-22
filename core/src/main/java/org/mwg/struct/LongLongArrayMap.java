@@ -26,7 +26,7 @@ public interface LongLongArrayMap extends Map {
      * @param key   to delete key
      * @param value to delete value
      */
-    void remove(long key, long value);
+    void delete(long key, long value);
 
     /**
      * Iterate over all Key/value tuple of the cam

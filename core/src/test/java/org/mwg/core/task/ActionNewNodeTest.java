@@ -23,10 +23,10 @@ public class ActionNewNodeTest extends AbstractActionTest {
         final long id[] = new long[1];
         task()
                 .then(inject(15))
-                .then(asGlobalVar("world"))
+                .then(defineAsGlobalVar("world"))
                 .then(setWorld("{{world}}"))
                 .then(inject(587))
-                .then(asGlobalVar("time"))
+                .then(defineAsGlobalVar("time"))
                 .then(setTime("{{time[0]}}"))
                 .then(createNode())
                 .thenDo(new ActionFunction() {

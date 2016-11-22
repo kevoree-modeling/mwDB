@@ -5,10 +5,7 @@ import org.junit.Test;
 import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 
-import static org.mwg.core.task.Actions.asGlobalVar;
-import static org.mwg.core.task.Actions.inject;
-import static org.mwg.core.task.Actions.setTime;
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.*;
 
 public class ActionTimeTest extends AbstractActionTest {
 
@@ -17,7 +14,7 @@ public class ActionTimeTest extends AbstractActionTest {
         initGraph();
         task()
                 .then(inject(10))
-                .then(asGlobalVar("time"))
+                .then(defineAsGlobalVar("time"))
                 .then(setTime("{{time}}"))
                 .thenDo(new ActionFunction() {
                     @Override

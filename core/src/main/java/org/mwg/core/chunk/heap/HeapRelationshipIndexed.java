@@ -7,9 +7,9 @@ import org.mwg.plugin.NodeState;
 import org.mwg.struct.IndexedRelationship;
 import org.mwg.struct.LongLongArrayMapCallBack;
 
-public class HeapIndexedRelationship extends HeapLongLongArrayMap implements IndexedRelationship {
+class HeapRelationshipIndexed extends HeapLongLongArrayMap implements IndexedRelationship {
 
-    HeapIndexedRelationship(HeapStateChunk p_listener) {
+    HeapRelationshipIndexed(HeapStateChunk p_listener) {
         super(p_listener);
     }
 
@@ -41,7 +41,7 @@ public class HeapIndexedRelationship extends HeapLongLongArrayMap implements Ind
         if (isIndex) {
             put(flatQuery.hash(), node.id());
         } else {
-            remove(flatQuery.hash(), node.id());
+            delete(flatQuery.hash(), node.id());
         }
     }
 
@@ -71,8 +71,8 @@ public class HeapIndexedRelationship extends HeapLongLongArrayMap implements Ind
         return flat;
     }
 
-    HeapIndexedRelationship cloneIRelFor(HeapStateChunk newParent) {
-        HeapIndexedRelationship cloned = new HeapIndexedRelationship(newParent);
+    HeapRelationshipIndexed cloneIRelFor(HeapStateChunk newParent) {
+        HeapRelationshipIndexed cloned = new HeapRelationshipIndexed(newParent);
         cloned.mapSize = mapSize;
         cloned.capacity = capacity;
         if (keys != null) {

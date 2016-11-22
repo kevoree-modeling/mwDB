@@ -19,7 +19,7 @@ class ActionAsVar extends AbstractAction {
     @Override
     public void eval(final TaskContext context) {
         final TaskResult previousResult = context.result();
-        if (_global) {
+        if (context.isGlobal(_name)) {
             context.setGlobalVariable(context.template(_name), previousResult);
         } else {
             context.setVariable(context.template(_name), previousResult);
@@ -29,12 +29,7 @@ class ActionAsVar extends AbstractAction {
 
     @Override
     public String toString() {
-        if (_global) {
-            return "asGlobalVar(\'" + _name + "\')";
-        } else {
-            return "asVar(\'" + _name + "\')";
-        }
+        return "asVar(\'" + _name + "\')";
     }
-
 
 }

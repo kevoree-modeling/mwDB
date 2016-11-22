@@ -24,7 +24,7 @@ public class ActionSetPropertyTest extends AbstractActionTest {
         final long[] id = new long[1];
         task()
                 .then(inject("node"))
-                .then(asGlobalVar("nodeName"))
+                .then(defineAsGlobalVar("nodeName"))
                 .then(createNode())
                 .then(setAttribute("name", Type.STRING, "{{nodeName}}"))
                 .thenDo(new ActionFunction() {
@@ -50,7 +50,7 @@ public class ActionSetPropertyTest extends AbstractActionTest {
         final long[] ids = new long[5];
         task()
                 .then(inject("node"))
-                .then(asGlobalVar("nodeName"))
+                .then(defineAsGlobalVar("nodeName"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {

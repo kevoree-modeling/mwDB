@@ -17,7 +17,7 @@ public class ActionTraverseTest extends AbstractActionTest {
     public void test() {
         initGraph();
         task().then(readIndexAll("nodes"))
-                .then(traverse("children"))
+                .then(get("children"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
@@ -99,7 +99,7 @@ public class ActionTraverseTest extends AbstractActionTest {
 
         task()
                 .then(inject(12))
-                .then(asGlobalVar("time"))
+                .then(defineAsGlobalVar("time"))
                 .then(setTime("{{time}}"))
                 .then(readIndex("rootIndex", "name=root2"))
                 .then(traverseIndex("childrenIndexed", "name","node2"))
@@ -122,7 +122,7 @@ public class ActionTraverseTest extends AbstractActionTest {
                     }
                 }).execute(graph, null);
 
-        task().then(inject(13)).then(asGlobalVar("time")).then(setTime("{{time}}"))
+        task().then(inject(13)).then(defineAsGlobalVar("time")).then(setTime("{{time}}"))
                 .then(readIndex("rootIndex", "name=root2"))
                 .then(traverseIndexAll("childrenIndexed"))
                 .thenDo(new ActionFunction() {

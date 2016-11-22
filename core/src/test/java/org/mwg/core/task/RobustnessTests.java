@@ -72,7 +72,7 @@ public class RobustnessTests {
     public void robustnessAsVar() {
         boolean exceptionCaught = false;
         try {
-            task().then(inject(1)).then(asGlobalVar(null)).execute(_graph, null);
+            task().then(inject(1)).then(defineAsGlobalVar(null)).execute(_graph, null);
         } catch (RuntimeException npe) {
             exceptionCaught = true;
         } catch (Exception e) {
@@ -427,7 +427,7 @@ public class RobustnessTests {
         //relationName
         boolean exceptionCaught = false;
         try {
-            task().then(inject(_graph.newNode(0, 0))).then(asGlobalVar("x")).then(addToRelationship(null, "x")).execute(_graph, null);
+            task().then(inject(_graph.newNode(0, 0))).then(defineAsGlobalVar("x")).then(addToRelationship(null, "x")).execute(_graph, null);
         } catch (RuntimeException e) {
             exceptionCaught = true;
         } catch (Exception e) {
@@ -452,7 +452,7 @@ public class RobustnessTests {
         //relationName
         boolean exceptionCaught = false;
         try {
-            task().then(inject(_graph.newNode(0, 0))).then(asGlobalVar("x")).then(removeFromRelationship(null, "x")).execute(_graph, null);
+            task().then(inject(_graph.newNode(0, 0))).then(defineAsGlobalVar("x")).then(removeFromRelationship(null, "x")).execute(_graph, null);
         } catch (RuntimeException e) {
             exceptionCaught = true;
         } catch (Exception e) {

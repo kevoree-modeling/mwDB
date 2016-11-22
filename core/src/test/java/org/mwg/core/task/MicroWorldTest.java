@@ -26,7 +26,7 @@ public class MicroWorldTest {
                                 .then(createNode())
                                 .then(setAttribute("name", Type.STRING, "room_{{i}}"))
                                 .then(indexNode("rooms", "name"))
-                                .then(defineVar("parentRoom"))
+                                .then(defineAsVar("parentRoom"))
                                 .loop("1", "3",
                                         task()
                                                 .then(createNode())

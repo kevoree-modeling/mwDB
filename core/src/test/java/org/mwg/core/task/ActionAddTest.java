@@ -27,7 +27,7 @@ public class ActionAddTest extends AbstractActionTest {
         task()
                 .then(createNode())
                 .then(inject(relatedNode))
-                .then(asGlobalVar("x"))
+                .then(defineAsGlobalVar("x"))
                 .then(addToRelationship("friend", "x"))
                 .thenDo(new ActionFunction() {
                     @Override
@@ -57,7 +57,7 @@ public class ActionAddTest extends AbstractActionTest {
         final long[] ids = new long[5];
         task()
                 .then(inject(relatedNode))
-                .then(asGlobalVar("x"))
+                .then(defineAsGlobalVar("x"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
@@ -107,7 +107,7 @@ public class ActionAddTest extends AbstractActionTest {
                     }
                 })
                 .then(inject(relatedNode))
-                .then(asGlobalVar("x"))
+                .then(defineAsGlobalVar("x"))
                 .then(addToRelationship("friend", "x"))
                 .thenDo(new ActionFunction() {
                     @Override

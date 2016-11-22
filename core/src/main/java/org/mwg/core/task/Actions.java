@@ -54,9 +54,20 @@ public class Actions {
      * @param variableName identifier of this result
      * @return this task to chain actions (fluent API)
      */
-    public static Action defineAsVar(String variableName) {
-        return new ActionDefineAsVar(variableName);
+    public static Action defineAsGlobalVar(String variableName) {
+        return new ActionDefineAsVar(variableName, true);
     }
+
+    /**
+     * Initialise a new scope context for a variable (copy the parent and isolate all set, such as re-definition in imperative languages)
+     *
+     * @param variableName identifier of this result
+     * @return this task to chain actions (fluent API)
+     */
+    public static Action defineAsVar(String variableName) {
+        return new ActionDefineAsVar(variableName, false);
+    }
+
 
     /**
      * Declare a new local variable.
@@ -108,7 +119,6 @@ public class Actions {
     public static Action addToVar(String variableName) {
         return new ActionAddToVar(variableName);
     }
-
 
     //Attribute manipulation zone
 

@@ -227,7 +227,7 @@ class HeapStateChunk implements StateChunk {
                 toSet = new HeapRelationship(this, null);
                 break;
             case Type.INDEXED_RELATION:
-                toSet = new HeapIndexedRelationship(this);
+                toSet = new HeapRelationshipIndexed(this);
                 break;
             case Type.MATRIX:
                 toSet = new HeapMatrix(this, null);
@@ -467,7 +467,7 @@ class HeapStateChunk implements StateChunk {
                         break;
                     case Type.INDEXED_RELATION:
                         if (casted._v[i] != null) {
-                            _v[i] = ((HeapIndexedRelationship) casted._v[i]).cloneIRelFor(this);
+                            _v[i] = ((HeapRelationshipIndexed) casted._v[i]).cloneIRelFor(this);
                         }
                         break;
                     case Type.LONG_TO_LONG_ARRAY_MAP:
@@ -929,7 +929,7 @@ class HeapStateChunk implements StateChunk {
                             currentLongLongArrayMap.reallocate((int) currentSubSize);
                             break;
                         case Type.INDEXED_RELATION:
-                            currentLongLongArrayMap = new HeapIndexedRelationship(this);
+                            currentLongLongArrayMap = new HeapRelationshipIndexed(this);
                             currentLongLongArrayMap.reallocate((int) currentSubSize);
                             break;
                     }

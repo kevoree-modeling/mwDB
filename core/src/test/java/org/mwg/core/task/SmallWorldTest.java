@@ -24,10 +24,10 @@ public class SmallWorldTest {
                 task()
                         .then(setTime("0"))
                         .then(setWorld("0"))
-                        .then(createNode()).then(setAttribute("name", Type.STRING, "room0")).then(indexNode("rooms", "name")).then(asVar("room0"))
-                        .then(createNode()).then(setAttribute("name", Type.STRING, "room01")).then(indexNode("rooms", "name")).then(asVar("room01"))
-                        .then(createNode()).then(setAttribute("name", Type.STRING, "room001")).then(indexNode("rooms", "name")).then(asVar("room001"))
-                        .then(createNode()).then(setAttribute("name", Type.STRING, "room0001")).then(indexNode("rooms", "name")).then(asVar("room0001"))
+                        .then(createNode()).then(setAttribute("name", Type.STRING, "room0")).then(indexNode("rooms", "name")).then(setAsVar("room0"))
+                        .then(createNode()).then(setAttribute("name", Type.STRING, "room01")).then(indexNode("rooms", "name")).then(setAsVar("room01"))
+                        .then(createNode()).then(setAttribute("name", Type.STRING, "room001")).then(indexNode("rooms", "name")).then(setAsVar("room001"))
+                        .then(createNode()).then(setAttribute("name", Type.STRING, "room0001")).then(indexNode("rooms", "name")).then(setAsVar("room0001"))
                         .then(readVar("room0")).then(addToRelationship("rooms", "room01"))
                         .then(readVar("room01")).then(addToRelationship("rooms", "room001"))
                         .then(readVar("room001")).then(addToRelationship("rooms", "room0001"))
@@ -36,7 +36,7 @@ public class SmallWorldTest {
                                         .then(createNode())
                                         .then(setAttribute("id", Type.STRING, "sensor_{{it}}"))
                                         .then(indexNode("sensors", "id"))
-                                        .then(defineVar("sensor"))
+                                        .then(defineAsVar("sensor"))
                                         .ifThenElse(cond("i % 4 == 0"), task().then(readVar("room0")).then(addToRelationship("sensors", "sensor")),
                                                 task().ifThenElse(cond("i % 4 == 1"), task().then(readVar("room01")).then(addToRelationship("sensors", "sensor")),
                                                         task().ifThenElse(cond("i % 4 == 2"), task().then(readVar("room001")).then(addToRelationship("sensors", "sensor")),
