@@ -16,29 +16,6 @@ public class IndexTest {
         testIndexedRelation(new GraphBuilder().withScheduler(new NoopScheduler()).build());
     }
 
-    /**
-     * @ignore ts
-     */
-    @Test
-    public void offHeapTest() {
-        /*
-        OffHeapByteArray.alloc_counter = 0;
-        OffHeapDoubleArray.alloc_counter = 0;
-        OffHeapLongArray.alloc_counter = 0;
-        OffHeapStringArray.alloc_counter = 0;
-
-        Unsafe.DEBUG_MODE = true;
-
-        test(new GraphBuilder().withScheduler(new NoopScheduler()).withOffHeapMemory().withMemorySize(10000).saveEvery(100).build());
-        testRelation(new GraphBuilder().withScheduler(new NoopScheduler()).withOffHeapMemory().withMemorySize(10000).saveEvery(100).build());
-
-        Assert.assertTrue(OffHeapByteArray.alloc_counter == 0);
-        Assert.assertTrue(OffHeapDoubleArray.alloc_counter == 0);
-        Assert.assertTrue(OffHeapLongArray.alloc_counter == 0);
-        Assert.assertTrue(OffHeapStringArray.alloc_counter == 0);
-        */
-    }
-
     private void testRelation(final Graph graph) {
         graph.connect(new Callback<Boolean>() {
             @Override
@@ -113,7 +90,7 @@ public class IndexTest {
                     }
                 }, "name", "MyName");
 
-                irel.findByQuery(graph.newQuery().add("name","MyName"),new Callback<Node[]>() {
+                irel.findByQuery(graph.newQuery().add("name", "MyName"), new Callback<Node[]>() {
                     @Override
                     public void on(Node[] result) {
                         Assert.assertEquals(result.length, 1);
@@ -121,7 +98,7 @@ public class IndexTest {
                         passed[0]++;
                     }
                 });
-                
+
                 Assert.assertEquals(3, passed[0]);
 
                 graph.disconnect(null);
