@@ -45,7 +45,7 @@ public interface Node {
      * The type of the returned object (i.e. of the attribute) is given by {@link #type(String)}
      * (typed by one of the Type)
      */
-    Object getByIndex(long index);
+    Object getAt(long index);
 
     /**
      * Returns the type of an attribute. The returned value is one of {@link Type}.
@@ -55,7 +55,7 @@ public interface Node {
      */
     byte type(String name);
 
-    byte typeByIndex(long index);
+    byte typeAt(long index);
 
     /**
      * Returns the type name of the current node (case of typed node).
@@ -76,11 +76,20 @@ public interface Node {
     /**
      * Sets the value of an attribute of this node for its current world and time.<br>
      *
+     * @param index Must be unique per node.
+     * @param type  Must be one of {@link Type} int value.
+     * @param value Must be consistent with the propertyType.
+     */
+    Node setAt(long index, byte type, Object value);
+
+    /**
+     * Sets the value of an attribute of this node for its current world and time.<br>
+     *
      * @param name  Must be unique per node.
      * @param type  Must be one of {@link Type} int value.
      * @param value Must be consistent with the propertyType.
      */
-    Node force(String name, byte type, Object value);
+    Node forceSet(String name, byte type, Object value);
 
     /**
      * Sets the value of an attribute of this node for its current world and time.<br>
@@ -89,7 +98,7 @@ public interface Node {
      * @param type  Must be one of {@link Type} int value.
      * @param value Must be consistent with the propertyType.
      */
-    Node setByIndex(long index, byte type, Object value);
+    Node forceSetAt(long index, byte type, Object value);
 
     /**
      * Removes an attribute from the node.
@@ -98,7 +107,7 @@ public interface Node {
      */
     Node remove(String name);
 
-    Node removeByIndex(long index);
+    Node removeAt(long index);
 
     /**
      * Gets or creates atomically a complex mutable attribute (e.g. Maps).<br>
@@ -108,6 +117,15 @@ public interface Node {
      * @return An instance that can be altered at the current world and time.
      */
     Object getOrCreate(String name, byte type, String... params);
+
+    /**
+     * Gets or creates atomically a complex mutable attribute (e.g. Maps).<br>
+     *
+     * @param index The name of the object to create. Must be unique per node.
+     * @param type  The type of the attribute. Must be one of {@link Type} int value.
+     * @return An instance that can be altered at the current world and time.
+     */
+    Object getOrCreateAt(long index, byte type, String... params);
 
     /**
      * Retrieves the named relation.
@@ -123,7 +141,7 @@ public interface Node {
      * @param relationIndex index of the relation
      * @param callback      callback to be notified when the relation has been resolved
      */
-    void relationByIndex(long relationIndex, Callback<Node[]> callback);
+    void relationAt(long relationIndex, Callback<Node[]> callback);
 
     /**
      * Adds a node to a relation.<br>
@@ -135,12 +153,29 @@ public interface Node {
     Node addToRelation(String relationName, Node relatedNode, String... indexedAttributes);
 
     /**
+     * Adds a node to a relation.<br>
+     * If the relation doesn't exist, it is created on the fly.<br>
+     *
+     * @param relationIndex The name of the relation in which the node is added.
+     * @param relatedNode   The node to insert in the relation.
+     */
+    Node addToRelationAt(long relationIndex, Node relatedNode, String... indexedAttributes);
+
+    /**
      * Removes a node from a relation.
      *
      * @param relationName The name of the relation.
      * @param relatedNode  The node to remove.
      */
     Node removeFromRelation(String relationName, Node relatedNode, String... indexedAttributes);
+
+    /**
+     * Removes a node from a relation.
+     *
+     * @param relationIndex The name of the relation.
+     * @param relatedNode   The node to remove.
+     */
+    Node removeFromRelationAt(long relationIndex, Node relatedNode, String... indexedAttributes);
 
     /**
      * Computes the time dephasing of this node, i.e. the difference between last modification and the timepoint of the current node.

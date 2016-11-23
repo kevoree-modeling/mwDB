@@ -50,7 +50,7 @@ class ActionSet implements Action {
                 if (loopObj instanceof BaseNode) {
                     Node loopNode = (Node) loopObj;
                     if(_force){
-                        loopNode.force(flatRelationName, _propertyType, toSet);
+                        loopNode.forceSet(flatRelationName, _propertyType, toSet);
                     } else {
                         loopNode.set(flatRelationName, _propertyType, toSet);
                     }
@@ -63,7 +63,7 @@ class ActionSet implements Action {
     @Override
     public String toString() {
         if(_force){
-            return "force(\'" + _relationName + "\'" + Constants.QUERY_SEP + "\'" + _propertyType + "\'" + Constants.QUERY_SEP + "\'" + _variableNameToSet + "\')";
+            return "forceSet(\'" + _relationName + "\'" + Constants.QUERY_SEP + "\'" + _propertyType + "\'" + Constants.QUERY_SEP + "\'" + _variableNameToSet + "\')";
         } else {
             return "setAttribute(\'" + _relationName + "\'" + Constants.QUERY_SEP + "\'" + _propertyType + "\'" + Constants.QUERY_SEP + "\'" + _variableNameToSet + "\')";
         }
