@@ -18,32 +18,32 @@ public class WSServerTest {
                 .build();
         graph.connect(new Callback<Boolean>() {
             @Override
-            public void on(Boolean result) {
+            public void on(Boolean connectResult) {
                 WSServer graphServer = new WSServer(graph, 8050);
                 graphServer.start();
                 System.out.println("Connected!");
 
 
                 Node root = graph.newNode(0, 0);
-                root.set("name", "root");
+                root.set("name", Type.STRING, "root");
 
                 Node n0 = graph.newNode(0, 0);
-                n0.set("name", "n0");
+                n0.set("name", Type.STRING, "n0");
 
                 Node n1 = graph.newNode(0, 0);
-                n1.set("name", "n0");
+                n1.set("name", Type.STRING, "n0");
 
-                root.add("children", n0);
-                root.add("children", n1);
+                root.addToRelation("children", n0);
+                root.addToRelation("children", n1);
 
-                graph.index("nodes", root, "name", null);
-
-                graph.getIndexNode(0, 0, "nodes", new Callback<Node>() {
+                graph.index(0, 0, "nodes", new Callback<NodeIndex>() {
                     @Override
-                    public void on(Node result) {
-                        System.out.println(result.toString());
+                    public void on(NodeIndex indexNode) {
+                        indexNode.addToIndex(root, "name");
 
-                        StateChunk chunk = (StateChunk) graph.space().get(((BaseNode) result)._index_stateChunk);
+                        System.out.println(indexNode.toString());
+
+                        StateChunk chunk = (StateChunk) graph.space().get(((BaseNode) indexNode)._index_stateChunk);
 
                         Buffer buffer = graph.newBuffer();
                         chunk.save(buffer);
@@ -54,14 +54,12 @@ public class WSServerTest {
                     }
                 });
 
-
             }
         });
     }
 
     @Test
     public void test() {
-
 
 
         final Graph graph = new GraphBuilder()
@@ -71,8 +69,19 @@ public class WSServerTest {
             @Override
             public void on(Boolean result) {
                 Node node = graph.newNode(0, 0);
-                node.set("name", "hello");
-                graph.index("nodes", node, "name", null);
+                node.set("name", Type.STRING, "hello");
+
+                graph.index(0, 0, "nodes", new Callback<NodeIndex>() {
+
+                    @Override
+                    public void on(NodeIndex indexNode) {
+                        indexNode.addToIndex(node, "name");
+
+
+                    }
+                });
+
+                //   graph.index("nodes", node, "name", null);
 
                 Assert.assertEquals("{\"world\":0,\"time\":0,\"id\":1,\"name\":\"hello\"}", node.toString());
 
@@ -92,44 +101,61 @@ public class WSServerTest {
                 graph2.connect(new Callback<Boolean>() {
                     @Override
                     public void on(Boolean result1) {
-                        graph2.findAll(0, 0, "nodes", new Callback<Node[]>() {
+
+                        graph2.index(0, 0, "nodes", new Callback<NodeIndex>() {
                             @Override
-                            public void on(Node[] result1) {
-
-                                Assert.assertEquals(result1[0].toString(), node.toString());
-
-                                Node newNode = graph2.newNode(0, 0);
-                                newNode.set("name", "hello2");
-
-                                Assert.assertEquals("{\"world\":0,\"time\":0,\"id\":137438953473,\"name\":\"hello2\"}", newNode.toString());
-
-                                graph2.index("nodes", newNode, "name", null);
-
-                                graph2.findAll(0, 0, "nodes", new Callback<Node[]>() {
+                            public void on(NodeIndex indexNodes) {
+                                indexNodes.findAll(new Callback<Node[]>() {
                                     @Override
-                                    public void on(Node[] result) {
-                                        Assert.assertEquals(2, result.length);
-                                    }
-                                });
+                                    public void on(Node[] result1) {
+                                        Assert.assertEquals(result1[0].toString(), node.toString());
 
-                                graph2.save(new Callback<Boolean>() {
-                                    @Override
-                                    public void on(Boolean result) {
-                                        //ok now try to access new node from graph
-                                        graph.findAll(0, 0, "nodes", new Callback<Node[]>() {
+                                        Node newNode = graph2.newNode(0, 0);
+                                        newNode.set("name", Type.STRING, "hello2");
+
+                                        Assert.assertEquals("{\"world\":0,\"time\":0,\"id\":137438953473,\"name\":\"hello2\"}", newNode.toString());
+
+                                        graph2.index(0, 0, "nodes", new Callback<NodeIndex>() {
                                             @Override
-                                            public void on(Node[] result) {
-                                                Assert.assertEquals(2, result.length);
-                                                Assert.assertEquals(result[0].toString(), "{\"world\":0,\"time\":0,\"id\":1,\"name\":\"hello\"}");
-                                                Assert.assertEquals(result[1].toString(), "{\"world\":0,\"time\":0,\"id\":137438953473,\"name\":\"hello2\"}");
-                                                latch.countDown();
+                                            public void on(NodeIndex graph2Nodes) {
+                                                graph2Nodes.addToIndex(newNode, "name");
+                                                graph2Nodes.findAll(new Callback<Node[]>() {
+                                                    @Override
+                                                    public void on(Node[] result) {
+                                                        Assert.assertEquals(2, result.length);
+                                                    }
+                                                });
                                             }
                                         });
 
+
+                                        graph2.save(new Callback<Boolean>() {
+                                            @Override
+                                            public void on(Boolean result) {
+                                                //ok now try to access new node from graph
+
+                                                graph.index(0, 0, "nodes", new Callback<NodeIndex>() {
+                                                    @Override
+                                                    public void on(NodeIndex grapNodeIndex) {
+                                                        grapNodeIndex.findAll(new Callback<Node[]>() {
+                                                            @Override
+                                                            public void on(Node[] result) {
+                                                                Assert.assertEquals(2, result.length);
+                                                                Assert.assertEquals(result[0].toString(), "{\"world\":0,\"time\":0,\"id\":1,\"name\":\"hello\"}");
+                                                                Assert.assertEquals(result[1].toString(), "{\"world\":0,\"time\":0,\"id\":137438953473,\"name\":\"hello2\"}");
+                                                                latch.countDown();
+                                                            }
+                                                        });
+                                                    }
+                                                });
+
+                                            }
+                                        });
                                     }
                                 });
                             }
                         });
+
                     }
                 });
 
