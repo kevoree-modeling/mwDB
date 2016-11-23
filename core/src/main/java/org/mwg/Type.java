@@ -36,7 +36,7 @@ public class Type {
      */
     public static String typeName(byte p_type) {
         switch (p_type) {
-            /** Primitives */
+            /* Primitives */
             case Type.BOOL:
                 return "boolean";
             case Type.STRING:
@@ -47,14 +47,14 @@ public class Type {
                 return "int";
             case Type.DOUBLE:
                 return "double";
-            /** Arrays */
+            /* Arrays */
             case Type.DOUBLE_ARRAY:
                 return "double[]";
             case Type.LONG_ARRAY:
                 return "long[]";
             case Type.INT_ARRAY:
                 return "int[]";
-            /** Maps */
+            /* Maps */
             case Type.LONG_TO_LONG_MAP:
                 return "map(long->long)";
             case Type.LONG_TO_LONG_ARRAY_MAP:
