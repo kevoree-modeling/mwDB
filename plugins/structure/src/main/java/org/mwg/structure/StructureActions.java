@@ -4,26 +4,26 @@ import org.mwg.structure.action.NTreeInsertTo;
 import org.mwg.structure.action.NTreeNearestN;
 import org.mwg.structure.action.NTreeNearestNWithinRadius;
 import org.mwg.structure.action.NTreeNearestWithinRadius;
-import org.mwg.task.Task;
+import org.mwg.task.Action;
 
-import static org.mwg.task.Actions.newTask;
+import static org.mwg.core.task.Actions.pluginAction;
 
 public class StructureActions {
 
-    public static Task nTreeInsertTo(String path) {
-        return newTask().action(NTreeInsertTo.NAME, path);
+    public static Action nTreeInsertTo(String path) {
+        return pluginAction(NTreeInsertTo.NAME, path);
     }
 
-    public static Task nTreeNearestN(String pathOrVar) {
-        return newTask().action(NTreeNearestN.NAME, pathOrVar);
+    public static Action nTreeNearestN(String pathOrVar) {
+        return pluginAction(NTreeNearestN.NAME, pathOrVar);
     }
 
-    public static Task nTreeNearestWithinRadius(String pathOrVar) {
-        return newTask().action(NTreeNearestWithinRadius.NAME, pathOrVar);
+    public static Action nTreeNearestWithinRadius(String pathOrVar) {
+        return pluginAction(NTreeNearestWithinRadius.NAME, pathOrVar);
     }
 
-    public static Task nTreeNearestNWithinRadius(String pathOrVar) {
-        return newTask().action(NTreeNearestNWithinRadius.NAME, pathOrVar);
+    public static Action nTreeNearestNWithinRadius(String pathOrVar) {
+        return pluginAction(NTreeNearestNWithinRadius.NAME, pathOrVar);
     }
 
 }

@@ -3,6 +3,7 @@ package org.mwg.structure.tree;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mwg.*;
+import org.mwg.core.task.Actions;
 import org.mwg.structure.KDTreeJava;
 import org.mwg.structure.StructurePlugin;
 import org.mwg.structure.action.TraverseById;
@@ -15,11 +16,8 @@ import org.mwg.task.TaskResult;
 
 import java.util.Random;
 
-import static org.mwg.task.Actions.*;
+import static org.mwg.core.task.Actions.*;
 
-/**
- * Created by assaad on 30/08/16.
- */
 
 public class NDTreeTest {
 
@@ -35,11 +33,11 @@ public class NDTreeTest {
     }
 
     private static void printgraph(Node root, String name){
-        Task printer= newTask();
+        Task printer= task();
 
         printer
-                .defineVar("parent")
-                .loop("0","{{tabs}}",print("\t"))
+                .then(defineAsVar("parent"))
+            .loop("0","{{tabs}}",task().then(Actions.print("\t")))
 //                .then(new Action() {
 //                    @Override
 //                    public void eval(TaskContext context) {
@@ -81,15 +79,15 @@ public class NDTreeTest {
 //                        context.continueTask();
 //                    }
 //                })
-                .println("{{result}}")
-                .fromVar("tabs")
-                .math("tabs+1")
-                .defineVar("tabs")
-                .fromVar("parent")
-                .propertiesWithTypes(Type.RELATION)
-                .foreach(defineVar("traverseID").fromVar("parent").action(TraverseById.NAME,"{{traverseID}}").foreach(isolate(printer)));
+                .then(println("{{result}}"))
+                .then(readVar("tabs"))
+                .then(executeExpression("tabs+1"))
+                .then(defineAsVar("tabs"))
+                .then(readVar("parent"))
+                .then(attributesWithTypes(Type.RELATION))
+                .forEach(task().then(defineAsVar("traverseID")).then(readVar("parent")).then(pluginAction(TraverseById.NAME,"{{traverseID}}")).forEach(task().isolate(printer)));
 
-        TaskContext tc=printer.prepareWith(root.graph(), root, new Callback<TaskResult>() {
+        TaskContext tc=printer.prepare(root.graph(), root, new Callback<TaskResult>() {
             @Override
             public void on(TaskResult result) {
                 System.out.println("--");
@@ -168,7 +166,7 @@ public class NDTreeTest {
                         key[j] = random.nextDouble();
                     }
 
-                    temp.set("key", key);
+                    temp.set("key", Type.DOUBLE_ARRAY, key);
                     keys[i] = key;
                     values[i] = temp;
                 }
@@ -312,7 +310,7 @@ public class NDTreeTest {
                         key[j] = random.nextDouble();
                     }
 
-                    temp.set("key", key);
+                    temp.set("key", Type.DOUBLE_ARRAY, key);
                     keys[i] = key;
                     values[i] = temp;
                 }

@@ -14,11 +14,6 @@
     </parent>
 
     <dependencies>
-        <dependency>
-            <groupId>org.kevoree.mwg</groupId>
-            <artifactId>api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
         <!-- Test dependencies -->
         <dependency>
             <groupId>junit</groupId>

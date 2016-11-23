@@ -1,10 +1,11 @@
 package org.mwg.structure.tree;
 
 import org.mwg.*;
-import org.mwg.plugin.AbstractNode;
+import org.mwg.base.BaseNode;
+import org.mwg.core.task.Actions;
 import org.mwg.plugin.Job;
 import org.mwg.plugin.NodeState;
-import org.mwg.struct.Relationship;
+import org.mwg.struct.Relation;
 import org.mwg.structure.NTree;
 import org.mwg.structure.distance.Distance;
 import org.mwg.structure.distance.Distances;
@@ -16,10 +17,10 @@ import org.mwg.structure.util.NearestNeighborList;
 import org.mwg.task.*;
 import org.mwg.utility.Enforcer;
 
-import static org.mwg.task.Actions.*;
+import static org.mwg.core.task.Actions.*;
 
 @SuppressWarnings("Duplicates")
-public class KDTree extends AbstractNode implements NTree {
+public class KDTree extends BaseNode implements NTree {
 
     public static final String NAME = "KDTree";
     public static final String FROM = "from";
@@ -39,7 +40,7 @@ public class KDTree extends AbstractNode implements NTree {
     }
 
     //Insert key/value task
-    private static Task insert = whileDo(new TaskFunctionConditional() {
+    private static Task insert = task().whileDo(new ConditionalFunction() {
         @Override
         public boolean eval(TaskContext context) {
             Node current = context.resultAsNodes().get(0);
@@ -56,33 +57,33 @@ public class KDTree extends AbstractNode implements NTree {
 
             //Bootstrap, first insert ever
             if (nodeKey == null) {
-                current.setProperty(DIMENSIONS, Type.INT, dim);
-                current.setProperty(KEY, Type.DOUBLE_ARRAY, keyToInsert);
-                current.getOrCreateRel(VALUE).clear().add(valueToInsert.id());
-                current.setProperty(SIZE, Type.INT, 1);
+                current.set(DIMENSIONS, Type.INT, dim);
+                current.set(KEY, Type.DOUBLE_ARRAY, keyToInsert);
+                ((Relation) current.getOrCreate(VALUE, Type.RELATION)).clear().add(valueToInsert.id());
+                current.set(SIZE, Type.INT, 1);
                 return false; //stop the while loop and insert here
             } else if (distance.measure(keyToInsert, nodeKey) < err) {
-                current.getOrCreateRel(VALUE).clear().add(valueToInsert.id());
+                ((Relation) current.getOrCreate(VALUE, Type.RELATION)).clear().add(valueToInsert.id());
                 return false; //insert in the current node, and done with it, no need to continue looping
             } else {
                 //Decision point for next step
-                Relationship child;
+                Relation child;
                 String nextRel;
                 if (keyToInsert[lev] > nodeKey[lev]) {
-                    child = (Relationship) current.get(RIGHT);
+                    child = (Relation) current.get(RIGHT);
                     nextRel = RIGHT;
                 } else {
-                    child = (Relationship) current.get(LEFT);
+                    child = (Relation) current.get(LEFT);
                     nextRel = LEFT;
                 }
 
                 //If there is no node to the right, we create one and the game is over
                 if (child == null || child.size() == 0) {
                     KDTree childNode = (KDTree) context.graph().newTypedNode(current.world(), current.time(), NAME);
-                    childNode.setProperty(KEY, Type.DOUBLE_ARRAY, keyToInsert);
-                    childNode.getOrCreateRel(VALUE).clear().add(valueToInsert.id());
-                    current.getOrCreateRel(nextRel).clear().add(childNode.id());
-                    root.setProperty(SIZE, Type.INT, (Integer) root.get(SIZE) + 1);
+                    childNode.set(KEY, Type.DOUBLE_ARRAY, keyToInsert);
+                    ((Relation) childNode.getOrCreate(VALUE, Type.RELATION)).clear().add(valueToInsert.id());
+                    ((Relation) current.getOrCreate(nextRel, Type.RELATION)).clear().add(childNode.id());
+                    root.set(SIZE, Type.INT, (Integer) root.get(SIZE) + 1);
                     childNode.free();
                     return false;
                 } else {
@@ -94,12 +95,11 @@ public class KDTree extends AbstractNode implements NTree {
             }
         }
 
-    }, traverse("{{next}}"));
+    }, task().then(Actions.get("{{next}}")));
 
     private static Task initFindNear() {
-        Task reccursiveDown = newTask();
-
-        reccursiveDown.then(new Action() {
+        Task reccursiveDown = task();
+        reccursiveDown.thenDo(new ActionFunction() {
             @Override
             public void eval(TaskContext context) {
 
@@ -150,9 +150,9 @@ public class KDTree extends AbstractNode implements NTree {
                 // 5. target-in-left := target_s <= pivot_s
                 boolean target_in_left = target[s] < pivot[s];
 
-                Relationship nearer_kd;
+                Relation nearer_kd;
                 HRect nearer_hr;
-                Relationship further_kd;
+                Relation further_kd;
                 HRect further_hr;
                 String nearer_st;
                 String farther_st;
@@ -161,11 +161,11 @@ public class KDTree extends AbstractNode implements NTree {
                 // 6.1. nearer-kd := left field of kd and nearer-hr := left-hr
                 // 6.2. further-kd := right field of kd and further-hr := right-hr
                 if (target_in_left) {
-                    nearer_kd = (Relationship) node.get(LEFT);
+                    nearer_kd = (Relation) node.get(LEFT);
                     nearer_st = LEFT;
                     nearer_hr = left_hr;
 
-                    further_kd = (Relationship) node.get(RIGHT);
+                    further_kd = (Relation) node.get(RIGHT);
                     further_hr = right_hr;
                     farther_st = RIGHT;
                 }
@@ -174,11 +174,11 @@ public class KDTree extends AbstractNode implements NTree {
                 // 7.1. nearer-kd := right field of kd and nearer-hr := right-hr
                 // 7.2. further-kd := left field of kd and further-hr := left-hr
                 else {
-                    nearer_kd = (Relationship) node.get(RIGHT);
+                    nearer_kd = (Relation) node.get(RIGHT);
                     nearer_hr = right_hr;
                     nearer_st = RIGHT;
 
-                    further_kd = (Relationship) node.get(LEFT);
+                    further_kd = (Relation) node.get(LEFT);
                     further_hr = left_hr;
                     farther_st = LEFT;
                 }
@@ -207,14 +207,14 @@ public class KDTree extends AbstractNode implements NTree {
                 context.continueTask();
             }
         })
-                .isolate(ifThen(new TaskFunctionConditional() {
+                .isolate(task().ifThen(new ConditionalFunction() {
                     @Override
                     public boolean eval(TaskContext context) {
                         return context.variable("near").size() > 0;
                     }
-                }, traverse("{{near}}").isolate(reccursiveDown)))
+                }, task().then(Actions.get("{{near}}")).isolate(reccursiveDown)))
 
-                .then(new Action() {
+                .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
 
@@ -258,7 +258,7 @@ public class KDTree extends AbstractNode implements NTree {
                                 dist_sqd = pivot_to_target;
                                 //System.out.println("T3 "+node.id()+" insert-> "+((long[]) (node.get(INTERNAL_VALUE)))[0]);
                                 //System.out.println("INSTASK " + ((long[]) (node.get(INTERNAL_VALUE)))[0] + " id: "+node.id());
-                                nnl.insert(((Relationship) (node.get(VALUE))).get(0), dist_sqd);
+                                nnl.insert(((Relation) (node.get(VALUE))).get(0), dist_sqd);
                                 double[] pivot = (double[]) node.get(KEY);
                                 //System.out.println("INSERT " + node.id() + " lev: " + lev + ", key: " + pivot[0] + " , " + pivot[1] + ", distance: " + distance.measure(pivot, target)+ ", value: "+ ((Relationship) (node.get(VALUE))).get(0)+ ", dist sqd: "+dist_sqd);
 
@@ -291,21 +291,20 @@ public class KDTree extends AbstractNode implements NTree {
                         context.continueTask();
                     }
                 })
-                .isolate(ifThen(new TaskFunctionConditional() {
+                .isolate(task().ifThen(new ConditionalFunction() {
                     @Override
                     public boolean eval(TaskContext context) {
                         return ((boolean) context.variable("continueFar").get(0) && context.variable("far").size() > 0); //Exploring the far depends also on the distance
                     }
-                }, traverse("{{far}}").isolate(reccursiveDown)));
+                }, task().then(Actions.get("{{far}}")).isolate(reccursiveDown)));
 
 
         return reccursiveDown;
     }
 
     private static Task initFindRadius() {
-        Task reccursiveDown = newTask();
-
-        reccursiveDown.then(new Action() {
+        Task reccursiveDown = task();
+        reccursiveDown.thenDo(new ActionFunction() {
             @Override
             public void eval(TaskContext context) {
 
@@ -355,9 +354,9 @@ public class KDTree extends AbstractNode implements NTree {
                 // 5. target-in-left := target_s <= pivot_s
                 boolean target_in_left = target[s] < pivot[s];
 
-                Relationship nearer_kd;
+                Relation nearer_kd;
                 HRect nearer_hr;
-                Relationship further_kd;
+                Relation further_kd;
                 HRect further_hr;
                 String nearer_st;
                 String farther_st;
@@ -366,11 +365,11 @@ public class KDTree extends AbstractNode implements NTree {
                 // 6.1. nearer-kd := left field of kd and nearer-hr := left-hr
                 // 6.2. further-kd := right field of kd and further-hr := right-hr
                 if (target_in_left) {
-                    nearer_kd = (Relationship) node.get(LEFT);
+                    nearer_kd = (Relation) node.get(LEFT);
                     nearer_st = LEFT;
                     nearer_hr = left_hr;
 
-                    further_kd = (Relationship) node.get(RIGHT);
+                    further_kd = (Relation) node.get(RIGHT);
                     further_hr = right_hr;
                     farther_st = RIGHT;
                 }
@@ -379,11 +378,11 @@ public class KDTree extends AbstractNode implements NTree {
                 // 7.1. nearer-kd := right field of kd and nearer-hr := right-hr
                 // 7.2. further-kd := left field of kd and further-hr := left-hr
                 else {
-                    nearer_kd = (Relationship) node.get(RIGHT);
+                    nearer_kd = (Relation) node.get(RIGHT);
                     nearer_hr = right_hr;
                     nearer_st = RIGHT;
 
-                    further_kd = (Relationship) node.get(LEFT);
+                    further_kd = (Relation) node.get(LEFT);
                     further_hr = left_hr;
                     farther_st = LEFT;
                 }
@@ -412,14 +411,14 @@ public class KDTree extends AbstractNode implements NTree {
                 context.continueTask();
             }
         })
-                .isolate(ifThen(new TaskFunctionConditional() {
+                .isolate(task().ifThen(new ConditionalFunction() {
                     @Override
                     public boolean eval(TaskContext context) {
                         return context.variable("near").size() > 0;
                     }
-                }, traverse("{{near}}").isolate(reccursiveDown)))
+                }, task().then(Actions.get("{{near}}")).isolate(reccursiveDown)))
 
-                .then(new Action() {
+                .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
 
@@ -461,7 +460,7 @@ public class KDTree extends AbstractNode implements NTree {
                                 //System.out.println("T3 "+node.id()+" insert-> "+((long[]) (node.get(INTERNAL_VALUE)))[0]);
                                 //System.out.println("INSTASK " + ((long[]) (node.get(INTERNAL_VALUE)))[0] + " id: "+node.id());
                                 if (dist_sqd <= radius) {
-                                    nnl.insert(((Relationship) (node.get(VALUE))).get(0), dist_sqd);
+                                    nnl.insert(((Relation) (node.get(VALUE))).get(0), dist_sqd);
                                 }
                                 // 10.1.3 max-dist-sqd = dist-sqd
                                 // max_dist_sqd = dist_sqd;
@@ -488,12 +487,12 @@ public class KDTree extends AbstractNode implements NTree {
                         context.continueTask();
                     }
                 })
-                .isolate(ifThen(new TaskFunctionConditional() {
+                .isolate(task().ifThen(new ConditionalFunction() {
                     @Override
                     public boolean eval(TaskContext context) {
                         return ((boolean) context.variable("continueFar").get(0) && context.variable("far").size() > 0); //Exploring the far depends also on the distance
                     }
-                }, traverse("{{far}}").isolate(reccursiveDown)));
+                }, task().then(Actions.get("{{far}}")).isolate(reccursiveDown)));
 
 
         return reccursiveDown;
@@ -508,9 +507,9 @@ public class KDTree extends AbstractNode implements NTree {
             .asPositiveDouble(DISTANCE_THRESHOLD);
 
     @Override
-    public void setProperty(String propertyName, byte propertyType, Object propertyValue) {
+    public Node set(String propertyName, byte propertyType, Object propertyValue) {
         enforcer.check(propertyName, propertyType, propertyValue);
-        super.setProperty(propertyName, propertyType, propertyValue);
+        return super.set(propertyName, propertyType, propertyValue);
     }
 
     @Override
@@ -535,7 +534,7 @@ public class KDTree extends AbstractNode implements NTree {
             throw new RuntimeException("To index node should not be null");
         }
         Distance distance = getDistance(state);
-        TaskContext tc = insert.prepareWith(graph(), this, new Callback<TaskResult>() {
+        TaskContext tc = insert.prepare(graph(), this, new Callback<TaskResult>() {
             @Override
             public void on(TaskResult result) {
                 result.free();
@@ -568,12 +567,12 @@ public class KDTree extends AbstractNode implements NTree {
 
     @Override
     public void setDistance(int distanceType) {
-        set(DISTANCE, distanceType);
+        set(DISTANCE, Type.INT, distanceType);
     }
 
     @Override
     public void setFrom(String extractor) {
-        set(FROM, extractor);
+        set(FROM, Type.STRING, extractor);
     }
 
 
@@ -594,7 +593,7 @@ public class KDTree extends AbstractNode implements NTree {
         Distance distance = getDistance(state);
 
 
-        TaskContext tc = nearestTask.prepareWith(graph(), this, new Callback<TaskResult>() {
+        TaskContext tc = nearestTask.prepare(graph(), this, new Callback<TaskResult>() {
             @Override
             public void on(TaskResult result) {
 
@@ -602,8 +601,14 @@ public class KDTree extends AbstractNode implements NTree {
                 long[] res = nnl.getAllNodesWithin(radius);
                 if (res.length != 0) {
 
-                    Task lookupall = setWorld(String.valueOf(world())).setTime(String.valueOf(time())).fromVar("res").lookupAll("{{result}}");
-                    TaskContext tc = lookupall.prepareWith(graph(), null, new Callback<TaskResult>() {
+                    Task lookupall =
+                            task()
+                                    .then(setWorld(String.valueOf(world())))
+                                    .then(setTime(String.valueOf(time())))
+                                    .then(readVar("res"))
+                                    .then(lookupAll("{{result}}"));
+
+                    TaskContext tc = lookupall.prepare(graph(), null, new Callback<TaskResult>() {
                         @Override
                         public void on(TaskResult result) {
                             final Node[] finalres = new Node[result.size()];
@@ -659,7 +664,7 @@ public class KDTree extends AbstractNode implements NTree {
         Distance distance = getDistance(state);
 
 
-        TaskContext tc = nearestRadiusTask.prepareWith(graph(), this, new Callback<TaskResult>() {
+        TaskContext tc = nearestRadiusTask.prepare(graph(), this, new Callback<TaskResult>() {
             @Override
             public void on(TaskResult result) {
 
@@ -667,8 +672,8 @@ public class KDTree extends AbstractNode implements NTree {
                 long[] res = nnl.distroyAndGetAllNodes();
                 if (res.length != 0) {
 
-                    Task lookupall = setWorld(String.valueOf(world())).setTime(String.valueOf(time())).fromVar("res").lookupAll("{{result}}");
-                    TaskContext tc = lookupall.prepareWith(graph(), null, new Callback<TaskResult>() {
+                    Task lookupall = task().then(setWorld(String.valueOf(world()))).then(setTime(String.valueOf(time()))).then(readVar("res")).then(lookupAll("{{result}}"));
+                    TaskContext tc = lookupall.prepare(graph(), null, new Callback<TaskResult>() {
                         @Override
                         public void on(TaskResult result) {
                             final Node[] finalres = new Node[result.size()];
@@ -724,7 +729,7 @@ public class KDTree extends AbstractNode implements NTree {
         Distance distance = getDistance(state);
 
 
-        TaskContext tc = nearestTask.prepareWith(graph(), this, new Callback<TaskResult>() {
+        TaskContext tc = nearestTask.prepare(graph(), this, new Callback<TaskResult>() {
             @Override
             public void on(TaskResult result) {
 
@@ -732,8 +737,8 @@ public class KDTree extends AbstractNode implements NTree {
                 long[] res = nnl.getNodes();
 
                 if (res.length != 0) {
-                    Task lookupall = setWorld(String.valueOf(world())).setTime(String.valueOf(time())).fromVar("res").lookupAll("{{result}}");
-                    TaskContext tc = lookupall.prepareWith(graph(), null, new Callback<TaskResult>() {
+                    Task lookupall = task().then(setWorld(String.valueOf(world()))).then(setTime(String.valueOf(time()))).then(readVar("res")).then(lookupAll("{{result}}"));
+                    TaskContext tc = lookupall.prepare(graph(), null, new Callback<TaskResult>() {
                         @Override
                         public void on(TaskResult result) {
                             final Node[] finalres = new Node[result.size()];
@@ -791,8 +796,8 @@ public class KDTree extends AbstractNode implements NTree {
             String[] split = query.split(",");
             Task[] tasks = new Task[split.length];
             for (int i = 0; i < split.length; i++) {
-                Task t = setWorld("" + world());
-                t.setTime(time() + "");
+                Task t = task().then(setWorld("" + world()));
+                t.then(setTime(time() + ""));
                 t.parse(split[i].trim());
                 tasks[i] = t;
             }
@@ -801,7 +806,7 @@ public class KDTree extends AbstractNode implements NTree {
             final DeferCounter waiter = graph().newCounter(tasks.length);
             for (int i = 0; i < split.length; i++) {
                 //prepare initial result
-                final TaskResult initial = newTask().emptyResult();
+                final TaskResult initial = emptyResult();
                 initial.add(current);
                 //prepare initial context
                 final Callback<Integer> capsule = new Callback<Integer>() {

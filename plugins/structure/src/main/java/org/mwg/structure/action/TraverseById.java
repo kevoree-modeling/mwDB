@@ -3,20 +3,19 @@ package org.mwg.structure.action;
 import org.mwg.Callback;
 import org.mwg.DeferCounter;
 import org.mwg.Node;
-import org.mwg.plugin.AbstractNode;
-import org.mwg.plugin.AbstractTaskAction;
+import org.mwg.base.BaseNode;
 import org.mwg.plugin.Job;
+import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-public class TraverseById extends AbstractTaskAction {
+public class TraverseById implements Action {
 
     public static String NAME = "traverseById";
 
     private final String _name;
 
     public TraverseById(final String p_name) {
-        super();
         this._name = p_name;
     }
 
@@ -30,9 +29,9 @@ public class TraverseById extends AbstractTaskAction {
             final DeferCounter defer = context.graph().newCounter(previousSize);
             for (int i = 0; i < previousSize; i++) {
                 final Object loop = previousResult.get(i);
-                if (loop instanceof AbstractNode) {
+                if (loop instanceof BaseNode) {
                     final Node casted = (Node) loop;
-                    casted.relByIndex(flatlongName, new Callback<Node[]>() {
+                    casted.relationAt(flatlongName, new Callback<Node[]>() {
                         @Override
                         public void on(Node[] result) {
                             if (result != null) {

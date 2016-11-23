@@ -99,9 +99,9 @@
 
         <!-- Plugins Java & JS -->
         <module>plugins/websocket</module>
+        <module>plugins/structure</module>
 
         <!--
-        <module>plugins/structure</module>
         <module>plugins/ml</module>
         -->
 

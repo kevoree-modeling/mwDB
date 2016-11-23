@@ -3,16 +3,16 @@ package org.mwg.structure.action;
 import org.mwg.Callback;
 import org.mwg.DeferCounter;
 import org.mwg.Node;
-import org.mwg.plugin.AbstractTaskAction;
 import org.mwg.plugin.Job;
 import org.mwg.structure.NTree;
 import org.mwg.structure.tree.KDTree;
 import org.mwg.structure.tree.NDTree;
+import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 import org.mwg.task.TaskResultIterator;
 
-public class NTreeNearestNWithinRadius extends AbstractTaskAction {
+public class NTreeNearestNWithinRadius implements Action {
 
     public static String NAME = "nTreeNearestNWithinRadius";
 
@@ -21,7 +21,6 @@ public class NTreeNearestNWithinRadius extends AbstractTaskAction {
     private final double _radius;
 
     public NTreeNearestNWithinRadius(final double[] key, final int n, final double radius) {
-        super();
         this._key = key;
         this._n = n;
         this._radius = radius;
@@ -41,7 +40,7 @@ public class NTreeNearestNWithinRadius extends AbstractTaskAction {
                         @Override
                         public void on(Node[] result) {
                             for (int i = 0; i < result.length; i++) {
-                                if(result[i] != null){
+                                if (result[i] != null) {
                                     nextResult.add(result[i]);
                                 }
                             }

@@ -2,16 +2,16 @@ package org.mwg.structure;
 
 import org.mwg.Graph;
 import org.mwg.Node;
-import org.mwg.plugin.AbstractPlugin;
+import org.mwg.base.BasePlugin;
 import org.mwg.plugin.NodeFactory;
 import org.mwg.structure.action.*;
 import org.mwg.structure.tree.KDTree;
 import org.mwg.structure.tree.NDTree;
 import org.mwg.structure.tree.NDTree2;
-import org.mwg.task.TaskAction;
+import org.mwg.task.Action;
 import org.mwg.task.TaskActionFactory;
 
-public class StructurePlugin extends AbstractPlugin {
+public class StructurePlugin extends BasePlugin {
 
     public StructurePlugin() {
         super();
@@ -21,7 +21,6 @@ public class StructurePlugin extends AbstractPlugin {
                 return new KDTree(world, time, id, graph);
             }
         });
-
         declareNodeType(NDTree.NAME, new NodeFactory() {
             @Override
             public Node create(long world, long time, long id, Graph graph) {
@@ -38,7 +37,7 @@ public class StructurePlugin extends AbstractPlugin {
 
         declareTaskAction(NTreeInsertTo.NAME, new TaskActionFactory() {
             @Override
-            public TaskAction create(String[] params) {
+            public Action create(String[] params) {
                 if (params.length != 1) {
                     throw new RuntimeException("Bad param number!");
                 }
@@ -47,7 +46,7 @@ public class StructurePlugin extends AbstractPlugin {
         });
         declareTaskAction(TraverseById.NAME, new TaskActionFactory() {
             @Override
-            public TaskAction create(String[] params) {
+            public Action create(String[] params) {
                 if (params.length != 1) {
                     throw new RuntimeException("Bad param number!");
                 }
@@ -56,7 +55,7 @@ public class StructurePlugin extends AbstractPlugin {
         });
         declareTaskAction(NTreeNearestN.NAME, new TaskActionFactory() {
             @Override
-            public TaskAction create(String[] params) {
+            public Action create(String[] params) {
                 if (params.length < 2) {
                     throw new RuntimeException("Bad param number!");
                 }
@@ -70,7 +69,7 @@ public class StructurePlugin extends AbstractPlugin {
         });
         declareTaskAction(NTreeNearestWithinRadius.NAME, new TaskActionFactory() {
             @Override
-            public TaskAction create(String[] params) {
+            public Action create(String[] params) {
                 if (params.length < 2) {
                     throw new RuntimeException("Bad param number!");
                 }
@@ -84,7 +83,7 @@ public class StructurePlugin extends AbstractPlugin {
         });
         declareTaskAction(NTreeNearestNWithinRadius.NAME, new TaskActionFactory() {
             @Override
-            public TaskAction create(String[] params) {
+            public Action create(String[] params) {
                 if (params.length < 3) {
                     throw new RuntimeException("Bad param number!");
                 }

@@ -2,10 +2,7 @@ package org.mwg.structure;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.mwg.Callback;
-import org.mwg.Graph;
-import org.mwg.GraphBuilder;
-import org.mwg.Node;
+import org.mwg.*;
 import org.mwg.structure.distance.EuclideanDistance;
 import org.mwg.structure.tree.KDTree;
 
@@ -27,7 +24,7 @@ public class KDTreeAsyncTest {
             @Override
             public void on(Boolean result) {
                 KDTree testTask = (KDTree) graph.newTypedNode(0, 0, KDTree.NAME);
-                testTask.set(KDTree.DISTANCE_THRESHOLD, 1e-30);
+                testTask.set(KDTree.DISTANCE_THRESHOLD, Type.DOUBLE, 1e-30);
 
                 KDTreeJava testjava = new KDTreeJava();
                 testjava.setDistance(EuclideanDistance.instance());
@@ -51,7 +48,7 @@ public class KDTreeAsyncTest {
                     }
 
                     Node value = graph.newNode(0, 0);
-                    value.set("value", valuecop);
+                    value.set("value", Type.DOUBLE_ARRAY, valuecop);
 
                     testTask.insertWith(vec, value, null);
                     testjava.insert(vec, value, null);
