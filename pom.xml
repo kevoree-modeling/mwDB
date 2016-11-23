@@ -113,10 +113,13 @@
         <!--
         <module>plugins/memory</module>
         <module>plugins/importer</module>
+        -->
+
 
         <module>plugins/leveldb</module>
         <module>plugins/rocksdb</module>
 
+        <!--
         <module>plugins/rest</module>
         <module>plugins/model</module>
         -->

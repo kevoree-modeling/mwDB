@@ -11,7 +11,7 @@ import java.io.IOException;
 public class StorageTest {
 
     @Test
-    public void offHeapTest() throws IOException {
+    public void test() throws IOException {
         /*
         OffHeapByteArray.alloc_counter = 0;
         OffHeapDoubleArray.alloc_counter = 0;
@@ -20,7 +20,7 @@ public class StorageTest {
 */
         //Unsafe.DEBUG_MODE = true;
 
-        test("offheap ", new GraphBuilder().withStorage(new LevelDBStorage("data")).withScheduler(new NoopScheduler()).withMemorySize(2000000).build());
+        test("leveldb_test ", new GraphBuilder().withStorage(new LevelDBStorage("data")).withScheduler(new NoopScheduler()).withMemorySize(2000000).build());
     }
 
     final int valuesToInsert = 1000000;
@@ -45,7 +45,7 @@ public class StorageTest {
                     graph.lookup(0, time, node.id(), new Callback<Node>() {
                         @Override
                         public void on(Node timedNode) {
-                            timedNode.setProperty("value", Type.DOUBLE, value);
+                            timedNode.set("value", Type.DOUBLE, value);
                             counter.count();
                             timedNode.free();//free the node, for cache management
                         }

@@ -14,13 +14,13 @@
     </parent>
 
     <properties>
-        <rocksdb.version>4.5.1</rocksdb.version>
+        <rocksdb.version>4.11.2</rocksdb.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.kevoree.mwg</groupId>
-            <artifactId>api</artifactId>
+            <artifactId>core</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
@@ -29,12 +29,6 @@
             <version>${rocksdb.version}</version>
         </dependency>
         <!-- Test dependencies -->
-        <dependency>
-            <groupId>org.kevoree.mwg</groupId>
-            <artifactId>core</artifactId>
-            <version>${project.parent.version}</version>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
