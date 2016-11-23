@@ -1,15 +1,14 @@
 package org.mwg.core.task;
 
-import org.mwg.base.AbstractAction;
+import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-class ActionSplit extends AbstractAction {
+class ActionSplit implements Action {
 
     private String _splitPattern;
 
     ActionSplit(String p_splitPattern) {
-        super();
         this._splitPattern = p_splitPattern;
     }
 
@@ -20,10 +19,10 @@ class ActionSplit extends AbstractAction {
         TaskResult next = context.wrap(null);
         for (int i = 0; i < previous.size(); i++) {
             final Object loop = previous.get(0);
-            if(loop instanceof String){
+            if (loop instanceof String) {
                 String[] splitted = ((String) loop).split(splitPattern);
-                if(previous.size() == 1){
-                    for(int j=0;j<splitted.length;j++){
+                if (previous.size() == 1) {
+                    for (int j = 0; j < splitted.length; j++) {
                         next.add(splitted[j]);
                     }
                 } else {

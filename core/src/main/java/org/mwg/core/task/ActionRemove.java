@@ -2,16 +2,15 @@ package org.mwg.core.task;
 
 import org.mwg.Node;
 import org.mwg.base.BaseNode;
-import org.mwg.base.AbstractAction;
+import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-class ActionRemove extends AbstractAction {
+class ActionRemove implements Action {
 
     private final String _name;
 
     ActionRemove(final String name) {
-        super();
         this._name = name;
     }
 

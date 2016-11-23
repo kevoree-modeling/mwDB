@@ -2,17 +2,16 @@ package org.mwg.core.task;
 
 import org.mwg.Node;
 import org.mwg.base.BaseNode;
-import org.mwg.base.AbstractAction;
+import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskFunctionSelect;
 import org.mwg.task.TaskResult;
 
-class ActionSelect extends AbstractAction {
+class ActionSelect implements Action {
 
     private final TaskFunctionSelect _filter;
 
     ActionSelect(final TaskFunctionSelect p_filter) {
-        super();
         if (p_filter == null) {
             throw new RuntimeException("filter should not be null");
         }

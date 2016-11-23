@@ -3,19 +3,18 @@ package org.mwg.core.task;
 import org.mwg.Constants;
 import org.mwg.Node;
 import org.mwg.base.BaseNode;
-import org.mwg.base.AbstractAction;
+import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
 import java.util.regex.Pattern;
 
-class ActionWithout extends AbstractAction {
+class ActionWithout implements Action {
     
     private final String _patternTemplate;
     private final String _name;
 
     ActionWithout(final String name, final String stringPattern) {
-        super();
         if (name == null) {
             throw new RuntimeException("name should not be null");
         }

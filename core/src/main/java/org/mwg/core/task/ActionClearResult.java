@@ -1,9 +1,9 @@
 package org.mwg.core.task;
 
-import org.mwg.base.AbstractAction;
+import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
 
-class ActionClearResult extends AbstractAction {
+class ActionClearResult implements Action {
 
     @Override
     public void eval(final TaskContext context) {

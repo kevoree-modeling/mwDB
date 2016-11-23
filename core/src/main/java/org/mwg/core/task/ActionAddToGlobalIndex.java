@@ -5,18 +5,17 @@ import org.mwg.DeferCounter;
 import org.mwg.Node;
 import org.mwg.base.BaseNode;
 import org.mwg.core.utility.CoreDeferCounter;
-import org.mwg.base.AbstractAction;
 import org.mwg.plugin.Job;
+import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-class ActionAddToGlobalIndex extends AbstractAction {
+class ActionAddToGlobalIndex implements Action {
     private final String _name;
     private final String[] _attributes;
     //private final boolean _isIndexation;
 
     ActionAddToGlobalIndex(final String name, final String... attributes) {
-        super();
         this._name = name;
         this._attributes = attributes;
     }

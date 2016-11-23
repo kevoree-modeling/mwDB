@@ -2,20 +2,19 @@ package org.mwg.core.task;
 
 import org.mwg.*;
 import org.mwg.base.BaseNode;
-import org.mwg.base.AbstractAction;
 import org.mwg.plugin.Job;
 import org.mwg.struct.Relation;
+import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
 import java.util.ArrayList;
 
-class ActionTraverse extends AbstractAction {
+class ActionTraverse implements Action {
 
     private final String _name;
 
     ActionTraverse(final String p_name) {
-        super();
         this._name = p_name;
     }
 

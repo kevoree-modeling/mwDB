@@ -1,18 +1,17 @@
 package org.mwg.core.task;
 
 import org.mwg.Callback;
-import org.mwg.base.AbstractAction;
 import org.mwg.plugin.SchedulerAffinity;
+import org.mwg.task.Action;
 import org.mwg.task.Task;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-class ActionSubTask extends AbstractAction {
+class ActionSubTask implements Action {
 
     private final Task _subTask;
 
     ActionSubTask(final Task p_subTask) {
-        super();
         if (p_subTask == null) {
             throw new RuntimeException("subTask should not be null");
         }

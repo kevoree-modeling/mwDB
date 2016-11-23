@@ -4,16 +4,15 @@ import org.mwg.Callback;
 import org.mwg.Constants;
 import org.mwg.Node;
 import org.mwg.NodeIndex;
-import org.mwg.base.AbstractAction;
+import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
 
-class ActionReadGlobalIndex extends AbstractAction {
+class ActionReadGlobalIndex implements Action {
 
     private final String _indexName;
     private final String _query;
 
     ActionReadGlobalIndex(final String p_indexName, final String p_query) {
-        super();
         if (p_indexName == null) {
             throw new RuntimeException("indexName should not be null");
         }

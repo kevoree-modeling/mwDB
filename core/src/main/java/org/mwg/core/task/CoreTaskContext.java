@@ -6,11 +6,7 @@ import org.mwg.Node;
 import org.mwg.core.task.math.CoreMathExpressionEngine;
 import org.mwg.core.task.math.MathExpressionEngine;
 import org.mwg.base.BaseNode;
-import org.mwg.base.AbstractAction;
-import org.mwg.task.TaskContext;
-import org.mwg.task.TaskHook;
-import org.mwg.task.TaskResult;
-import org.mwg.task.TaskResultIterator;
+import org.mwg.task.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,13 +22,16 @@ class CoreTaskContext implements TaskContext {
 
     private Map<String, TaskResult> _localVariables = null;
     private Map<String, TaskResult> _nextVariables = null;
-    private AbstractAction _current;
     TaskResult _result;
     private long _world;
     private long _time;
     private final TaskHook _hook;
 
-    CoreTaskContext(final TaskContext parentContext, final TaskResult initial, final Graph p_graph, final TaskHook p_hook, final Callback<TaskResult> p_callback) {
+    private final CoreTask _origin;
+    private int cursor = 0;
+
+    CoreTaskContext(final CoreTask origin, final TaskContext parentContext, final TaskResult initial, final Graph p_graph, final TaskHook p_hook, final Callback<TaskResult> p_callback) {
+        this._origin = origin;
         this._hook = p_hook;
         if (parentContext != null) {
             this._time = parentContext.time();
@@ -308,12 +307,19 @@ class CoreTaskContext implements TaskContext {
 
     @Override
     public final void continueTask() {
+
+        final Action currentAction = _origin.actions[cursor];
         //next step now...
         if (this._hook != null) {
-            this._hook.afterAction(_current, this);
+            this._hook.afterAction(currentAction, this);
         }
-        final AbstractAction nextAction = _current.next();
-        _current = nextAction;
+        cursor++;
+        final Action nextAction;
+        if (cursor == _origin.insertCursor) {
+            nextAction = null;
+        } else {
+            nextAction = _origin.actions[cursor];
+        }
         if (nextAction == null) {
             /* Clean */
             if (this._localVariables != null) {
@@ -360,17 +366,18 @@ class CoreTaskContext implements TaskContext {
         }
     }
 
-    final void execute(AbstractAction initialTaskAction) {
-        this._current = initialTaskAction;
+
+    final void execute() {
+        final Action current = _origin.actions[cursor];
         if (this._hook != null) {
             if (_parent == null) {
                 _hook.start(this);
             } else {
                 _hook.beforeTask(_parent, this);
             }
-            this._hook.beforeAction(_current, this);
+            this._hook.beforeAction(current, this);
         }
-        this._current.eval(this);
+        current.eval(this);
     }
 
     @Override

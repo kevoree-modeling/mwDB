@@ -2,12 +2,12 @@ package org.mwg.core.task;
 
 import org.mwg.Node;
 import org.mwg.base.BaseNode;
-import org.mwg.base.AbstractAction;
+import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 import org.mwg.task.TaskResultIterator;
 
-class ActionAddRemoveVarToRelation extends AbstractAction {
+class ActionAddRemoveVarToRelation implements Action {
 
     private final String _name;
     private final String _varFrom;
@@ -15,7 +15,6 @@ class ActionAddRemoveVarToRelation extends AbstractAction {
     private final boolean _isAdd;
 
     ActionAddRemoveVarToRelation(final boolean isAdd, final String name, final String varFrom, final String... attributes) {
-        super();
         this._isAdd = isAdd;
         this._name = name;
         this._varFrom = varFrom;

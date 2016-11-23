@@ -5,17 +5,16 @@ import org.mwg.DeferCounter;
 import org.mwg.Node;
 import org.mwg.core.utility.CoreDeferCounter;
 import org.mwg.base.BaseNode;
-import org.mwg.base.AbstractAction;
 import org.mwg.plugin.Job;
+import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-class ActionJump extends AbstractAction {
+class ActionJump implements Action {
 
     private final String _time;
 
     ActionJump(final String time) {
-        super();
         _time = time;
     }
 

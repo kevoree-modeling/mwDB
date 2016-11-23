@@ -2,21 +2,16 @@ package org.mwg.core.task;
 
 import org.mwg.Callback;
 import org.mwg.DeferCounter;
-import org.mwg.base.AbstractAction;
 import org.mwg.plugin.Job;
 import org.mwg.plugin.SchedulerAffinity;
-import org.mwg.task.Task;
-import org.mwg.task.TaskContext;
-import org.mwg.task.TaskResult;
-import org.mwg.task.TaskResultIterator;
+import org.mwg.task.*;
 import org.mwg.utility.Tuple;
 
-class CF_ActionFlatMapPar extends AbstractAction {
+class CF_ActionFlatMapPar implements Action {
 
     private final Task _subTask;
 
     CF_ActionFlatMapPar(final Task p_subTask) {
-        super();
         _subTask = p_subTask;
     }
 

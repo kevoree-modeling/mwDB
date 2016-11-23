@@ -2,15 +2,14 @@ package org.mwg.core.task;
 
 import org.mwg.Callback;
 import org.mwg.Node;
-import org.mwg.base.AbstractAction;
+import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
 
-class ActionLookupAll extends AbstractAction {
+class ActionLookupAll implements Action {
 
     private final String _ids;
 
     ActionLookupAll(final String p_ids) {
-        super();
         this._ids = p_ids;
     }
 

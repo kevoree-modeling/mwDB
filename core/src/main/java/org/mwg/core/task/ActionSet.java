@@ -4,11 +4,11 @@ import org.mwg.Constants;
 import org.mwg.Node;
 import org.mwg.Type;
 import org.mwg.base.BaseNode;
-import org.mwg.base.AbstractAction;
+import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-class ActionSet extends AbstractAction {
+class ActionSet implements Action {
 
     private final String _relationName;
     private final String _variableNameToSet;
@@ -16,7 +16,6 @@ class ActionSet extends AbstractAction {
     private final boolean _force;
 
     ActionSet(final String relationName, final byte propertyType, final String variableNameToSet, final boolean force) {
-        super();
         this._relationName = relationName;
         this._variableNameToSet = variableNameToSet;
         this._propertyType = propertyType;

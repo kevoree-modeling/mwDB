@@ -1,15 +1,14 @@
 package org.mwg.core.task;
 
-import org.mwg.base.AbstractAction;
+import org.mwg.task.Action;
 import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 
-class CF_ActionThenDo extends AbstractAction {
+class CF_ActionThenDo implements Action {
 
     private final ActionFunction _wrapped;
 
     CF_ActionThenDo(final ActionFunction p_wrapped) {
-        super();
         if (p_wrapped == null) {
             throw new RuntimeException("action should not be null");
         }

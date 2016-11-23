@@ -1,16 +1,14 @@
 package org.mwg.core.task;
 
-import org.mwg.base.AbstractAction;
+import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
-import org.mwg.task.TaskResult;
 
-class ActionDefineAsVar extends AbstractAction {
+class ActionDefineAsVar implements Action {
 
     private final String _name;
     private final boolean _global;
 
     ActionDefineAsVar(final String p_name, final boolean p_global) {
-        super();
         if (p_name == null) {
             throw new RuntimeException("name should not be null");
         }

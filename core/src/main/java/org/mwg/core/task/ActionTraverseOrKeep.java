@@ -5,17 +5,16 @@ import org.mwg.DeferCounter;
 import org.mwg.Node;
 import org.mwg.Type;
 import org.mwg.base.BaseNode;
-import org.mwg.base.AbstractAction;
 import org.mwg.plugin.Job;
+import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-class ActionTraverseOrKeep extends AbstractAction {
+class ActionTraverseOrKeep implements Action {
 
     private final String _name;
 
     ActionTraverseOrKeep(final String p_name) {
-        super();
         this._name = p_name;
     }
 

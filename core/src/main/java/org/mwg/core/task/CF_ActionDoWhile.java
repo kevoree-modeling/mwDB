@@ -1,20 +1,15 @@
 package org.mwg.core.task;
 
 import org.mwg.Callback;
-import org.mwg.base.AbstractAction;
 import org.mwg.plugin.SchedulerAffinity;
-import org.mwg.task.Task;
-import org.mwg.task.TaskContext;
-import org.mwg.task.TaskFunctionConditional;
-import org.mwg.task.TaskResult;
+import org.mwg.task.*;
 
-class CF_ActionDoWhile extends AbstractAction {
+class CF_ActionDoWhile implements Action {
 
     private final TaskFunctionConditional _cond;
     private final Task _then;
 
     CF_ActionDoWhile(final Task p_then, final TaskFunctionConditional p_cond) {
-        super();
         this._cond = p_cond;
         this._then = p_then;
     }

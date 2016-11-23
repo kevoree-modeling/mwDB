@@ -1,15 +1,15 @@
 package org.mwg.core.task;
 
 import org.mwg.Callback;
-import org.mwg.base.AbstractAction;
 import org.mwg.plugin.SchedulerAffinity;
+import org.mwg.task.Action;
 import org.mwg.task.Task;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-class CF_ActionLoop extends AbstractAction {
+class CF_ActionLoop implements Action {
 
     private final Task _subTask;
 
@@ -17,7 +17,6 @@ class CF_ActionLoop extends AbstractAction {
     private final String _upper;
 
     CF_ActionLoop(final String p_lower, final String p_upper, final Task p_subTask) {
-        super();
         this._subTask = p_subTask;
         this._lower = p_lower;
         this._upper = p_upper;

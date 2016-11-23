@@ -68,6 +68,7 @@ public class Constants {
      */
     /**
      * Checks if a parameter is defined (!= null)
+     *
      * @param param The parameter to test
      * @return true if not null, false otherwise.
      */
@@ -82,7 +83,8 @@ public class Constants {
      */
     /**
      * Tests if an object is equal to another. This is an indirection method to offer an alternative implementation for JS
-     * @param src the first object
+     *
+     * @param src   the first object
      * @param other the second object
      * @return true if objects are equal, false otherwise.
      */
@@ -121,8 +123,6 @@ public class Constants {
 
     public static final int MAP_INITIAL_CAPACITY = 8;
 
-    public static final float MAP_LOAD_FACTOR = ((float) 75 / (float) 100);
-
     /**
      * @native ts
      * public static BOOL_TRUE : number = "1".charCodeAt(0);
@@ -133,6 +133,6 @@ public class Constants {
      * public static BOOL_FALSE : number = "0".charCodeAt(0);
      */
     public static byte BOOL_FALSE = (byte) '0';
-    
+
 }
 

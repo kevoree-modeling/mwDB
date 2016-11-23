@@ -1,16 +1,15 @@
 package org.mwg.core.task;
 
-import org.mwg.base.AbstractAction;
+import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-class ActionReadVar extends AbstractAction {
+class ActionReadVar implements Action {
 
     private final String _name;
     private final int _index;
 
     ActionReadVar(String p_name) {
-        super();
         int indexEnd = -1;
         int indexStart = -1;
         int cursor = p_name.length() - 1;

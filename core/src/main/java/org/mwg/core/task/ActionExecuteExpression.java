@@ -4,20 +4,19 @@ import org.mwg.Node;
 import org.mwg.base.BaseNode;
 import org.mwg.core.task.math.CoreMathExpressionEngine;
 import org.mwg.core.task.math.MathExpressionEngine;
-import org.mwg.base.AbstractAction;
+import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
 import java.util.HashMap;
 import java.util.Map;
 
-class ActionExecuteExpression extends AbstractAction {
+class ActionExecuteExpression implements Action {
 
     final private MathExpressionEngine _engine;
     final private String _expression;
 
     ActionExecuteExpression(final String mathExpression) {
-        super();
         this._expression = mathExpression;
         this._engine = CoreMathExpressionEngine.parse(mathExpression);
     }

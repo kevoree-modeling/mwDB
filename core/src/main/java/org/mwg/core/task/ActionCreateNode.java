@@ -1,15 +1,14 @@
 package org.mwg.core.task;
 
 import org.mwg.Node;
-import org.mwg.base.AbstractAction;
+import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
 
-class ActionCreateNode extends AbstractAction {
+class ActionCreateNode implements Action {
 
     private final String _typeNode;
 
     ActionCreateNode(final String typeNode) {
-        super();
         this._typeNode = typeNode;
     }
 

@@ -2,18 +2,13 @@ package org.mwg.core.task;
 
 import org.mwg.Node;
 import org.mwg.base.BaseNode;
-import org.mwg.base.AbstractAction;
-import org.mwg.task.TaskContext;
-import org.mwg.task.TaskFunctionSelectObject;
-import org.mwg.task.TaskResult;
-import org.mwg.task.TaskResultIterator;
+import org.mwg.task.*;
 
-class ActionSelectObject extends AbstractAction {
+class ActionSelectObject implements Action {
 
     private final TaskFunctionSelectObject _filter;
 
     ActionSelectObject(final TaskFunctionSelectObject filterFunction) {
-        super();
         if (filterFunction == null) {
             throw new RuntimeException("filterFunction should not be null");
         }

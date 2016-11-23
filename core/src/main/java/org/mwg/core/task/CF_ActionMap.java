@@ -1,20 +1,19 @@
 package org.mwg.core.task;
 
 import org.mwg.Callback;
-import org.mwg.base.AbstractAction;
 import org.mwg.plugin.SchedulerAffinity;
+import org.mwg.task.Action;
 import org.mwg.task.Task;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-class CF_ActionMap extends AbstractAction {
+class CF_ActionMap implements Action {
 
     private final Task[] _subTasks;
 
     CF_ActionMap(final Task... p_subTasks) {
-        super();
         _subTasks = p_subTasks;
     }
 

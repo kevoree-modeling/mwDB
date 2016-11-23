@@ -2,12 +2,11 @@ package org.mwg.core.task;
 
 import org.mwg.Constants;
 import org.mwg.core.CoreConstants;
-import org.mwg.base.AbstractAction;
 import org.mwg.task.Action;
 import org.mwg.task.TaskActionFactory;
 import org.mwg.task.TaskContext;
 
-class ActionPlugin extends AbstractAction {
+class ActionPlugin implements Action {
 
     private final String _actionName;
     private final String _flatParams;
@@ -16,7 +15,6 @@ class ActionPlugin extends AbstractAction {
     private Action subAction = null;
 
     ActionPlugin(final String actionName, final String flatParams) {
-        super();
         this._actionName = actionName;
         this._flatParams = flatParams;
     }

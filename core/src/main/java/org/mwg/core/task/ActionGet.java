@@ -2,19 +2,18 @@ package org.mwg.core.task;
 
 import org.mwg.*;
 import org.mwg.base.BaseNode;
-import org.mwg.base.AbstractAction;
 import org.mwg.plugin.Job;
 import org.mwg.struct.RelationIndexed;
+import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-class ActionGet extends AbstractAction {
+class ActionGet implements Action {
 
     private final String _name;
     private final String[] _params;
 
     ActionGet(final String p_name, final String... p_params) {
-        super();
         this._name = p_name;
         this._params = p_params;
     }

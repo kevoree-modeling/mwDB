@@ -2,18 +2,16 @@ package org.mwg.core.task;
 
 import org.mwg.Node;
 import org.mwg.base.BaseNode;
-import org.mwg.base.AbstractAction;
 import org.mwg.plugin.NodeState;
 import org.mwg.plugin.NodeStateCallback;
+import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-
-class ActionAttributes extends AbstractAction {
+class ActionAttributes implements Action {
     private final byte _filter;
 
     ActionAttributes(byte filterType) {
-        super();
         this._filter = filterType;
     }
 
