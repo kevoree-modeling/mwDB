@@ -47,8 +47,8 @@ class ActionGet extends AbstractAction {
                             });
                             break;
                         case Type.RELATION_INDEXED:
-                            RelationIndexed relationship = (RelationIndexed) casted.get(flatName);
-                            if (relationship != null) {
+                            RelationIndexed relationIndexed = (RelationIndexed) casted.get(flatName);
+                            if (relationIndexed != null) {
                                 if (_params != null && _params.length > 0) {
                                     Query query = context.graph().newQuery();
                                     String previous = null;
@@ -60,7 +60,7 @@ class ActionGet extends AbstractAction {
                                             previous = _params[k];
                                         }
                                     }
-                                    relationship.findByQuery(query, new Callback<Node[]>() {
+                                    relationIndexed.findByQuery(query, new Callback<Node[]>() {
                                         @Override
                                         public void on(Node[] result) {
                                             if (result != null) {
@@ -75,7 +75,7 @@ class ActionGet extends AbstractAction {
                                         }
                                     });
                                 } else {
-                                    casted.graph().lookupAll(context.world(), context.time(), relationship.all(), new Callback<Node[]>() {
+                                    casted.graph().lookupAll(context.world(), context.time(), relationIndexed.all(), new Callback<Node[]>() {
                                         @Override
                                         public void on(Node[] result) {
                                             if (result != null) {

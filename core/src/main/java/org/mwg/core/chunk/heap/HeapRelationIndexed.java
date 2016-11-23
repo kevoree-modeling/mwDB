@@ -9,16 +9,15 @@ import org.mwg.plugin.NodeState;
 import org.mwg.struct.RelationIndexed;
 import org.mwg.struct.LongLongArrayMapCallBack;
 
-class HeapRelationshipRelationIndexed extends HeapLongLongArrayMap implements RelationIndexed {
+class HeapRelationIndexed extends HeapLongLongArrayMap implements RelationIndexed {
 
-    HeapRelationshipRelationIndexed(HeapStateChunk p_listener) {
+    HeapRelationIndexed(HeapStateChunk p_listener) {
         super(p_listener);
     }
 
     @Override
     public RelationIndexed add(Node node, String... attributeNames) {
         internal_add_remove(true, node, attributeNames);
-
         return this;
     }
 
@@ -155,8 +154,8 @@ class HeapRelationshipRelationIndexed extends HeapLongLongArrayMap implements Re
         return flat;
     }
 
-    HeapRelationshipRelationIndexed cloneIRelFor(HeapStateChunk newParent) {
-        HeapRelationshipRelationIndexed cloned = new HeapRelationshipRelationIndexed(newParent);
+    HeapRelationIndexed cloneIRelFor(HeapStateChunk newParent) {
+        HeapRelationIndexed cloned = new HeapRelationIndexed(newParent);
         cloned.mapSize = mapSize;
         cloned.capacity = capacity;
         if (keys != null) {
