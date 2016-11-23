@@ -1,5 +1,7 @@
 package org.mwg.struct;
 
+import org.mwg.Node;
+
 public interface Relation {
 
     int size();
@@ -9,6 +11,8 @@ public interface Relation {
     void set(int index, long value);
 
     Relation add(long newValue);
+
+    Relation addNode(Node node);
 
     /**
      * Insert a long (node id) into a relationship at a particular index,

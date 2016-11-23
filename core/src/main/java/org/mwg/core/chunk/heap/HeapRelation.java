@@ -1,6 +1,7 @@
 package org.mwg.core.chunk.heap;
 
 import org.mwg.Constants;
+import org.mwg.Node;
 import org.mwg.struct.Relation;
 
 class HeapRelation implements Relation {
@@ -46,7 +47,7 @@ class HeapRelation implements Relation {
     }
 
     @Override
-    public void set(int index, long value) {
+    public final void set(int index, long value) {
         synchronized (parent) {
             _back[index] = value;
         }
@@ -54,6 +55,11 @@ class HeapRelation implements Relation {
 
     final long unsafe_get(int index) {
         return _back[index];
+    }
+
+    @Override
+    public final Relation addNode(Node node) {
+        return add(node.id());
     }
 
     @Override
@@ -87,7 +93,7 @@ class HeapRelation implements Relation {
     }
 
     @Override
-    public Relation insert(final int targetIndex, final long newValue) {
+    public final Relation insert(final int targetIndex, final long newValue) {
         synchronized (parent) {
             if (_back == null) {
                 if (targetIndex != 0) {
@@ -138,7 +144,7 @@ class HeapRelation implements Relation {
     }
 
     @Override
-    public Relation remove(long oldValue) {
+    public final Relation remove(long oldValue) {
         synchronized (parent) {
             int indexToRemove = -1;
             for (int i = 0; i < _size; i++) {
@@ -162,7 +168,7 @@ class HeapRelation implements Relation {
     }
 
     @Override
-    public Relation delete(int toRemoveIndex) {
+    public final Relation delete(int toRemoveIndex) {
         synchronized (parent) {
             if (toRemoveIndex != -1) {
                 if (!aligned) {
@@ -179,7 +185,7 @@ class HeapRelation implements Relation {
     }
 
     @Override
-    public Relation clear() {
+    public final Relation clear() {
         synchronized (parent) {
             _size = 0;
         }
@@ -187,7 +193,7 @@ class HeapRelation implements Relation {
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         StringBuilder buffer = new StringBuilder();
         buffer.append("[");
         for (int i = 0; i < _size; i++) {
