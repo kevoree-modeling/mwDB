@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mwg.*;
 import org.mwg.task.TaskContext;
-import org.mwg.task.TaskFunctionConditional;
+import org.mwg.task.ConditionalFunction;
 
 import static org.mwg.core.task.Actions.*;
 import static org.mwg.core.task.Actions.task;
@@ -52,7 +52,7 @@ public class RobustnessTests {
             rootIndex.findUsing(result -> {
                 for (Node r : result) {
                     final Node rr = r;
-                    r.rel("child", new Callback<Node[]>() {
+                    r.relation("child", new Callback<Node[]>() {
                         @Override
                         public void on(Node[] result) {
                             for (Node n : result) {
@@ -292,7 +292,7 @@ public class RobustnessTests {
         //subTask null
         exceptionCaught = false;
         try {
-            new CoreTask().ifThen(new TaskFunctionConditional() {
+            new CoreTask().ifThen(new ConditionalFunction() {
                 @Override
                 public boolean eval(TaskContext context) {
                     return true;

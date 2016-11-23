@@ -28,7 +28,7 @@ public interface Task {
      * @param cond condition to check
      * @return this task to chain
      */
-    Task doWhile(Task task, TaskFunctionConditional cond);
+    Task doWhile(Task task, ConditionalFunction cond);
 
     /**
      * Executes a task in a range.
@@ -93,7 +93,7 @@ public interface Task {
      * @param then sub task to execute if the condition is evaluated to true
      * @return this task to chain
      */
-    Task ifThen(TaskFunctionConditional cond, Task then);
+    Task ifThen(ConditionalFunction cond, Task then);
 
     /**
      * Executes a sub task if a given condition is evaluated to true.
@@ -103,16 +103,16 @@ public interface Task {
      * @param elseSub sub task to execute if the condition is evaluated to false
      * @return this task to chain
      */
-    Task ifThenElse(TaskFunctionConditional cond, Task thenSub, Task elseSub);
+    Task ifThenElse(ConditionalFunction cond, Task thenSub, Task elseSub);
 
     /**
-     * Similar to {@link #doWhile(Task, TaskFunctionConditional)} but the task is at least executed once.
+     * Similar to {@link #doWhile(Task, ConditionalFunction)} but the task is at least executed once.
      *
      * @param cond condition to check
      * @param task to execute
      * @return this task to chain
      */
-    Task whileDo(TaskFunctionConditional cond, Task task);
+    Task whileDo(ConditionalFunction cond, Task task);
 
     /**
      * Executes and waits for a number of given sub tasks.
@@ -177,49 +177,50 @@ public interface Task {
     TaskResult executeSync(final Graph graph);
 
     /**
-     * TODO
+     * Executes the defined chain of tasks with an initial task result object.
      *
      * @param graph    where the execution is applied to
-     * @param initial
+     * @param initial  initial object of the task result
      * @param callback to notify when the chain of tasks has been executed
      */
     void executeWith(final Graph graph, final Object initial, final Callback<TaskResult> callback);
 
-    /**
-     * TODO
-     *
-     * @param graph    where the execution is applied to
-     * @param initial
-     * @param callback
-     * @return
-     */
-    TaskContext prepareWith(final Graph graph, final Object initial, final Callback<TaskResult> callback);
 
     /**
-     * TODO
+     * Prepares a context in order to initialize the task context.
      *
-     * @param preparedContext
+     * @param graph    where the execution is applied to
+     * @param initial  initial object for the task context
+     * @param callback to notify when the preparation is executed
+     * @return the prepared task context
+     */
+    TaskContext prepare(final Graph graph, final Object initial, final Callback<TaskResult> callback);
+
+    /**
+     * Executes a prepared task context.
+     * See {@link #prepare(Graph, Object, Callback)}.
+     *
+     * @param preparedContext the prepared task context
      */
     void executeUsing(TaskContext preparedContext);
 
     /**
-     * TODO
-     *
      * @param parentContext
-     * @param initial
-     * @param affinity
-     * @param callback
+     * @param initial       initial task result
+     * @param affinity      defines the thread affinity, see {@link org.mwg.plugin.SchedulerAffinity}
+     * @param callback      notifies when the execution is done
      */
     void executeFrom(final TaskContext parentContext, final TaskResult initial, final byte affinity, final Callback<TaskResult> callback);
 
     /**
-     * TODO
+     * Executes a prepared task context.
+     * Similar to {@link #executeUsing(TaskContext)} but the task context can be initialized within a callback.
      *
-     * @param parentContext
-     * @param initial
-     * @param affinity
-     * @param contextInitializer
-     * @param callback
+     * @param parentContext      context of the parent task
+     * @param initial            initial object for the task context
+     * @param affinity           defines the thread affinity, see {@link org.mwg.plugin.SchedulerAffinity}
+     * @param contextInitializer callback to initialize the context
+     * @param callback           notifies when the execution is done
      */
     void executeFromUsing(final TaskContext parentContext, final TaskResult initial, final byte affinity, final Callback<TaskContext> contextInitializer, final Callback<TaskResult> callback);
 

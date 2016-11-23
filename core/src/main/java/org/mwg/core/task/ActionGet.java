@@ -32,7 +32,7 @@ class ActionGet implements Action {
                     final Node casted = (Node) loop;
                     switch (casted.type(flatName)) {
                         case Type.RELATION:
-                            casted.rel(flatName, new Callback<Node[]>() {
+                            casted.relation(flatName, new Callback<Node[]>() {
                                 @Override
                                 public void on(Node[] result) {
                                     if (result != null) {

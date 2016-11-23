@@ -6,10 +6,10 @@ import org.mwg.task.*;
 
 class CF_ActionDoWhile implements Action {
 
-    private final TaskFunctionConditional _cond;
+    private final ConditionalFunction _cond;
     private final Task _then;
 
-    CF_ActionDoWhile(final Task p_then, final TaskFunctionConditional p_cond) {
+    CF_ActionDoWhile(final Task p_then, final ConditionalFunction p_cond) {
         this._cond = p_cond;
         this._then = p_then;
     }

@@ -78,7 +78,7 @@ public class FlagTest {
                         context.continueWith(null);
                     }
                 }
-            }).ifThen(new TaskFunctionConditional() {
+            }).ifThen(new ConditionalFunction() {
                 @Override
                 public boolean eval(TaskContext context) {
                     return (context.result() != null);
@@ -181,7 +181,7 @@ public class FlagTest {
                                 context.continueWith(null);
                             }
                         }
-                    }).ifThen(new TaskFunctionConditional() {
+                    }).ifThen(new ConditionalFunction() {
                 @Override
                 public boolean eval(TaskContext context) {
                     int x = (int) context.variable("count").get(0);

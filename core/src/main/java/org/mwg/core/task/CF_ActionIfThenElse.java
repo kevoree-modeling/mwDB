@@ -4,16 +4,16 @@ import org.mwg.Callback;
 import org.mwg.plugin.SchedulerAffinity;
 import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
-import org.mwg.task.TaskFunctionConditional;
+import org.mwg.task.ConditionalFunction;
 import org.mwg.task.TaskResult;
 
 class CF_ActionIfThenElse implements Action {
 
-    private TaskFunctionConditional _condition;
+    private ConditionalFunction _condition;
     private org.mwg.task.Task _thenSub;
     private org.mwg.task.Task _elseSub;
 
-    CF_ActionIfThenElse(final TaskFunctionConditional cond, final org.mwg.task.Task p_thenSub, final org.mwg.task.Task p_elseSub) {
+    CF_ActionIfThenElse(final ConditionalFunction cond, final org.mwg.task.Task p_thenSub, final org.mwg.task.Task p_elseSub) {
         if (cond == null) {
             throw new RuntimeException("condition should not be null");
         }

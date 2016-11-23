@@ -1,7 +1,7 @@
 package org.mwg.core.task.math;
 
 import org.mwg.task.TaskContext;
-import org.mwg.task.TaskFunctionConditional;
+import org.mwg.task.ConditionalFunction;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,8 +16,8 @@ public class MathConditional {
         this._engine = CoreMathExpressionEngine.parse(mathExpression);
     }
 
-    public TaskFunctionConditional conditional() {
-        return new TaskFunctionConditional() {
+    public ConditionalFunction conditional() {
+        return new ConditionalFunction() {
             @Override
             public boolean eval(TaskContext context) {
                 Map<String, Double> variables = new HashMap<String, Double>();

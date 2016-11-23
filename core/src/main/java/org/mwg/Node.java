@@ -2,7 +2,7 @@ package org.mwg;
 
 /**
  * Node is the base element contained in the {@link Graph}.<br>
- * They belong to a world and time, have attributes (e.g. primitives, relationships, and indexes).
+ * They belong to a world and time, have attributes (e.g. primitives, relations, and indexes).
  */
 public interface Node {
 
@@ -110,18 +110,24 @@ public interface Node {
     Object getOrCreate(String name, byte type, String... params);
 
     /**
-     * TODO
+     * Retrieves the named relation.
+     *
+     * @param relationName name of the relation to retrieve
+     * @param callback     callback to be notified when the relation has been resolved
      */
-    void rel(String relationName, Callback<Node[]> callback);
+    void relation(String relationName, Callback<Node[]> callback);
 
     /**
-     * TODO
+     * Retrieves a relation using an index.
+     *
+     * @param relationIndex index of the relation
+     * @param callback      callback to be notified when the relation has been resolved
      */
-    void relByIndex(long relationIndex, Callback<Node[]> callback);
+    void relationByIndex(long relationIndex, Callback<Node[]> callback);
 
     /**
      * Adds a node to a relation.<br>
-     * If the relationship doesn't exist, it is created on the fly.<br>
+     * If the relation doesn't exist, it is created on the fly.<br>
      *
      * @param relationName The name of the relation in which the node is added.
      * @param relatedNode  The node to insert in the relation.

@@ -83,7 +83,7 @@ class ActionTraverse implements Action {
                     final Object loop = previousResult.get(i);
                     if (loop instanceof BaseNode) {
                         final Node casted = (Node) loop;
-                        casted.rel(flatName, new Callback<Node[]>() {
+                        casted.relation(flatName, new Callback<Node[]>() {
                             @Override
                             public void on(Node[] result) {
                                 if (result != null) {

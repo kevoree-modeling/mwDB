@@ -31,7 +31,7 @@ class ActionTraverseOrKeep implements Action {
                 if (loop instanceof BaseNode) {
                     Node casted = (Node) loop;
                     if (casted.type(flatName) == Type.RELATION) {
-                        casted.rel(flatName, new Callback<Node[]>() {
+                        casted.relation(flatName, new Callback<Node[]>() {
                             @Override
                             public void on(Node[] result) {
                                 if (result != null) {

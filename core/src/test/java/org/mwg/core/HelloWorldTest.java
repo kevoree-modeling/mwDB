@@ -74,7 +74,7 @@ public class HelloWorldTest {
                         Assert.assertTrue(refValuesThree.get(1) == 1);
                         Assert.assertTrue(refValuesThree.get(2) == 3);
 
-                        node1.rel("children", new Callback<org.mwg.Node[]>() {
+                        node1.relation("children", new Callback<org.mwg.Node[]>() {
                             @Override
                             public void on(Node[] resolvedNodes) {
                                 Assert.assertTrue(resolvedNodes[0].id() == 1);

@@ -6,10 +6,10 @@ import org.mwg.task.*;
 
 class CF_ActionWhileDo implements Action {
 
-    private final TaskFunctionConditional _cond;
+    private final ConditionalFunction _cond;
     private final Task _then;
 
-    CF_ActionWhileDo(final TaskFunctionConditional p_cond, final Task p_then) {
+    CF_ActionWhileDo(final ConditionalFunction p_cond, final Task p_then) {
         this._cond = p_cond;
         this._then = p_then;
     }

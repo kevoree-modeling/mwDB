@@ -285,12 +285,12 @@ public class BaseNode implements Node {
     }
 
     @Override
-    public final void rel(String relationName, final Callback<Node[]> callback) {
-        relByIndex(this._resolver.stringToHash(relationName, false), callback);
+    public final void relation(String relationName, final Callback<Node[]> callback) {
+        relationByIndex(this._resolver.stringToHash(relationName, false), callback);
     }
 
     @Override
-    public void relByIndex(long relationIndex, Callback<Node[]> callback) {
+    public void relationByIndex(long relationIndex, Callback<Node[]> callback) {
         if (callback == null) {
             return;
         }

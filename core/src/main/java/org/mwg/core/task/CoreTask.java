@@ -37,7 +37,7 @@ public class CoreTask implements org.mwg.task.Task {
     }
 
     @Override
-    public Task doWhile(Task task, TaskFunctionConditional cond) {
+    public Task doWhile(Task task, ConditionalFunction cond) {
         return then(new CF_ActionDoWhile(task, cond));
     }
 
@@ -72,17 +72,17 @@ public class CoreTask implements org.mwg.task.Task {
     }
 
     @Override
-    public Task ifThen(TaskFunctionConditional cond, Task then) {
+    public Task ifThen(ConditionalFunction cond, Task then) {
         return then(new CF_ActionIfThen(cond, then));
     }
 
     @Override
-    public Task ifThenElse(TaskFunctionConditional cond, Task thenSub, Task elseSub) {
+    public Task ifThenElse(ConditionalFunction cond, Task thenSub, Task elseSub) {
         return then(new CF_ActionIfThenElse(cond, thenSub, elseSub));
     }
 
     @Override
-    public Task whileDo(TaskFunctionConditional cond, Task then) {
+    public Task whileDo(ConditionalFunction cond, Task then) {
         return then(new CF_ActionWhileDo(cond, then));
     }
 
@@ -146,7 +146,7 @@ public class CoreTask implements org.mwg.task.Task {
     }
 
     @Override
-    public TaskContext prepareWith(Graph graph, Object initial, Callback<TaskResult> callback) {
+    public TaskContext prepare(Graph graph, Object initial, Callback<TaskResult> callback) {
         final TaskResult initalRes;
         if (initial instanceof CoreTaskResult) {
             initalRes = ((TaskResult) initial).clone();

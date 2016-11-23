@@ -28,14 +28,14 @@ public class ActionIfThenTest extends AbstractActionTest {
             }
         });
 
-        task().ifThen(new TaskFunctionConditional() {
+        task().ifThen(new ConditionalFunction() {
             @Override
             public boolean eval(TaskContext context) {
                 return true;
             }
         }, modifyResult0).execute(graph, null);
 
-        task().ifThen(new TaskFunctionConditional() {
+        task().ifThen(new ConditionalFunction() {
             @Override
             public boolean eval(TaskContext context) {
                 return false;
@@ -81,7 +81,7 @@ public class ActionIfThenTest extends AbstractActionTest {
             }
         });
 
-        task().then(inject(5)).then(defineAsGlobalVar("variable")).ifThen(new TaskFunctionConditional() {
+        task().then(inject(5)).then(defineAsGlobalVar("variable")).ifThen(new ConditionalFunction() {
             @Override
             public boolean eval(TaskContext context) {
                 return true;

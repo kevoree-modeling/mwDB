@@ -178,7 +178,7 @@ public class Actions {
     }
 
     /**
-     * Adds nodes present in the named variable to the named relationship in all nodes present in the current task result.
+     * Adds nodes present in the named variable to the named relation in all nodes present in the current task result.
      *
      * @param relName name of the relation
      * @param varName interpreted as a template
@@ -189,7 +189,7 @@ public class Actions {
     }
 
     /**
-     * Removes nodes present in the named variable from the named relationship in all nodes present in the current result.
+     * Removes nodes present in the named variable from the named relation in all nodes present in the current result.
      *
      * @param relName name of the relation.
      * @param varFrom will be interpreted as a template.
@@ -200,7 +200,7 @@ public class Actions {
     }
 
     /**
-     * Retrieves any attribute/relationship of the nodes present in the current result.
+     * Retrieves any attribute/relation of the nodes present in the current result.
      *
      * @param name of property to retrieve
      * @return the action to chain
@@ -404,9 +404,9 @@ public class Actions {
      * Evaluates a conditional math expression.
      *
      * @param mathExpression the math expression
-     * @return the functional condition
+     * @return the conditional function
      */
-    public static TaskFunctionConditional cond(String mathExpression) {
+    public static ConditionalFunction cond(String mathExpression) {
         return new MathConditional(mathExpression).conditional();
     }
 
@@ -420,9 +420,9 @@ public class Actions {
     }
 
     /**
-     * Creates a new, empty task result
+     * Creates a new, empty task result.
      *
-     * @return
+     * @return an empty task result
      */
     public static TaskResult emptyResult() {
         return new CoreTaskResult(null, false);
