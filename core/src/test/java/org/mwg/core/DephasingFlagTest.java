@@ -49,7 +49,7 @@ public class DephasingFlagTest {
                 Node n0 = graph.newNode(0, 0);
                 n0.set("name" , Type.STRING, "n0");
 
-                n0.jump(5, new Callback<Node>() {
+                n0.travelInTime(5, new Callback<Node>() {
                     @Override
                     public void on(Node n5) {
                         NodeState dephasedN5 = graph.resolver().newState(n5, 0, 3);

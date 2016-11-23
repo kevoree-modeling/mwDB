@@ -19,7 +19,7 @@ public class TimelineTest {
             Node n = g.newNode(0, 0);
             n.set("name", Type.STRING, "name");
 
-            n.jump(1, n_t1 -> {
+            n.travelInTime(1, n_t1 -> {
                 //should be effect less
                 n_t1.set("name", Type.STRING, "name");
                 Assert.assertEquals(n_t1.timeDephasing(), 1);

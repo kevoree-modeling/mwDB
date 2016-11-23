@@ -11,137 +11,137 @@ public class Actions {
     /**
      * Sets the task context to a particular world.
      *
-     * @param variableName to be set into the task context and will be used for next sub tasks.
-     * @return this task to chain actions (fluent API)
+     * @param world the world to which the task context will be set to
+     * @return the action to chain
      */
-    public static Action setWorld(String variableName) {
-        return new ActionSetWorld(variableName);
+    public static Action setWorld(String world) {
+        return new ActionSetWorld(world);
     }
 
     /**
      * Sets the task context to a particular time.
      *
-     * @param variableName that hasField to be set into the task context and will be used for next sub tasks
-     * @return this task to chain actions (fluent API)
+     * @param time the time to which the task context will be set to
+     * @return the action to chain
      */
-    public static Action setTime(String variableName) {
-        return new ActionSetTime(variableName);
+    public static Action setTime(String time) {
+        return new ActionSetTime(time);
     }
 
     /**
-     * Jump the node , or the array of nodes, in the result to the given time
+     * Switches the time of the task context, i.e. travels the task context in time.
      *
-     * @param time Time to jump for each nodes
-     * @return this task to chain actions (fluent API)
+     * @param time time to which the task context is switched to for all nodes
+     * @return the action to chain
      */
-    public static Action jump(String time) {
-        return new ActionJump(time);
+    public static Action travelInTime(String time) {
+        return new ActionTravelInTime(time);
     }
 
     /**
-     * Inject external object to current task
+     * Injects an external object to the current task context.
      *
-     * @param input object to be injected
-     * @return this task to chain actions (fluent API)
+     * @param input object to be injected into the task context
+     * @return the action to chain
      */
     public static Action inject(Object input) {
         return new ActionInject(input);
     }
 
     /**
-     * Initialise a new scope context for a variable (copy the parent and isolate all set, such as re-definition in imperative languages)
+     * Stores the task result as a global variable in the task context and starts a new scope (for sub tasks).
      *
-     * @param name identifier of this result
-     * @return this task to chain actions (fluent API)
+     * @param name of the global variable
+     * @return the action to chain
      */
     public static Action defineAsGlobalVar(String name) {
         return new ActionDefineAsVar(name, true);
     }
 
     /**
-     * Initialise a new scope context for a variable (copy the parent and isolate all set, such as re-definition in imperative languages)
+     * Stores the task result as a local variable in the task context and starts a new scope (for sub tasks).
      *
-     * @param variableName identifier of this result
-     * @return this task to chain actions (fluent API)
+     * @param name name of the local variable
+     * @return the action to chain
      */
-    public static Action defineAsVar(String variableName) {
-        return new ActionDefineAsVar(variableName, false);
+    public static Action defineAsVar(String name) {
+        return new ActionDefineAsVar(name, false);
     }
 
     /**
-     * Declare a new global variable. Every store instructions past this point using this varName will be stored globally.
+     * Declares a new global variable.
      *
-     * @param variableName
-     * @return this task to chain actions (fluent API)
+     * @param name of the global variable
+     * @return the action to chain
      */
-    public static Action declareGlobalVar(String variableName) {
-        return new ActionDeclareGlobalVar(variableName);
+    public static Action declareGlobalVar(String name) {
+        return new ActionDeclareGlobalVar(name);
     }
 
     /**
      * Declare a new local variable.
      *
-     * @param variableName
-     * @return this task to chain actions (fluent API)
+     * @param name of the local variable
+     * @return the action to chain
      */
-    public static Action declareVar(String variableName) {
-        return new ActionDeclareVar(variableName);
+    public static Action declareVar(String name) {
+        return new ActionDeclareVar(name);
     }
 
     /**
-     * Retrieves a stored variable. To reach a particular index, classic array notation can be used.
-     * Therefore A[B] will be interpreted as: extract value stored at index B from the variable stored at name A.
+     * Retrieves a stored variable. To reach a particular index, a default array notation can be used.
+     * Therefore, A[B] will be interpreted as: extract value stored at index B from the variable A.
      *
      * @param name interpreted as a template
-     * @return this task to chain actions (fluent API)
+     * @return the action to chain
      */
     public static Action readVar(String name) {
         return new ActionReadVar(name);
     }
 
     /**
-     * Stores the current task result into a named variable
+     * Stores the current task result into a named variable without starting a new scope.
      *
-     * @param variableName identifier of this result
-     * @return this task to chain actions (fluent API)
+     * @param name of the variable
+     * @return the action to chain
      */
-    public static Action setAsVar(String variableName) {
-        return new ActionSetAsVar(variableName);
+    public static Action setAsVar(String name) {
+        return new ActionSetAsVar(name);
     }
 
     /**
-     * Add the current task result to the named variable
+     * Adds the current task result to the named variable.
      *
-     * @param variableName identifier of this result
-     * @return this task to chain actions (fluent API)
+     * @param name of the variable
+     * @return the action to chain
      */
-    public static Action addToVar(String variableName) {
-        return new ActionAddToVar(variableName);
+    public static Action addToVar(String name) {
+        return new ActionAddToVar(name);
     }
 
     //Attribute manipulation zone
 
     /**
-     * Sets the value of an attribute for all node present in the current result.
-     * If value is similar to previously stored one, nodes will remain unmodified.
+     * Sets the value of an attribute for all nodes present in the current result.
+     * If value is similar to the previously stored one, nodes will remain unmodified.
      *
-     * @param name  Must be unique per node.
-     * @param type  Must be one of {@link Type} int value.
-     * @param value Will be interpreted as template.
-     * @return this task to chain actions (fluent API)
+     * @param name  must be unique per node
+     * @param type  must be one of {@link Type} int values
+     * @param value will be interpreted as a template
+     * @return the action to chain
      */
     public static Action set(String name, byte type, String value) {
         return new ActionSet(name, type, value, false);
     }
 
     /**
-     * Force the value of an attribute for all node present in the current result.
-     * If value is similar to previously stored one, nodes will still be modified and their timeline will be affected.
+     * Forces the value of an attribute for all nodes present in the current result.
+     * If value is similar to the previously stored one, nodes will still be modified and their timeline will be affected.
      *
-     * @param name  Must be unique per node.
-     * @param type  Must be one of {@link Type} int value.
-     * @param value Will be interpreted as template.
-     * @return this task to chain actions (fluent API)
+     * @param name  must be unique per node
+     * @param type  must be one of {@link Type} int values
+     * @param value will be interpreted as template
+     * @return the action to chain
      */
     public static Action force(String name, byte type, String value) {
         return new ActionSet(name, type, value, true);
@@ -149,61 +149,61 @@ public class Actions {
 
     /**
      * Removes an attribute from a node or an array of nodes.
-     * The node (or the array) should be init in the previous task
+     * The node (or the array) must be initialised in the previous task
      *
-     * @param name The name of the attribute to remove.
-     * @return this task to chain actions (fluent API)
+     * @param name the name of the attribute to remove
+     * @return the action to chain
      */
     public static Action remove(String name) {
         return new ActionRemove(name);
     }
 
     /**
-     * Get all the attributes names of nodes present in the previous result
+     * Retrieves all attribute names of nodes present in the previous task result.
      *
-     * @return this task to chain actions (fluent API)
+     * @return the action to chain
      */
     public static Action attributes() {
         return new ActionAttributes((byte) -1);
     }
 
     /**
-     * Get and filter all the attributes names of nodes present in the previous result. <br>
+     * Gets and filters all attribute names of nodes present in the previous result.
      *
      * @param filterType type of attributes to filter
-     * @return this task to chain actions (fluent API)
+     * @return the action to chain
      */
     public static Action attributesWithTypes(byte filterType) {
         return new ActionAttributes(filterType);
     }
 
     /**
-     * Add nodes present in the named variable from the named relationship, in all nodes present in current result.
+     * Adds nodes present in the named variable to the named relationship in all nodes present in the current task result.
      *
-     * @param name    The name of the relation.
-     * @param varFrom will be interpreted as a template.
-     * @return this task to chain actions (fluent API)
+     * @param relName name of the relation
+     * @param varName interpreted as a template
+     * @return the action to chain
      */
-    public static Action addVarToRelation(String name, String varFrom, String... attributes) {
-        return new ActionAddRemoveVarToRelation(true, name, varFrom, attributes);
+    public static Action addVarToRelation(String relName, String varName, String... attributes) {
+        return new ActionAddRemoveVarToRelation(true, relName, varName, attributes);
     }
 
     /**
-     * Remove nodes present in the named variable from the named relationship, in all nodes present in current result.
+     * Removes nodes present in the named variable from the named relationship in all nodes present in the current result.
      *
-     * @param name    The name of the relation.
+     * @param relName name of the relation.
      * @param varFrom will be interpreted as a template.
-     * @return this task to chain actions (fluent API)
+     * @return the action to chain
      */
-    public static Action removeVarFromRelation(String name, String varFrom, String... attributes) {
-        return new ActionAddRemoveVarToRelation(false, name, varFrom, attributes);
+    public static Action removeVarFromRelation(String relName, String varFrom, String... attributes) {
+        return new ActionAddRemoveVarToRelation(false, relName, varFrom, attributes);
     }
 
     /**
-     * Retrieve any attribute/relationship of nodes presents in current result.
+     * Retrieves any attribute/relationship of the nodes present in the current result.
      *
      * @param name of property to retrieve
-     * @return this task to chain actions (fluent API)
+     * @return the action to chain
      */
     public static Action get(String name, String... params) {
         return new ActionGet(name, params);
@@ -212,67 +212,74 @@ public class Actions {
     //Index manipulation zone
 
     /**
-     * Retrieves all nodes from a named index
+     * Retrieves all nodes from a named index.
      *
      * @param indexName name of the index
-     * @return this task to chain actions (fluent API)
+     * @return the action to chain
      */
     public static Action readGlobalIndexAll(String indexName) {
         return new ActionReadGlobalIndexAll(indexName);
     }
 
     /**
-     * Retrieves indexed nodes that matches the query
+     * Retrieves indexed nodes matching the query.
      *
      * @param indexName name of the index to use
      * @param query     query to filter nodes, such as name=FOO
-     * @return this task to chain actions (fluent API)
+     * @return the action to chain
      */
     public static Action readGlobalIndex(String indexName, String query) {
         return new ActionReadGlobalIndex(indexName, query);
     }
 
+    /**
+     * Adds properties to the named global index.
+     *
+     * @param name       of the index
+     * @param attributes
+     * @return the action to chain
+     */
     public static Action addToGlobalIndex(String name, String... attributes) {
         return new ActionAddToGlobalIndex(name, attributes);
     }
 
 
     /**
-     * Get all the index names
+     * Retrieves all index names.
      *
-     * @return this task to chain actions (fluent API)x
+     * @return the action to chain
      */
     public static Action indexNames() {
         return new ActionIndexNames();
     }
 
     /**
-     * Filters the previous result to keep nodes which named attribute has a specific value
+     * Filters the previous result to keep nodes, which named attribute has a specific value.
      *
      * @param name    the name of the attribute used to filter
      * @param pattern the value nodes must have for this attribute
-     * @return this task to chain actions (fluent API)
+     * @return the action to chain
      */
     public static Action selectWith(String name, String pattern) {
         return new ActionWith(name, pattern);
     }
 
     /**
-     * Filters the previous result to keep nodes which named attribute do not have a given value
+     * Filters the previous result to keep nodes, which named attribute does not have a given value.
      *
      * @param name    the name of the attribute used to filter
      * @param pattern the value nodes must not have for this attribute
-     * @return this task to chain actions (fluent API)
+     * @return the action to chain
      */
     public static Action selectWithout(String name, String pattern) {
         return new ActionWithout(name, pattern);
     }
 
     /**
-     * Filters the previous result to get nodes that complies to the condition specified in {@code filterFunction}
+     * Filters the previous result to get nodes that comply to the condition specified in {@code filterFunction}
      *
      * @param filterFunction condition that nodes have to respect
-     * @return this task to chain actions (fluent API)
+     * @return the action to chain
      */
     public static Action select(TaskFunctionSelect filterFunction) {
         return new ActionSelect(filterFunction);
@@ -282,7 +289,7 @@ public class Actions {
      * Selects an object complying to the filter function.
      *
      * @param filterFunction condition that objects have to respect
-     * @return this task to chain actions (fluent API)
+     * @return the action to chain
      */
     public static Action selectObject(TaskFunctionSelectObject filterFunction) {
         return new ActionSelectObject(filterFunction);
@@ -290,10 +297,22 @@ public class Actions {
 
     //Helper zone
 
+    /**
+     * Prints the action in a human readable format (without line breaks).
+     *
+     * @param name of the action
+     * @return the action to chain
+     */
     public static Action print(String name) {
         return new ActionPrint(name, false);
     }
 
+    /**
+     * Prints the action in a human readable format (with line breaks).
+     *
+     * @param name of the action
+     * @return the action to chain
+     */
     public static Action println(String name) {
         return new ActionPrint(name, false);
     }
@@ -302,70 +321,109 @@ public class Actions {
     //Execution manipulation zone
 
     /**
-     * Execute a executeExpression expression on all nodes given from previous step
+     * Executes an expression on all nodes given from the previous step
      *
-     * @param expression executeExpression expression to execute
-     * @return this task to chain actions (fluent API)
+     * @param expression the to execute
+     * @return the action to chain
      */
     public static Action executeExpression(String expression) {
         return new ActionExecuteExpression(expression);
     }
 
     /**
-     * Build a named action, based on the task registry.
-     * This allows to extend task API with your own DSL.
+     * Registers a named action to the action registry.
+     * This hook allows to extend the Task API with additional actions.
      *
-     * @param name   designation of the task to add, should correspond to the name of the Task plugin registered.
-     * @param params parameters of the newly created task
-     * @return this task to chain actions (fluent API)
+     * @param name   name of the action to add, should correspond to the name of the registered Task plugin.
+     * @param params parameters of the action
+     * @return the action to chain
      */
     public static Action pluginAction(String name, String params) {
         return new ActionPlugin(name, params);
     }
 
     /**
-     * Create a new node on the [world,time] of the context
+     * Creates a new node in the [world,time] of the current context.
      *
-     * @return this task to chain actions (fluent API)
+     * @return the action to chain
      */
     public static Action createNode() {
         return new ActionCreateNode(null);
     }
 
     /**
-     * Create a new typed node on the [world,time] of the context
+     * Creates a new typed node in the [world,time] of the current context.
      *
-     * @param nodeType the type name of the node
-     * @return this task to chain actions (fluent API)
+     * @param type the type name of the node
+     * @return the action to chain
      */
-    public static Action createTypedNode(String nodeType) {
-        return new ActionCreateNode(nodeType);
+    public static Action createTypedNode(String type) {
+        return new ActionCreateNode(type);
     }
 
+    /**
+     * Saves the graph to a storage.
+     *
+     * @return the action to chain
+     */
     public static Action save() {
         return new ActionSave();
     }
 
+    /**
+     * Retrieves in the current [world,time] a named node.
+     *
+     * @param nodeId id of the node to lookup
+     * @return the action to chain
+     */
     public static Action lookup(String nodeId) {
         return new ActionLookup(nodeId);
     }
 
+    /**
+     * Retrieves in the current [world,time] the named nodes.
+     *
+     * @param nodeIds ids of the nodes to lookup
+     * @return the action to chain
+     */
     public static Action lookupAll(String nodeIds) {
         return new ActionLookupAll(nodeIds);
     }
 
+    /**
+     * Resets the result of the task context.
+     *
+     * @return the action to chain
+     */
     public static Action clearResult() {
         return new ActionClearResult();
     }
 
+
+    /**
+     * Evaluates a conditional math expression.
+     *
+     * @param mathExpression the math expression
+     * @return the functional condition
+     */
     public static TaskFunctionConditional cond(String mathExpression) {
         return new MathConditional(mathExpression).conditional();
     }
 
+    /**
+     * Creates a new task.
+     *
+     * @return the created task
+     */
     public static Task task() {
         return new CoreTask();
     }
 
+    /**
+     * Creates a new, empty task result
+     *
+     * @return
+     */
     public static TaskResult emptyResult() {
         return new CoreTaskResult(null, false);
     }

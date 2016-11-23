@@ -92,7 +92,7 @@ public class ActionGetTest extends AbstractActionTest {
             irel.add(node2, "name");
             irel.add(node3, "name");
 
-            root.jump(12, new Callback<Node>() {
+            root.travelInTime(12, new Callback<Node>() {
                 @Override
                 public void on(Node result) {
 

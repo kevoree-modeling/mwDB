@@ -3,18 +3,18 @@ package org.mwg.core.task;
 import org.mwg.Callback;
 import org.mwg.DeferCounter;
 import org.mwg.Node;
-import org.mwg.core.utility.CoreDeferCounter;
 import org.mwg.base.BaseNode;
+import org.mwg.core.utility.CoreDeferCounter;
 import org.mwg.plugin.Job;
 import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-class ActionJump implements Action {
 
+class ActionTravelInTime implements Action {
     private final String _time;
 
-    ActionJump(final String time) {
+    ActionTravelInTime(final String time) {
         _time = time;
     }
 
@@ -24,7 +24,7 @@ class ActionJump implements Action {
         long parsedTime;
         try {
             parsedTime = Long.parseLong(flatTime);
-        }catch(Throwable t) {
+        } catch (Throwable t) {
             Double d = Double.parseDouble(flatTime);
             parsedTime = d.longValue();
         }
@@ -36,7 +36,7 @@ class ActionJump implements Action {
             if (loopObj instanceof BaseNode) {
                 Node castedPreviousNode = (Node) loopObj;
                 final int finalIndex = i;
-                castedPreviousNode.jump(parsedTime, new Callback<Node>() {
+                castedPreviousNode.travelInTime(parsedTime, new Callback<Node>() {
                     @Override
                     public void on(Node result) {
                         castedPreviousNode.free();
@@ -58,6 +58,6 @@ class ActionJump implements Action {
 
     @Override
     public String toString() {
-        return "jump(\'" + _time + "\')";
+        return "travelInTime(\'" + _time + "\')";
     }
 }

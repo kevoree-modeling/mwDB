@@ -7,22 +7,22 @@ package org.mwg;
 public interface Node {
 
     /**
-     * The world this node belongs to.
+     * Returns the world this node belongs to.
      *
      * @return World identifier
      */
     long world();
 
     /**
-     * Provides the timepoint of the node.
+     * Returns the timepoint of the node.
      *
      * @return Timestamp value
      */
     long time();
 
     /**
-     * Provides the identifier for this node in the graph.<br>
-     * This identifier is constant over timePoints and worlds.
+     * Returns the identifier for this node in the graph.<br>
+     * This identifier is constant over timepoints and worlds.
      *
      * @return the node id.
      */
@@ -33,8 +33,7 @@ public interface Node {
      *
      * @param name The name of the attribute to be read.
      * @return The value of the required attribute in this node for the current timepoint and world.
-     * The type of the returned object (i.e.: of the attribute) is given by {@link #type(String)}
-     * (typed by one of the Type)
+     * The type of the returned object (i.e. of the attribute) is given by {@link #type(String)} (typed by one of  {@link #type(String)}
      */
     Object get(String name);
 
@@ -43,13 +42,13 @@ public interface Node {
      *
      * @param index index of attribute.
      * @return The value of the required attribute in this node for the current timepoint and world.
-     * The type of the returned object (i.e.: of the attribute) is given by {@link #type(String)}
+     * The type of the returned object (i.e. of the attribute) is given by {@link #type(String)}
      * (typed by one of the Type)
      */
     Object getByIndex(long index);
 
     /**
-     * Allows to know the type of an attribute. The returned value is one of {@link Type}.
+     * Returns the type of an attribute. The returned value is one of {@link Type}.
      *
      * @param name The name of the attribute for which the type is asked.
      * @return The type of the attribute inform of an int belonging to {@link Type}.
@@ -59,15 +58,14 @@ public interface Node {
     byte typeByIndex(long index);
 
     /**
-     * Allows to know the type name of the current node (case of typed node).
+     * Returns the type name of the current node (case of typed node).
      *
      * @return The type name of the current node.
      */
     String nodeTypeName();
 
     /**
-     * Sets the value of an attribute of this node, for its current world and time.<br>
-     * This method hasField to be used for primitive types.
+     * Sets the value of an attribute of this node for its current world and time.<br>
      *
      * @param name  Must be unique per node.
      * @param type  Must be one of {@link Type} int value.
@@ -76,8 +74,7 @@ public interface Node {
     Node set(String name, byte type, Object value);
 
     /**
-     * Sets the value of an attribute of this node, for its current world and time.<br>
-     * This method hasField to be used for primitive types.
+     * Sets the value of an attribute of this node for its current world and time.<br>
      *
      * @param name  Must be unique per node.
      * @param type  Must be one of {@link Type} int value.
@@ -86,8 +83,7 @@ public interface Node {
     Node force(String name, byte type, Object value);
 
     /**
-     * Sets the value of an attribute of this node, for its current world and time.<br>
-     * This method hasField to be used for primitive types.
+     * Sets the value of an attribute of this node for its current world and time.<br>
      *
      * @param index Must be unique per node.
      * @param type  Must be one of {@link Type} int value.
@@ -105,28 +101,21 @@ public interface Node {
     Node removeByIndex(long index);
 
     /**
-     * Gets or creates atomically a complex attribute (such as Maps).<br>
-     * It returns a mutable Map.
+     * Gets or creates atomically a complex mutable attribute (e.g. Maps).<br>
      *
      * @param name The name of the object to create. Must be unique per node.
      * @param type The type of the attribute. Must be one of {@link Type} int value.
-     * @return A Map instance that can be altered at the current world and time.
+     * @return An instance that can be altered at the current world and time.
      */
     Object getOrCreate(String name, byte type, String... params);
 
     /**
-     * Retrieves asynchronously the nodes contained in a traverseIndex.
-     *
-     * @param relationName The name of the traverseIndex to retrieve.
-     * @param callback     Callback to be called when the nodes of the relationship have been connected.
+     * TODO
      */
     void rel(String relationName, Callback<Node[]> callback);
 
     /**
-     * Retrieves asynchronously the nodes contained in a traverseIndex.
-     *
-     * @param relationIndex The name of the traverseIndex to retrieve.
-     * @param callback      Callback to be called when the nodes of the relationship have been connected.
+     * TODO
      */
     void relByIndex(long relationIndex, Callback<Node[]> callback);
 
@@ -148,21 +137,21 @@ public interface Node {
     Node removeFromRelation(String relationName, Node relatedNode, String... indexedAttributes);
 
     /**
-     * Compute the time dephasing of this node, i.e. the difference between last modification and current node timepoint.
+     * Computes the time dephasing of this node, i.e. the difference between last modification and the timepoint of the current node.
      *
      * @return The amount of time between the current time of the node and the last recorded state chunk time.
      */
     long timeDephasing();
 
     /**
-     * Compute the time dephasing of this node, i.e. the difference between last modification and current node timepoint.
+     * Computes the time dephasing of this node, i.e. the difference between last modification and current node timepoint.
      *
      * @return The amount of time between the current time of the node and the last recorded state chunk time.
      */
     long lastModification();
 
     /**
-     * Forces the creation of a new timePoint of a node for its time.<br>
+     * Forces the creation of a new timepoint of a node for its time.<br>
      * Clones the previous state to the exact time of this node.<br>
      * This cancels the dephasing between the current timepoint of the node and the last record timepoint.
      */
@@ -187,20 +176,21 @@ public interface Node {
     void free();
 
     /**
-     * Return the graph that have created this node.
+     * Returns the graph that have created this node.
      *
      * @return the graph this node belongs to
      */
     Graph graph();
 
     /**
-     * Jump over the time for this object. This method is equivalent to a call to lookup with the same ID than the current Node.
+     * Travels this object in time.
+     * This method is equivalent to a call to lookup with the same ID than the current Node.
      *
      * @param targetTime target time selectWhere this node hasField to be resolved.
-     * @param callback   Called whe the jump is complete. Gives the new timed node in parameter.
+     * @param callback   Called whe the travelInTime is complete. Gives the new timed node in parameter.
      * @param <A>        Generic parameter that define the type of the result, should be a sub-type of Node
      */
-    <A extends Node> void jump(long targetTime, Callback<A> callback);
+    <A extends Node> void travelInTime(long targetTime, Callback<A> callback);
 
     /*
     long initialTime();

@@ -35,7 +35,7 @@ public class BenchmarkParTest {
                                 .then(print("{{result}}"))
                                 .then(addToGlobalIndex("nodes", "name"))
                                 .loop("0", "999",
-                                        task().then(jump("{{i}}")).then(set("val", Type.INT, "{{i}}")).then(clearResult()))
+                                        task().then(travelInTime("{{i}}")).then(set("val", Type.INT, "{{i}}")).then(clearResult()))
                                 .ifThen(cond("i % 100 == 0"), task().then(save()))
                                 .then(clearResult())
                 ).then(save()).then(readGlobalIndexAll("nodes")).execute(g, new Callback<TaskResult>() {

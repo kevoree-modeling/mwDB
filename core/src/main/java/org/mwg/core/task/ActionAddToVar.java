@@ -10,7 +10,7 @@ class ActionAddToVar implements Action {
 
     ActionAddToVar(final String p_name) {
         if (p_name == null) {
-            throw new RuntimeException("variableName should not be null");
+            throw new RuntimeException("p_name should not be null");
         }
         this._name = p_name;
     }

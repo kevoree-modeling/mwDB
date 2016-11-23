@@ -10,10 +10,10 @@ import org.mwg.task.TaskResult;
 import static org.mwg.core.task.Actions.*;
 import static org.mwg.core.task.Actions.task;
 
-public class ActionJumpTest extends AbstractActionTest {
+public class ActionTravelInTimeTest extends AbstractActionTest {
 
     @Test
-    public void testJump() {
+    public void testTravelInTime() {
         initGraph();
 
         task().then(readGlobalIndexAll("nodes"))
@@ -27,7 +27,7 @@ public class ActionJumpTest extends AbstractActionTest {
                     }
                 }))
                 .then(readVar("nodes"))
-                .then(jump("10"))
+                .then(travelInTime("10"))
                 .forEach(task().thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {

@@ -396,7 +396,7 @@ public class BaseNode implements Node {
     }
 
     @Override
-    public final <A extends Node> void jump(final long targetTime, final Callback<A> callback) {
+    public final <A extends Node> void travelInTime(final long targetTime, final Callback<A> callback) {
         _resolver.lookup(_world, targetTime, _id, callback);
     }
 
