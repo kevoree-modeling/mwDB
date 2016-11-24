@@ -6,7 +6,7 @@ public class VerbosePlugin extends BasePlugin {
 
     public VerbosePlugin() {
         super();
-        declareTaskHookFactory(new VerboseHookFactory());
+        declareTaskHook(new VerboseHook());
     }
 
 }

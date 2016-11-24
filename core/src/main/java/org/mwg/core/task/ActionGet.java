@@ -46,6 +46,7 @@ class ActionGet implements Action {
                             });
                             break;
                         case Type.RELATION_INDEXED:
+                            //TODO move this to the API
                             RelationIndexed relationIndexed = (RelationIndexed) casted.get(flatName);
                             if (relationIndexed != null) {
                                 if (_params != null && _params.length > 0) {
@@ -64,7 +65,7 @@ class ActionGet implements Action {
                                         public void on(Node[] result) {
                                             if (result != null) {
                                                 for (int j = 0; j < result.length; j++) {
-                                                    if(result[j] != null){
+                                                    if (result[j] != null) {
                                                         finalResult.add(result[j]);
                                                     }
                                                 }
@@ -79,7 +80,7 @@ class ActionGet implements Action {
                                         public void on(Node[] result) {
                                             if (result != null) {
                                                 for (int j = 0; j < result.length; j++) {
-                                                    if(result[j]!=null){
+                                                    if (result[j] != null) {
                                                         finalResult.add(result[j]);
                                                     }
                                                 }

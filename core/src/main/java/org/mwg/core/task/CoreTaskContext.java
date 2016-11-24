@@ -25,14 +25,12 @@ class CoreTaskContext implements TaskContext {
     TaskResult _result;
     private long _world;
     private long _time;
-    private final TaskHook _hook;
 
     private final CoreTask _origin;
     private int cursor = 0;
 
-    CoreTaskContext(final CoreTask origin, final TaskContext parentContext, final TaskResult initial, final Graph p_graph, final TaskHook p_hook, final Callback<TaskResult> p_callback) {
+    CoreTaskContext(final CoreTask origin, final TaskContext parentContext, final TaskResult initial, final Graph p_graph, final Callback<TaskResult> p_callback) {
         this._origin = origin;
-        this._hook = p_hook;
         if (parentContext != null) {
             this._time = parentContext.time();
             this._world = parentContext.world();
@@ -307,11 +305,13 @@ class CoreTaskContext implements TaskContext {
 
     @Override
     public final void continueTask() {
-
+        final TaskHook[] hooks = this._origin._hooks;
         final Action currentAction = _origin.actions[cursor];
         //next step now...
-        if (this._hook != null) {
-            this._hook.afterAction(currentAction, this);
+        if (hooks != null) {
+            for (int i = 0; i < hooks.length; i++) {
+                hooks[i].afterAction(currentAction, this);
+            }
         }
         cursor++;
         final Action nextAction;
@@ -344,11 +344,13 @@ class CoreTaskContext implements TaskContext {
                 }
             }
             /* End Clean */
-            if (this._hook != null) {
-                if (this._parent == null) {
-                    this._hook.end(this);
-                } else {
-                    this._hook.afterTask(this);
+            if (hooks != null) {
+                for (int i = 0; i < hooks.length; i++) {
+                    if (this._parent == null) {
+                        hooks[i].end(this);
+                    } else {
+                        hooks[i].afterTask(this);
+                    }
                 }
             }
             if (this._callback != null) {
@@ -359,8 +361,10 @@ class CoreTaskContext implements TaskContext {
                 }
             }
         } else {
-            if (this._hook != null) {
-                this._hook.beforeAction(nextAction, this);
+            if (hooks != null) {
+                for (int i = 0; i < hooks.length; i++) {
+                    hooks[i].beforeAction(nextAction, this);
+                }
             }
             nextAction.eval(this);
         }
@@ -369,13 +373,16 @@ class CoreTaskContext implements TaskContext {
 
     final void execute() {
         final Action current = _origin.actions[cursor];
-        if (this._hook != null) {
-            if (_parent == null) {
-                _hook.start(this);
-            } else {
-                _hook.beforeTask(_parent, this);
+        final TaskHook[] hooks = this._origin._hooks;
+        if (hooks != null) {
+            for (int i = 0; i < hooks.length; i++) {
+                if (_parent == null) {
+                    hooks[i].start(this);
+                } else {
+                    hooks[i].beforeTask(_parent, this);
+                }
+                hooks[i].beforeAction(current, this);
             }
-            this._hook.beforeAction(current, this);
         }
         current.eval(this);
     }
@@ -490,11 +497,6 @@ class CoreTaskContext implements TaskContext {
         } else {
             return buffer.toString();
         }
-    }
-
-    @Override
-    public TaskHook hook() {
-        return this._hook;
     }
 
     @Override

@@ -4,7 +4,7 @@ import org.mwg.chunk.ChunkSpace;
 import org.mwg.plugin.*;
 import org.mwg.struct.Buffer;
 import org.mwg.task.TaskActionFactory;
-import org.mwg.task.TaskHookFactory;
+import org.mwg.task.TaskHook;
 
 /**
  * Graph is the main structure of mwDB.
@@ -224,6 +224,6 @@ public interface Graph {
      *
      * @return the current default task hook factory
      */
-    TaskHookFactory taskHookFactory();
+    TaskHook[] taskHooks();
 
 }

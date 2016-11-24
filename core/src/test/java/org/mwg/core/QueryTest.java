@@ -8,7 +8,7 @@ import org.mwg.core.memory.HeapMemoryFactory;
 import org.mwg.plugin.*;
 import org.mwg.struct.Buffer;
 import org.mwg.task.TaskActionFactory;
-import org.mwg.task.TaskHookFactory;
+import org.mwg.task.TaskHook;
 import org.mwg.utility.HashHelper;
 
 public class QueryTest implements Resolver, Graph {
@@ -196,8 +196,8 @@ public class QueryTest implements Resolver, Graph {
     }
 
     @Override
-    public TaskHookFactory taskHookFactory() {
-        return null;
+    public TaskHook[] taskHooks() {
+        return new TaskHook[0];
     }
 
     @Override

@@ -2,7 +2,7 @@ package org.mwg.base;
 
 import org.mwg.plugin.*;
 import org.mwg.task.TaskActionFactory;
-import org.mwg.task.TaskHookFactory;
+import org.mwg.task.TaskHook;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +19,7 @@ public class BasePlugin implements Plugin {
 
     private ResolverFactory _resolverFactory;
 
-    private TaskHookFactory _hookFactory;
+    private TaskHook[] _taskHooks = new TaskHook[0];
 
     @Override
     public Plugin declareNodeType(String name, NodeFactory factory) {
@@ -52,13 +52,16 @@ public class BasePlugin implements Plugin {
     }
 
     @Override
-    public TaskHookFactory hookFactory() {
-        return _hookFactory;
+    public TaskHook[] taskHooks() {
+        return _taskHooks;
     }
 
     @Override
-    public Plugin declareTaskHookFactory(TaskHookFactory factory) {
-        _hookFactory = factory;
+    public Plugin declareTaskHook(TaskHook hook) {
+        TaskHook[] new_hooks = new TaskHook[_taskHooks.length + 1];
+        System.arraycopy(_taskHooks, 0, new_hooks, 0, _taskHooks.length);
+        new_hooks[_taskHooks.length] = hook;
+        _taskHooks = new_hooks;
         return this;
     }
 

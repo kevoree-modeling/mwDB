@@ -10,7 +10,7 @@ import org.mwg.core.utility.CoreDeferCounterSync;
 import org.mwg.plugin.*;
 import org.mwg.struct.*;
 import org.mwg.task.TaskActionFactory;
-import org.mwg.task.TaskHookFactory;
+import org.mwg.task.TaskHook;
 import org.mwg.utility.Base64;
 import org.mwg.utility.HashHelper;
 import org.mwg.utility.KeyHelper;
@@ -33,7 +33,7 @@ public class CoreGraph implements org.mwg.Graph {
     private final AtomicBoolean _lock;
     private final Plugin[] _plugins;
     private final MemoryFactory _memoryFactory;
-    private final TaskHookFactory _hookFactory;
+    private final TaskHook[] _taskHooks;
 
     private Short _prefix = null;
     private GenChunk _nodeKeyCalculator = null;
@@ -44,12 +44,12 @@ public class CoreGraph implements org.mwg.Graph {
         //First round, find relevant
         MemoryFactory memoryFactory = null;
         ResolverFactory resolverFactory = null;
-        TaskHookFactory hookFactory = null;
+        TaskHook[] temp_hooks = new TaskHook[0];
         if (p_plugins != null) {
             for (int i = 0; i < p_plugins.length; i++) {
                 final Plugin loopPlugin = p_plugins[i];
                 final MemoryFactory loopMF = loopPlugin.memoryFactory();
-                final TaskHookFactory loopHF = loopPlugin.hookFactory();
+                final TaskHook[] loopHF = loopPlugin.taskHooks();
                 if (loopMF != null) {
                     memoryFactory = loopMF;
                 }
@@ -58,7 +58,10 @@ public class CoreGraph implements org.mwg.Graph {
                     resolverFactory = loopRF;
                 }
                 if (loopHF != null) {
-                    hookFactory = loopHF;
+                    TaskHook[] temp_temp_hooks = new TaskHook[temp_hooks.length + loopHF.length];
+                    System.arraycopy(temp_hooks, 0, temp_temp_hooks, 0, temp_hooks.length);
+                    System.arraycopy(loopHF, 0, temp_hooks, 0, temp_hooks.length);
+                    temp_hooks = temp_temp_hooks;
                 }
             }
         }
@@ -74,7 +77,7 @@ public class CoreGraph implements org.mwg.Graph {
             };
         }
         //Second round, initialize all mandatory elements
-        _hookFactory = hookFactory;
+        _taskHooks = temp_hooks;
         _storage = p_storage;
         _memoryFactory = memoryFactory;
         _space = memoryFactory.newSpace(memorySize, selfPointer);
@@ -221,8 +224,8 @@ public class CoreGraph implements org.mwg.Graph {
     }
 
     @Override
-    public TaskHookFactory taskHookFactory() {
-        return _hookFactory;
+    public TaskHook[] taskHooks() {
+        return _taskHooks;
     }
 
     @Override

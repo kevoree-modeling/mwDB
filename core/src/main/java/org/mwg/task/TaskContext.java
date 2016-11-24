@@ -52,6 +52,4 @@ public interface TaskContext {
 
     String template(String input);
 
-    TaskHook hook();
-
 }

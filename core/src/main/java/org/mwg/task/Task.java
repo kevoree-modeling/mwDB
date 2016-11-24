@@ -155,10 +155,10 @@ public interface Task {
     /**
      * Creates a hook to extend the Task API.
      *
-     * @param hookFactory
+     * @param hook
      * @return this task to chain
      */
-    Task hook(TaskHookFactory hookFactory);
+    Task addHook(TaskHook hook);
 
     /**
      * Executes the defined chain of tasks on a graph in an asynchronous way.
