@@ -15,7 +15,6 @@ public class CoreTask implements org.mwg.task.Task {
     private int insertCapacity = Constants.MAP_INITIAL_CAPACITY;
     public Action[] actions = new Action[insertCapacity];
     public int insertCursor = 0;
-
     TaskHook[] _hooks = null;
 
     @Override

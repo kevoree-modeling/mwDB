@@ -306,11 +306,17 @@ class CoreTaskContext implements TaskContext {
     @Override
     public final void continueTask() {
         final TaskHook[] hooks = this._origin._hooks;
+        final TaskHook[] globalHooks = this._graph.taskHooks();
         final Action currentAction = _origin.actions[cursor];
         //next step now...
         if (hooks != null) {
             for (int i = 0; i < hooks.length; i++) {
                 hooks[i].afterAction(currentAction, this);
+            }
+        }
+        if (globalHooks != null) {
+            for (int i = 0; i < globalHooks.length; i++) {
+                globalHooks[i].afterAction(currentAction, this);
             }
         }
         cursor++;
@@ -353,6 +359,15 @@ class CoreTaskContext implements TaskContext {
                     }
                 }
             }
+            if (globalHooks != null) {
+                for (int i = 0; i < globalHooks.length; i++) {
+                    if (this._parent == null) {
+                        globalHooks[i].end(this);
+                    } else {
+                        globalHooks[i].afterTask(this);
+                    }
+                }
+            }
             if (this._callback != null) {
                 this._callback.on(_result);
             } else {
@@ -366,11 +381,17 @@ class CoreTaskContext implements TaskContext {
                     hooks[i].beforeAction(nextAction, this);
                 }
             }
+            if (globalHooks != null) {
+                for (int i = 0; i < globalHooks.length; i++) {
+                    globalHooks[i].beforeAction(nextAction, this);
+                }
+            }
             nextAction.eval(this);
         }
     }
 
 
+    @SuppressWarnings("Duplicates")
     final void execute() {
         final Action current = _origin.actions[cursor];
         final TaskHook[] hooks = this._origin._hooks;
@@ -382,6 +403,17 @@ class CoreTaskContext implements TaskContext {
                     hooks[i].beforeTask(_parent, this);
                 }
                 hooks[i].beforeAction(current, this);
+            }
+        }
+        final TaskHook[] globalHooks = this._graph.taskHooks();
+        if (globalHooks != null) {
+            for (int i = 0; i < globalHooks.length; i++) {
+                if (_parent == null) {
+                    globalHooks[i].start(this);
+                } else {
+                    globalHooks[i].beforeTask(_parent, this);
+                }
+                globalHooks[i].beforeAction(current, this);
             }
         }
         current.eval(this);
