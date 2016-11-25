@@ -3,7 +3,7 @@ package org.mwg.ml.algorithm.regression;
 import org.mwg.Callback;
 import org.mwg.Graph;
 import org.mwg.Type;
-import org.mwg.ml.AbstractMLNode;
+import org.mwg.ml.BaseMLNode;
 import org.mwg.ml.RegressionNode;
 import org.mwg.plugin.NodeState;
 import org.mwg.utility.Enforcer;
@@ -13,7 +13,7 @@ import java.util.Random;
 /**
  * Created by assaad on 14/06/16.
  */
-public class LiveLinearRegressionNode extends AbstractMLNode implements RegressionNode {
+public class LiveLinearRegressionNode extends BaseMLNode implements RegressionNode {
 
     public static final String ALPHA_KEY = "ALPHA"; //learning rate
     public static final double ALPHA_DEF = 0.0001;

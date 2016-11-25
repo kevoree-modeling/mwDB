@@ -20,7 +20,6 @@ public class ProbaDistribution2 {
         this.global = global;
     }
 
-
     public NDimentionalArray calculate(double[] min, double[] max, double[] resolution, double[] err, ProgressReporter reporter) {
         if (reporter != null) {
             reporter.updateInformation("Number of distributions: " + distributions.length + " , values: " + global);

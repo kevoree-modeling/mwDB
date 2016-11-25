@@ -14,10 +14,7 @@ public class GaussianTreeNode extends GaussianNode implements ProfilingNode {
 
     public static final String THRESHOLD = "_threshold";  //Factor of distance before check inside fail
     public static final double THRESHOLD_DEF = 1.01;
-
-
     private static String INTERNAL_KDROOT = "kdroot";
-
 
     public GaussianTreeNode(long p_world, long p_time, long p_id, Graph p_graph) {
         super(p_world, p_time, p_id, p_graph);
@@ -35,7 +32,6 @@ public class GaussianTreeNode extends GaussianNode implements ProfilingNode {
         });
     }
 
-
     public void internalLearn(final double[] values, final double[] features, final Callback<Boolean> callback) {
         final NodeState resolved = this._resolver.alignState(this);
         super.learnVector(values, new Callback<Boolean>() {
@@ -46,10 +42,10 @@ public class GaussianTreeNode extends GaussianNode implements ProfilingNode {
 
                 if (resolved.getFromKey(INTERNAL_KDROOT) == null) {
                     KDTree root = (KDTree) graph().newTypedNode(world(), time(), KDTree.NAME);
-                   // root.setProperty(KDTree.DISTANCE_TYPE, Type.INT, DistanceEnum.GAUSSIAN);
-                    root.setProperty(KDTree.DISTANCE_THRESHOLD, Type.DOUBLE, threshold);
-                  //  root.setProperty(KDTree.GAUSSIAN_PRECISION, Type.DOUBLE_ARRAY, precisions);
-                    add(INTERNAL_KDROOT, root);
+                    // root.setProperty(KDTree.DISTANCE_TYPE, Type.INT, DistanceEnum.GAUSSIAN);
+                    root.set(KDTree.DISTANCE_THRESHOLD, Type.DOUBLE, threshold);
+                    //  root.setProperty(KDTree.GAUSSIAN_PRECISION, Type.DOUBLE_ARRAY, precisions);
+                    addToRelation(INTERNAL_KDROOT, root);
                     GaussianNode profile = (GaussianNode) graph().newTypedNode(world(), time(), GaussianNode.NAME);
 
                     profile.learnVector(values, new Callback<Boolean>() {
@@ -70,7 +66,7 @@ public class GaussianTreeNode extends GaussianNode implements ProfilingNode {
                     });
 
                 } else {
-                    rel(INTERNAL_KDROOT, new Callback<Node[]>() {
+                    relation(INTERNAL_KDROOT, new Callback<Node[]>() {
                         @Override
                         public void on(Node[] result) {
                             KDTree root = (KDTree) result[0];
@@ -123,7 +119,7 @@ public class GaussianTreeNode extends GaussianNode implements ProfilingNode {
 
     public int getNumNodes() {
         int[] res = new int[1];
-        rel(INTERNAL_KDROOT, new Callback<Node[]>() {
+        relation(INTERNAL_KDROOT, new Callback<Node[]>() {
             @Override
             public void on(Node[] result) {
                 if (result == null || result.length == 0) {
@@ -153,7 +149,7 @@ public class GaussianTreeNode extends GaussianNode implements ProfilingNode {
             callback.on(null);
         }
         final double threshold = resolved.getFromKeyWithDefault(THRESHOLD, THRESHOLD_DEF);
-        rel(INTERNAL_KDROOT, new Callback<Node[]>() {
+        relation(INTERNAL_KDROOT, new Callback<Node[]>() {
             @Override
             public void on(Node[] result) {
                 KDTree root = (KDTree) result[0];

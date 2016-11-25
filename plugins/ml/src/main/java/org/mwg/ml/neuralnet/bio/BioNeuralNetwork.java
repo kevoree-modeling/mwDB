@@ -1,13 +1,13 @@
 package org.mwg.ml.neuralnet.bio;
 
 import org.mwg.*;
-import org.mwg.plugin.AbstractNode;
+import org.mwg.base.BaseNode;
 import org.mwg.struct.LongLongMap;
 import org.mwg.struct.LongLongMapCallBack;
 import org.mwg.struct.Matrix;
-import org.mwg.struct.Relationship;
+import org.mwg.struct.Relation;
 
-public class BioNeuralNetwork extends AbstractNode {
+public class BioNeuralNetwork extends BaseNode {
 
     public static String NAME = "BioNeuralNetworkNode";
     public static final String RELATION_INPUTS = "inputs";
@@ -28,14 +28,14 @@ public class BioNeuralNetwork extends AbstractNode {
 
     @SuppressWarnings("Duplicates")
     public BioNeuralNetwork configure(final int inputs, final int outputs, int hiddenlayers, final int nodesPerLayer, final int spikeLimit, final double threshold) {
-        setProperty(SPIKE_LIMIT, Type.INT, spikeLimit);
-        setProperty(THRESHOLD, Type.DOUBLE, threshold);
+        set(SPIKE_LIMIT, Type.INT, spikeLimit);
+        set(THRESHOLD, Type.DOUBLE, threshold);
         Node[] inputNodes = new BioInputNeuralNode[inputs];
         //create input layer
         for (int i = 0; i < inputs; i++) {
             BioInputNeuralNode input = (BioInputNeuralNode) graph().newTypedNode(world(), time(), BioInputNeuralNode.NAME);
             inputNodes[i] = input;
-            this.add(RELATION_INPUTS, input);
+            this.addToRelation(RELATION_INPUTS, input);
         }
         BioNeuralNode[] previousLayer = new BioNeuralNode[nodesPerLayer];
         int seed = 0;
@@ -109,7 +109,7 @@ public class BioNeuralNetwork extends AbstractNode {
                 ((LongLongMap) previousLayer[k].getOrCreate(RELATION_OUTPUTS, Type.LONG_TO_LONG_MAP)).put(output.id(), i);
                 ((LongLongMap) output.getOrCreate(RELATION_INPUTS, Type.LONG_TO_LONG_MAP)).put(previousLayer[k].id(), k);
             }
-            this.add(RELATION_OUTPUTS, output);
+            this.addToRelation(RELATION_OUTPUTS, output);
         }
         graph().freeNodes(previousLayer);
         return this;
@@ -127,11 +127,11 @@ public class BioNeuralNetwork extends AbstractNode {
         }
         long previousNode = mapping.get(inputCode);
         if (previousNode == Constants.NULL_LONG) {
-            final Relationship relationship;
+            final Relation relationship;
             if (isInput) {
-                relationship = (Relationship) this.get(RELATION_INPUTS);
+                relationship = (Relation) this.get(RELATION_INPUTS);
             } else {
-                relationship = (Relationship) this.get(RELATION_OUTPUTS);
+                relationship = (Relation) this.get(RELATION_OUTPUTS);
             }
             if (relationship == null) {
                 throw new RuntimeException("Bad API usage, please call configure method first!");

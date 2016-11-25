@@ -3,22 +3,20 @@ package org.mwg.ml.neuralnet;
 import org.mwg.Callback;
 import org.mwg.Graph;
 import org.mwg.Type;
-import org.mwg.plugin.AbstractNode;
+import org.mwg.base.BaseNode;
+import org.mwg.core.task.Actions;
 import org.mwg.plugin.NodeState;
 import org.mwg.struct.LongLongMap;
-import org.mwg.struct.Relationship;
-import org.mwg.task.Action;
-import org.mwg.task.Task;
-import org.mwg.task.TaskContext;
-import org.mwg.task.TaskFunctionConditional;
+import org.mwg.struct.Relation;
+import org.mwg.task.*;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import static org.mwg.task.Actions.newTask;
-import static org.mwg.task.Actions.then;
+import static org.mwg.core.task.Actions.setAsVar;
+import static org.mwg.core.task.Actions.task;
 
-public class NeuralNodeEmpty extends AbstractNode {
+public class NeuralNodeEmpty extends BaseNode {
     public static String NAME = "NeuralNodeEmpty";
 
     public static String INPUTS = "inputs"; //Input relationships
@@ -99,7 +97,7 @@ public class NeuralNodeEmpty extends AbstractNode {
         NodeState state = phasedState();
         int type = state.getFromKeyWithDefault(NODE_TYPE, NeuralNodeType.HIDDEN);
         if (type == NeuralNodeType.HIDDEN || type == NeuralNodeType.OUTPUT) {
-            Relationship input = (Relationship) state.getFromKey(INPUTS);
+            Relation input = (Relation) state.getFromKey(INPUTS);
             double[] weights = new double[input.size() + 1];
             for (int i = 0; i < weights.length; i++) {
                 weights[i] = random.nextDouble() * maxValue;
@@ -109,14 +107,14 @@ public class NeuralNodeEmpty extends AbstractNode {
     }
 
     private void forwardConnect(NeuralNodeEmpty inputNode) {
-        Relationship outputs = getOrCreateRel(OUTPUTS);
+        Relation outputs = (Relation) getOrCreate(OUTPUTS, Type.RELATION);
         outputs.add(inputNode.id());
         int pos = outputs.size() - 1;
         LongLongMap map = (LongLongMap) getOrCreate(OUTPUTS_MAP, Type.LONG_TO_LONG_MAP);
         map.put(inputNode.id(), pos);
 
 
-        Relationship inputs = inputNode.getOrCreateRel(INPUTS);
+        Relation inputs = (Relation) inputNode.getOrCreate(INPUTS, Type.RELATION);
         inputs.add(this.id());
         int posint = inputs.size() - 1;
         LongLongMap mapin = (LongLongMap) inputNode.getOrCreate(INPUTS_MAP, Type.LONG_TO_LONG_MAP);
@@ -125,7 +123,7 @@ public class NeuralNodeEmpty extends AbstractNode {
 
     private NeuralNodeEmpty createNewNode(int neuralNodeType) {
         NeuralNodeEmpty temp = (NeuralNodeEmpty) graph().newTypedNode(world(), time(), NAME);
-        temp.setProperty(NODE_TYPE, Type.INT, neuralNodeType);
+        temp.set(NODE_TYPE, Type.INT, neuralNodeType);
         return temp;
     }
 
@@ -171,22 +169,22 @@ public class NeuralNodeEmpty extends AbstractNode {
     private static Task predictTask = createPredictTask();
 
     private static Task createPredictTask() {
-        Task t = newTask();
-        t.asVar("parent").traverse(OUTPUTS)
-                .foreach(
-                        then(new Action() {
+        Task t = task();
+        t.then(setAsVar("parent")).then(Actions.get(OUTPUTS))
+                .forEach(
+                        task().thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 //Bufferize values here
 
                                 context.continueTask();
                             }
-                        }).ifThen(new TaskFunctionConditional() {
+                        }).ifThen(new ConditionalFunction() {
                                       @Override
                                       public boolean eval(TaskContext context) {
                                           return false; //should return if buffer is full
                                       }
-                                  }, then(new Action() {
+                                  }, task().thenDo(new ActionFunction() {
                                     @Override
                                     public void eval(TaskContext context) {
                                         //Calculate the integration function
@@ -195,12 +193,12 @@ public class NeuralNodeEmpty extends AbstractNode {
 
                                         context.continueTask();
                                     }
-                                }).ifThenElse(new TaskFunctionConditional() {
+                                }).ifThenElse(new ConditionalFunction() {
                                     @Override
                                     public boolean eval(TaskContext context) {
                                         return false; //should return true if the node is hidden or input or root
                                     }
-                                }, t, then(new Action() {
+                                }, t, task().thenDo(new ActionFunction() {
                                     @Override
                                     public void eval(TaskContext context) {
                                         //store output in result here
@@ -213,8 +211,6 @@ public class NeuralNodeEmpty extends AbstractNode {
     }
 
     public void predict(final double[] inputs, final Callback<double[]> callback) {
-
-
         double[] prediction = null;
         callback.on(prediction);
     }

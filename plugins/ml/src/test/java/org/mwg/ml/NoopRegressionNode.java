@@ -3,7 +3,7 @@ package org.mwg.ml;
 import org.mwg.Callback;
 import org.mwg.Graph;
 
-public class NoopRegressionNode extends AbstractMLNode implements RegressionNode {
+public class NoopRegressionNode extends BaseMLNode implements RegressionNode {
 
     public static final String NAME = "NoopRegressionNode";
 

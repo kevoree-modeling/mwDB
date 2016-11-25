@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.kevoree.mwg.plugins</groupId>
     <artifactId>ml</artifactId>
@@ -20,14 +21,8 @@
     <dependencies>
         <dependency>
             <groupId>org.kevoree.mwg</groupId>
-            <artifactId>api</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.kevoree.mwg</groupId>
             <artifactId>core</artifactId>
             <version>${project.parent.version}</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.kevoree.mwg.plugins</groupId>
@@ -196,37 +191,45 @@
                         </goals>
                         <configuration>
                             <target>
-                                <echo message="Compile Java to TypeScript" />
+                                <echo message="Compile Java to TypeScript"/>
                                 <!-- Copy mwg core dependency -->
-                                <copy file="${basedir}/../../core/target/classes-js/mwg.d.ts" todir="${basedir}/target/generated-sources/" />
-                                <copy file="${basedir}/../structure/target/classes-js/mwg.structure.d.ts" todir="${basedir}/target/generated-sources/" />
-                                <copy file="${basedir}/../../share/mwg.blas.ts" todir="${basedir}/target/generated-sources/" />
+                                <copy file="${basedir}/../../core/target/classes-js/mwg.d.ts"
+                                      todir="${basedir}/target/generated-sources/"/>
+                                <copy file="${basedir}/../structure/target/classes-js/mwg.structure.d.ts"
+                                      todir="${basedir}/target/generated-sources/"/>
+                                <copy file="${basedir}/../../share/mwg.blas.ts"
+                                      todir="${basedir}/target/generated-sources/"/>
                                 <!-- Prepare NPM -->
-                                <copy file="${basedir}/../../share/package.json" todir="${basedir}/target" />
+                                <copy file="${basedir}/../../share/package.json" todir="${basedir}/target"/>
                                 <exec executable="npm" dir="${basedir}/target" failonerror="true">
-                                    <arg value="install" />
+                                    <arg value="install"/>
                                 </exec>
-                                <echo message="Compile TypeScript to JavaScript" />
-                                <exec executable="${basedir}/target/node_modules/typescript/bin/tsc" dir="${basedir}/target/generated-sources/" failonerror="true">
-                                    <arg value="-d" />
-                                    <arg value="--sourceMap" />
-                                    <arg value="--target" />
-                                    <arg value="es5" />
-                                    <arg value="${basedir}/target/generated-sources/${js.name}.ts" />
-                                    <arg value="--out" />
-                                    <arg value="${js.name}.js" />
+                                <echo message="Compile TypeScript to JavaScript"/>
+                                <exec executable="${basedir}/target/node_modules/typescript/bin/tsc"
+                                      dir="${basedir}/target/generated-sources/" failonerror="true">
+                                    <arg value="-d"/>
+                                    <arg value="--sourceMap"/>
+                                    <arg value="--target"/>
+                                    <arg value="es5"/>
+                                    <arg value="${basedir}/target/generated-sources/${js.name}.ts"/>
+                                    <arg value="--out"/>
+                                    <arg value="${js.name}.js"/>
                                 </exec>
-                                <copy file="${basedir}/target/generated-sources/${js.name}.ts" todir="${basedir}/target/classes-js" />
-                                <copy file="${basedir}/target/generated-sources/${js.name}.d.ts" todir="${basedir}/target/classes-js" />
-                                <copy file="${basedir}/target/generated-sources/${js.name}.js" todir="${basedir}/target/classes-js" />
-                                <copy file="${basedir}/target/generated-sources/${js.name}.js.map" todir="${basedir}/target/classes-js" />
-                                <copy file="${basedir}/../../share/netlib.js" todir="${basedir}/target/classes-js" />
-                                <echo message="Minifying JavaScript" />
+                                <copy file="${basedir}/target/generated-sources/${js.name}.ts"
+                                      todir="${basedir}/target/classes-js"/>
+                                <copy file="${basedir}/target/generated-sources/${js.name}.d.ts"
+                                      todir="${basedir}/target/classes-js"/>
+                                <copy file="${basedir}/target/generated-sources/${js.name}.js"
+                                      todir="${basedir}/target/classes-js"/>
+                                <copy file="${basedir}/target/generated-sources/${js.name}.js.map"
+                                      todir="${basedir}/target/classes-js"/>
+                                <copy file="${basedir}/../../share/netlib.js" todir="${basedir}/target/classes-js"/>
+                                <echo message="Minifying JavaScript"/>
                                 <java jar="${basedir}/../../share/compiler.jar" fork="true" failonerror="true">
-                                    <arg value="--js" />
-                                    <arg value="${basedir}/target/classes-js/${js.name}.js" />
-                                    <arg value="--js_output_file" />
-                                    <arg value="${basedir}/target/classes-js/${js.name}.min.js" />
+                                    <arg value="--js"/>
+                                    <arg value="${basedir}/target/classes-js/${js.name}.js"/>
+                                    <arg value="--js_output_file"/>
+                                    <arg value="${basedir}/target/classes-js/${js.name}.min.js"/>
                                 </java>
                             </target>
                         </configuration>
@@ -240,37 +243,38 @@
                         </goals>
                         <configuration>
                             <target>
-                                <echo message="Compile tests TypeScript to JavaScript" />
+                                <echo message="Compile tests TypeScript to JavaScript"/>
                                 <exec executable="${basedir}/target/node_modules/typescript/bin/tsc" failonerror="true">
-                                    <arg value="--target" />
-                                    <arg value="es5" />
-                                    <arg value="${basedir}/target/generated-test-sources/test.ts" />
-                                    <arg value="--out" />
-                                    <arg value="${basedir}/target/test-classes/mwg.test.js" />
+                                    <arg value="--target"/>
+                                    <arg value="es5"/>
+                                    <arg value="${basedir}/target/generated-test-sources/test.ts"/>
+                                    <arg value="--out"/>
+                                    <arg value="${basedir}/target/test-classes/mwg.test.js"/>
                                 </exec>
 
                                 <concat destfile="${basedir}/target/test-classes/test.all.js" force="no">
-                                    <filelist dir="${basedir}/../../share/" files="netlib.js" />
-                                    <filelist dir="${basedir}/../../share/" files="spacer.js" />
-                                    <filelist dir="${basedir}/../../core/target/classes-js" files="mwg.js" />
-                                    <filelist dir="${basedir}/../../share/" files="spacer.js" />
-                                    <filelist dir="${basedir}/../structure/target/classes-js" files="mwg.structure.js" />
-                                    <filelist dir="${basedir}/../../share/" files="spacer.js" />
-                                    <filelist dir="${basedir}/target/test-classes" files="mwg.test.js" />
-                                    <filelist dir="${basedir}/../../share/" files="spacer.js" />
-                                    <filelist dir="${basedir}/target/generated-test-sources/" files="testsRunner.js" />
+                                    <filelist dir="${basedir}/../../share/" files="netlib.js"/>
+                                    <filelist dir="${basedir}/../../share/" files="spacer.js"/>
+                                    <filelist dir="${basedir}/../../core/target/classes-js" files="mwg.js"/>
+                                    <filelist dir="${basedir}/../../share/" files="spacer.js"/>
+                                    <filelist dir="${basedir}/../structure/target/classes-js" files="mwg.structure.js"/>
+                                    <filelist dir="${basedir}/../../share/" files="spacer.js"/>
+                                    <filelist dir="${basedir}/target/test-classes" files="mwg.test.js"/>
+                                    <filelist dir="${basedir}/../../share/" files="spacer.js"/>
+                                    <filelist dir="${basedir}/target/generated-test-sources/" files="testsRunner.js"/>
                                 </concat>
 
                                 <concat destfile="${basedir}/target/test-classes/test.all.dev.js" force="no">
-                                    <filelist dir="${basedir}/../../core/target/classes-js" files="mwg.js" />
-                                    <filelist dir="${basedir}/../../share/" files="spacer.js" />
-                                    <filelist dir="${basedir}/../structure/target/classes-js" files="mwg.structure.js" />
-                                    <filelist dir="${basedir}/../../share/" files="spacer.js" />
-                                    <filelist dir="${basedir}/target/test-classes" files="mwg.test.js" />
-                                    <filelist dir="${basedir}/../../share/" files="spacer.js" />
-                                    <filelist dir="${basedir}/target/generated-test-sources/" files="testsRunnerDev.js" />
+                                    <filelist dir="${basedir}/../../core/target/classes-js" files="mwg.js"/>
+                                    <filelist dir="${basedir}/../../share/" files="spacer.js"/>
+                                    <filelist dir="${basedir}/../structure/target/classes-js" files="mwg.structure.js"/>
+                                    <filelist dir="${basedir}/../../share/" files="spacer.js"/>
+                                    <filelist dir="${basedir}/target/test-classes" files="mwg.test.js"/>
+                                    <filelist dir="${basedir}/../../share/" files="spacer.js"/>
+                                    <filelist dir="${basedir}/target/generated-test-sources/"
+                                              files="testsRunnerDev.js"/>
                                 </concat>
-                                <copy file="${basedir}/../../share/test.js" todir="${basedir}/target" />
+                                <copy file="${basedir}/../../share/test.js" todir="${basedir}/target"/>
                             </target>
                         </configuration>
                     </execution>
@@ -283,9 +287,9 @@
                         </goals>
                         <configuration>
                             <target>
-                                <echo message="Execute JS tests" />
+                                <echo message="Execute JS tests"/>
                                 <exec executable="node" dir="${basedir}/target" failonerror="true">
-                                    <arg value="test.js" />
+                                    <arg value="test.js"/>
                                 </exec>
                             </target>
                         </configuration>

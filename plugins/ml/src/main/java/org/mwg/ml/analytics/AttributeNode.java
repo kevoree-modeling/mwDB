@@ -2,14 +2,12 @@ package org.mwg.ml.analytics;
 
 import org.mwg.Callback;
 import org.mwg.Graph;
+import org.mwg.Node;
 import org.mwg.Type;
-import org.mwg.ml.AbstractMLNode;
+import org.mwg.ml.BaseMLNode;
 import org.mwg.plugin.NodeState;
 
-/**
- * Created by assaad on 19/10/2016.
- */
-public class AttributeNode extends AbstractMLNode {
+public class AttributeNode extends BaseMLNode {
     public final static String NAME = "AttributeNode";
 
     public static final String VALUE = "value"; //ToDo move value to a subnode
@@ -42,21 +40,21 @@ public class AttributeNode extends AbstractMLNode {
         super(p_world, p_time, p_id, p_graph);
     }
 
-
     //Override default Abstract node default setters and getters
     @Override
-    public void setProperty(String propertyName, byte propertyType, Object propertyValue) {
+    public Node set(String propertyName, byte propertyType, Object propertyValue) {
         if (propertyName.equals(VALUE)) {
             internalSet(Double.parseDouble(propertyValue.toString()), null);
         } else if (propertyName.equals(MIN_TOLERATED)) {
-            super.setProperty(MIN_TOLERATED, Type.DOUBLE, propertyValue);
+            super.set(MIN_TOLERATED, Type.DOUBLE, propertyValue);
         } else if (propertyName.equals(MAX_TOLERATED)) {
-            super.setProperty(MAX_TOLERATED, Type.DOUBLE, propertyValue);
+            super.set(MAX_TOLERATED, Type.DOUBLE, propertyValue);
         } else if (propertyName.equals(EXTRAPOLATE)) {
-            super.setProperty(EXTRAPOLATE, Type.BOOL, propertyValue);
+            super.set(EXTRAPOLATE, Type.BOOL, propertyValue);
         } else {
             throw new RuntimeException(NOT_MANAGED_ATT_ERROR);
         }
+        return this;
     }
 
     @Override
@@ -76,7 +74,6 @@ public class AttributeNode extends AbstractMLNode {
                 return super.get(propertyName);
         }
     }
-
 
 
     private Double getValue() {
@@ -182,7 +179,6 @@ public class AttributeNode extends AbstractMLNode {
             callback.on(valid);
         }
     }
-
 
 
 }

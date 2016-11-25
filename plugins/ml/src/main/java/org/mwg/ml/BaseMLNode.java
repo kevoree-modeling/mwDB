@@ -4,20 +4,19 @@ import org.mwg.Callback;
 import org.mwg.Constants;
 import org.mwg.DeferCounter;
 import org.mwg.Graph;
-import org.mwg.plugin.AbstractNode;
+import org.mwg.base.BaseNode;
 import org.mwg.plugin.Job;
 import org.mwg.task.Task;
 import org.mwg.task.TaskResult;
 
-import static org.mwg.task.Actions.newTask;
-import static org.mwg.task.Actions.setWorld;
+import static org.mwg.core.task.Actions.*;
 
-public abstract class AbstractMLNode extends AbstractNode {
+public abstract class BaseMLNode extends BaseNode {
 
     public static String FROM_SEPARATOR = ";";
     public static String FROM = "from";
 
-    public AbstractMLNode(long p_world, long p_time, long p_id, Graph p_graph) {
+    public BaseMLNode(long p_world, long p_time, long p_id, Graph p_graph) {
         super(p_world, p_time, p_id, p_graph);
     }
 
@@ -54,8 +53,8 @@ public abstract class AbstractMLNode extends AbstractNode {
             String[] split = query.split(FROM_SEPARATOR);
             Task[] tasks = new Task[split.length];
             for (int i = 0; i < split.length; i++) {
-                Task t = setWorld("" + world());
-                t.setTime(time() + "");
+                Task t = task().then(setWorld("" + world()));
+                t.then(setTime(time() + ""));
                 t.parse(split[i].trim());
                 tasks[i] = t;
             }
@@ -64,7 +63,7 @@ public abstract class AbstractMLNode extends AbstractNode {
             final DeferCounter waiter = graph().newCounter(tasks.length);
             for (int i = 0; i < split.length; i++) {
                 final int taskIndex = i;
-                final TaskResult initial = newTask().emptyResult();
+                final TaskResult initial = emptyResult();
                 initial.add(this);
                 tasks[i].executeWith(graph(), initial, new Callback<TaskResult>() {
                     @Override

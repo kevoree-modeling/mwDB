@@ -1,12 +1,12 @@
 package org.mwg.ml.algorithm.profiling;
 
 import org.mwg.*;
-import org.mwg.ml.AbstractMLNode;
+import org.mwg.ml.BaseMLNode;
 import org.mwg.ml.ProfilingNode;
 import org.mwg.plugin.NodeState;
 import org.mwg.utility.Enforcer;
 
-public class GaussianSlotNode extends AbstractMLNode implements ProfilingNode {
+public class GaussianSlotNode extends BaseMLNode implements ProfilingNode {
 
     //Name of the algorithm to be used in the meta model
     public final static String NAME = "GaussianSlotProfiling";
@@ -44,7 +44,7 @@ public class GaussianSlotNode extends AbstractMLNode implements ProfilingNode {
             }
         });
 
-        this.jump(newTime[0], new Callback<Node>() {
+        this.travelInTime(newTime[0], new Callback<Node>() {
             @Override
             public void on(Node result) {
                 final NodeState resolved = result.graph().resolver().resolveState(result);
@@ -113,7 +113,7 @@ public class GaussianSlotNode extends AbstractMLNode implements ProfilingNode {
                 resolved.setFromKey(INTERNAL_MAX_KEY, Type.DOUBLE_ARRAY, max);
                 resolved.setFromKey(INTERNAL_SUM_KEY, Type.DOUBLE_ARRAY, sum);
                 resolved.setFromKey(INTERNAL_SUMSQUARE_KEY, Type.DOUBLE_ARRAY, sumSquare);
-                
+
                 result.free();
             }
         });
@@ -179,9 +179,9 @@ public class GaussianSlotNode extends AbstractMLNode implements ProfilingNode {
 
     //Override default Abstract node default setters and getters
     @Override
-    public void setProperty(String propertyName, byte propertyType, Object propertyValue) {
+    public Node set(String propertyName, byte propertyType, Object propertyValue) {
         enforcer.check(propertyName, propertyType, propertyValue);
-        super.setProperty(propertyName, propertyType, propertyValue);
+        return super.set(propertyName, propertyType, propertyValue);
     }
 
     @Override

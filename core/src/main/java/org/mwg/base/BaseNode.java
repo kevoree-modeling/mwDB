@@ -266,7 +266,7 @@ public class BaseNode implements Node {
     }
 
     @Override
-    public final byte type(String name) {
+    public byte type(String name) {
         final NodeState resolved = this._resolver.resolveState(this);
         if (resolved != null) {
             return resolved.getType(this._resolver.stringToHash(name, false));
@@ -275,7 +275,7 @@ public class BaseNode implements Node {
     }
 
     @Override
-    public final byte typeAt(final long index) {
+    public byte typeAt(final long index) {
         final NodeState resolved = this._resolver.resolveState(this);
         if (resolved != null) {
             return resolved.getType(index);

@@ -2,14 +2,14 @@ package org.mwg.ml.neuralnet.bio;
 
 import org.mwg.Graph;
 import org.mwg.Type;
+import org.mwg.base.BaseNode;
 import org.mwg.ml.common.matrix.MatrixOps;
-import org.mwg.plugin.AbstractNode;
 import org.mwg.struct.LongLongMap;
 import org.mwg.struct.Matrix;
 
 import java.util.Random;
 
-public class BioOutputNeuralNode extends AbstractNode {
+public class BioOutputNeuralNode extends BaseNode {
 
     public static String NAME = "BioOutputNeuralNode";
 
@@ -19,7 +19,7 @@ public class BioOutputNeuralNode extends AbstractNode {
 
     @Override
     public void init() {
-        setProperty(BioNeuralNetwork.BIAS, Type.DOUBLE, new Random().nextDouble() * 2 - 1);
+        set(BioNeuralNetwork.BIAS, Type.DOUBLE, new Random().nextDouble() * 2 - 1);
     }
 
     //if buffer not full and total threshold < return absolute zero

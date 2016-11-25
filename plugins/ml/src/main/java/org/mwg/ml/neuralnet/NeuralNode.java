@@ -3,18 +3,15 @@ package org.mwg.ml.neuralnet;
 import org.mwg.Callback;
 import org.mwg.Graph;
 import org.mwg.Type;
-import org.mwg.plugin.AbstractNode;
+import org.mwg.base.BaseNode;
 import org.mwg.plugin.NodeState;
 import org.mwg.struct.LongLongMap;
-import org.mwg.struct.Relationship;
+import org.mwg.struct.Relation;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-/**
- * Created by assaad on 20/09/16.
- */
-public class NeuralNode extends AbstractNode {
+public class NeuralNode extends BaseNode {
     public static String NAME = "NeuralNode";
 
     public static String INPUTS = "inputs"; //Input relationships
@@ -26,7 +23,7 @@ public class NeuralNode extends AbstractNode {
     private static String WEIGHTS = "weights"; //weights of the network
     private static String NODE_TYPE = "node_type";
 
-    public static String LEARNINGRATE="learning";
+    public static String LEARNINGRATE = "learning";
     public static final double LEARNINGRATE_DEF = 0.01;
 
     public NeuralNode(long p_world, long p_time, long p_id, Graph p_graph) {
@@ -40,8 +37,8 @@ public class NeuralNode extends AbstractNode {
 
         ArrayList<NeuralNode> previousLayer = new ArrayList<NeuralNode>();
 
-        NodeState state =phasedState();
-        state.setFromKey(NODE_TYPE,Type.INT,NeuralNodeType.ROOT);
+        NodeState state = phasedState();
+        state.setFromKey(NODE_TYPE, Type.INT, NeuralNodeType.ROOT);
 
         //create input layers:
         for (int i = 0; i < inputs; i++) {
@@ -81,7 +78,7 @@ public class NeuralNode extends AbstractNode {
         }
 
         for (int i = 0; i < internalNodes.size(); i++) {
-            if(internalNodes.get(i).id()!=this.id()) {
+            if (internalNodes.get(i).id() != this.id()) {
                 internalNodes.get(i).initWeightsRadomly(0.1);
                 internalNodes.get(i).free();
             }
@@ -89,39 +86,39 @@ public class NeuralNode extends AbstractNode {
         return this;
     }
 
-    private static Random random=new Random();
+    private static Random random = new Random();
 
-    private void initWeightsRadomly(double maxValue){
-        NodeState state =phasedState();
+    private void initWeightsRadomly(double maxValue) {
+        NodeState state = phasedState();
         int type = state.getFromKeyWithDefault(NODE_TYPE, NeuralNodeType.HIDDEN);
-        if(type== NeuralNodeType.HIDDEN|| type==NeuralNodeType.OUTPUT){
-            Relationship input= (Relationship) state.getFromKey(INPUTS);
-            double[] weights = new double[input.size()+1];
-            for(int i=0;i<weights.length;i++){
-                weights[i]= random.nextDouble()*maxValue;
+        if (type == NeuralNodeType.HIDDEN || type == NeuralNodeType.OUTPUT) {
+            Relation input = (Relation) state.getFromKey(INPUTS);
+            double[] weights = new double[input.size() + 1];
+            for (int i = 0; i < weights.length; i++) {
+                weights[i] = random.nextDouble() * maxValue;
             }
-            state.setFromKey(WEIGHTS,Type.DOUBLE_ARRAY,weights);
+            state.setFromKey(WEIGHTS, Type.DOUBLE_ARRAY, weights);
         }
     }
 
     private void forwardConnect(NeuralNode inputNode) {
-        Relationship outputs = getOrCreateRel(OUTPUTS);
+        Relation outputs = (Relation) getOrCreate(OUTPUTS, Type.RELATION);
         outputs.add(inputNode.id());
         int pos = outputs.size() - 1;
         LongLongMap map = (LongLongMap) getOrCreate(OUTPUTS_MAP, Type.LONG_TO_LONG_MAP);
         map.put(inputNode.id(), pos);
 
 
-        Relationship inputs = inputNode.getOrCreateRel(INPUTS);
+        Relation inputs = (Relation) inputNode.getOrCreate(INPUTS, Type.RELATION);
         inputs.add(this.id());
         int posint = inputs.size() - 1;
         LongLongMap mapin = (LongLongMap) inputNode.getOrCreate(INPUTS_MAP, Type.LONG_TO_LONG_MAP);
-        mapin.put(id(),posint);
+        mapin.put(id(), posint);
     }
 
     private NeuralNode createNewNode(int neuralNodeType) {
         NeuralNode temp = (NeuralNode) graph().newTypedNode(world(), time(), NAME);
-        temp.setProperty(NODE_TYPE, Type.INT, neuralNodeType);
+        temp.set(NODE_TYPE, Type.INT, neuralNodeType);
         return temp;
     }
 
@@ -134,7 +131,7 @@ public class NeuralNode extends AbstractNode {
             value += weights[i] * values[i];
         }
         //Add bias
-        value +=weights[values.length];
+        value += weights[values.length];
         return value;
     }
 
@@ -165,53 +162,46 @@ public class NeuralNode extends AbstractNode {
     }
 
 
-
     private static long msgIdCounter = -1;
+
     private long generateMsgId() {
         msgIdCounter++;
         return msgIdCounter;
     }
 
 
+    public void predict(final double[] inputs, final Callback<double[]> callback) {
 
 
-
-
-    public void predict(final double[] inputs, final Callback<double[]> callback){
-
-
-
-        double[] prediction =null;
+        double[] prediction = null;
         callback.on(prediction);
     }
 
     public void learn(final double[] inputs, final double[] outputs, final Callback<double[]> callback) {
-        final NodeState state= phasedState();
+        final NodeState state = phasedState();
         //forward propagate
         predict(inputs, new Callback<double[]>() {
             @Override
             public void on(double[] predictions) {
-                final double[] errors=new double[outputs.length];
-                final double[] derivatives= new double[outputs.length];
+                final double[] errors = new double[outputs.length];
+                final double[] derivatives = new double[outputs.length];
 
-                for(int i=0;i<errors.length;i++){
-                    errors[i]=calculateErr(predictions[i],outputs[i]);
-                    derivatives[i]=calculateDerivativeErr(predictions[i],outputs[i]);
+                for (int i = 0; i < errors.length; i++) {
+                    errors[i] = calculateErr(predictions[i], outputs[i]);
+                    derivatives[i] = calculateDerivativeErr(predictions[i], outputs[i]);
                 }
 
-                double learningRate= state.getFromKeyWithDefault(LEARNINGRATE,LEARNINGRATE_DEF);
+                double learningRate = state.getFromKeyWithDefault(LEARNINGRATE, LEARNINGRATE_DEF);
 
                 //back-propagate derivatives[i] to outputs and lunch back propagation
 
-                if(callback!=null) {
+                if (callback != null) {
                     callback.on(errors);
                 }
 
             }
         });
     }
-
-
 
 
 }

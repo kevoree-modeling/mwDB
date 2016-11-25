@@ -6,7 +6,7 @@ import org.mwg.Graph;
 import org.mwg.GraphBuilder;
 import org.mwg.Type;
 import org.mwg.core.scheduler.NoopScheduler;
-import org.mwg.ml.AbstractMLNode;
+import org.mwg.ml.BaseMLNode;
 import org.mwg.ml.AnomalyDetectionNode;
 import org.mwg.ml.MLPlugin;
 import org.mwg.ml.algorithm.anomalydetector.InterquartileRangeOutlierDetectorNode;
@@ -134,7 +134,7 @@ public class InterquartileRangeOutlierDetectorNodeTest {
                 InterquartileRangeOutlierDetectorNode iqadNode = (InterquartileRangeOutlierDetectorNode) graph.newTypedNode(0, 0, InterquartileRangeOutlierDetectorNode.NAME);
 
                 iqadNode.setProperty(InterquartileRangeOutlierDetectorNode.BUFFER_SIZE_KEY, Type.INT, testSet.length);
-                iqadNode.set(AbstractMLNode.FROM, FEATURE);
+                iqadNode.set(BaseMLNode.FROM, FEATURE);
 
                 final AnomalyDetectionJumpCallback adjc = runThroughDummyDataset(iqadNode);
                 final AnomalyClassifyCallback acc = new AnomalyClassifyCallback(new String[]{FEATURE});
@@ -187,7 +187,7 @@ public class InterquartileRangeOutlierDetectorNodeTest {
                 InterquartileRangeOutlierDetectorNode iqadNode = (InterquartileRangeOutlierDetectorNode) graph.newTypedNode(0, 0, InterquartileRangeOutlierDetectorNode.NAME);
 
                 iqadNode.setProperty(InterquartileRangeOutlierDetectorNode.BUFFER_SIZE_KEY, Type.INT, testSet.length);
-                iqadNode.set(AbstractMLNode.FROM, "f1;f2");
+                iqadNode.set(BaseMLNode.FROM, "f1;f2");
 
                 final AnomalyDetectionJumpCallback adjc = runThroughDummyDataset2D(iqadNode);
                 final AnomalyClassifyCallback acc = new AnomalyClassifyCallback(new String[]{"f1","f2"});

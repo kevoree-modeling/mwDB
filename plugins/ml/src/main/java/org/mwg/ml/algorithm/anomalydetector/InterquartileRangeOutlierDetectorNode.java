@@ -2,8 +2,9 @@ package org.mwg.ml.algorithm.anomalydetector;
 
 import org.mwg.Callback;
 import org.mwg.Graph;
+import org.mwg.Node;
 import org.mwg.Type;
-import org.mwg.ml.AbstractMLNode;
+import org.mwg.ml.BaseMLNode;
 import org.mwg.ml.AnomalyDetectionNode;
 import org.mwg.plugin.NodeState;
 import org.mwg.utility.Enforcer;
@@ -15,7 +16,7 @@ import java.util.Arrays;
  * <p>
  * Created by andrey.boytsov on 14/06/16.
  */
-public class InterquartileRangeOutlierDetectorNode extends AbstractMLNode implements AnomalyDetectionNode {
+public class InterquartileRangeOutlierDetectorNode extends BaseMLNode implements AnomalyDetectionNode {
 
     public static final int MAX_BUFFER_LIMIT = 100000;
 
@@ -59,7 +60,7 @@ public class InterquartileRangeOutlierDetectorNode extends AbstractMLNode implem
     public static final String LOWER_BOUND_KEY_PREFIX = "LowerBoundDimension";
 
     private static final Enforcer enforcer = new Enforcer()
-           .asIntWithin(BUFFER_SIZE_KEY, 1, MAX_BUFFER_LIMIT);
+            .asIntWithin(BUFFER_SIZE_KEY, 1, MAX_BUFFER_LIMIT);
 
     public InterquartileRangeOutlierDetectorNode(long p_world, long p_time, long p_id, Graph p_graph) {
         super(p_world, p_time, p_id, p_graph);
@@ -89,7 +90,7 @@ public class InterquartileRangeOutlierDetectorNode extends AbstractMLNode implem
         final int newBufferLength = bufferLength + 1 - numValuesToRemoveFromBeginning;
 
         double newBuffer[] = new double[newBufferLength * dimensions];
-        System.arraycopy(buffer, numValuesToRemoveFromBeginning*dimensions, newBuffer, 0, newBuffer.length - dimensions);
+        System.arraycopy(buffer, numValuesToRemoveFromBeginning * dimensions, newBuffer, 0, newBuffer.length - dimensions);
         System.arraycopy(value, 0, newBuffer, newBuffer.length - dimensions, dimensions);
 
         double upperBounds[] = new double[dimensions];
@@ -149,8 +150,8 @@ public class InterquartileRangeOutlierDetectorNode extends AbstractMLNode implem
                 double upperBounds[] = new double[result.length];
                 NodeState state = unphasedState();
                 for (int i = 0; i < result.length; i++) {
-                    lowerBounds[i] = (Double)state.getFromKey(LOWER_BOUND_KEY_PREFIX + i);
-                    upperBounds[i] = (Double)state.getFromKey(UPPER_BOUND_KEY_PREFIX + i);
+                    lowerBounds[i] = (Double) state.getFromKey(LOWER_BOUND_KEY_PREFIX + i);
+                    upperBounds[i] = (Double) state.getFromKey(UPPER_BOUND_KEY_PREFIX + i);
                 }
                 boolean isAnomaly = checkValue(result, lowerBounds, upperBounds);
                 callback.on(isAnomaly);
@@ -159,12 +160,13 @@ public class InterquartileRangeOutlierDetectorNode extends AbstractMLNode implem
     }
 
     @Override
-    public void setProperty(String propertyName, byte propertyType, Object propertyValue) {
+    public Node set(String propertyName, byte propertyType, Object propertyValue) {
         if (INTERNAL_VALUE_BUFFER_KEY.equals(propertyName) || INPUT_DIM_KEY.equals(propertyName)) {
             //Nothing. They are unsettable directly
         } else {
             enforcer.check(propertyName, propertyType, propertyValue);
-            super.setProperty(propertyName, propertyType, propertyValue);
+            super.set(propertyName, propertyType, propertyValue);
         }
+        return this;
     }
 }

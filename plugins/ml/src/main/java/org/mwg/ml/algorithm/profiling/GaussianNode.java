@@ -3,7 +3,7 @@ package org.mwg.ml.algorithm.profiling;
 import org.mwg.Callback;
 import org.mwg.Graph;
 import org.mwg.Type;
-import org.mwg.ml.AbstractMLNode;
+import org.mwg.ml.BaseMLNode;
 import org.mwg.ml.ProfilingNode;
 import org.mwg.ml.common.matrix.VolatileMatrix;
 import org.mwg.ml.common.matrix.operation.MultivariateNormalDistribution;
@@ -11,7 +11,7 @@ import org.mwg.plugin.NodeState;
 import org.mwg.struct.Matrix;
 
 
-public class GaussianNode extends AbstractMLNode implements ProfilingNode {
+public class GaussianNode extends BaseMLNode implements ProfilingNode {
 
     //Getters and setters
     public final static String NAME = "GaussianNode";
@@ -33,12 +33,6 @@ public class GaussianNode extends AbstractMLNode implements ProfilingNode {
 
     public GaussianNode(long p_world, long p_time, long p_id, Graph p_graph) {
         super(p_world, p_time, p_id, p_graph);
-    }
-
-
-    @Override
-    public void setProperty(String propertyName, byte propertyType, Object propertyValue) {
-        super.setProperty(propertyName, propertyType, propertyValue);
     }
 
     @Override
@@ -108,8 +102,8 @@ public class GaussianNode extends AbstractMLNode implements ProfilingNode {
             total = 1;
 
             //set total, weight, sum, return
-            set(INTERNAL_TOTAL_KEY, total);
-            set(INTERNAL_SUM_KEY, sum);
+            set(INTERNAL_TOTAL_KEY, Type.INT, total);
+            set(INTERNAL_SUM_KEY, Type.DOUBLE_ARRAY, sum);
         } else {
             double[] sum;
             double[] min;
@@ -162,11 +156,11 @@ public class GaussianNode extends AbstractMLNode implements ProfilingNode {
             }
             total++;
             //Store everything
-            set(INTERNAL_TOTAL_KEY, total);
-            set(INTERNAL_SUM_KEY, sum);
-            set(INTERNAL_MIN_KEY, min);
-            set(INTERNAL_MAX_KEY, max);
-            set(INTERNAL_SUMSQUARE_KEY, sumsquares);
+            set(INTERNAL_TOTAL_KEY, Type.INT, total);
+            set(INTERNAL_SUM_KEY, Type.DOUBLE_ARRAY, sum);
+            set(INTERNAL_MIN_KEY, Type.DOUBLE_ARRAY, min);
+            set(INTERNAL_MAX_KEY, Type.DOUBLE_ARRAY, max);
+            set(INTERNAL_SUMSQUARE_KEY, Type.DOUBLE_ARRAY, sumsquares);
         }
         if (callback != null) {
             callback.on(true);
