@@ -305,21 +305,41 @@ public class BaseNode implements Node {
         }
         final NodeState resolved = this._resolver.resolveState(this);
         if (resolved != null) {
-            final Relation relationArray = (Relation) resolved.get(relationIndex);
-            if (relationArray == null || relationArray.size() == 0) {
-                callback.on(new Node[0]);
-            } else {
-                final int relSize = relationArray.size();
-                final long[] ids = new long[relSize];
-                for (int i = 0; i < relSize; i++) {
-                    ids[i] = relationArray.get(i);
-                }
-                this._resolver.lookupAll(_world, _time, ids, new Callback<Node[]>() {
-                    @Override
-                    public void on(Node[] result) {
-                        callback.on(result);
+            switch (resolved.getType(relationIndex)) {
+                case Type.RELATION:
+                    final Relation relation = (Relation) resolved.get(relationIndex);
+                    if (relation == null || relation.size() == 0) {
+                        callback.on(new Node[0]);
+                    } else {
+                        final int relSize = relation.size();
+                        final long[] ids = new long[relSize];
+                        for (int i = 0; i < relSize; i++) {
+                            ids[i] = relation.get(i);
+                        }
+                        this._resolver.lookupAll(_world, _time, ids, new Callback<Node[]>() {
+                            @Override
+                            public void on(Node[] result) {
+                                callback.on(result);
+                            }
+                        });
                     }
-                });
+                    break;
+                case Type.RELATION_INDEXED:
+                    final RelationIndexed relation_indexed = (RelationIndexed) resolved.get(relationIndex);
+                    if (relation_indexed == null || relation_indexed.size() == 0) {
+                        callback.on(new Node[0]);
+                    } else {
+                        this._resolver.lookupAll(_world, _time, relation_indexed.all(), new Callback<Node[]>() {
+                            @Override
+                            public void on(Node[] result) {
+                                callback.on(result);
+                            }
+                        });
+                    }
+                    break;
+                default:
+                    callback.on(new Node[0]);
+                    break;
             }
         } else {
             callback.on(new Node[0]);

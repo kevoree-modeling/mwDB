@@ -33,7 +33,7 @@ public class ActionTraverseTest extends AbstractActionTest {
     @Test
     public void testParse() {
         initGraph();
-        task().parse("readIndexAll(nodes).traverse(children)")
+        task().parse("readIndexAll(nodes).get(children)")
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {

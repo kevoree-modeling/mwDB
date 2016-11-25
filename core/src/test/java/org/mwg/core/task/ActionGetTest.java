@@ -54,7 +54,7 @@ public class ActionGetTest extends AbstractActionTest {
     public void testParse() {
         initGraph();
         task()
-                .parse("readIndexAll(nodes).traverse(children)")
+                .parse("readIndexAll(nodes).get(children)")
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {

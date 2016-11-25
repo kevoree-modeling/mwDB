@@ -18,6 +18,10 @@ public class GraphBuilder {
     private long _memorySize = -1;
     private boolean _readOnly = false;
 
+    public static GraphBuilder newBuilder() {
+        return new GraphBuilder();
+    }
+
     /**
      * Sets the storage system to the given parameter.
      *

@@ -23,7 +23,7 @@ public class CoreTask implements org.mwg.task.Task {
             _hooks = new TaskHook[1];
             _hooks[0] = p_hook;
         } else {
-            TaskHook[] new_hooks = new TaskHook[_hooks.length+1];
+            TaskHook[] new_hooks = new TaskHook[_hooks.length + 1];
             System.arraycopy(_hooks, 0, new_hooks, 0, _hooks.length);
             new_hooks[_hooks.length] = p_hook;
             _hooks = new_hooks;
@@ -298,15 +298,8 @@ public class CoreTask implements org.mwg.task.Task {
                 return new ActionExecuteExpression(params[0]);
             }
         });
-        registry.put("traverse", new TaskActionFactory() {
-            @Override
-            public Action create(String[] params) {
-                if (params.length != 1) {
-                    throw new RuntimeException("traverse action need one parameter");
-                }
-                return new ActionTraverse(params[0]);
-            }
-        });
+
+/*
         registry.put("traverseOrKeep", new TaskActionFactory() {
             @Override
             public Action create(String[] params) {
@@ -316,6 +309,7 @@ public class CoreTask implements org.mwg.task.Task {
                 return new ActionTraverseOrKeep(params[0]);
             }
         });
+        */
         registry.put("readIndexAll", new TaskActionFactory() {
             @Override
             public Action create(String[] params) {

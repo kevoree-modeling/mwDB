@@ -314,7 +314,7 @@ public class Actions {
      * @return the action to chain
      */
     public static Action println(String name) {
-        return new ActionPrint(name, false);
+        return new ActionPrint(name, true);
     }
 
 
