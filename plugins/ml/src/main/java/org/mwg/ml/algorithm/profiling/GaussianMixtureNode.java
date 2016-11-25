@@ -7,6 +7,7 @@ import org.mwg.Type;
 import org.mwg.core.task.Actions;
 import org.mwg.ml.BaseMLNode;
 import org.mwg.ml.ProfilingNode;
+import org.mwg.ml.common.ActionTraverseOrKeep;
 import org.mwg.ml.common.NDimentionalArray;
 import org.mwg.ml.common.matrix.VolatileMatrix;
 import org.mwg.ml.common.matrix.operation.MultivariateNormalDistribution;
@@ -96,7 +97,6 @@ public class GaussianMixtureNode extends BaseMLNode implements ProfilingNode {
             return getMax();
         } else if (attributeName.equals(COV)) {
             final NodeState resolved = this._resolver.resolveState(this);
-
             double[] initialPrecision = (double[]) resolved.getFromKey(PRECISION);
             int nbfeature = this.getNumberOfFeatures();
             if (initialPrecision == null) {
@@ -140,13 +140,15 @@ public class GaussianMixtureNode extends BaseMLNode implements ProfilingNode {
         final double[] precisions = initialPrecision;
         final double threshold = resolved.getFromKeyWithDefault(THRESHOLD, THRESHOLD_DEF);
 
+        final GaussianMixtureNode self = this;
+
         Task traverse = task();
         traverse.then(defineAsGlobalVar("parent")).then(Actions.get(INTERNAL_SUBGAUSSIAN)).then(new Action() {
             @Override
             public void eval(TaskContext context) {
                 TaskResult<Node> result = context.resultAsNodes();
                 GaussianMixtureNode parent = (GaussianMixtureNode) context.variable("parent").get(0);
-                GaussianMixtureNode resultChild = filter(result, values, precisions, threshold, parent.getLevel() - 1.0);
+                GaussianMixtureNode resultChild = self.filter(result, values, precisions, threshold, parent.getLevel() - 1.0);
                 if (resultChild != null) {
                     parent.internallearn(values, width, compressionFactor, compressionIter, precisions, threshold, false);
                     context.continueWith(context.wrapClone(resultChild));
@@ -432,19 +434,19 @@ public class GaussianMixtureNode extends BaseMLNode implements ProfilingNode {
 
         //At this point we have min and max at least with 2xerr of difference
 
-        Task deepTraverseTask = setTime(time() + "").setWorld(world() + "");
+        Task deepTraverseTask = task().then(setTime(time() + "")).then(setWorld(world() + ""));
         final int parentLevel = this.getLevel();
 
         deepTraverseTask.then(inject(new Node[]{this}));
         for (int i = 0; i < this.getLevel() - level; i++) {
-            deepTraverseTask.traverseOrKeep(INTERNAL_SUBGAUSSIAN);
+            deepTraverseTask.then(new ActionTraverseOrKeep(INTERNAL_SUBGAUSSIAN));
             final int finalI = i;
-            deepTraverseTask.select(new TaskFunctionSelect() {
+            deepTraverseTask.then(select(new TaskFunctionSelect() {
                 @Override
                 public boolean select(Node node, TaskContext context) {
                     return ((GaussianMixtureNode) node).checkInside(finalMin, finalMax, err, threshold, parentLevel - finalI);
                 }
-            });
+            }));
         }
 
         deepTraverseTask.execute(graph(), new Callback<TaskResult>() {
@@ -481,7 +483,6 @@ public class GaussianMixtureNode extends BaseMLNode implements ProfilingNode {
         });
     }
 
-
     public void generateDistributions(int level, final Callback<ProbaDistribution> callback) {
         final int nbfeature = this.getNumberOfFeatures();
         if (nbfeature == 0) {
@@ -500,7 +501,7 @@ public class GaussianMixtureNode extends BaseMLNode implements ProfilingNode {
         Task deepTraverseTask = task().then(setTime(time() + "")).then(setWorld(world() + ""));
         deepTraverseTask.then(inject(new Node[]{this}));
         for (int i = 0; i < this.getLevel() - level; i++) {
-            deepTraverseTask.traverseOrKeep(INTERNAL_SUBGAUSSIAN);
+            deepTraverseTask.then(new ActionTraverseOrKeep(INTERNAL_SUBGAUSSIAN));
         }
 
         deepTraverseTask.then(new Action() {
@@ -637,7 +638,6 @@ public class GaussianMixtureNode extends BaseMLNode implements ProfilingNode {
                 newLev.free();
                 checkAndCompress(width, compressionFactor, compressionIter, precisions, threshold);
             }
-
             //Store everything
             set(INTERNAL_TOTAL_KEY, Type.INT, total);
             set(INTERNAL_SUM_KEY, Type.DOUBLE_ARRAY, sum);
@@ -850,7 +850,7 @@ public class GaussianMixtureNode extends BaseMLNode implements ProfilingNode {
     }
 
     public long[] getSubGraph() {
-        Relationship res = (Relationship) super.get(INTERNAL_SUBGAUSSIAN);
+        Relation res = (Relation) super.get(INTERNAL_SUBGAUSSIAN);
         if (res == null) {
             return null;
         }

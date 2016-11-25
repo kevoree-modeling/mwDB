@@ -2,6 +2,7 @@ package org.mwg.ml.algorithm.regression;
 
 import org.mwg.Callback;
 import org.mwg.Graph;
+import org.mwg.Node;
 import org.mwg.Type;
 import org.mwg.ml.BaseMLNode;
 import org.mwg.ml.RegressionNode;
@@ -130,9 +131,9 @@ public class LiveLinearRegressionNode extends BaseMLNode implements RegressionNo
 
     //Override default Abstract node default setters and getters
     @Override
-    public void setProperty(String propertyName, byte propertyType, Object propertyValue) {
+    public Node set(String propertyName, byte propertyType, Object propertyValue) {
         enforcer.check(propertyName, propertyType, propertyValue);
-        super.setProperty(propertyName, propertyType, propertyValue);
+        return super.set(propertyName, propertyType, propertyValue);
     }
     
     private double calculate(double[] weights, double[] input) {

@@ -2,10 +2,7 @@ package org.mwg.ml.regression;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.mwg.Callback;
-import org.mwg.Constants;
-import org.mwg.Graph;
-import org.mwg.GraphBuilder;
+import org.mwg.*;
 import org.mwg.core.scheduler.NoopScheduler;
 import org.mwg.ml.MLPlugin;
 import org.mwg.ml.algorithm.regression.PolynomialNode;
@@ -61,11 +58,11 @@ public class PolynomialNodeTest {
 
     public static void testPoly(long[] times, final double[] values, final int numOfPoly, final Graph graph) {
         PolynomialNode polynomialNode = (PolynomialNode) graph.newTypedNode(0, times[0], PolynomialNode.NAME);
-        polynomialNode.set(PolynomialNode.PRECISION, precision);
+        polynomialNode.set(PolynomialNode.PRECISION, Type.DOUBLE, precision);
 
         for (int i = 0; i < size; i++) {
             final int ia = i;
-            polynomialNode.jump(times[ia], new Callback<PolynomialNode>() {
+            polynomialNode.travelInTime(times[ia], new Callback<PolynomialNode>() {
                 @Override
                 public void on(PolynomialNode result) {
                     result.learn(values[ia], new Callback<Boolean>() {
@@ -82,7 +79,7 @@ public class PolynomialNodeTest {
 
         for (int i = 0; i < size; i++) {
             final int ia = i;
-            polynomialNode.jump(times[ia], new Callback<PolynomialNode>() {
+            polynomialNode.travelInTime(times[ia], new Callback<PolynomialNode>() {
                 @Override
                 public void on(PolynomialNode result) {
                     result.extrapolate(new Callback<Double>() {

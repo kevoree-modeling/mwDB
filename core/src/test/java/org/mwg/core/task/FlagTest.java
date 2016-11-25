@@ -105,6 +105,7 @@ public class FlagTest {
     }
 
 
+    /*
     @Test
     public void traverseOrKeep() {
         Graph graph = new GraphBuilder()
@@ -204,5 +205,6 @@ public class FlagTest {
             graph.save(null);
             Assert.assertTrue(graph.space().available() == initcache);
         });
-    }
+    }*/
+
 }

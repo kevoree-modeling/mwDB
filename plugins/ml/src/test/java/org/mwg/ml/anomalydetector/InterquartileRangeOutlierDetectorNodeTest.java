@@ -51,7 +51,7 @@ public class InterquartileRangeOutlierDetectorNodeTest {
 
         public void on(AnomalyDetectionNode result) {
             for (int i=0;i<features.length;i++){
-                result.set(features[i], value[i]);
+                result.set(features[i], Type.DOUBLE, value[i]);
             }
             result.learn(cb);
             result.free();
@@ -81,7 +81,7 @@ public class InterquartileRangeOutlierDetectorNodeTest {
 
         public void on(AnomalyDetectionNode result) {
             for (int i=0;i<features.length;i++){
-                result.set(features[i], value[i]);
+                result.set(features[i], Type.DOUBLE, value[i]);
             }
             result.classify(cb);
             result.free();
@@ -100,7 +100,7 @@ public class InterquartileRangeOutlierDetectorNodeTest {
 
         for (int i = 0; i < testSet.length; i++) {
             cjc.value = new double[]{testSet[i]};
-            classfierNode.jump(i, cad);
+            classfierNode.travelInTime(i, cad);
         }
 
         return cjc;
@@ -118,7 +118,7 @@ public class InterquartileRangeOutlierDetectorNodeTest {
 
         for (int i = 0; i < testSet.length; i++) {
             cjc.value = new double[]{testSet[i], -testSet[i]};
-            classfierNode.jump(i, cad);
+            classfierNode.travelInTime(i, cad);
         }
 
         return cjc;
@@ -133,8 +133,8 @@ public class InterquartileRangeOutlierDetectorNodeTest {
             public void on(Boolean result) {
                 InterquartileRangeOutlierDetectorNode iqadNode = (InterquartileRangeOutlierDetectorNode) graph.newTypedNode(0, 0, InterquartileRangeOutlierDetectorNode.NAME);
 
-                iqadNode.setProperty(InterquartileRangeOutlierDetectorNode.BUFFER_SIZE_KEY, Type.INT, testSet.length);
-                iqadNode.set(BaseMLNode.FROM, FEATURE);
+                iqadNode.set(InterquartileRangeOutlierDetectorNode.BUFFER_SIZE_KEY, Type.INT, testSet.length);
+                iqadNode.set(BaseMLNode.FROM, Type.STRING, FEATURE);
 
                 final AnomalyDetectionJumpCallback adjc = runThroughDummyDataset(iqadNode);
                 final AnomalyClassifyCallback acc = new AnomalyClassifyCallback(new String[]{FEATURE});
@@ -149,25 +149,25 @@ public class InterquartileRangeOutlierDetectorNodeTest {
 
                 acc.value = new double[]{-2.44};
                 acc.expectedOutlier = true;
-                iqadNode.jump(index, accCB);
+                iqadNode.travelInTime(index, accCB);
                 assertTrue(acc.called);
                 index++;
 
                 acc.value = new double[]{-2.43};
                 acc.expectedOutlier = false;
-                iqadNode.jump(index, accCB);
+                iqadNode.travelInTime(index, accCB);
                 assertTrue(acc.called);
                 index++;
 
                 acc.value = new double[]{2.36};
                 acc.expectedOutlier = false;
-                iqadNode.jump(index, accCB);
+                iqadNode.travelInTime(index, accCB);
                 assertTrue(acc.called);
                 index++;
 
                 acc.value = new double[]{2.37};
                 acc.expectedOutlier = true;
-                iqadNode.jump(index, accCB);
+                iqadNode.travelInTime(index, accCB);
                 assertTrue(acc.called);
                 index++;
 
@@ -186,8 +186,8 @@ public class InterquartileRangeOutlierDetectorNodeTest {
             public void on(Boolean result) {
                 InterquartileRangeOutlierDetectorNode iqadNode = (InterquartileRangeOutlierDetectorNode) graph.newTypedNode(0, 0, InterquartileRangeOutlierDetectorNode.NAME);
 
-                iqadNode.setProperty(InterquartileRangeOutlierDetectorNode.BUFFER_SIZE_KEY, Type.INT, testSet.length);
-                iqadNode.set(BaseMLNode.FROM, "f1;f2");
+                iqadNode.set(InterquartileRangeOutlierDetectorNode.BUFFER_SIZE_KEY, Type.INT, testSet.length);
+                iqadNode.set(BaseMLNode.FROM, Type.STRING, "f1;f2");
 
                 final AnomalyDetectionJumpCallback adjc = runThroughDummyDataset2D(iqadNode);
                 final AnomalyClassifyCallback acc = new AnomalyClassifyCallback(new String[]{"f1","f2"});
@@ -202,31 +202,31 @@ public class InterquartileRangeOutlierDetectorNodeTest {
 
                 acc.value = new double[]{-2.44, 0};
                 acc.expectedOutlier = true;
-                iqadNode.jump(index, accCB);
+                iqadNode.travelInTime(index, accCB);
                 assertTrue(acc.called);
                 index++;
 
                 acc.value = new double[]{0, 2.56};
                 acc.expectedOutlier = true;
-                iqadNode.jump(index, accCB);
+                iqadNode.travelInTime(index, accCB);
                 assertTrue(acc.called);
                 index++;
 
                 acc.value = new double[]{-2.43, 2.43};
                 acc.expectedOutlier = false;
-                iqadNode.jump(index, accCB);
+                iqadNode.travelInTime(index, accCB);
                 assertTrue(acc.called);
                 index++;
 
                 acc.value = new double[]{2.36, -2.36};
                 acc.expectedOutlier = false;
-                iqadNode.jump(index, accCB);
+                iqadNode.travelInTime(index, accCB);
                 assertTrue(acc.called);
                 index++;
 
                 acc.value = new double[]{2.37, 0};
                 acc.expectedOutlier = true;
-                iqadNode.jump(index, accCB);
+                iqadNode.travelInTime(index, accCB);
                 assertTrue(acc.called);
                 index++;
 

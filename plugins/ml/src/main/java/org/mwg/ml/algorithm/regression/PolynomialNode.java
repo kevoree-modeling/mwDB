@@ -2,6 +2,7 @@ package org.mwg.ml.algorithm.regression;
 
 import org.mwg.Callback;
 import org.mwg.Graph;
+import org.mwg.Node;
 import org.mwg.Type;
 import org.mwg.ml.BaseMLNode;
 import org.mwg.ml.RegressionNode;
@@ -48,19 +49,20 @@ public class PolynomialNode extends BaseMLNode implements RegressionNode {
 
     //Override default Abstract node default setters and getters
     @Override
-    public void setProperty(String propertyName, byte propertyType, Object propertyValue) {
+    public Node set(String propertyName, byte propertyType, Object propertyValue) {
         if (propertyName.equals(VALUE)) {
             learn(Double.parseDouble(propertyValue.toString()), null);
         } else if (propertyName.equals(PRECISION)) {
             enforcer.check(propertyName, propertyType, propertyValue);
-            super.setProperty(propertyName, Type.DOUBLE, propertyValue);
+            super.set(propertyName, Type.DOUBLE, propertyValue);
         } else if (propertyName.equals(MAX_DEGREE)){
             degenforcer.check(propertyName, propertyType, propertyValue);
-            super.setProperty(propertyName, Type.INT, (int) propertyValue);
+            super.set(propertyName, Type.INT, (int) propertyValue);
         }
         else {
             throw new RuntimeException(NOT_MANAGED_ATT_ERROR);
         }
+        return this;
     }
 
     @Override

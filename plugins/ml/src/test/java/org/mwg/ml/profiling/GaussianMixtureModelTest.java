@@ -24,8 +24,8 @@ public class GaussianMixtureModelTest {
 
                 GaussianMixtureNode node1 = (GaussianMixtureNode) graph.newTypedNode(0, 0, GaussianMixtureNode.NAME);
 
-                node1.setProperty(GaussianMixtureNode.LEVEL, Type.INT, 1);
-                node1.setProperty(GaussianMixtureNode.WIDTH, Type.INT, 100);
+                node1.set(GaussianMixtureNode.LEVEL, Type.INT, 1);
+                node1.set(GaussianMixtureNode.WIDTH, Type.INT, 100);
 
                 double[] sum = new double[3];
                 int total = 220;

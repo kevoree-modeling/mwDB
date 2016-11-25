@@ -1,4 +1,4 @@
-package org.mwg.core.task;
+package org.mwg.ml.common;
 
 import org.mwg.Callback;
 import org.mwg.DeferCounter;
@@ -10,11 +10,11 @@ import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-class ActionTraverseOrKeep implements Action {
+public class ActionTraverseOrKeep implements Action {
 
     private final String _name;
 
-    ActionTraverseOrKeep(final String p_name) {
+    public ActionTraverseOrKeep(final String p_name) {
         this._name = p_name;
     }
 

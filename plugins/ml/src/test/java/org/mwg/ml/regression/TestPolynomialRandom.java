@@ -2,10 +2,7 @@ package org.mwg.ml.regression;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.mwg.Callback;
-import org.mwg.Graph;
-import org.mwg.GraphBuilder;
-import org.mwg.Node;
+import org.mwg.*;
 import org.mwg.core.scheduler.NoopScheduler;
 import org.mwg.ml.MLPlugin;
 import org.mwg.ml.algorithm.regression.PolynomialNode;
@@ -33,13 +30,13 @@ public class TestPolynomialRandom {
                 final double[] poly = new double[size];
 
                 PolynomialNode polynomialNode = (PolynomialNode) graph.newTypedNode(0, 1, PolynomialNode.NAME);
-                polynomialNode.set(PolynomialNode.PRECISION, precision);
+                polynomialNode.set(PolynomialNode.PRECISION, Type.DOUBLE, precision);
 
                 long start = System.currentTimeMillis();
                 for (int i = 0; i < size; i++) {
                     values[i] = random.nextDouble();
                     final int finalI = i;
-                    polynomialNode.jump(i + 1, new Callback<Node>() {
+                    polynomialNode.travelInTime(i + 1, new Callback<Node>() {
                         @Override
                         public void on(Node result) {
                             PolynomialNode x = (PolynomialNode) result;
@@ -56,7 +53,7 @@ public class TestPolynomialRandom {
 
                 for (int i = 0; i < size; i++) {
                     final int finalI = i;
-                    polynomialNode.jump(i + 1, new Callback<Node>() {
+                    polynomialNode.travelInTime(i + 1, new Callback<Node>() {
                         @Override
                         public void on(Node result) {
                             PolynomialNode x = (PolynomialNode) result;

@@ -11,9 +11,6 @@ import org.mwg.ml.algorithm.profiling.GaussianMixtureNode;
 import org.mwg.ml.common.matrix.VolatileMatrix;
 import org.mwg.struct.Matrix;
 
-/**
- * Created by assaad on 25/03/16.
- */
 public class GaussianNodeTest {
 
 
@@ -84,7 +81,7 @@ public class GaussianNodeTest {
                         k++;
                     }
                     final int finalI = i;
-                    gaussianNodeLive.jump(time, new Callback<GaussianMixtureNode>() {
+                    gaussianNodeLive.travelInTime(time, new Callback<GaussianMixtureNode>() {
                         @Override
                         public void on(GaussianMixtureNode result) {
                             result.learnVector(train[finalI], new Callback<Boolean>() {
@@ -113,7 +110,7 @@ public class GaussianNodeTest {
                 final double[][] covLive = new double[7][7];
 
 
-                gaussianNodeLive.jump(time, new Callback<GaussianMixtureNode>() {
+                gaussianNodeLive.travelInTime(time, new Callback<GaussianMixtureNode>() {
                     @Override
                     public void on(GaussianMixtureNode result) {
                         double[] a = result.getAvg();

@@ -1,9 +1,6 @@
 package org.mwg.ml.regression;
 
-import org.mwg.Callback;
-import org.mwg.Graph;
-import org.mwg.GraphBuilder;
-import org.mwg.Node;
+import org.mwg.*;
 import org.mwg.ml.MLPlugin;
 import org.mwg.ml.RegressionNode;
 import org.mwg.ml.algorithm.regression.LiveLinearRegressionNode;
@@ -11,7 +8,7 @@ import org.mwg.ml.algorithm.regression.LiveLinearRegressionNode;
 import java.util.Random;
 
 public class LiveLinearRegressionTest {
-   // @Test
+    // @Test
     public void testRegression() {
         final Graph graph = new GraphBuilder()
                 .withPlugin(new MLPlugin()).build();
@@ -20,24 +17,24 @@ public class LiveLinearRegressionTest {
             public void on(Boolean result) {
 
                 Node MultiSensor = graph.newNode(0, 0);
-                MultiSensor.set("temperature", 20);
-                MultiSensor.set("humidity", 5);
-                MultiSensor.set("power", 7);
+                MultiSensor.set("temperature", Type.INT, 20);
+                MultiSensor.set("humidity", Type.INT, 5);
+                MultiSensor.set("power", Type.INT, 7);
 
                 RegressionNode learningNode = (RegressionNode) graph.newTypedNode(0, 0, LiveLinearRegressionNode.NAME);
-                learningNode.add("sensor", MultiSensor);
-                learningNode.set("from", "sensor.temperature; sensor.humidity; sensor.power");
-                learningNode.set(LiveLinearRegressionNode.ALPHA_KEY, 0.00001);
-                learningNode.set(LiveLinearRegressionNode.LAMBDA_KEY, 0.0001d);
-                learningNode.set(LiveLinearRegressionNode.ITERATION_KEY, 10);
-                MultiSensor.add("regression", learningNode);
+                learningNode.addToRelation("sensor", MultiSensor);
+                learningNode.set("from", Type.STRING, "sensor.temperature; sensor.humidity; sensor.power");
+                learningNode.set(LiveLinearRegressionNode.ALPHA_KEY, Type.DOUBLE, 0.00001);
+                learningNode.set(LiveLinearRegressionNode.LAMBDA_KEY, Type.DOUBLE, 0.0001d);
+                learningNode.set(LiveLinearRegressionNode.ITERATION_KEY, Type.DOUBLE, 10);
+                MultiSensor.addToRelation("regression", learningNode);
 
                 final Random random = new Random();
                 final double coef[] = {2, -3, -2, 5};
                 int size = 100;
 
                 for (int i = 0; i < size; i++) {
-                    MultiSensor.jump(i + 1, new Callback<Node>() {
+                    MultiSensor.travelInTime(i + 1, new Callback<Node>() {
                         @Override
                         public void on(Node result) {
                             double temp = random.nextDouble() * 10 + 15; //random between 15 and 25
@@ -46,11 +43,11 @@ public class LiveLinearRegressionTest {
 
                             final double corr = temp * coef[0] + humidity * coef[1] + power * coef[2] + coef[3];
 
-                            result.set("temperature", temp);
-                            result.set("humidity", humidity);
-                            result.set("power", power);
+                            result.set("temperature", Type.DOUBLE, temp);
+                            result.set("humidity", Type.DOUBLE, humidity);
+                            result.set("power", Type.DOUBLE, power);
 
-                            result.rel("regression", new Callback<Node[]>() {
+                            result.relation("regression", new Callback<Node[]>() {
                                 @Override
                                 public void on(Node[] result) {
                                     RegressionNode regressionNode = (RegressionNode) (result[0]);
@@ -70,7 +67,7 @@ public class LiveLinearRegressionTest {
 
                 int test = 1000;
                 for (int i = size; i < size + test; i++) {
-                    MultiSensor.jump(i + 1, new Callback<Node>() {
+                    MultiSensor.travelInTime(i + 1, new Callback<Node>() {
                         @Override
                         public void on(Node result) {
                             double temp = random.nextDouble() * 10 + 15; //random between 15 and 25
@@ -79,11 +76,11 @@ public class LiveLinearRegressionTest {
 
                             final double corr = temp * coef[0] + humidity * coef[1] + power * coef[2] + coef[3];
 
-                            result.set("temperature", temp);
-                            result.set("humidity", humidity);
-                            result.set("power", power);
+                            result.set("temperature", Type.DOUBLE, temp);
+                            result.set("humidity", Type.DOUBLE, humidity);
+                            result.set("power", Type.DOUBLE, power);
 
-                            result.rel("regression", new Callback<Node[]>() {
+                            result.relation("regression", new Callback<Node[]>() {
                                 @Override
                                 public void on(Node[] result) {
                                     RegressionNode regressionNode = (RegressionNode) (result[0]);
