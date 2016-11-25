@@ -25,12 +25,13 @@ class CoreTaskContext implements TaskContext {
     TaskResult _result;
     private long _world;
     private long _time;
-
     private final CoreTask _origin;
     private int cursor = 0;
+    private final TaskHook[] _hooks;
 
-    CoreTaskContext(final CoreTask origin, final TaskContext parentContext, final TaskResult initial, final Graph p_graph, final Callback<TaskResult> p_callback) {
+    CoreTaskContext(final CoreTask origin, final TaskHook[] p_hooks, final TaskContext parentContext, final TaskResult initial, final Graph p_graph, final Callback<TaskResult> p_callback) {
         this._origin = origin;
+        this._hooks = p_hooks;
         if (parentContext != null) {
             this._time = parentContext.time();
             this._world = parentContext.world();
@@ -305,13 +306,12 @@ class CoreTaskContext implements TaskContext {
 
     @Override
     public final void continueTask() {
-        final TaskHook[] hooks = this._origin._hooks;
         final TaskHook[] globalHooks = this._graph.taskHooks();
         final Action currentAction = _origin.actions[cursor];
         //next step now...
-        if (hooks != null) {
-            for (int i = 0; i < hooks.length; i++) {
-                hooks[i].afterAction(currentAction, this);
+        if (_hooks != null) {
+            for (int i = 0; i < _hooks.length; i++) {
+                _hooks[i].afterAction(currentAction, this);
             }
         }
         if (globalHooks != null) {
@@ -350,12 +350,12 @@ class CoreTaskContext implements TaskContext {
                 }
             }
             /* End Clean */
-            if (hooks != null) {
-                for (int i = 0; i < hooks.length; i++) {
+            if (_hooks != null) {
+                for (int i = 0; i < _hooks.length; i++) {
                     if (this._parent == null) {
-                        hooks[i].end(this);
+                        _hooks[i].end(this);
                     } else {
-                        hooks[i].afterTask(this);
+                        _hooks[i].afterTask(this);
                     }
                 }
             }
@@ -376,9 +376,9 @@ class CoreTaskContext implements TaskContext {
                 }
             }
         } else {
-            if (hooks != null) {
-                for (int i = 0; i < hooks.length; i++) {
-                    hooks[i].beforeAction(nextAction, this);
+            if (_hooks != null) {
+                for (int i = 0; i < _hooks.length; i++) {
+                    _hooks[i].beforeAction(nextAction, this);
                 }
             }
             if (globalHooks != null) {
@@ -394,15 +394,14 @@ class CoreTaskContext implements TaskContext {
     @SuppressWarnings("Duplicates")
     final void execute() {
         final Action current = _origin.actions[cursor];
-        final TaskHook[] hooks = this._origin._hooks;
-        if (hooks != null) {
-            for (int i = 0; i < hooks.length; i++) {
+        if (_hooks != null) {
+            for (int i = 0; i < _hooks.length; i++) {
                 if (_parent == null) {
-                    hooks[i].start(this);
+                    _hooks[i].start(this);
                 } else {
-                    hooks[i].beforeTask(_parent, this);
+                    _hooks[i].beforeTask(_parent, this);
                 }
-                hooks[i].beforeAction(current, this);
+                _hooks[i].beforeAction(current, this);
             }
         }
         final TaskHook[] globalHooks = this._graph.taskHooks();

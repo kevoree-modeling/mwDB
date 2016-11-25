@@ -15,7 +15,7 @@ public class CoreTask implements org.mwg.task.Task {
     private int insertCapacity = Constants.MAP_INITIAL_CAPACITY;
     public Action[] actions = new Action[insertCapacity];
     public int insertCursor = 0;
-    TaskHook[] _hooks = null;
+    private TaskHook[] _hooks = null;
 
     @Override
     public Task addHook(final TaskHook p_hook) {
@@ -138,7 +138,7 @@ public class CoreTask implements org.mwg.task.Task {
             } else {
                 initalRes = new CoreTaskResult(initial, true);
             }
-            final CoreTaskContext context = new CoreTaskContext(this, null, initalRes, graph, callback);
+            final CoreTaskContext context = new CoreTaskContext(this, _hooks, null, initalRes, graph, callback);
             graph.scheduler().dispatch(SchedulerAffinity.SAME_THREAD, new Job() {
                 @Override
                 public void run() {
@@ -160,7 +160,7 @@ public class CoreTask implements org.mwg.task.Task {
         } else {
             initalRes = new CoreTaskResult(initial, true);
         }
-        return new CoreTaskContext(this, null, initalRes, graph, callback);
+        return new CoreTaskContext(this, _hooks, null, initalRes, graph, callback);
     }
 
     @Override
@@ -183,7 +183,7 @@ public class CoreTask implements org.mwg.task.Task {
     @Override
     public void executeFrom(final TaskContext parentContext, final TaskResult initial, byte affinity, final Callback<TaskResult> callback) {
         if (insertCursor > 0) {
-            final CoreTaskContext context = new CoreTaskContext(this, parentContext, initial.clone(), parentContext.graph(), callback);
+            final CoreTaskContext context = new CoreTaskContext(this, _hooks, parentContext, initial.clone(), parentContext.graph(), callback);
             parentContext.graph().scheduler().dispatch(affinity, new Job() {
                 @Override
                 public void run() {
@@ -200,7 +200,7 @@ public class CoreTask implements org.mwg.task.Task {
     @Override
     public void executeFromUsing(TaskContext parentContext, TaskResult initial, byte affinity, Callback<TaskContext> contextInitializer, Callback<TaskResult> callback) {
         if (insertCursor > 0) {
-            final CoreTaskContext context = new CoreTaskContext(this, parentContext, initial.clone(), parentContext.graph(), callback);
+            final CoreTaskContext context = new CoreTaskContext(this, _hooks, parentContext, initial.clone(), parentContext.graph(), callback);
             if (contextInitializer != null) {
                 contextInitializer.on(context);
             }

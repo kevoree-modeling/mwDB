@@ -4,6 +4,8 @@ import org.mwg.Node;
 
 public interface Relation {
 
+    long[] all();
+
     int size();
 
     long get(int index);
