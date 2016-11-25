@@ -3,12 +3,12 @@ package org.mwg.memory.offheap;
 import org.mwg.Constants;
 import org.mwg.memory.offheap.primary.OffHeapLongArray;
 import org.mwg.struct.Buffer;
-import org.mwg.struct.Relationship;
+import org.mwg.struct.Relation;
 import org.mwg.utility.Base64;
 
 @SuppressWarnings("Duplicates")
-class OffHeapRelationship implements Relationship {
-    
+class OffHeapRelation implements Relation {
+
     private static int CAPACITY = 0;
     private static int SIZE = 1;
     private static int SHIFT = 2;
@@ -16,9 +16,30 @@ class OffHeapRelationship implements Relationship {
     private final long index;
     private final OffHeapStateChunk chunk;
 
-    OffHeapRelationship(final OffHeapStateChunk p_chunk, final long p_index) {
+    OffHeapRelation(final OffHeapStateChunk p_chunk, final long p_index) {
         chunk = p_chunk;
         index = p_index;
+    }
+
+    @Override
+    public long[] all() {
+        long[] ids;
+        chunk.lock();
+        try {
+            final long addr = chunk.addrByIndex(index);
+            if (addr == OffHeapConstants.OFFHEAP_NULL_PTR) {
+                ids = new long[0];
+            } else {
+                final long relSize = OffHeapLongArray.get(addr, SIZE);
+                ids = new long[(int) relSize];
+                for (int i = 0; i < relSize; i++) {
+                    ids[i] = OffHeapLongArray.get(addr, i + SHIFT);
+                }
+            }
+        } finally {
+            chunk.unlock();
+        }
+        return ids;
     }
 
     public final void allocate(int newCapacity) {
@@ -97,7 +118,7 @@ class OffHeapRelationship implements Relationship {
     }
 
     @Override
-    public final Relationship add(final long newValue) {
+    public final Relation add(final long newValue) {
         chunk.lock();
         try {
             internal_add(newValue);
@@ -132,7 +153,7 @@ class OffHeapRelationship implements Relationship {
     }
 
     @Override
-    public final Relationship remove(final long oldValue) {
+    public final Relation remove(final long oldValue) {
         boolean leftShift = false;
         chunk.lock();
         try {
@@ -162,7 +183,7 @@ class OffHeapRelationship implements Relationship {
     }
 
     @Override
-    public final Relationship clear() {
+    public final Relation clear() {
         chunk.lock();
         try {
             final long addr = chunk.addrByIndex(index);
@@ -207,7 +228,7 @@ class OffHeapRelationship implements Relationship {
         Base64.encodeLongToBuffer(size, buffer);
         for (long i = 0; i < size; i++) {
             buffer.write(Constants.CHUNK_SUB_SUB_SEP);
-            Base64.encodeLongToBuffer(OffHeapLongArray.get(addr, i), buffer);
+            Base64.encodeLongToBuffer(OffHeapLongArray.get(addr, i + SHIFT), buffer);
         }
     }
 

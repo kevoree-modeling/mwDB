@@ -106,12 +106,13 @@
         -->
 
         <!-- Plugin Java -->
+        <module>plugins/memory</module>
+
         <!--
         <module>plugins/mlext</module>
         -->
 
         <!--
-        <module>plugins/memory</module>
         <module>plugins/importer</module>
         -->
 

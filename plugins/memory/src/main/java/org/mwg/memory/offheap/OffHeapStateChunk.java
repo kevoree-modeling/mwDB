@@ -184,7 +184,7 @@ class OffHeapStateChunk implements StateChunk {
                 case Type.INT_ARRAY:
                     return OffHeapIntArray.asObject(rawValue);
                 case Type.RELATION:
-                    return new OffHeapRelationship(this, index);
+                    return new OffHeapRelation(this, index);
                 case Type.MATRIX:
                     return new OffHeapMatrix(this, index);
                 case Type.STRING_TO_LONG_MAP:
@@ -401,7 +401,7 @@ class OffHeapStateChunk implements StateChunk {
                             OffHeapIntArray.save(rawValue, buffer);
                             break;
                         case Type.RELATION:
-                            OffHeapRelationship.save(rawValue, buffer);
+                            OffHeapRelation.save(rawValue, buffer);
                             break;
                         case Type.MATRIX:
                             OffHeapMatrix.save(rawValue, buffer);
@@ -482,7 +482,7 @@ class OffHeapStateChunk implements StateChunk {
                                 OffHeapString.clone(value(castedAddr, i));
                                 break;
                             case Type.RELATION:
-                                setValue(addr, i, OffHeapRelationship.clone(value(castedAddr, i)));
+                                setValue(addr, i, OffHeapRelation.clone(value(castedAddr, i)));
                                 break;
                             case Type.MATRIX:
                                 setValue(addr, i, OffHeapMatrix.clone(value(castedAddr, i)));
@@ -759,7 +759,7 @@ class OffHeapStateChunk implements StateChunk {
             long[] currentLongArr = null;
             int[] currentIntArr = null;
             //map sub creation variables
-            OffHeapRelationship currentRelation = null;
+            OffHeapRelation currentRelation = null;
             OffHeapMatrix currentMatrix = null;
             OffHeapStringLongMap currentStringLongMap = null;
             OffHeapLongLongMap currentLongLongMap = null;
@@ -832,7 +832,7 @@ class OffHeapStateChunk implements StateChunk {
                                     break;
                                 case Type.RELATION:
                                     if (currentRelation == null) {
-                                        currentRelation = new OffHeapRelationship(this, internal_set(currentChunkElemKey, currentChunkElemType, null, true, initial));
+                                        currentRelation = new OffHeapRelation(this, internal_set(currentChunkElemKey, currentChunkElemType, null, true, initial));
                                         currentRelation.allocate(Base64.decodeToIntWithBounds(buffer, previousStart, cursor));
                                     } else {
                                         currentRelation.internal_add(Base64.decodeToLongWithBounds(buffer, previousStart, cursor));
@@ -899,7 +899,7 @@ class OffHeapStateChunk implements StateChunk {
                                 currentIntArr = new int[(int) currentSubSize];
                                 break;
                             case Type.RELATION:
-                                currentRelation = new OffHeapRelationship(this, internal_set(currentChunkElemKey, currentChunkElemType, null, true, initial));
+                                currentRelation = new OffHeapRelation(this, internal_set(currentChunkElemKey, currentChunkElemType, null, true, initial));
                                 currentRelation.allocate((int) currentSubSize);
                                 break;
                             case Type.MATRIX:
@@ -1100,7 +1100,7 @@ class OffHeapStateChunk implements StateChunk {
                 OffHeapDoubleArray.freeObject(addr);
                 break;
             case Type.RELATION:
-                OffHeapRelationship.free(addr);
+                OffHeapRelation.free(addr);
                 break;
             case Type.MATRIX:
                 OffHeapMatrix.free(addr);

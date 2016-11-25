@@ -16,16 +16,10 @@
     <dependencies>
         <dependency>
             <groupId>org.kevoree.mwg</groupId>
-            <artifactId>api</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <!-- Test -->
-        <dependency>
-            <groupId>org.kevoree.mwg</groupId>
             <artifactId>core</artifactId>
             <version>${project.version}</version>
-            <scope>test</scope>
         </dependency>
+        <!-- Test -->
         <dependency>
             <groupId>org.kevoree.mwg</groupId>
             <artifactId>core</artifactId>

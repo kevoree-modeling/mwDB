@@ -34,10 +34,13 @@ class HeapRelation implements Relation {
 
     @Override
     public long[] all() {
-        final int relSize = _back.length;
-        final long[] ids = new long[relSize];
-        for (int i = 0; i < relSize; i++) {
-            ids[i] = _back[i];
+        long[] ids;
+        synchronized (parent) {
+            final int relSize = _back.length;
+            ids = new long[relSize];
+            for (int i = 0; i < relSize; i++) {
+                ids[i] = _back[i];
+            }
         }
         return ids;
     }
