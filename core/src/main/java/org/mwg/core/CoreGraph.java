@@ -60,7 +60,7 @@ public class CoreGraph implements org.mwg.Graph {
                 if (loopHF != null) {
                     TaskHook[] temp_temp_hooks = new TaskHook[temp_hooks.length + loopHF.length];
                     System.arraycopy(temp_hooks, 0, temp_temp_hooks, 0, temp_hooks.length);
-                    System.arraycopy(loopHF, 0, temp_hooks, 0, temp_hooks.length);
+                    System.arraycopy(loopHF, 0, temp_temp_hooks, temp_hooks.length, loopHF.length);
                     temp_hooks = temp_temp_hooks;
                 }
             }

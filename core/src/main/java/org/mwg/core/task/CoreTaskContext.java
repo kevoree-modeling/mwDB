@@ -27,7 +27,7 @@ class CoreTaskContext implements TaskContext {
     private long _time;
     private final CoreTask _origin;
     private int cursor = 0;
-    private final TaskHook[] _hooks;
+    final TaskHook[] _hooks;
 
     CoreTaskContext(final CoreTask origin, final TaskHook[] p_hooks, final TaskContext parentContext, final TaskResult initial, final Graph p_graph, final Callback<TaskResult> p_callback) {
         this._origin = origin;

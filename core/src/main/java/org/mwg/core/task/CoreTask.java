@@ -15,7 +15,7 @@ public class CoreTask implements org.mwg.task.Task {
     private int insertCapacity = Constants.MAP_INITIAL_CAPACITY;
     public Action[] actions = new Action[insertCapacity];
     public int insertCursor = 0;
-    private TaskHook[] _hooks = null;
+    TaskHook[] _hooks = null;
 
     @Override
     public Task addHook(final TaskHook p_hook) {
@@ -183,7 +183,21 @@ public class CoreTask implements org.mwg.task.Task {
     @Override
     public void executeFrom(final TaskContext parentContext, final TaskResult initial, byte affinity, final Callback<TaskResult> callback) {
         if (insertCursor > 0) {
-            final CoreTaskContext context = new CoreTaskContext(this, _hooks, parentContext, initial.clone(), parentContext.graph(), callback);
+            TaskHook[] aggregatedHooks = null;
+            if (parentContext != null) {
+                aggregatedHooks = ((CoreTaskContext) parentContext)._hooks;
+            }
+            if (_hooks != null) {
+                if (aggregatedHooks == null) {
+                    aggregatedHooks = _hooks;
+                } else {
+                    TaskHook[] temp_hooks = new TaskHook[aggregatedHooks.length + _hooks.length];
+                    System.arraycopy(aggregatedHooks, 0, temp_hooks, 0, aggregatedHooks.length);
+                    System.arraycopy(_hooks, 0, temp_hooks, aggregatedHooks.length, _hooks.length);
+                    aggregatedHooks = temp_hooks;
+                }
+            }
+            final CoreTaskContext context = new CoreTaskContext(this, aggregatedHooks, parentContext, initial.clone(), parentContext.graph(), callback);
             parentContext.graph().scheduler().dispatch(affinity, new Job() {
                 @Override
                 public void run() {
@@ -200,7 +214,21 @@ public class CoreTask implements org.mwg.task.Task {
     @Override
     public void executeFromUsing(TaskContext parentContext, TaskResult initial, byte affinity, Callback<TaskContext> contextInitializer, Callback<TaskResult> callback) {
         if (insertCursor > 0) {
-            final CoreTaskContext context = new CoreTaskContext(this, _hooks, parentContext, initial.clone(), parentContext.graph(), callback);
+            TaskHook[] aggregatedHooks = null;
+            if (parentContext != null) {
+                aggregatedHooks = ((CoreTaskContext) parentContext)._hooks;
+            }
+            if (_hooks != null) {
+                if (aggregatedHooks == null) {
+                    aggregatedHooks = _hooks;
+                } else {
+                    TaskHook[] temp_hooks = new TaskHook[aggregatedHooks.length + _hooks.length];
+                    System.arraycopy(aggregatedHooks, 0, temp_hooks, 0, aggregatedHooks.length);
+                    System.arraycopy(_hooks, 0, temp_hooks, aggregatedHooks.length, _hooks.length);
+                    aggregatedHooks = temp_hooks;
+                }
+            }
+            final CoreTaskContext context = new CoreTaskContext(this, aggregatedHooks, parentContext, initial.clone(), parentContext.graph(), callback);
             if (contextInitializer != null) {
                 contextInitializer.on(context);
             }

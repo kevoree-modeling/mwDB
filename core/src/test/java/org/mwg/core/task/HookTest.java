@@ -7,6 +7,7 @@ import org.mwg.GraphBuilder;
 import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskHook;
+import org.mwg.utility.VerbosePlugin;
 
 import static org.mwg.core.task.Actions.*;
 
@@ -14,7 +15,7 @@ public class HookTest {
 
     @Test
     public void test() {
-        Graph g = GraphBuilder.newBuilder().build();
+        Graph g = GraphBuilder.newBuilder().withPlugin(new VerbosePlugin()).build();
         g.connect(result -> {
 
             int[] count = new int[1];
@@ -56,11 +57,9 @@ public class HookTest {
                     .forEach(task().then(setAsVar("{{result}}")))
                     .execute(g, null);
 
-            Assert.assertEquals(6, count[0]);
+            Assert.assertEquals(18, count[0]);
 
         });
-
-
     }
 
 }
