@@ -19,7 +19,7 @@ class OffHeapLongLongArrayMap implements LongLongArrayMap {
     private static int ELEM_SIZE = 2;
 
     private final long index;
-    private final OffHeapStateChunk chunk;
+    final OffHeapStateChunk chunk;
 
     OffHeapLongLongArrayMap(final OffHeapStateChunk p_chunk, final long p_index) {
         chunk = p_chunk;
@@ -190,7 +190,7 @@ class OffHeapLongLongArrayMap implements LongLongArrayMap {
     }
 
     @Override
-    public final void remove(final long requestKey, final long requestValue) {
+    public final void delete(final long requestKey, final long requestValue) {
         chunk.lock();
         try {
             final long addr = chunk.addrByIndex(index);
