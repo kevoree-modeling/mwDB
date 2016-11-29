@@ -49,6 +49,27 @@ public class OffHeapLongArray {
         unsafe.putLongVolatile(null, addr + (index * 8), valueToInsert);
     }
 
+    public static void insert(final long addr, final long index, final long valueToInsert, final long size) {
+        if (OffHeapConstants.DEBUG_MODE) {
+            Long allocated = OffHeapConstants.SEGMENTS.get(addr);
+            if (allocated == null || index < 0 || (index * 8) > allocated) {
+                throw new RuntimeException("set: bad address " + index + "(" + index * 8 + ")" + " in " + allocated);
+            }
+        }
+        unsafe.copyMemory(addr + (index * 8), addr + ((index + 1) * 8), (size - index) * 8);
+        unsafe.putLongVolatile(null, addr + (index * 8), valueToInsert);
+    }
+
+    public static void delete(final long addr, final long index, final long size) {
+        if (OffHeapConstants.DEBUG_MODE) {
+            Long allocated = OffHeapConstants.SEGMENTS.get(addr);
+            if (allocated == null || index < 0 || (index * 8) > allocated) {
+                throw new RuntimeException("set: bad address " + index + "(" + index * 8 + ")" + " in " + allocated);
+            }
+        }
+        unsafe.copyMemory(addr + ((index + 1) * 8), addr + (index * 8), (size - index - 1) * 8);
+    }
+
     public static long get(final long addr, final long index) {
         if (OffHeapConstants.DEBUG_MODE) {
             Long allocated = OffHeapConstants.SEGMENTS.get(addr);

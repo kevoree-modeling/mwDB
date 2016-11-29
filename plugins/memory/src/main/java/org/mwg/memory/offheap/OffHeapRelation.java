@@ -1,6 +1,7 @@
 package org.mwg.memory.offheap;
 
 import org.mwg.Constants;
+import org.mwg.Node;
 import org.mwg.memory.offheap.primary.OffHeapLongArray;
 import org.mwg.struct.Buffer;
 import org.mwg.struct.Relation;
@@ -129,6 +130,49 @@ class OffHeapRelation implements Relation {
         return this;
     }
 
+    @Override
+    public Relation addNode(Node node) {
+        return add(node.id());
+    }
+
+    @Override
+    public Relation insert(int insertIndex, long newValue) {
+        chunk.lock();
+        try {
+            long size = 0;
+            long addr = chunk.addrByIndex(index);
+            if (addr != OffHeapConstants.OFFHEAP_NULL_PTR) {
+                size = OffHeapLongArray.get(addr, SIZE);
+            }
+            if (size == 0) {
+                if (insertIndex != 0) {
+                    throw new RuntimeException("Bad API usage ! index out of bounds: " + index);
+                }
+                long capacity = Constants.MAP_INITIAL_CAPACITY;
+                addr = OffHeapLongArray.allocate(SHIFT + capacity);
+                OffHeapLongArray.set(addr, CAPACITY, capacity);
+                chunk.setAddrByIndex(index, addr);
+                OffHeapLongArray.set(addr, SHIFT, newValue);
+                OffHeapLongArray.set(addr, SIZE, 1);
+            } else {
+                final long capacity = OffHeapLongArray.get(addr, CAPACITY);
+                if (capacity == size) {
+                    //need to reallocate first
+                    final long newCapacity = capacity * 2;
+                    addr = OffHeapLongArray.reallocate(addr, newCapacity + SHIFT);
+                    chunk.setAddrByIndex(index, addr);
+                    OffHeapLongArray.set(addr, CAPACITY, newCapacity);
+                }
+                OffHeapLongArray.insert(addr, SHIFT + insertIndex, newValue, size + SHIFT);
+                OffHeapLongArray.set(addr, SIZE, size + 1);
+            }
+            chunk.declareDirty();
+        } finally {
+            chunk.unlock();
+        }
+        return this;
+    }
+
     final void internal_add(final long newValue) {
         long addr = chunk.addrByIndex(index);
         long size;
@@ -174,6 +218,24 @@ class OffHeapRelation implements Relation {
                     OffHeapLongArray.set(addr, SIZE, size - 1);
                     chunk.declareDirty();
                 }
+            }
+
+        } finally {
+            chunk.unlock();
+        }
+        return this;
+    }
+
+    @Override
+    public Relation delete(int indexToDelete) {
+        chunk.lock();
+        try {
+            long addr = chunk.addrByIndex(index);
+            if (addr != OffHeapConstants.OFFHEAP_NULL_PTR) {
+                final long size = OffHeapLongArray.get(addr, SIZE);
+                OffHeapLongArray.delete(addr, indexToDelete, size);
+                OffHeapLongArray.set(addr, SIZE, size - 1);
+                chunk.declareDirty();
             }
 
         } finally {

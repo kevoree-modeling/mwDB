@@ -106,9 +106,7 @@
         -->
 
         <!-- Plugin Java -->
-        <!--
         <module>plugins/memory</module>
-        -->
 
         <!--
         <module>plugins/mlext</module>
@@ -117,6 +115,10 @@
 
         <module>plugins/leveldb</module>
         <module>plugins/rocksdb</module>
+
+        <!--
+        <module>plugins/voldemort</module>
+        -->
 
         <!--
         <module>plugins/rest</module>
