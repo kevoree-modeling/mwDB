@@ -4,10 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.mwg.importer.ImporterActions;
 import org.mwg.importer.ImporterPlugin;
-import org.mwg.task.Action;
-import org.mwg.task.Task;
-import org.mwg.task.TaskContext;
-import org.mwg.task.TaskResult;
+import org.mwg.task.*;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -18,9 +15,9 @@ import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import static org.mwg.core.task.Actions.*;
 import static org.mwg.importer.ImporterActions.readFiles;
 import static org.mwg.importer.ImporterActions.readLines;
-import static org.mwg.task.Actions.*;
 
 public class ImporterTest {
 
@@ -33,16 +30,16 @@ public class ImporterTest {
 
             Node newNode = g.newNode(0, 0);
             //final Task t = readLines("/Users/duke/dev/mwDB/plugins/importer/src/test/resources/smarthome/smarthome_1.T15.txt")
-            final Task t = readLines("smarthome/smarthome_mini_1.T15.txt")
-                    .foreach(
-                            ifThen(ctx -> !ctx.result().get(0).toString().startsWith("1:Date"),
-                                    then(context -> {
+            final Task t = task().then(readLines("smarthome/smarthome_mini_1.T15.txt"))
+                    .forEach(
+                            task().ifThen(ctx -> !ctx.result().get(0).toString().startsWith("1:Date"),
+                                    task().thenDo(context -> {
                                         String[] line = context.result().get(0).toString().split(" ");
                                         try {
                                             long time = dateFormat.parse(line[0] + "|" + line[1]).getTime();
                                             double value = Double.parseDouble(line[2]);
-                                            newNode.jump(time, timedNode -> {
-                                                timedNode.setProperty("value", Type.DOUBLE, value);
+                                            newNode.travelInTime(time, timedNode -> {
+                                                timedNode.set("value", Type.DOUBLE, value);
                                                 context.continueWith(context.wrap(timedNode));
                                             });
                                         } catch (ParseException e) {
@@ -65,7 +62,7 @@ public class ImporterTest {
             @Override
             public void on(Boolean connectionResult) {
                 final int[] nbFile = new int[1];
-                Task t = readFiles("smarthome").foreach(then(new Action() {
+                Task t = task().then(readFiles("smarthome")).forEach(task().thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         String filePath = (String) context.result().get(0);
@@ -90,10 +87,11 @@ public class ImporterTest {
             @Override
             public void on(Boolean connectionResult) {
                 final int[] nbFile = new int[1];
-                Task t = inject("smarthome")
-                        .asGlobalVar("fileName")
-                        .action(ImporterActions.READFILES, "{{fileName}}")
-                        .foreach(then(new Action() {
+                Task t = task()
+                        .then(inject("smarthome"))
+                        .then(defineAsGlobalVar("fileName"))
+                        .then(pluginAction(ImporterActions.READFILES, "{{fileName}}"))
+                        .forEach(task().thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 String file = (String) context.result().get(0);
@@ -122,27 +120,35 @@ public class ImporterTest {
             @Override
             public void on(Boolean connectionResult) {
                 final int[] nbFile = new int[1];
-                Task t = readFiles(urlFIle.getPath()).foreach(then(new Action() {
-                    @Override
-                    public void eval(TaskContext context) {
-                        String file = (String) context.result().get(0);
-                        Assert.assertEquals(expectecFile.getAbsolutePath(), file);
-                        nbFile[0]++;
-                        context.continueWith(null);
-                    }
-                })).action(ImporterActions.READFILES, urlFIle2.getPath()).foreach(then(new Action() {
-                    @Override
-                    public void eval(TaskContext context) {
-                        String file = (String) context.result().get(0);
-                        try {
-                            Assert.assertEquals(URLDecoder.decode(expectedFile2.getAbsolutePath(), "UTF-8"), file);
-                        } catch (UnsupportedEncodingException ex) {
-                            Assert.fail(ex.getMessage());
-                        }
-                        nbFile[0]++;
-                        context.continueWith(null);
-                    }
-                }));
+                Task t = task()
+                        .then(readFiles(urlFIle.getPath()))
+                        .forEach(
+                                task().thenDo(new ActionFunction() {
+                                    @Override
+                                    public void eval(TaskContext context) {
+                                        String file = (String) context.result().get(0);
+                                        Assert.assertEquals(expectecFile.getAbsolutePath(), file);
+                                        nbFile[0]++;
+                                        context.continueWith(null);
+                                    }
+                                })
+                        )
+                        .then(pluginAction(ImporterActions.READFILES, urlFIle2.getPath()))
+                        .forEach(
+                                task().thenDo(new ActionFunction() {
+                                    @Override
+                                    public void eval(TaskContext context) {
+                                        String file = (String) context.result().get(0);
+                                        try {
+                                            Assert.assertEquals(URLDecoder.decode(expectedFile2.getAbsolutePath(), "UTF-8"), file);
+                                        } catch (UnsupportedEncodingException ex) {
+                                            Assert.fail(ex.getMessage());
+                                        }
+                                        nbFile[0]++;
+                                        context.continueWith(null);
+                                    }
+                                })
+                        );
                 t.execute(g, null);
 
                 Assert.assertEquals(2, nbFile[0]);
@@ -154,7 +160,7 @@ public class ImporterTest {
     public void testReadFileOnUnknowFile() {
         final Graph g = new GraphBuilder().withPlugin(new ImporterPlugin()).build();
         g.connect(connectionResult -> {
-            Task t = readFiles("nonexistent-file.txt");
+            Task t = task().then(readFiles("nonexistent-file.txt"));
             boolean exceptionCaught = false;
             try {
                 t.execute(g, null);
@@ -173,7 +179,7 @@ public class ImporterTest {
         g.connect(new Callback<Boolean>() {
             @Override
             public void on(Boolean connectionResult) {
-                Task t = action(ImporterActions.READFILES, "{{incorrectVarName}}");
+                Task t = task().then(pluginAction(ImporterActions.READFILES, "{{incorrectVarName}}"));
 
                 boolean exceptionCaught = false;
                 try {
@@ -188,15 +194,16 @@ public class ImporterTest {
     }
 
 
+    /*
     @Test
     public void testV2() {
         final SimpleDateFormat dateFormat = new SimpleDateFormat("d/MM/yyyy|HH:mm");
         final Graph g = new GraphBuilder().withPlugin(new ImporterPlugin()).build();
         g.connect(connectionResult -> {
             Node newNode = g.newNode(0, 0);
-            final Task t = readLines("smarthome/smarthome_mini_1.T15.txt")
-                    .foreach(
-                            ifThen(ctx -> !ctx.result().get(0).toString().startsWith("1:Date"),
+            final Task t = task().then(readLines("smarthome/smarthome_mini_1.T15.txt"))
+                    .forEach(
+                            task().ifThen(ctx -> !ctx.result().get(0).toString().startsWith("1:Date"),
                                     split(" ")
                                             .then(context -> {
                                                 TaskResult<String> line = context.result();
@@ -217,6 +224,6 @@ public class ImporterTest {
             t.execute(g, null);
             //t.executeWith(g, null, null, true, null); //with debug
         });
-    }
+    }*/
 
 }

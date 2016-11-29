@@ -4,8 +4,10 @@ import org.junit.Test;
 import org.mwg.importer.ImporterActions;
 import org.mwg.importer.ImporterPlugin;
 
-import static org.mwg.task.Actions.defineVar;
-import static org.mwg.task.Actions.foreach;
+import static org.mwg.core.task.Actions.defineAsVar;
+import static org.mwg.core.task.Actions.print;
+import static org.mwg.core.task.Actions.task;
+import static org.mwg.importer.ImporterActions.readJson;
 
 public class ImportJsonTest {
 
@@ -17,15 +19,17 @@ public class ImportJsonTest {
                 .build();
         g.connect(result -> {
 
-            ImporterActions.readJson("sample.geojson")
-                    .foreach(
-                            ImporterActions.jsonMatch("features",
-                                    foreach(
-                                            defineVar("jsonObj")
-
-                                            .print("{{result}}")
-                                    )
-                            )).execute(g, null);
+            task().then(readJson("sample.geojson"))
+                    .forEach(
+                            task()
+                                    .then(ImporterActions.jsonMatch("features",
+                                            task().forEach(
+                                                    task()
+                                                            .then(defineAsVar("jsonObj"))
+                                                            .then(print("{{result}}"))
+                                            )
+                                    ))
+                    ).execute(g, null);
 
             g.disconnect(null);
         });

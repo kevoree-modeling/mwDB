@@ -5,7 +5,7 @@ import org.mwg.task.Action;
 import org.mwg.task.Task;
 import org.mwg.task.TaskContext;
 
-import static org.mwg.task.Actions.newTask;
+import static org.mwg.core.task.Actions.pluginAction;
 
 public class ImporterActions {
 
@@ -17,25 +17,25 @@ public class ImporterActions {
 
     public static final String JSONMATCH = "jsonMatch";
 
-    public static Task readLines(String path) {
-        return newTask().action(READLINES, path);
+    public static Action readLines(String path) {
+        return pluginAction(READLINES, path);
     }
 
-    public static Task readFiles(String pathOrVar) {
-        return newTask().action(READFILES, pathOrVar);
+    public static Action readFiles(String pathOrVar) {
+        return pluginAction(READFILES, pathOrVar);
     }
 
-    public static Task readJson(String pathOrVar) {
-        return newTask().action(READJSON, pathOrVar);
+    public static Action readJson(String pathOrVar) {
+        return pluginAction(READJSON, pathOrVar);
     }
 
-    public static Task jsonMatch(String filter, Task then) {
-        return newTask().then(new Action() {
+    public static Action jsonMatch(String filter, Task then) {
+        return new Action() {
             @Override
             public void eval(TaskContext context) {
                 new JsonMatch(filter, then).eval(context);
             }
-        });
+        };
     }
 
 }

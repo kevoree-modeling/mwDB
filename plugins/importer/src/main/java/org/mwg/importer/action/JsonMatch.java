@@ -2,13 +2,13 @@ package org.mwg.importer.action;
 
 import org.mwg.Callback;
 import org.mwg.importer.util.JsonMemberResult;
-import org.mwg.plugin.AbstractTaskAction;
 import org.mwg.plugin.SchedulerAffinity;
+import org.mwg.task.Action;
 import org.mwg.task.Task;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-public class JsonMatch extends AbstractTaskAction {
+public class JsonMatch implements Action {
 
     private String _name;
     private org.mwg.task.Task _then;
