@@ -1,10 +1,10 @@
 package org.mwg.importer.action;
 
 import org.mwg.importer.util.IterableLines;
-import org.mwg.plugin.AbstractTaskAction;
+import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
 
-public class ReadLines extends AbstractTaskAction {
+public class ReadLines implements Action {
 
     private final String _pathOrTemplate;
 

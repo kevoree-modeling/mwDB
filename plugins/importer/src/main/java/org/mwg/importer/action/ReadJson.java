@@ -2,7 +2,7 @@ package org.mwg.importer.action;
 
 import com.eclipsesource.json.Json;
 import org.mwg.importer.util.JsonValueResultBuilder;
-import org.mwg.plugin.AbstractTaskAction;
+import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
@@ -12,7 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 
-public class ReadJson extends AbstractTaskAction {
+public class ReadJson implements Action {
 
     private final String _pathOrTemplate;
 
