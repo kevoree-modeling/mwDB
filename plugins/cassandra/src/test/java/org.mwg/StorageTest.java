@@ -28,12 +28,13 @@ public class StorageTest {
             @Override
             public void on(Boolean result) {
                 final long before = System.currentTimeMillis();
+
                 final Node node = graph.newNode(0, 0);
                 final DeferCounter counter = graph.newCounter(valuesToInsert);
                 for (long i = 0; i < valuesToInsert; i++) {
 
-                    if (i % 1000000 == 0) {
-                        // System.out.println("<insert til " + i + " in " + (System.currentTimeMillis() - before) / 1000 + "s");
+                    if (i % 10000 == 0) {
+                         System.out.println("<insert til " + i + " in " + (System.currentTimeMillis() - before) / 1000 + "s");
                         graph.save(null);
                     }
 
@@ -63,13 +64,6 @@ public class StorageTest {
                             @Override
                             public void on(Boolean result) {
                                 //System.out.println("Graph disconnected");
-
-                                /*
-                                Assert.assertTrue(OffHeapByteArray.alloc_counter == 0);
-                                Assert.assertTrue(OffHeapDoubleArray.alloc_counter == 0);
-                                Assert.assertTrue(OffHeapLongArray.alloc_counter == 0);
-                                Assert.assertTrue(OffHeapStringArray.alloc_counter == 0);
-                                */
                             }
                         });
                     }

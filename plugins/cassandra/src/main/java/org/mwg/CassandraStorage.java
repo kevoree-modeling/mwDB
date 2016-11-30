@@ -89,7 +89,7 @@ public class CassandraStorage implements Storage {
             Buffer result = graph.newBuffer();
             for (int i = 0; i < all_keys.size(); i++) {
                 if (i != 0) {
-                    result.write(Constants.CHUNK_SEP);
+                    result.write(Constants.BUFFER_SEP);
                 }
                 byte[] resolved = results.get(all_keys.get(i));
                 if(resolved != null){

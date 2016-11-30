@@ -35,8 +35,8 @@ public class StorageTest {
                 final DeferCounter counter = graph.newCounter(valuesToInsert);
                 for (long i = 0; i < valuesToInsert; i++) {
 
-                    if (i % 1000000 == 0) {
-                       // System.out.println("<insert til " + i + " in " + (System.currentTimeMillis() - before) / 1000 + "s");
+                    if (i % 100000 == 0) {
+                      //   System.out.println("<insert til " + i + " in " + (System.currentTimeMillis() - before) / 1000 + "s");
                         graph.save(null);
                     }
 
