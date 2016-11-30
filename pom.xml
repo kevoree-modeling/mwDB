@@ -108,6 +108,11 @@
         <!-- Plugin Java -->
         <module>plugins/memory</module>
         <module>plugins/importer</module>
+        <module>plugins/cassandra</module>
+
+        <!--
+        <module>plugins/hazelcast</module>
+        -->
 
         <!--
         <module>plugins/mlext</module>
