@@ -7,9 +7,9 @@ import voldemort.client.ClientConfig;
 import voldemort.client.SocketStoreClientFactory;
 import voldemort.client.StoreClient;
 import voldemort.client.StoreClientFactory;
-
-import java.util.ArrayList;
-import java.util.List;
+import voldemort.client.protocol.RequestFormatType;
+import voldemort.utils.ByteArray;
+import voldemort.utils.ByteUtils;
 
 // TODO check for configuration params
 // TODO do we create a client per request or keep one for the storage
@@ -21,15 +21,24 @@ public class VoldemortStorage implements Storage {
     private static final String _connectedError = "PLEASE CONNECT YOUR DATABASE FIRST";
 
     public static void main(String[] args) {
-        String bootstrapUrl = "tcp://localhost:6666";
-        StoreClientFactory factory = new SocketStoreClientFactory(new ClientConfig().setBootstrapUrls(bootstrapUrl));
+//        String bootstrapUrl = "tcp://localhost:6666";
+        String bootstrapUrl = "tcp://192.168.25.82:6666";
+
+        StoreClientFactory factory = new SocketStoreClientFactory(new ClientConfig()
+                .setEnableSerializationLayer(false)
+                .setEnableLazy(false)
+                .setRequestFormatType(RequestFormatType.VOLDEMORT_V3)
+                .setBootstrapUrls(bootstrapUrl)
+
+        );
 
         // create a client that executes operations on a single store
-        StoreClient<byte[], byte[]> client = factory.getStoreClient("test");
+        StoreClient<ByteArray, byte[]> client = factory.getStoreClient("test");
 
         // do some random pointless operations
-        client.put(new byte[0], new byte[0]);
-
+        ByteArray key = new ByteArray(ByteUtils.getBytes("key100", "UTF-8"));
+        client.put(new ByteArray(ByteUtils.getBytes("key100", "UTF-8")), new byte[0]);
+        System.out.println(client.get(key).getValue());
 
 //        Versioned<String> value = client.get("key1");
 //        System.out.println(value.getValue());
@@ -47,14 +56,19 @@ public class VoldemortStorage implements Storage {
     private final String _storeName;
 
     private StoreClientFactory _factory;
-    private StoreClient _client;
+    private StoreClient<ByteArray, byte[]> _client;
     private Graph _graph;
 
     public VoldemortStorage(String bootstrapUrl, String storeName) {
         this._bootstrapUrl = bootstrapUrl;
         this._storeName = storeName;
 
-        this._factory = new SocketStoreClientFactory(new ClientConfig().setBootstrapUrls(bootstrapUrl));
+        this._factory = new SocketStoreClientFactory(new ClientConfig()
+                .setEnableSerializationLayer(false)
+                .setEnableLazy(false)
+                .setRequestFormatType(RequestFormatType.VOLDEMORT_V3)
+                .setBootstrapUrls(bootstrapUrl)
+        );
     }
 
     @Override
@@ -62,19 +76,30 @@ public class VoldemortStorage implements Storage {
         if (!_isConnected) {
             throw new RuntimeException(_connectedError);
         }
-
+        Buffer result = _graph.newBuffer();
         BufferIterator it = keys.iterator();
-        final List<byte[]> allKeys = new ArrayList<>();
+        boolean isFirst = true;
         while (it.hasNext()) {
-            Buffer keyView = it.next();
-            if (keyView != null) {
-                allKeys.add(keyView.data());
+            Buffer view = it.next();
+            try {
+                if (!isFirst) {
+                    result.write(Constants.BUFFER_SEP);
+                } else {
+                    isFirst = false;
+                }
+                // TODO directly getValue?
+                // TODO getALL?
+                ByteArray key = new ByteArray(view.data());
+                byte[] res = _client.get(key).getValue();
+                if (res != null) {
+                    result.writeAll(res);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
-
-
         if (callback != null) {
-            callback.on(null);
+            callback.on(result);
         }
     }
 
@@ -89,7 +114,8 @@ public class VoldemortStorage implements Storage {
             Buffer keyView = it.next();
             Buffer valueView = it.next();
             if (valueView != null) {
-                _client.put(keyView.data(), valueView.data());
+                 ByteArray key = new ByteArray(keyView.data());
+                _client.put(key, valueView.data());
             }
         }
         if (p_callback != null) {
