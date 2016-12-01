@@ -292,7 +292,7 @@ public class Actions {
      * @return the action to chain
      */
     public static Action select(TaskFunctionSelect filterFunction) {
-        return new ActionSelect(null,filterFunction);
+        return new ActionSelect(null, filterFunction);
     }
 
     /**
@@ -383,7 +383,7 @@ public class Actions {
     /**
      * Execute a JS script
      * The task context is inject in the variable 'context'
-     *
+     * <p>
      * Should only be used to serialize {@link Task#thenDo(ActionFunction)}.
      *
      * @return the action to chain
@@ -395,13 +395,13 @@ public class Actions {
     /**
      * Use a JS script to filter nodes
      * The task context is inject in the variable 'context'. The current node is inject in the variable 'node'.
-     *
+     * <p>
      * Should only be used to serialize {@link #select(TaskFunctionSelect)}
      *
      * @return the action to chain
      */
     public static Action selectScript(String script) {
-        return new ActionSelect(script,null);
+        return new ActionSelect(script, null);
     }
 
     /**
@@ -449,7 +449,7 @@ public class Actions {
      *
      * @return the created task
      */
-    public static Task task() {
+    public static Task newTask() {
         return new CoreTask();
     }
 
@@ -460,6 +460,70 @@ public class Actions {
      */
     public static TaskResult emptyResult() {
         return new CoreTaskResult(null, false);
+    }
+
+    public static Task then(Action action) {
+        return newTask().then(action);
+    }
+
+    public static Task thenDo(ActionFunction actionFunction) {
+        return newTask().thenDo(actionFunction);
+    }
+
+    public static Task doWhile(Task task, ConditionalFunction cond) {
+        return newTask().doWhile(task, cond);
+    }
+
+    public static Task loop(String from, String to, Task subTask) {
+        return newTask().loop(from, to, subTask);
+    }
+
+    public static Task loopPar(String from, String to, Task subTask) {
+        return newTask().loopPar(from, to, subTask);
+    }
+
+    public static Task forEach(Task subTask) {
+        return newTask().forEach(subTask);
+    }
+
+    public static Task forEachPar(Task subTask) {
+        return newTask().forEachPar(subTask);
+    }
+
+    public static Task flatMap(Task subTask) {
+        return newTask().flatMap(subTask);
+    }
+
+    public static Task flatMapPar(Task subTask) {
+        return newTask().flatMapPar(subTask);
+    }
+
+    public static Task ifThen(ConditionalFunction cond, Task then) {
+        return newTask().ifThen(cond, then);
+    }
+
+    public static Task ifThenElse(ConditionalFunction cond, Task thenSub, Task elseSub) {
+        return newTask().ifThenElse(cond, thenSub, elseSub);
+    }
+
+    public static Task whileDo(ConditionalFunction cond, Task task) {
+        return newTask().whileDo(cond, task);
+    }
+
+    public static Task map(Task... subTasks) {
+        return newTask().map(subTasks);
+    }
+
+    public static Task mapPar(Task... subTasks) {
+        return newTask().mapPar(subTasks);
+    }
+
+    public static Task isolate(Task subTask) {
+        return newTask().isolate(subTask);
+    }
+
+    public static Task parse(String flat) {
+        return newTask().parse(flat);
     }
 
 }

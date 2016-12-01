@@ -19,7 +19,7 @@ public class CoreTaskContextTests {
         graph.connect(new Callback<Boolean>() {
             @Override
             public void on(Boolean result) {
-                task()
+                newTask()
                         .then(inject(4))
                         .then(defineAsGlobalVar("i"))
                         .then(inject(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9}))

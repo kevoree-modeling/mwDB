@@ -21,7 +21,7 @@ public class HookTest {
             int[] count = new int[1];
             count[0] = 0;
 
-            task()
+            newTask()
                     .addHook(new TaskHook() {
                         @Override
                         public void start(TaskContext initialContext) {
@@ -54,7 +54,7 @@ public class HookTest {
                         }
                     })
                     .then(inject(new int[]{1, 2, 3}))
-                    .forEach(task().then(setAsVar("{{result}}")))
+                    .forEach(newTask().then(setAsVar("{{result}}")))
                     .execute(g, null);
 
             Assert.assertEquals(18, count[0]);

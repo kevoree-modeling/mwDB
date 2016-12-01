@@ -12,7 +12,7 @@ import java.util.Map;
 
 import static org.mwg.core.task.Actions.defineAsGlobalVar;
 import static org.mwg.core.task.Actions.inject;
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.newTask;
 
 public class MathEngineTest {
     @Test
@@ -73,7 +73,7 @@ public class MathEngineTest {
         graph.connect(new Callback<Boolean>() {
             @Override
             public void on(Boolean result) {
-                task()
+                newTask()
                         .then(inject(55))
                         .then(defineAsGlobalVar("aVar"))
                         .thenDo(new ActionFunction() {

@@ -10,7 +10,7 @@ import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
 import static org.mwg.core.task.Actions.*;
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.newTask;
 
 public class ActionAddRemoveVarToRelationTest extends AbstractActionTest {
 
@@ -23,7 +23,7 @@ public class ActionAddRemoveVarToRelationTest extends AbstractActionTest {
     public void testWithOneNode() {
         Node relatedNode = graph.newNode(0, 0);
         final long[] id = new long[1];
-        task()
+        newTask()
                 .then(createNode())
                 .then(inject(relatedNode))
                 .then(defineAsGlobalVar("x"))
@@ -54,7 +54,7 @@ public class ActionAddRemoveVarToRelationTest extends AbstractActionTest {
         Node relatedNode = graph.newNode(0, 0);
 
         final long[] ids = new long[5];
-        task()
+        newTask()
                 .then(inject(relatedNode))
                 .then(defineAsGlobalVar("x"))
                 .thenDo(new ActionFunction() {
@@ -98,7 +98,7 @@ public class ActionAddRemoveVarToRelationTest extends AbstractActionTest {
 
         final boolean[] nextCalled = new boolean[1];
 
-        task()
+        newTask()
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {

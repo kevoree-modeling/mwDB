@@ -142,7 +142,7 @@ public class GaussianMixtureNode extends BaseMLNode implements ProfilingNode {
 
         final GaussianMixtureNode self = this;
 
-        Task traverse = task();
+        Task traverse = newTask();
         traverse.then(defineAsGlobalVar("parent")).then(Actions.traverse(INTERNAL_SUBGAUSSIAN)).then(new Action() {
             @Override
             public void eval(TaskContext context) {
@@ -165,7 +165,7 @@ public class GaussianMixtureNode extends BaseMLNode implements ProfilingNode {
             }
         }, traverse);
 
-        Task mainTask = task().then(setTime(time() + "")).then(setWorld(world() + "")).then(inject(this)).map(traverse);
+        Task mainTask = newTask().then(setTime(time() + "")).then(setWorld(world() + "")).then(inject(this)).map(traverse);
         mainTask.execute(graph(), new Callback<TaskResult>() {
             @Override
             public void on(TaskResult result) {
@@ -434,7 +434,7 @@ public class GaussianMixtureNode extends BaseMLNode implements ProfilingNode {
 
         //At this point we have min and max at least with 2xerr of difference
 
-        Task deepTraverseTask = task().then(setTime(time() + "")).then(setWorld(world() + ""));
+        Task deepTraverseTask = newTask().then(setTime(time() + "")).then(setWorld(world() + ""));
         final int parentLevel = this.getLevel();
 
         deepTraverseTask.then(inject(new Node[]{this}));
@@ -498,7 +498,7 @@ public class GaussianMixtureNode extends BaseMLNode implements ProfilingNode {
             }
         }
         final double[] err = initialPrecision;
-        Task deepTraverseTask = task().then(setTime(time() + "")).then(setWorld(world() + ""));
+        Task deepTraverseTask = newTask().then(setTime(time() + "")).then(setWorld(world() + ""));
         deepTraverseTask.then(inject(new Node[]{this}));
         for (int i = 0; i < this.getLevel() - level; i++) {
             deepTraverseTask.then(new ActionTraverseOrKeep(INTERNAL_SUBGAUSSIAN));

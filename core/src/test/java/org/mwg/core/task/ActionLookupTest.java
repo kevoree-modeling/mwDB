@@ -8,7 +8,7 @@ import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
 import static org.mwg.core.task.Actions.*;
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.newTask;
 
 public class ActionLookupTest extends AbstractActionTest {
 
@@ -16,7 +16,7 @@ public class ActionLookupTest extends AbstractActionTest {
     public void testLookup() {
         initGraph();
 
-        task()
+        newTask()
                 .then(readGlobalIndexAll("nodes"))
                 .thenDo(context -> {
                     TaskResult<Node> nodes = context.resultAsNodes();

@@ -10,14 +10,14 @@ import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 
 import static org.mwg.core.task.Actions.*;
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.newTask;
 
 public class ActionGetTest extends AbstractActionTest {
 
     @Test
     public void test() {
         initGraph();
-        task()
+        newTask()
                 .then(readGlobalIndexAll("nodes"))
                 .then(traverse("children"))
                 .then(traverse("name"))
@@ -35,7 +35,7 @@ public class ActionGetTest extends AbstractActionTest {
     @Test
     public void testDefaultSynthax() {
         initGraph();
-        task()
+        newTask()
                 .then(readGlobalIndexAll("nodes"))
                 .parse("children.name")
                 .thenDo(new ActionFunction() {
@@ -53,7 +53,7 @@ public class ActionGetTest extends AbstractActionTest {
     @Test
     public void testParse() {
         initGraph();
-        task()
+        newTask()
                 .parse("readIndexAll(nodes).traverse(children)")
                 .thenDo(new ActionFunction() {
                     @Override
@@ -115,7 +115,7 @@ public class ActionGetTest extends AbstractActionTest {
                 }).execute(graph, null);
 */
 
-        task()
+        newTask()
                 .then(readGlobalIndex("rootIndex", "name=root2"))
                 .then(traverse("childrenIndexed", "name", "node3"))
                 .thenDo(new ActionFunction() {

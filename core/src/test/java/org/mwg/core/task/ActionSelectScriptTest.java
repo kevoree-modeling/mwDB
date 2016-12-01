@@ -12,7 +12,7 @@ public class ActionSelectScriptTest extends AbstractActionTest {
     @Test
     public void test() {
         initGraph();
-        task()
+        newTask()
                 .then(readGlobalIndexAll("nodes"))
                 .then(selectScript("node.get('name') == 'root'"))
                 .thenDo(new ActionFunction() {
@@ -29,7 +29,7 @@ public class ActionSelectScriptTest extends AbstractActionTest {
     @Test
     public void test2() {
         initGraph();
-        task()
+        newTask()
                 .then(readGlobalIndexAll("nodes"))
                 .then(selectScript("false"))
                 .thenDo(new ActionFunction() {
@@ -45,7 +45,7 @@ public class ActionSelectScriptTest extends AbstractActionTest {
     @Test
     public void test3() {
         initGraph();
-        task()
+        newTask()
                 .then(readGlobalIndexAll("nodes"))
                 .then(selectScript("true"))
                 .thenDo(new ActionFunction() {

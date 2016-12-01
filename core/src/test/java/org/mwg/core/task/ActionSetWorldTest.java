@@ -6,14 +6,14 @@ import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 
 import static org.mwg.core.task.Actions.setWorld;
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.newTask;
 
 public class ActionSetWorldTest extends AbstractActionTest {
 
     @Test
     public void test() {
         initGraph();
-        task()
+        newTask()
                 .then(setWorld("10"))
                 .thenDo(new ActionFunction() {
                     @Override

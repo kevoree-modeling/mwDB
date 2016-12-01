@@ -113,7 +113,7 @@ public class NDTree extends BaseNode implements NTree {
     private static Task nearestTask = initNearestTask();
     private static Task nearestRadiusTask = initRadusTask();
     //Insert key/value task
-    private static Task insert = task().whileDo(new ConditionalFunction() {
+    private static Task insert = newTask().whileDo(new ConditionalFunction() {
         @Override
         public boolean eval(TaskContext context) {
 
@@ -206,11 +206,11 @@ public class NDTree extends BaseNode implements NTree {
         }
 
         //todo check how to traverse on long
-    }, task().then(Actions.pluginAction(TraverseById.NAME, "{{next}}")));
+    }, newTask().then(Actions.pluginAction(TraverseById.NAME, "{{next}}")));
 
 
     private static Task initNearestTask() {
-        Task reccursiveDown = task();
+        Task reccursiveDown = newTask();
         reccursiveDown.then(defineAsVar("parent")).thenDo(new ActionFunction() {
             @Override
             public void eval(TaskContext context) {
@@ -282,14 +282,14 @@ public class NDTree extends BaseNode implements NTree {
                     }
                 }
             }
-        }).forEach(task().then(defineAsVar("relid")).then(readVar("parent")).then(pluginAction(TraverseById.NAME, "{{relid}}")).map(reccursiveDown));
+        }).forEach(newTask().then(defineAsVar("relid")).then(readVar("parent")).then(pluginAction(TraverseById.NAME, "{{relid}}")).map(reccursiveDown));
 
 
         return reccursiveDown;
     }
 
     private static Task initRadusTask() {
-        Task reccursiveDown = task();
+        Task reccursiveDown = newTask();
         reccursiveDown.then(defineAsVar("parent")).thenDo(new ActionFunction() {
             @Override
             public void eval(TaskContext context) {
@@ -361,7 +361,7 @@ public class NDTree extends BaseNode implements NTree {
                     }
                 }
             }
-        }).forEach(task().then(defineAsVar("relid")).then(readVar("parent")).then(pluginAction(TraverseById.NAME, "{{relid}}")).map(reccursiveDown));
+        }).forEach(newTask().then(defineAsVar("relid")).then(readVar("parent")).then(pluginAction(TraverseById.NAME, "{{relid}}")).map(reccursiveDown));
 
 
         return reccursiveDown;
@@ -595,7 +595,7 @@ public class NDTree extends BaseNode implements NTree {
 
                 long[] res = nnl.getNodes();
                 if (res.length != 0) {
-                    Task lookupall = task().then(setWorld(String.valueOf(world()))).then(setTime(String.valueOf(time()))).then(readVar("res")).then(lookupAll("{{result}}"));
+                    Task lookupall = newTask().then(setWorld(String.valueOf(world()))).then(setTime(String.valueOf(time()))).then(readVar("res")).then(lookupAll("{{result}}"));
                     TaskContext tc = lookupall.prepare(graph(), null, new Callback<TaskResult>() {
                         @Override
                         public void on(TaskResult result) {
@@ -650,7 +650,7 @@ public class NDTree extends BaseNode implements NTree {
 
                 long[] res = nnl.getNodes();
                 if (res.length != 0) {
-                    Task lookupall = task().then(setWorld(String.valueOf(world()))).then(setTime(String.valueOf(time()))).then(readVar("res")).then(lookupAll("{{result}}"));
+                    Task lookupall = newTask().then(setWorld(String.valueOf(world()))).then(setTime(String.valueOf(time()))).then(readVar("res")).then(lookupAll("{{result}}"));
                     TaskContext tc = lookupall.prepare(graph(), null, new Callback<TaskResult>() {
                         @Override
                         public void on(TaskResult result) {
@@ -706,7 +706,7 @@ public class NDTree extends BaseNode implements NTree {
 
                 long[] res = nnl.getAllNodesWithin(radius);
                 if (res.length != 0) {
-                    Task lookupall = task().then(setWorld(String.valueOf(world()))).then(setTime(String.valueOf(time()))).then(readVar("res")).then(lookupAll("{{result}}"));
+                    Task lookupall = newTask().then(setWorld(String.valueOf(world()))).then(setTime(String.valueOf(time()))).then(readVar("res")).then(lookupAll("{{result}}"));
                     TaskContext tc = lookupall.prepare(graph(), null, new Callback<TaskResult>() {
                         @Override
                         public void on(TaskResult result) {
@@ -825,7 +825,7 @@ public class NDTree extends BaseNode implements NTree {
             String[] split = query.split(",");
             Task[] tasks = new Task[split.length];
             for (int i = 0; i < split.length; i++) {
-                Task t = task().then(setWorld("" + world()));
+                Task t = newTask().then(setWorld("" + world()));
                 t.then(setTime(time() + ""));
                 t.parse(split[i].trim());
                 tasks[i] = t;

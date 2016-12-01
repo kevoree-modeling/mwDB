@@ -8,7 +8,7 @@ import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
 import static org.mwg.core.task.Actions.*;
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.newTask;
 
 public class ActionTravelInTimeTest extends AbstractActionTest {
 
@@ -16,9 +16,9 @@ public class ActionTravelInTimeTest extends AbstractActionTest {
     public void testTravelInTime() {
         initGraph();
 
-        task().then(readGlobalIndexAll("nodes"))
+        newTask().then(readGlobalIndexAll("nodes"))
                 .then(defineAsGlobalVar("nodes"))
-                .forEach(task().thenDo(new ActionFunction() {
+                .forEach(newTask().thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         TaskResult<Node> nodes = context.resultAsNodes();
@@ -28,7 +28,7 @@ public class ActionTravelInTimeTest extends AbstractActionTest {
                 }))
                 .then(readVar("nodes"))
                 .then(travelInTime("10"))
-                .forEach(task().thenDo(new ActionFunction() {
+                .forEach(newTask().thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         TaskResult<Node> nodes = context.resultAsNodes();

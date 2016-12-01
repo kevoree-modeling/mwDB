@@ -12,7 +12,7 @@ public class ActionSetTimeTest extends AbstractActionTest {
     @Test
     public void test() {
         initGraph();
-        task()
+        newTask()
                 .then(inject(10))
                 .then(defineAsGlobalVar("time"))
                 .then(setTime("{{time}}"))

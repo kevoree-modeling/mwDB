@@ -6,14 +6,14 @@ import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 
 import static org.mwg.core.task.Actions.*;
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.newTask;
 
 public class ActionReadVarTest extends AbstractActionTest {
 
     @Test
     public void test() {
         initGraph();
-        task()
+        newTask()
                 .then(readGlobalIndexAll("nodes"))
                 .then(defineAsGlobalVar("x"))
                 .then(inject("uselessPayload"))
@@ -33,7 +33,7 @@ public class ActionReadVarTest extends AbstractActionTest {
     @Test
     public void testIndex() {
         initGraph();
-        task()
+        newTask()
                 .then(readGlobalIndexAll("nodes"))
                 .then(defineAsGlobalVar("x"))
                 .then(inject("uselessPayload"))

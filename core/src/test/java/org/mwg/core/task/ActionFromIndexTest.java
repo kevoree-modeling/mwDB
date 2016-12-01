@@ -7,14 +7,14 @@ import org.mwg.task.TaskContext;
 
 import static org.mwg.core.task.Actions.readGlobalIndex;
 import static org.mwg.core.task.Actions.inject;
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.newTask;
 
 public class ActionFromIndexTest extends AbstractActionTest {
 
     @Test
     public void test() {
         initGraph();
-        task()
+        newTask()
                 .then(inject("uselessPayload"))
                 .then(readGlobalIndex("nodes", "name=n0"))
                 .thenDo(new ActionFunction() {

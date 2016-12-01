@@ -8,7 +8,7 @@ import org.mwg.task.TaskFunctionSelectObject;
 
 import static org.mwg.core.task.Actions.inject;
 import static org.mwg.core.task.Actions.selectObject;
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.newTask;
 
 public class ActionSelectObjectTest extends AbstractActionTest {
 
@@ -16,13 +16,13 @@ public class ActionSelectObjectTest extends AbstractActionTest {
     public void testSelectOneObject() {
         initGraph();
         startMemoryLeakTest();
-        task()
+        newTask()
                 .then(inject(55))
                 .then(selectObject((object, context) -> false))
                 .thenDo(context -> Assert.assertEquals(context.result().size(), 0))
                 .execute(graph, null);
 
-        task()
+        newTask()
                 .then(inject(55))
                 .then(selectObject(new TaskFunctionSelectObject() {
                     @Override
@@ -39,7 +39,7 @@ public class ActionSelectObjectTest extends AbstractActionTest {
                 })
                 .execute(graph, null);
 
-        task()
+        newTask()
                 .then(inject(55))
                 .then(selectObject(new TaskFunctionSelectObject() {
                     @Override

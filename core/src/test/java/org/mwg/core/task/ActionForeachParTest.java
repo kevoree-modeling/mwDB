@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mwg.core.task.Actions.*;
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.newTask;
 
 public class ActionForeachParTest extends AbstractActionTest {
 
@@ -19,10 +19,10 @@ public class ActionForeachParTest extends AbstractActionTest {
     public void test() {
         initGraph();
         final long[] i = {0};
-        task()
+        newTask()
                 .then(inject(new long[]{1, 2, 3}))
                 .forEachPar(
-                        task().thenDo(context -> {
+                        newTask().thenDo(context -> {
                             i[0]++;
                             Assert.assertEquals(context.result().get(0), i[0]);
                             context.continueTask();
@@ -37,9 +37,9 @@ public class ActionForeachParTest extends AbstractActionTest {
                 })
                 .execute(graph, null);
 
-        task().then(readGlobalIndexAll("nodes"))
+        newTask().then(readGlobalIndexAll("nodes"))
                 .forEachPar(
-                        task().thenDo(new ActionFunction() {
+                        newTask().thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 context.continueTask();
@@ -62,8 +62,8 @@ public class ActionForeachParTest extends AbstractActionTest {
         paramIterable.add("n0");
         paramIterable.add("n1");
         paramIterable.add("root");
-        task().then(inject(paramIterable))
-                .forEachPar(task().thenDo(new ActionFunction() {
+        newTask().then(inject(paramIterable))
+                .forEachPar(newTask().thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 context.continueTask();

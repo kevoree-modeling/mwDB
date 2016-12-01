@@ -74,9 +74,9 @@ public class DFSTest {
 
             if (n1 != null) {
                 //DO BFS from n1
-                Task dfs = task();
+                Task dfs = newTask();
                 dfs.forEach(
-                        task()
+                        newTask()
                                 .then(setAsVar("parent"))
                                 .then(Actions.traverse("left"))
                                 .then(setAsVar("left"))

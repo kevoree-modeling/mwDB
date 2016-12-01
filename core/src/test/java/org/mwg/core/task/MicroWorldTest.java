@@ -7,7 +7,7 @@ import org.mwg.Type;
 
 import static org.mwg.core.task.Actions.*;
 import static org.mwg.core.task.Actions.set;
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.newTask;
 
 public class MicroWorldTest {
 
@@ -21,14 +21,14 @@ public class MicroWorldTest {
             @Override
             public void on(Boolean isConnected) {
 
-                task().loopPar("1", "2",
-                        task()
+                newTask().loopPar("1", "2",
+                        newTask()
                                 .then(createNode())
                                 .then(set("name", Type.STRING, "room_{{i}}"))
                                 .then(addToGlobalIndex("rooms", "name"))
                                 .then(defineAsVar("parentRoom"))
                                 .loop("1", "3",
-                                        task()
+                                        newTask()
                                                 .then(createNode())
                                                 .then(set("sensor", Type.STRING, "sensor_{{i}}"))
                                         //.then(addTo("sensors", "parentRoom"))

@@ -10,7 +10,7 @@ import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
 import static org.mwg.core.task.Actions.*;
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.newTask;
 
 public class ActionRemoveFromRelationPropertyTest extends AbstractActionTest {
 
@@ -23,7 +23,7 @@ public class ActionRemoveFromRelationPropertyTest extends AbstractActionTest {
     public void testWithOneNode() {
         final long[] id = new long[1];
 
-        task()
+        newTask()
                 .then(inject("nodeName"))
                 .then(defineAsGlobalVar("name"))
                 .then(createNode())
@@ -51,7 +51,7 @@ public class ActionRemoveFromRelationPropertyTest extends AbstractActionTest {
     @Test
     public void testWithArray() {
         final long[] ids = new long[5];
-        task()
+        newTask()
                 .then(inject("node"))
                 .then(defineAsGlobalVar("nodeName"))
                 .thenDo(new ActionFunction() {
@@ -92,7 +92,7 @@ public class ActionRemoveFromRelationPropertyTest extends AbstractActionTest {
     @Test
     public void testWithNull() {
         final boolean[] nextCalled = new boolean[1];
-        task()
+        newTask()
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {

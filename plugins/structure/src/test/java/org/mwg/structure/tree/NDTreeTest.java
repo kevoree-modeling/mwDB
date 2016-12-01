@@ -33,11 +33,11 @@ public class NDTreeTest {
     }
 
     private static void printgraph(Node root, String name){
-        Task printer= task();
+        Task printer= newTask();
 
         printer
                 .then(defineAsVar("parent"))
-            .loop("0","{{tabs}}",task().then(Actions.print("\t")))
+            .loop("0","{{tabs}}", newTask().then(Actions.print("\t")))
 //                .then(new Action() {
 //                    @Override
 //                    public void eval(TaskContext context) {
@@ -85,7 +85,7 @@ public class NDTreeTest {
                 .then(defineAsVar("tabs"))
                 .then(readVar("parent"))
                 .then(attributesWithTypes(Type.RELATION))
-                .forEach(task().then(defineAsVar("traverseID")).then(readVar("parent")).then(pluginAction(TraverseById.NAME,"{{traverseID}}")).forEach(task().isolate(printer)));
+                .forEach(newTask().then(defineAsVar("traverseID")).then(readVar("parent")).then(pluginAction(TraverseById.NAME,"{{traverseID}}")).forEach(newTask().isolate(printer)));
 
         TaskContext tc=printer.prepare(root.graph(), root, new Callback<TaskResult>() {
             @Override

@@ -6,7 +6,7 @@ import org.mwg.GraphBuilder;
 import org.mwg.task.TaskResult;
 
 import static org.mwg.core.task.Actions.print;
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.newTask;
 
 /**
  * @ignore ts
@@ -19,8 +19,8 @@ public class TrampolineSchedulerTest {
         g.connect(new Callback<Boolean>() {
             @Override
             public void on(Boolean result) {
-                task().loopPar("0", "99",
-                        task().then(print("{{result}}"))
+                newTask().loopPar("0", "99",
+                        newTask().then(print("{{result}}"))
                 ).execute(g, new Callback<TaskResult>() {
                     @Override
                     public void on(TaskResult result) {

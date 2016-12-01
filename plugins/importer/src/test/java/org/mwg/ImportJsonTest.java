@@ -6,7 +6,7 @@ import org.mwg.importer.ImporterPlugin;
 
 import static org.mwg.core.task.Actions.defineAsVar;
 import static org.mwg.core.task.Actions.print;
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.newTask;
 import static org.mwg.importer.ImporterActions.readJson;
 
 public class ImportJsonTest {
@@ -19,12 +19,12 @@ public class ImportJsonTest {
                 .build();
         g.connect(result -> {
 
-            task().then(readJson("sample.geojson"))
+            newTask().then(readJson("sample.geojson"))
                     .forEach(
-                            task()
+                            newTask()
                                     .then(ImporterActions.jsonMatch("features",
-                                            task().forEach(
-                                                    task()
+                                            newTask().forEach(
+                                                    newTask()
                                                             .then(defineAsVar("jsonObj"))
                                                             .then(print("{{result}}"))
                                             )

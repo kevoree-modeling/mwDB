@@ -10,7 +10,7 @@ import org.mwg.core.scheduler.NoopScheduler;
 import org.mwg.task.*;
 
 import static org.mwg.core.task.Actions.*;
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.newTask;
 
 public class FlagTest {
     @Test
@@ -66,7 +66,7 @@ public class FlagTest {
             graph.save(null);
             Assert.assertTrue(graph.space().available() == initcache);
 
-            Task traverse = task();
+            Task traverse = newTask();
             traverse.then(defineAsGlobalVar("parent")).then(Actions.traverse(relName)).thenDo(new ActionFunction() {
                 @Override
                 public void eval(TaskContext context) {
@@ -86,7 +86,7 @@ public class FlagTest {
             }, traverse);
 
 
-            Task mainTask = task().then(setTime("13")).then(setWorld("0")).then(inject(n1)).map(traverse);
+            Task mainTask = newTask().then(setTime("13")).then(setWorld("0")).then(inject(n1)).map(traverse);
             mainTask.execute(graph, new Callback<TaskResult>() {
                 @Override
                 public void on(TaskResult result) {

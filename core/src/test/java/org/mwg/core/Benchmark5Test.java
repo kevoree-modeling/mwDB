@@ -10,7 +10,7 @@ import org.mwg.task.TaskResult;
 
 import java.util.Random;
 
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.newTask;
 
 /**
  * @ignore ts
@@ -28,9 +28,9 @@ public class Benchmark5Test {
             public void on(Boolean result) {
 
                 final long previous = System.currentTimeMillis();
-                task().loopPar("0", "999",
-                        task().loop("0", "999",
-                                task().thenDo(new ActionFunction() {
+                newTask().loopPar("0", "999",
+                        newTask().loop("0", "999",
+                                newTask().thenDo(new ActionFunction() {
                                     @Override
                                     public void eval(TaskContext context) {
                                         Random random = new Random();

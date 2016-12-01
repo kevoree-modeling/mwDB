@@ -8,7 +8,7 @@ import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
 import static org.mwg.core.task.Actions.indexNames;
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.newTask;
 
 public class ActionIndexNamesTest {
 
@@ -28,7 +28,7 @@ public class ActionIndexNamesTest {
                     });
                 }
 
-                task()
+                newTask()
                         .then(indexNames())
                         .thenDo(new ActionFunction() {
                             @Override

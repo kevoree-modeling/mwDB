@@ -10,14 +10,14 @@ import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 
 import static org.mwg.core.task.Actions.*;
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.newTask;
 
 public class ActionTraverseTest extends AbstractActionTest {
 
     @Test
     public void test() {
         initGraph();
-        task().then(readGlobalIndexAll("nodes"))
+        newTask().then(readGlobalIndexAll("nodes"))
                 .then(traverse("children"))
                 .thenDo(new ActionFunction() {
                     @Override
@@ -33,7 +33,7 @@ public class ActionTraverseTest extends AbstractActionTest {
     @Test
     public void testParse() {
         initGraph();
-        task().parse("readIndexAll(nodes).traverse(children)")
+        newTask().parse("readIndexAll(nodes).traverse(children)")
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
@@ -81,7 +81,7 @@ public class ActionTraverseTest extends AbstractActionTest {
 
         });
 
-        task().then(readGlobalIndex("roots", "name=root2"))
+        newTask().then(readGlobalIndex("roots", "name=root2"))
                 .then(traverse("childrenIndexed", "name", "node2"))
                 .thenDo(new ActionFunction() {
                     @Override
@@ -91,7 +91,7 @@ public class ActionTraverseTest extends AbstractActionTest {
                     }
                 }).execute(graph, null);
 
-        task().then(readGlobalIndex("rootIndex", "name=root2"))
+        newTask().then(readGlobalIndex("rootIndex", "name=root2"))
                 .then(traverse("childrenIndexed", "name", "node3"))
                 .thenDo(new ActionFunction() {
                     @Override
@@ -100,7 +100,7 @@ public class ActionTraverseTest extends AbstractActionTest {
                     }
                 }).execute(graph, null);
 
-        task()
+        newTask()
                 .then(inject(12))
                 .then(defineAsGlobalVar("time"))
                 .then(setTime("{{time}}"))
@@ -114,7 +114,7 @@ public class ActionTraverseTest extends AbstractActionTest {
                     }
                 }).execute(graph, null);
 
-        task().then(readGlobalIndex("roots", "name=root2"))
+        newTask().then(readGlobalIndex("roots", "name=root2"))
                 .then(traverse("childrenIndexed"))
                 .thenDo(new ActionFunction() {
                     @Override
@@ -125,7 +125,7 @@ public class ActionTraverseTest extends AbstractActionTest {
                     }
                 }).execute(graph, null);
 
-        task().then(inject(13)).then(defineAsGlobalVar("time")).then(setTime("{{time}}"))
+        newTask().then(inject(13)).then(defineAsGlobalVar("time")).then(setTime("{{time}}"))
                 .then(readGlobalIndex("roots", "name=root2"))
                 .then(traverse("childrenIndexed"))
                 .thenDo(new ActionFunction() {

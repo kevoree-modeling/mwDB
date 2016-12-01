@@ -12,7 +12,7 @@ import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
 import static org.mwg.core.task.Actions.*;
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.newTask;
 
 public class ActionLocalIndexOrUnindexTest {
 
@@ -23,7 +23,7 @@ public class ActionLocalIndexOrUnindexTest {
         graph.connect(new Callback<Boolean>() {
             @Override
             public void on(Boolean succeed) {
-                task()
+                newTask()
                         .then(createNode())
                         .then(set("name", Type.STRING, "child1"))
                         .then(addToVar("child"))

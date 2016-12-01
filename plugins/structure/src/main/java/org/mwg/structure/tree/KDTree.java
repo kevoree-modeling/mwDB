@@ -40,7 +40,7 @@ public class KDTree extends BaseNode implements NTree {
     }
 
     //Insert key/value task
-    private static Task insert = task().whileDo(new ConditionalFunction() {
+    private static Task insert = newTask().whileDo(new ConditionalFunction() {
         @Override
         public boolean eval(TaskContext context) {
             Node current = context.resultAsNodes().get(0);
@@ -95,10 +95,10 @@ public class KDTree extends BaseNode implements NTree {
             }
         }
 
-    }, task().then(Actions.traverse("{{next}}")));
+    }, newTask().then(Actions.traverse("{{next}}")));
 
     private static Task initFindNear() {
-        Task reccursiveDown = task();
+        Task reccursiveDown = newTask();
         reccursiveDown.thenDo(new ActionFunction() {
             @Override
             public void eval(TaskContext context) {
@@ -207,12 +207,12 @@ public class KDTree extends BaseNode implements NTree {
                 context.continueTask();
             }
         })
-                .isolate(task().ifThen(new ConditionalFunction() {
+                .isolate(newTask().ifThen(new ConditionalFunction() {
                     @Override
                     public boolean eval(TaskContext context) {
                         return context.variable("near").size() > 0;
                     }
-                }, task().then(Actions.traverse("{{near}}")).isolate(reccursiveDown)))
+                }, newTask().then(Actions.traverse("{{near}}")).isolate(reccursiveDown)))
 
                 .thenDo(new ActionFunction() {
                     @Override
@@ -291,19 +291,19 @@ public class KDTree extends BaseNode implements NTree {
                         context.continueTask();
                     }
                 })
-                .isolate(task().ifThen(new ConditionalFunction() {
+                .isolate(newTask().ifThen(new ConditionalFunction() {
                     @Override
                     public boolean eval(TaskContext context) {
                         return ((boolean) context.variable("continueFar").get(0) && context.variable("far").size() > 0); //Exploring the far depends also on the distance
                     }
-                }, task().then(Actions.traverse("{{far}}")).isolate(reccursiveDown)));
+                }, newTask().then(Actions.traverse("{{far}}")).isolate(reccursiveDown)));
 
 
         return reccursiveDown;
     }
 
     private static Task initFindRadius() {
-        Task reccursiveDown = task();
+        Task reccursiveDown = newTask();
         reccursiveDown.thenDo(new ActionFunction() {
             @Override
             public void eval(TaskContext context) {
@@ -411,12 +411,12 @@ public class KDTree extends BaseNode implements NTree {
                 context.continueTask();
             }
         })
-                .isolate(task().ifThen(new ConditionalFunction() {
+                .isolate(newTask().ifThen(new ConditionalFunction() {
                     @Override
                     public boolean eval(TaskContext context) {
                         return context.variable("near").size() > 0;
                     }
-                }, task().then(Actions.traverse("{{near}}")).isolate(reccursiveDown)))
+                }, newTask().then(Actions.traverse("{{near}}")).isolate(reccursiveDown)))
 
                 .thenDo(new ActionFunction() {
                     @Override
@@ -487,12 +487,12 @@ public class KDTree extends BaseNode implements NTree {
                         context.continueTask();
                     }
                 })
-                .isolate(task().ifThen(new ConditionalFunction() {
+                .isolate(newTask().ifThen(new ConditionalFunction() {
                     @Override
                     public boolean eval(TaskContext context) {
                         return ((boolean) context.variable("continueFar").get(0) && context.variable("far").size() > 0); //Exploring the far depends also on the distance
                     }
-                }, task().then(Actions.traverse("{{far}}")).isolate(reccursiveDown)));
+                }, newTask().then(Actions.traverse("{{far}}")).isolate(reccursiveDown)));
 
 
         return reccursiveDown;
@@ -602,7 +602,7 @@ public class KDTree extends BaseNode implements NTree {
                 if (res.length != 0) {
 
                     Task lookupall =
-                            task()
+                            newTask()
                                     .then(setWorld(String.valueOf(world())))
                                     .then(setTime(String.valueOf(time())))
                                     .then(readVar("res"))
@@ -672,7 +672,7 @@ public class KDTree extends BaseNode implements NTree {
                 long[] res = nnl.distroyAndGetAllNodes();
                 if (res.length != 0) {
 
-                    Task lookupall = task().then(setWorld(String.valueOf(world()))).then(setTime(String.valueOf(time()))).then(readVar("res")).then(lookupAll("{{result}}"));
+                    Task lookupall = newTask().then(setWorld(String.valueOf(world()))).then(setTime(String.valueOf(time()))).then(readVar("res")).then(lookupAll("{{result}}"));
                     TaskContext tc = lookupall.prepare(graph(), null, new Callback<TaskResult>() {
                         @Override
                         public void on(TaskResult result) {
@@ -737,7 +737,7 @@ public class KDTree extends BaseNode implements NTree {
                 long[] res = nnl.getNodes();
 
                 if (res.length != 0) {
-                    Task lookupall = task().then(setWorld(String.valueOf(world()))).then(setTime(String.valueOf(time()))).then(readVar("res")).then(lookupAll("{{result}}"));
+                    Task lookupall = newTask().then(setWorld(String.valueOf(world()))).then(setTime(String.valueOf(time()))).then(readVar("res")).then(lookupAll("{{result}}"));
                     TaskContext tc = lookupall.prepare(graph(), null, new Callback<TaskResult>() {
                         @Override
                         public void on(TaskResult result) {
@@ -796,7 +796,7 @@ public class KDTree extends BaseNode implements NTree {
             String[] split = query.split(",");
             Task[] tasks = new Task[split.length];
             for (int i = 0; i < split.length; i++) {
-                Task t = task().then(setWorld("" + world()));
+                Task t = newTask().then(setWorld("" + world()));
                 t.then(setTime(time() + ""));
                 t.parse(split[i].trim());
                 tasks[i] = t;

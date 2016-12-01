@@ -24,15 +24,15 @@ public class BenchmarkParTask {
         g.connect(result -> {
             final long previous = System.currentTimeMillis();
             final long previousCache = g.space().available();
-            task().loopPar("0", "9999",
-                    task()
+            newTask().loopPar("0", "9999",
+                    newTask()
                             .then(createNode())
                             .then(set("name", Type.STRING, "node_{{i}}"))
                             .then(print("{{result}}"))
                             .then(addToGlobalIndex("nodes", "name"))
                             .loop("0", "999",
-                                    task().then(travelInTime("{{i}}")).then(set("val", Type.INT, "{{i}}")).then(clearResult()))
-                            .ifThen(cond("i % 100 == 0"), task().then(save()))
+                                    newTask().then(travelInTime("{{i}}")).then(set("val", Type.INT, "{{i}}")).then(clearResult()))
+                            .ifThen(cond("i % 100 == 0"), newTask().then(save()))
                             .then(clearResult())
             ).then(save()).then(readGlobalIndexAll("nodes")).execute(g, new Callback<TaskResult>() {
                 @Override

@@ -13,7 +13,6 @@ import org.mwg.structure.action.NTreeNearestNWithinRadius;
 import org.mwg.structure.action.NTreeNearestWithinRadius;
 import org.mwg.structure.distance.Distances;
 import org.mwg.structure.tree.KDTree;
-import org.mwg.task.Action;
 import org.mwg.task.ActionFunction;
 import org.mwg.task.Task;
 import org.mwg.task.TaskContext;
@@ -38,14 +37,14 @@ public class GeoIndexTaskTest {
             @Override
             public void on(Boolean result) {
 
-                Task createGeoIndex = task().then(createTypedNode(KDTree.NAME))
+                Task createGeoIndex = newTask().then(createTypedNode(KDTree.NAME))
                         .then(Actions.set(KDTree.DISTANCE, Type.INT, Distances.GEODISTANCE + ""))
                         .then(Actions.set(KDTree.FROM, Type.STRING, "lat,long"))
                         .then(declareGlobalVar("geoIndex"));
 
-                Task createTenPoints = task().then(defineAsGlobalVar("points")).loop("0", "9", task().then(createNode()).then(Actions.set("lat", Type.DOUBLE, "49.{{i}}")).then(Actions.set("long", Type.DOUBLE, "6.{{i}}")).then(addToVar("points")));
+                Task createTenPoints = newTask().then(defineAsGlobalVar("points")).loop("0", "9", newTask().then(createNode()).then(Actions.set("lat", Type.DOUBLE, "49.{{i}}")).then(Actions.set("long", Type.DOUBLE, "6.{{i}}")).then(addToVar("points")));
 
-                task()
+                newTask()
                         .map(createGeoIndex)
                         .map(createTenPoints)
                         .then(readVar("points"))

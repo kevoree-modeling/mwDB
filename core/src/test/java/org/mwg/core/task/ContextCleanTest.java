@@ -11,7 +11,7 @@ import org.mwg.task.TaskContext;
 
 import static org.mwg.core.task.Actions.inject;
 import static org.mwg.core.task.Actions.select;
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.newTask;
 
 public class ContextCleanTest {
 
@@ -58,7 +58,7 @@ public class ContextCleanTest {
                 final String[] flat = {""};
                 Node n0 = graph.newNode(0, 0);
                 Node n1 = graph.newNode(0, 0);
-                task().then(inject(new Node[]{n0, n1}))
+                newTask().then(inject(new Node[]{n0, n1}))
                         .then(select((node, context) -> true))
                         .thenDo(new ActionFunction() {
                             @Override

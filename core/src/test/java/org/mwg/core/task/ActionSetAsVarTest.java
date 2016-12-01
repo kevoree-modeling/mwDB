@@ -9,14 +9,14 @@ import org.mwg.task.TaskResult;
 
 import static org.mwg.core.task.Actions.defineAsGlobalVar;
 import static org.mwg.core.task.Actions.inject;
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.newTask;
 
 public class ActionSetAsVarTest extends AbstractActionTest {
 
     @Test
     public void test() {
         initGraph();
-        task()
+        newTask()
                 .then(inject("hello"))
                 .then(defineAsGlobalVar("myVar"))
                 .thenDo(new ActionFunction() {

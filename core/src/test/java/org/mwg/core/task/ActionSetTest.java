@@ -10,7 +10,7 @@ import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
 import static org.mwg.core.task.Actions.*;
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.newTask;
 
 public class ActionSetTest extends ActionNewNodeTest {
 
@@ -22,7 +22,7 @@ public class ActionSetTest extends ActionNewNodeTest {
     @Test
     public void testWithOneNode() {
         final long[] id = new long[1];
-        task().then(inject("node")).then(defineAsGlobalVar("nodeName"))
+        newTask().then(inject("node")).then(defineAsGlobalVar("nodeName"))
                 .then(createNode())
                 .then(set("name", Type.STRING, "{{nodeName}}"))
                 .thenDo(new ActionFunction() {
@@ -47,7 +47,7 @@ public class ActionSetTest extends ActionNewNodeTest {
     @Test
     public void testWithArray() {
         final long[] ids = new long[5];
-        task()
+        newTask()
                 .then(inject("node"))
                 .then(defineAsGlobalVar("nodeName"))
                 .thenDo(new ActionFunction() {
@@ -86,7 +86,7 @@ public class ActionSetTest extends ActionNewNodeTest {
     @Test
     public void testWithNull() {
         final boolean[] nextCalled = new boolean[1];
-        task()
+        newTask()
                 .then(inject("node"))
                 .then(defineAsGlobalVar("nodeName"))
                 .thenDo(new ActionFunction() {

@@ -10,14 +10,14 @@ import org.mwg.utility.HashHelper;
 
 import static org.mwg.core.task.Actions.readGlobalIndexAll;
 import static org.mwg.core.task.Actions.select;
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.newTask;
 
 public class ActionSelectTest extends AbstractActionTest {
 
     @Test
     public void test() {
         initGraph();
-        task()
+        newTask()
                 .then(readGlobalIndexAll("nodes"))
                 .then(select(new TaskFunctionSelect() {
                     @Override
@@ -38,7 +38,7 @@ public class ActionSelectTest extends AbstractActionTest {
     @Test
     public void test2() {
         initGraph();
-        task()
+        newTask()
                 .then(readGlobalIndexAll("nodes"))
                 .then(select((node, context) -> false))
                 .thenDo(new ActionFunction() {
@@ -54,7 +54,7 @@ public class ActionSelectTest extends AbstractActionTest {
     @Test
     public void test3() {
         initGraph();
-        task()
+        newTask()
                 .then(readGlobalIndexAll("nodes"))
                 .then(select((node, context) -> true))
                 .thenDo(new ActionFunction() {

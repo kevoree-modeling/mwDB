@@ -15,7 +15,7 @@ public class ActionScriptTest extends AbstractActionTest {
     public void testLookup() {
         initGraph();
 
-        task()
+        newTask()
                 .then(readGlobalIndexAll("nodes"))
                 .then(script("context.setVariable(\"val1\",55); context.continueTask();"))
                 .then(script("context.setVariable(\"val2\",56); context.continueTask();"))

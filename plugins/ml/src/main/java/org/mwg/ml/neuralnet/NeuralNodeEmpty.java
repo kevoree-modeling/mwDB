@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import static org.mwg.core.task.Actions.setAsVar;
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.newTask;
 
 public class NeuralNodeEmpty extends BaseNode {
     public static String NAME = "NeuralNodeEmpty";
@@ -169,10 +169,10 @@ public class NeuralNodeEmpty extends BaseNode {
     private static Task predictTask = createPredictTask();
 
     private static Task createPredictTask() {
-        Task t = task();
+        Task t = newTask();
         t.then(setAsVar("parent")).then(Actions.traverse(OUTPUTS))
                 .forEach(
-                        task().thenDo(new ActionFunction() {
+                        newTask().thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 //Bufferize values here
@@ -184,7 +184,7 @@ public class NeuralNodeEmpty extends BaseNode {
                                       public boolean eval(TaskContext context) {
                                           return false; //should return if buffer is full
                                       }
-                                  }, task().thenDo(new ActionFunction() {
+                                  }, newTask().thenDo(new ActionFunction() {
                                     @Override
                                     public void eval(TaskContext context) {
                                         //Calculate the integration function
@@ -198,7 +198,7 @@ public class NeuralNodeEmpty extends BaseNode {
                                     public boolean eval(TaskContext context) {
                                         return false; //should return true if the node is hidden or input or root
                                     }
-                                }, t, task().thenDo(new ActionFunction() {
+                                }, t, newTask().thenDo(new ActionFunction() {
                                     @Override
                                     public void eval(TaskContext context) {
                                         //store output in result here

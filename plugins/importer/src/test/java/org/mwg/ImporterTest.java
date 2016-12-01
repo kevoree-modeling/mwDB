@@ -30,10 +30,10 @@ public class ImporterTest {
 
             Node newNode = g.newNode(0, 0);
             //final Task t = readLines("/Users/duke/dev/mwDB/plugins/importer/src/test/resources/smarthome/smarthome_1.T15.txt")
-            final Task t = task().then(readLines("smarthome/smarthome_mini_1.T15.txt"))
+            final Task t = newTask().then(readLines("smarthome/smarthome_mini_1.T15.txt"))
                     .forEach(
-                            task().ifThen(ctx -> !ctx.result().get(0).toString().startsWith("1:Date"),
-                                    task().thenDo(context -> {
+                            newTask().ifThen(ctx -> !ctx.result().get(0).toString().startsWith("1:Date"),
+                                    newTask().thenDo(context -> {
                                         String[] line = context.result().get(0).toString().split(" ");
                                         try {
                                             long time = dateFormat.parse(line[0] + "|" + line[1]).getTime();
@@ -62,7 +62,7 @@ public class ImporterTest {
             @Override
             public void on(Boolean connectionResult) {
                 final int[] nbFile = new int[1];
-                Task t = task().then(readFiles("smarthome")).forEach(task().thenDo(new ActionFunction() {
+                Task t = newTask().then(readFiles("smarthome")).forEach(newTask().thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
                         String filePath = (String) context.result().get(0);
@@ -87,11 +87,11 @@ public class ImporterTest {
             @Override
             public void on(Boolean connectionResult) {
                 final int[] nbFile = new int[1];
-                Task t = task()
+                Task t = newTask()
                         .then(inject("smarthome"))
                         .then(defineAsGlobalVar("fileName"))
                         .then(pluginAction(ImporterActions.READFILES, "{{fileName}}"))
-                        .forEach(task().thenDo(new ActionFunction() {
+                        .forEach(newTask().thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 String file = (String) context.result().get(0);
@@ -120,10 +120,10 @@ public class ImporterTest {
             @Override
             public void on(Boolean connectionResult) {
                 final int[] nbFile = new int[1];
-                Task t = task()
+                Task t = newTask()
                         .then(readFiles(urlFIle.getPath()))
                         .forEach(
-                                task().thenDo(new ActionFunction() {
+                                newTask().thenDo(new ActionFunction() {
                                     @Override
                                     public void eval(TaskContext context) {
                                         String file = (String) context.result().get(0);
@@ -135,7 +135,7 @@ public class ImporterTest {
                         )
                         .then(pluginAction(ImporterActions.READFILES, urlFIle2.getPath()))
                         .forEach(
-                                task().thenDo(new ActionFunction() {
+                                newTask().thenDo(new ActionFunction() {
                                     @Override
                                     public void eval(TaskContext context) {
                                         String file = (String) context.result().get(0);
@@ -160,7 +160,7 @@ public class ImporterTest {
     public void testReadFileOnUnknowFile() {
         final Graph g = new GraphBuilder().withPlugin(new ImporterPlugin()).build();
         g.connect(connectionResult -> {
-            Task t = task().then(readFiles("nonexistent-file.txt"));
+            Task t = newTask().then(readFiles("nonexistent-file.txt"));
             boolean exceptionCaught = false;
             try {
                 t.execute(g, null);
@@ -179,7 +179,7 @@ public class ImporterTest {
         g.connect(new Callback<Boolean>() {
             @Override
             public void on(Boolean connectionResult) {
-                Task t = task().then(pluginAction(ImporterActions.READFILES, "{{incorrectVarName}}"));
+                Task t = newTask().then(pluginAction(ImporterActions.READFILES, "{{incorrectVarName}}"));
 
                 boolean exceptionCaught = false;
                 try {

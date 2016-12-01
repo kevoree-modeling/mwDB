@@ -9,7 +9,7 @@ import org.mwg.task.TaskContext;
 import org.mwg.task.ConditionalFunction;
 
 import static org.mwg.core.task.Actions.*;
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.newTask;
 
 
 public class RobustnessTests {
@@ -70,7 +70,7 @@ public class RobustnessTests {
     public void robustnessAsVar() {
         boolean exceptionCaught = false;
         try {
-            task().then(inject(1)).then(defineAsGlobalVar(null)).execute(_graph, null);
+            newTask().then(inject(1)).then(defineAsGlobalVar(null)).execute(_graph, null);
         } catch (RuntimeException npe) {
             exceptionCaught = true;
         } catch (Exception e) {
@@ -83,7 +83,7 @@ public class RobustnessTests {
     public void robustnessFromVar() {
         boolean exceptionCaught = false;
         try {
-            task().then(readVar(null)).execute(_graph, null);
+            newTask().then(readVar(null)).execute(_graph, null);
         } catch (RuntimeException npe) {
             exceptionCaught = true;
         } catch (Exception e) {
@@ -96,7 +96,7 @@ public class RobustnessTests {
     public void robustnessFrom() {
         boolean exceptionCaught = false;
         try {
-            task().then(inject(null)).execute(_graph, null);
+            newTask().then(inject(null)).execute(_graph, null);
         } catch (RuntimeException npe) {
             exceptionCaught = true;
         } catch (Exception e) {
@@ -110,7 +110,7 @@ public class RobustnessTests {
         //indexName null
         boolean exceptionCaught = false;
         try {
-            task().then(readGlobalIndex(null, "name=root")).execute(_graph, null);
+            newTask().then(readGlobalIndex(null, "name=root")).execute(_graph, null);
         } catch (RuntimeException e) {
             exceptionCaught = true;
         } catch (Exception e) {
@@ -121,7 +121,7 @@ public class RobustnessTests {
         //query null
         exceptionCaught = false;
         try {
-            task().then(readGlobalIndex("rootIndex", null)).execute(_graph, null);
+            newTask().then(readGlobalIndex("rootIndex", null)).execute(_graph, null);
         } catch (RuntimeException e) {
             exceptionCaught = true;
         } catch (Exception e) {
@@ -135,7 +135,7 @@ public class RobustnessTests {
         //indexName null
         boolean exceptionCaught = false;
         try {
-            task().then(readGlobalIndexAll(null)).execute(_graph, null);
+            newTask().then(readGlobalIndexAll(null)).execute(_graph, null);
         } catch (RuntimeException e) {
             exceptionCaught = true;
         } catch (Exception e) {
@@ -148,7 +148,7 @@ public class RobustnessTests {
     public void robustnessSelectWith() {
         boolean exceptionCaught = false;
         try {
-            task().then(selectWith("child", null)).execute(_graph, null);
+            newTask().then(selectWith("child", null)).execute(_graph, null);
         } catch (RuntimeException e) {
             exceptionCaught = true;
         } catch (Exception e) {
@@ -161,7 +161,7 @@ public class RobustnessTests {
     public void robustnessSelectWithout() {
         boolean exceptionCaught = false;
         try {
-            task().then(selectWithout("child", null)).execute(_graph, null);
+            newTask().then(selectWithout("child", null)).execute(_graph, null);
         } catch (RuntimeException e) {
             exceptionCaught = true;
         } catch (Exception e) {
@@ -174,7 +174,7 @@ public class RobustnessTests {
     public void robustnessSelect() {
         boolean exceptionCaught = false;
         try {
-            task().then(select(null)).execute(_graph, null);
+            newTask().then(select(null)).execute(_graph, null);
         } catch (RuntimeException e) {
             exceptionCaught = true;
         } catch (Exception e) {
@@ -227,7 +227,7 @@ public class RobustnessTests {
     public void robustnessForeach() {
         boolean exceptionCaught = false;
         try {
-            task().forEach(null).execute(_graph, null);
+            newTask().forEach(null).execute(_graph, null);
         } catch (RuntimeException e) {
             exceptionCaught = true;
         } catch (Exception e) {
@@ -240,7 +240,7 @@ public class RobustnessTests {
     public void robustnessForeachPar() {
         boolean exceptionCaught = false;
         try {
-            task().forEachPar(null).execute(_graph, null);
+            newTask().forEachPar(null).execute(_graph, null);
         } catch (RuntimeException e) {
             exceptionCaught = true;
         } catch (Exception e) {
@@ -267,7 +267,7 @@ public class RobustnessTests {
     public void robustnessWait() {
         boolean exceptionCaught = false;
         try {
-            task().map(null).execute(_graph, null);
+            newTask().map(null).execute(_graph, null);
         } catch (RuntimeException e) {
             exceptionCaught = true;
         } catch (Exception e) {
@@ -338,7 +338,7 @@ public class RobustnessTests {
         //condition null
         boolean exceptionCaught = false;
         try {
-            task().then(pluginAction(null, "")).execute(_graph, null);
+            newTask().then(pluginAction(null, "")).execute(_graph, null);
         } catch (RuntimeException e) {
             exceptionCaught = true;
         } catch (Exception e) {
@@ -349,7 +349,7 @@ public class RobustnessTests {
         //subTask null
         exceptionCaught = false;
         try {
-            task().then(pluginAction("", null)).execute(_graph, null);
+            newTask().then(pluginAction("", null)).execute(_graph, null);
         } catch (RuntimeException e) {
             exceptionCaught = true;
         } catch (Exception e) {
@@ -363,7 +363,7 @@ public class RobustnessTests {
         //propertyName
         boolean exceptionCaught = false;
         try {
-            task().then(set(null, Type.STRING, "")).execute(_graph, null);
+            newTask().then(set(null, Type.STRING, "")).execute(_graph, null);
         } catch (RuntimeException e) {
             exceptionCaught = true;
         } catch (Exception e) {
@@ -374,7 +374,7 @@ public class RobustnessTests {
         //propertyValue
         exceptionCaught = false;
         try {
-            task().then(set("", Type.STRING, null)).execute(_graph, null);
+            newTask().then(set("", Type.STRING, null)).execute(_graph, null);
         } catch (RuntimeException e) {
             exceptionCaught = true;
         } catch (Exception e) {
@@ -388,7 +388,7 @@ public class RobustnessTests {
         //propertyName
         boolean exceptionCaught = false;
         try {
-            task().then(set(null, Type.STRING, "")).execute(_graph, null);
+            newTask().then(set(null, Type.STRING, "")).execute(_graph, null);
         } catch (RuntimeException e) {
             exceptionCaught = true;
         } catch (Exception e) {
@@ -399,7 +399,7 @@ public class RobustnessTests {
         //propertyValue
         exceptionCaught = false;
         try {
-            task().then(set("", Type.STRING, null)).execute(_graph, null);
+            newTask().then(set("", Type.STRING, null)).execute(_graph, null);
         } catch (RuntimeException e) {
             exceptionCaught = true;
         } catch (Exception e) {
@@ -412,7 +412,7 @@ public class RobustnessTests {
     public void robustnessNodeRemoveProperty() {
         boolean exceptionCaught = false;
         try {
-            task().then(remove(null)).execute(_graph, null);
+            newTask().then(remove(null)).execute(_graph, null);
         } catch (RuntimeException e) {
             exceptionCaught = true;
         } catch (Exception e) {
@@ -426,7 +426,7 @@ public class RobustnessTests {
         //relationName
         boolean exceptionCaught = false;
         try {
-            task().then(inject(_graph.newNode(0, 0))).then(defineAsGlobalVar("x")).then(addVarToRelation(null, "x")).execute(_graph, null);
+            newTask().then(inject(_graph.newNode(0, 0))).then(defineAsGlobalVar("x")).then(addVarToRelation(null, "x")).execute(_graph, null);
         } catch (RuntimeException e) {
             exceptionCaught = true;
         } catch (Exception e) {
@@ -437,7 +437,7 @@ public class RobustnessTests {
         //relatedNode
         exceptionCaught = false;
         try {
-            task().then(addVarToRelation("", null)).execute(_graph, null);
+            newTask().then(addVarToRelation("", null)).execute(_graph, null);
         } catch (RuntimeException e) {
             exceptionCaught = true;
         } catch (Exception e) {

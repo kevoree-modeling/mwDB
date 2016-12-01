@@ -8,7 +8,7 @@ import org.mwg.Node;
 import org.mwg.task.*;
 
 import static org.mwg.core.task.Actions.*;
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.newTask;
 
 public class ActionWhileDoTest extends AbstractActionTest {
 
@@ -20,13 +20,13 @@ public class ActionWhileDoTest extends AbstractActionTest {
 
                 final long cache1 = graph.space().available();
 
-                Task whiletask = task()
+                Task whiletask = newTask()
                         .then(inject(root))
                         .whileDo(context -> context.result().size() != 0,
-                                task().flatMap(
-                                        task().ifThenElse(context -> context.resultAsNodes().get(0).get("child") != null,
-                                                task().then(traverse("child")),
-                                                task().thenDo(context -> {
+                                newTask().flatMap(
+                                        newTask().ifThenElse(context -> context.resultAsNodes().get(0).get("child") != null,
+                                                newTask().then(traverse("child")),
+                                                newTask().thenDo(context -> {
                                                     //System.out.println("if is false");
                                                     context.addToGlobalVariable("leaves", context.wrap(context.resultAsNodes().get(0).id()));
                                                     context.continueWith(null);
@@ -63,13 +63,13 @@ public class ActionWhileDoTest extends AbstractActionTest {
             public void on(Node root) {
 
                 final long cache1 = graph.space().available();
-                Task whiletask = task().then(inject(root)).doWhile(
-                        task().flatMap(task().ifThenElse(new ConditionalFunction() {
+                Task whiletask = newTask().then(inject(root)).doWhile(
+                        newTask().flatMap(newTask().ifThenElse(new ConditionalFunction() {
                             @Override
                             public boolean eval(TaskContext context) {
                                 return context.resultAsNodes().get(0).get("child") != null;
                             }
-                        }, task().then(traverse("child")), task().thenDo(new ActionFunction() {
+                        }, newTask().then(traverse("child")), newTask().thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 //System.out.println("if is false");

@@ -7,14 +7,14 @@ import org.mwg.task.TaskContext;
 
 import static org.mwg.core.task.Actions.readGlobalIndexAll;
 import static org.mwg.core.task.Actions.selectWith;
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.newTask;
 
 public class ActionWithTest extends AbstractActionTest {
 
     @Test
     public void test() {
         initGraph();
-        task()
+        newTask()
                 .then(readGlobalIndexAll("nodes"))
                 .then(selectWith("name", "n0"))
                 .thenDo(new ActionFunction() {
@@ -25,7 +25,7 @@ public class ActionWithTest extends AbstractActionTest {
                 })
                 .execute(graph, null);
 
-        task().then(readGlobalIndexAll("nodes"))
+        newTask().then(readGlobalIndexAll("nodes"))
                 .then(selectWith("name", "n.*"))
                 .thenDo(new ActionFunction() {
                     @Override

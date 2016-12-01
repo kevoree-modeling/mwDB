@@ -16,7 +16,7 @@ public class ActionAddToGlobalIndexTest {
         graph.connect(new Callback<Boolean>() {
             @Override
             public void on(Boolean result) {
-                task()
+                newTask()
                         .then(createNode())
                         .then(Actions.set("name", Type.STRING, "root"))
                         .then(Actions.addToGlobalIndex("indexName", "name"))

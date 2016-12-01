@@ -2,20 +2,19 @@ package org.mwg.core.task;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.mwg.Callback;
 import org.mwg.Node;
 import org.mwg.task.ActionFunction;
 import org.mwg.task.TaskContext;
 
 import static org.mwg.core.task.Actions.inject;
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.newTask;
 
 public class ActionInjectTest extends AbstractActionTest {
 
     @Test
     public void test() {
         initGraph();
-        task()
+        newTask()
                 .then(inject("uselessPayload"))
                 .thenDo(new ActionFunction() {
                     @Override
@@ -39,7 +38,7 @@ public class ActionInjectTest extends AbstractActionTest {
                         (String) result[1].get("name"),
                         (String) result[2].get("name")};
 
-                task()
+                newTask()
                         .then(inject(result))
                         .thenDo(new ActionFunction() {
                             @Override
@@ -76,7 +75,7 @@ public class ActionInjectTest extends AbstractActionTest {
             rootsIndex.find("name=root", result -> {
                 Assert.assertEquals(1, result.length);
 
-                task()
+                newTask()
                         .then(inject(result[0]))
                         .thenDo(new ActionFunction() {
                             @Override

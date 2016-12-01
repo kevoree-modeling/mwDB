@@ -18,7 +18,7 @@ import java.util.Map;
 
 import static org.mwg.core.task.Actions.lookup;
 import static org.mwg.core.task.Actions.readVar;
-import static org.mwg.core.task.Actions.task;
+import static org.mwg.core.task.Actions.newTask;
 
 class BioInputNeuralNode extends BaseNode {
 
@@ -30,8 +30,8 @@ class BioInputNeuralNode extends BaseNode {
 
     public void learn2(final double value, final int spikeLimit, final double threshold, final Callback callback) {
         final Task[] job = new Task[1];
-        job[0] = task().then(readVar("target")).forEach(
-                task()
+        job[0] = newTask().then(readVar("target")).forEach(
+                newTask()
                         .then(lookup("{{result}}"))
                         .then(context -> {
                             BioNeuralNode neural = (BioNeuralNode) context.result().get(0);
@@ -44,7 +44,7 @@ class BioInputNeuralNode extends BaseNode {
                             context.setVariable("sender", neural.id());
                         })
                         .ifThen(context -> ((double) context.variable("signal").get(0)) > 0,
-                                task().thenDo(context -> {
+                                newTask().thenDo(context -> {
                                     TaskContext ctx = job[0].prepare(graph(), null, result -> {
                                         context.continueTask();
                                     });
