@@ -371,6 +371,15 @@ public class Actions {
     }
 
     /**
+     * Saves the graph to a storage.
+     *
+     * @return the action to chain
+     */
+    public static Action script(String script) {
+        return new ActionScript(script);
+    }
+
+    /**
      * Retrieves in the current [world,time] a named node.
      *
      * @param nodeId id of the node to lookup
