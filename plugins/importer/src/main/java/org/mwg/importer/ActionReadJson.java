@@ -1,4 +1,4 @@
-package org.mwg.importer.action;
+package org.mwg.importer;
 
 import com.eclipsesource.json.Json;
 import org.mwg.importer.util.JsonValueResultBuilder;
@@ -12,11 +12,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 
-public class ReadJson implements Action {
+class ActionReadJson implements Action {
 
     private final String _pathOrTemplate;
 
-    public ReadJson(String _pathOrTemplate) {
+    ActionReadJson(String _pathOrTemplate) {
         this._pathOrTemplate = _pathOrTemplate;
     }
 

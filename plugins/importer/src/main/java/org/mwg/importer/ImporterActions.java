@@ -1,6 +1,5 @@
 package org.mwg.importer;
 
-import org.mwg.importer.action.JsonMatch;
 import org.mwg.task.Action;
 import org.mwg.task.Task;
 import org.mwg.task.TaskContext;
@@ -17,12 +16,16 @@ public class ImporterActions {
 
     public static final String JSONMATCH = "jsonMatch";
 
+    public static Action split(String path) {
+        return new ActionSplit(path);
+    }
+
     public static Action readLines(String path) {
-        return pluginAction(READLINES, path);
+        return new ActionReadLines(path);
     }
 
     public static Action readFiles(String pathOrVar) {
-        return pluginAction(READFILES, pathOrVar);
+        return new ActionReadFiles(pathOrVar);
     }
 
     public static Action readJson(String pathOrVar) {
@@ -33,7 +36,7 @@ public class ImporterActions {
         return new Action() {
             @Override
             public void eval(TaskContext context) {
-                new JsonMatch(filter, then).eval(context);
+                new ActionJsonMatch(filter, then).eval(context);
             }
         };
     }

@@ -1,4 +1,4 @@
-package org.mwg.importer.action;
+package org.mwg.importer;
 
 import org.mwg.Callback;
 import org.mwg.importer.util.JsonMemberResult;
@@ -8,12 +8,12 @@ import org.mwg.task.Task;
 import org.mwg.task.TaskContext;
 import org.mwg.task.TaskResult;
 
-public class JsonMatch implements Action {
+class ActionJsonMatch implements Action {
 
     private String _name;
     private org.mwg.task.Task _then;
 
-    public JsonMatch(String name, Task then) {
+    ActionJsonMatch(String name, Task then) {
         this._name = name;
         this._then = then;
     }

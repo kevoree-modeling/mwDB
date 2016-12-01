@@ -1,14 +1,14 @@
-package org.mwg.importer.action;
+package org.mwg.importer;
 
 import org.mwg.importer.util.IterableLines;
 import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
 
-public class ReadLines implements Action {
+class ActionReadLines implements Action {
 
     private final String _pathOrTemplate;
 
-    public ReadLines(final String p_pathOrTemplate) {
+    ActionReadLines(final String p_pathOrTemplate) {
         this._pathOrTemplate = p_pathOrTemplate;
     }
 

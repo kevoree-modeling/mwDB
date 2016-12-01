@@ -1,4 +1,4 @@
-package org.mwg.importer.action;
+package org.mwg.importer;
 
 import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
@@ -9,11 +9,11 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 
-public class ReadFiles implements Action {
+class ActionReadFiles implements Action {
 
     private final String _pathOrTemplate;
 
-    public ReadFiles(String _pathOrTemplate) {
+    ActionReadFiles(String _pathOrTemplate) {
         this._pathOrTemplate = _pathOrTemplate;
     }
 

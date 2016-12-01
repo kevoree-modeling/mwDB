@@ -1,4 +1,4 @@
-package org.mwg.core.task;
+package org.mwg.importer;
 
 import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
