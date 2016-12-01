@@ -95,7 +95,7 @@ public class KDTree extends BaseNode implements NTree {
             }
         }
 
-    }, task().then(Actions.get("{{next}}")));
+    }, task().then(Actions.traverse("{{next}}")));
 
     private static Task initFindNear() {
         Task reccursiveDown = task();
@@ -212,7 +212,7 @@ public class KDTree extends BaseNode implements NTree {
                     public boolean eval(TaskContext context) {
                         return context.variable("near").size() > 0;
                     }
-                }, task().then(Actions.get("{{near}}")).isolate(reccursiveDown)))
+                }, task().then(Actions.traverse("{{near}}")).isolate(reccursiveDown)))
 
                 .thenDo(new ActionFunction() {
                     @Override
@@ -296,7 +296,7 @@ public class KDTree extends BaseNode implements NTree {
                     public boolean eval(TaskContext context) {
                         return ((boolean) context.variable("continueFar").get(0) && context.variable("far").size() > 0); //Exploring the far depends also on the distance
                     }
-                }, task().then(Actions.get("{{far}}")).isolate(reccursiveDown)));
+                }, task().then(Actions.traverse("{{far}}")).isolate(reccursiveDown)));
 
 
         return reccursiveDown;
@@ -416,7 +416,7 @@ public class KDTree extends BaseNode implements NTree {
                     public boolean eval(TaskContext context) {
                         return context.variable("near").size() > 0;
                     }
-                }, task().then(Actions.get("{{near}}")).isolate(reccursiveDown)))
+                }, task().then(Actions.traverse("{{near}}")).isolate(reccursiveDown)))
 
                 .thenDo(new ActionFunction() {
                     @Override
@@ -492,7 +492,7 @@ public class KDTree extends BaseNode implements NTree {
                     public boolean eval(TaskContext context) {
                         return ((boolean) context.variable("continueFar").get(0) && context.variable("far").size() > 0); //Exploring the far depends also on the distance
                     }
-                }, task().then(Actions.get("{{far}}")).isolate(reccursiveDown)));
+                }, task().then(Actions.traverse("{{far}}")).isolate(reccursiveDown)));
 
 
         return reccursiveDown;

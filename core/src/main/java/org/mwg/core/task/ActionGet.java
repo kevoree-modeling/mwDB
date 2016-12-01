@@ -124,6 +124,6 @@ class ActionGet implements Action {
 
     @Override
     public String toString() {
-        return "get(\'" + _name + "\')";
+        return "traverse(\'" + _name + "\')";
     }
 }

@@ -67,7 +67,7 @@ public class FlagTest {
             Assert.assertTrue(graph.space().available() == initcache);
 
             Task traverse = task();
-            traverse.then(defineAsGlobalVar("parent")).then(Actions.get(relName)).thenDo(new ActionFunction() {
+            traverse.then(defineAsGlobalVar("parent")).then(Actions.traverse(relName)).thenDo(new ActionFunction() {
                 @Override
                 public void eval(TaskContext context) {
 

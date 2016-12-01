@@ -25,7 +25,7 @@ public class ActionWhileDoTest extends AbstractActionTest {
                         .whileDo(context -> context.result().size() != 0,
                                 task().flatMap(
                                         task().ifThenElse(context -> context.resultAsNodes().get(0).get("child") != null,
-                                                task().then(get("child")),
+                                                task().then(traverse("child")),
                                                 task().thenDo(context -> {
                                                     //System.out.println("if is false");
                                                     context.addToGlobalVariable("leaves", context.wrap(context.resultAsNodes().get(0).id()));
@@ -69,7 +69,7 @@ public class ActionWhileDoTest extends AbstractActionTest {
                             public boolean eval(TaskContext context) {
                                 return context.resultAsNodes().get(0).get("child") != null;
                             }
-                        }, task().then(get("child")), task().thenDo(new ActionFunction() {
+                        }, task().then(traverse("child")), task().thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
                                 //System.out.println("if is false");

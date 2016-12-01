@@ -38,7 +38,7 @@ public class ActionLocalIndexOrUnindexTest {
                         .then(addToGlobalIndex("rootIdx", "name"))
                         .then(addVarToRelation("idxRelation", "name", "child"))
                         .then(readGlobalIndexAll("rootIdx"))
-                        .then(get("idxRelation"))
+                        .then(traverse("idxRelation"))
                         .thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {
@@ -53,7 +53,7 @@ public class ActionLocalIndexOrUnindexTest {
                         .then(readGlobalIndexAll("rootIdx"))
                         .then(addVarToRelation("idxRelation", "name", "child"))
                         .then(readGlobalIndexAll("rootIdx"))
-                        .then(get("idxRelation"))
+                        .then(traverse("idxRelation"))
                         .thenDo(new ActionFunction() {
                             @Override
                             public void eval(TaskContext context) {

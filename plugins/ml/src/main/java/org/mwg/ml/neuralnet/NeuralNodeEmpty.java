@@ -170,7 +170,7 @@ public class NeuralNodeEmpty extends BaseNode {
 
     private static Task createPredictTask() {
         Task t = task();
-        t.then(setAsVar("parent")).then(Actions.get(OUTPUTS))
+        t.then(setAsVar("parent")).then(Actions.traverse(OUTPUTS))
                 .forEach(
                         task().thenDo(new ActionFunction() {
                             @Override
