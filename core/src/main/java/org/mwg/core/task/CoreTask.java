@@ -382,8 +382,8 @@ public class CoreTask implements org.mwg.task.Task {
         StringBuilder res = new StringBuilder();
         //todo DAG in tasks are not managed
         for(int i=0;i<actions.length;i++) {
-            if(actions[i] instanceof ActionSubTask) {
-                res.append(((ActionSubTask)actions[i]).serialize());
+            if(actions[i] instanceof CF_ActionMap) {
+                res.append(((CF_ActionMap)actions[i]).serialize());
             } else {
                 res.append(actions[i]);
             }
