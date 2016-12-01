@@ -3,15 +3,14 @@ package org.mwg.core.task;
 import org.mwg.task.Action;
 import org.mwg.task.TaskContext;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
+import javax.script.*;
 
 public class ActionScript implements Action {
 
     private String _script;
 
-    public ActionScript(String script) {
+
+    ActionScript(String script) {
         this._script = script;
     }
 
@@ -22,12 +21,12 @@ public class ActionScript implements Action {
      */
     @Override
     public void eval(TaskContext context) {
-        ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
-        engine.getContext().setAttribute("context", context, javax.script.ScriptContext.ENGINE_SCOPE);
+        ScriptContext scriptCtx = new SimpleScriptContext();
+        scriptCtx.setAttribute("context",context,ScriptContext.ENGINE_SCOPE);
         try {
-            engine.eval(this._script);
+            TaskHelper.SCRIPT_ENGINE.eval(this._script,scriptCtx);
         } catch (ScriptException e) {
-            e.printStackTrace();
+           throw new RuntimeException(e);
         }
     }
 

@@ -282,7 +282,7 @@ public class Actions {
      * @return the action to chain
      */
     public static Action select(TaskFunctionSelect filterFunction) {
-        return new ActionSelect(filterFunction);
+        return new ActionSelect(null,filterFunction);
     }
 
     /**
@@ -371,12 +371,27 @@ public class Actions {
     }
 
     /**
-     * Saves the graph to a storage.
+     * Execute a JS script
+     * The task context is inject in the variable 'context'
+     *
+     * Should only be used to serialize {@link Task#thenDo(ActionFunction)}.
      *
      * @return the action to chain
      */
     public static Action script(String script) {
         return new ActionScript(script);
+    }
+
+    /**
+     * Use a JS script to filter nodes
+     * The task context is inject in the variable 'context'. The current node is inject in the variable 'node'.
+     *
+     * Should only be used to serialize {@link #select(TaskFunctionSelect)}
+     *
+     * @return the action to chain
+     */
+    public static Action selectScript(String script) {
+        return new ActionSelect(script,null);
     }
 
     /**

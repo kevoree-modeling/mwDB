@@ -29,6 +29,11 @@ class ActionSubTask implements Action {
         });
     }
 
+    public String serialize() {
+        //todo DAG is not managed!!
+        return "subTask(" + _subTask.toString() + ")";
+    }
+
     @Override
     public String toString() {
         return "subTask()";

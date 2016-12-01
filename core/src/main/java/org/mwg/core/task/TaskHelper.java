@@ -4,7 +4,15 @@ package org.mwg.core.task;
 import org.mwg.Node;
 import org.mwg.base.BaseNode;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+
 class TaskHelper {
+
+    /**
+     * @ignore ts
+     */
+    static final ScriptEngine SCRIPT_ENGINE = new ScriptEngineManager().getEngineByName("JavaScript");
 
     /**
      * Return an array with all nodes contains in the input.

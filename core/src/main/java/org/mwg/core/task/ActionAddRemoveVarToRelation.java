@@ -73,7 +73,18 @@ class ActionAddRemoveVarToRelation implements Action {
 
     @Override
     public String toString() {
-        return "add()";
+        StringBuilder attString = new StringBuilder();
+        for (int i = 0; i < _attributes.length; i++) {
+            attString.append(_attributes[i]);
+            if (i < _attributes.length - 1) {
+                attString.append(", ");
+            }
+        }
+        if (_isAdd) {
+            return "add(" + _name + "," + _varFrom + attString.toString() + ")";
+        } else {
+            return "remove(" + _name + "," + _varFrom + attString.toString() + ")";
+        }
     }
 
 }
