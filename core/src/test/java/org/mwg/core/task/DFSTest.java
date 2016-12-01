@@ -78,10 +78,10 @@ public class DFSTest {
                 dfs.forEach(
                         task()
                                 .then(setAsVar("parent"))
-                                .then(Actions.get("left"))
+                                .then(Actions.traverse("left"))
                                 .then(setAsVar("left"))
                                 .then(readVar("parent"))
-                                .then(Actions.get("right"))
+                                .then(Actions.traverse("right"))
                                 .then(setAsVar("right"))
                                 .thenDo(context -> {
                                     Node left = null;

@@ -271,7 +271,7 @@ public class CoreTask implements org.mwg.task.Task {
                 case Constants.TASK_SEP:
                     if (!isClosed) {
                         String getName = flat.substring(previous, cursor);
-                        then(new ActionPlugin("get", getName));//default action
+                        then(new ActionPlugin("traverse", getName));//default action
                     }
                     actionName = null;
                     isEscaped = false;
@@ -301,14 +301,14 @@ public class CoreTask implements org.mwg.task.Task {
         if (!isClosed) {
             String getName = flat.substring(previous, cursor);
             if (getName.length() > 0) {
-                then(new ActionPlugin("get", getName));//default action
+                then(new ActionPlugin("traverse", getName));//default action
             }
         }
         return this;
     }
 
     public static void fillDefault(Map<String, TaskActionFactory> registry) {
-        registry.put("get", new TaskActionFactory() { //DefaultTask
+        registry.put("traverse", new TaskActionFactory() { //DefaultTask
             @Override
             public Action create(String[] params) {
                 if (params.length != 1) {

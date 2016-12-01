@@ -19,8 +19,8 @@ public class ActionGetTest extends AbstractActionTest {
         initGraph();
         task()
                 .then(readGlobalIndexAll("nodes"))
-                .then(get("children"))
-                .then(get("name"))
+                .then(traverse("children"))
+                .then(traverse("name"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
@@ -54,7 +54,7 @@ public class ActionGetTest extends AbstractActionTest {
     public void testParse() {
         initGraph();
         task()
-                .parse("readIndexAll(nodes).get(children)")
+                .parse("readIndexAll(nodes).traverse(children)")
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
@@ -117,7 +117,7 @@ public class ActionGetTest extends AbstractActionTest {
 
         task()
                 .then(readGlobalIndex("rootIndex", "name=root2"))
-                .then(get("childrenIndexed", "name", "node3"))
+                .then(traverse("childrenIndexed", "name", "node3"))
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {

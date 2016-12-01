@@ -200,12 +200,22 @@ public class Actions {
     }
 
     /**
-     * Retrieves any attribute/relation of the nodes present in the current result.
+     * Retrieves any nodes contained in a relations of the nodes present in the current result.
      *
      * @param name of property to retrieve
      * @return the action to chain
      */
-    public static Action get(String name, String... params) {
+    public static Action traverse(String name, String... params) {
+        return new ActionGet(name, params);
+    }
+
+    /**
+     * Retrieves any attribute(s) contained in the nodes present in the current result.
+     *
+     * @param name of property to retrieve
+     * @return the action to chain
+     */
+    public static Action attribute(String name, String... params) {
         return new ActionGet(name, params);
     }
 
