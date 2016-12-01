@@ -121,9 +121,9 @@
         <module>plugins/leveldb</module>
         <module>plugins/rocksdb</module>
 
-        <!--
+
         <module>plugins/voldemort</module>
-        -->
+
 
         <!--
         <module>plugins/rest</module>
