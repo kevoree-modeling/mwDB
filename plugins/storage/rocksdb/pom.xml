@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.kevoree.mwg.plugins</groupId>
+    <artifactId>rocksdb</artifactId>
+    <version>11-SNAPSHOT</version>
+    <name>mwg :: Plugins :: RocksDB</name>
+
+    <parent>
+        <artifactId>mwg</artifactId>
+        <groupId>org.kevoree.mwg</groupId>
+        <version>11-SNAPSHOT</version>
+        <relativePath>../../..</relativePath>
+    </parent>
+
+    <properties>
+        <rocksdb.version>4.11.2</rocksdb.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.kevoree.mwg</groupId>
+            <artifactId>core</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.rocksdb</groupId>
+            <artifactId>rocksdbjni</artifactId>
+            <version>${rocksdb.version}</version>
+        </dependency>
+        <!-- Test dependencies -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    
+</project>

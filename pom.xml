@@ -98,33 +98,28 @@
         <module>core</module>
 
         <!-- Plugins Java & JS -->
-        <module>plugins/websocket</module>
+        <module>plugins/storage/websocket</module>
         <module>plugins/structure</module>
         <module>plugins/ml</module>
-
-        <!--
-        -->
 
         <!-- Plugin Java -->
         <module>plugins/memory</module>
         <module>plugins/importer</module>
-        <module>plugins/cassandra</module>
+
+        <module>plugins/storage/leveldb</module>
+        <module>plugins/storage/rocksdb</module>
+
+        <module>plugins/storage/cassandra</module>
+        <!--
+        <module>plugins/storage/voldemort</module>
+        -->
 
         <!--
         <module>plugins/hazelcast</module>
         -->
-
         <!--
         <module>plugins/mlext</module>
         -->
-
-        <module>plugins/leveldb</module>
-        <module>plugins/rocksdb</module>
-
-
-        <module>plugins/voldemort</module>
-
-
         <!--
         <module>plugins/rest</module>
         <module>plugins/model</module>
