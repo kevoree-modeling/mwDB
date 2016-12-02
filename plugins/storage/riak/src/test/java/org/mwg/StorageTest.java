@@ -9,35 +9,42 @@ import java.io.IOException;
 
 public class StorageTest {
 
-    // @Test
+    public static void main(String[] args) {
+        try {
+            test(new GraphBuilder().withStorage(new RiakStorage("localhost:32775,localhost:32773,localhost:32771,localhost:32769,localhost:8087")).withScheduler(new NoopScheduler()).withMemorySize(2000000).build());
+          //  Thread.sleep(5000);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void test() throws IOException {
 
         try {
-            test(new GraphBuilder().withStorage(new CassandraStorage("myspace")).withScheduler(new NoopScheduler()).withMemorySize(2000000).build());
+            test(new GraphBuilder().withStorage(new RiakStorage("127.0.0.1")).withScheduler(new NoopScheduler()).withMemorySize(2000000).build());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-    final int valuesToInsert = 1000000;
-    final long timeOrigin = 1000;
+    final static int valuesToInsert = 1000000;
+    final static long timeOrigin = 1000;
 
-    private void test(final Graph graph) throws IOException {
+    private static void test(final Graph graph) throws IOException {
         graph.connect(new Callback<Boolean>() {
             @Override
             public void on(Boolean result) {
                 final long before = System.currentTimeMillis();
-
                 final Node node = graph.newNode(0, 0);
                 final DeferCounter counter = graph.newCounter(valuesToInsert);
                 for (long i = 0; i < valuesToInsert; i++) {
-
-                    if (i % 10000 == 0) {
+                    if (i % 1 == 0) {
                         System.out.println("<insert til " + i + " in " + (System.currentTimeMillis() - before) / 1000 + "s");
                         graph.save(null);
                     }
-
                     final double value = i * 0.3;
                     final long time = timeOrigin + i;
                     graph.lookup(0, time, node.id(), new Callback<Node>() {
