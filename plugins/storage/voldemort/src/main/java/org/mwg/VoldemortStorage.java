@@ -3,52 +3,21 @@ package org.mwg;
 import org.mwg.plugin.Storage;
 import org.mwg.struct.Buffer;
 import org.mwg.struct.BufferIterator;
-import voldemort.client.ClientConfig;
-import voldemort.client.SocketStoreClientFactory;
-import voldemort.client.StoreClient;
-import voldemort.client.StoreClientFactory;
+import voldemort.client.*;
 import voldemort.client.protocol.RequestFormatType;
+import voldemort.server.VoldemortConfig;
+import voldemort.store.CompositePutVoldemortRequest;
+import voldemort.store.routed.action.PerformParallelPutRequests;
 import voldemort.utils.ByteArray;
 import voldemort.utils.ByteUtils;
 
 // TODO check for configuration params
 // TODO do we create a client per request or keep one for the storage
-// TODO what is the semantic of the "versioned" stuff?
 
-// TODO put and get are very rudimentary
 
 public class VoldemortStorage implements Storage {
     private static final String _connectedError = "PLEASE CONNECT YOUR DATABASE FIRST";
 
-    public static void main(String[] args) {
-//        String bootstrapUrl = "tcp://localhost:6666";
-        String bootstrapUrl = "tcp://192.168.25.82:6666";
-
-        StoreClientFactory factory = new SocketStoreClientFactory(new ClientConfig()
-                .setEnableSerializationLayer(false)
-                .setEnableLazy(false)
-                .setRequestFormatType(RequestFormatType.VOLDEMORT_V3)
-                .setBootstrapUrls(bootstrapUrl)
-
-        );
-
-        // create a client that executes operations on a single store
-        StoreClient<ByteArray, byte[]> client = factory.getStoreClient("test");
-
-        // do some random pointless operations
-        ByteArray key = new ByteArray(ByteUtils.getBytes("key100", "UTF-8"));
-        client.put(new ByteArray(ByteUtils.getBytes("key100", "UTF-8")), new byte[0]);
-        System.out.println(client.get(key).getValue());
-
-//        Versioned<String> value = client.get("key1");
-//        System.out.println(value.getValue());
-
-//        Versioned<String> value = client.get("some_key");
-//        System.out.println(value);
-
-//        value.setObject("some_value");
-//        client.put("some_key", value);
-    }
 
     private boolean _isConnected;
 
@@ -59,14 +28,16 @@ public class VoldemortStorage implements Storage {
     private StoreClient<ByteArray, byte[]> _client;
     private Graph _graph;
 
+    private VoldemortConfig _config;
+
     public VoldemortStorage(String bootstrapUrl, String storeName) {
         this._bootstrapUrl = bootstrapUrl;
         this._storeName = storeName;
 
         this._factory = new SocketStoreClientFactory(new ClientConfig()
                 .setEnableSerializationLayer(false)
-                .setEnableLazy(false)
-                .setRequestFormatType(RequestFormatType.VOLDEMORT_V3)
+//                .setEnableLazy(false)
+//                .setRequestFormatType(RequestFormatType.VOLDEMORT_V3)
                 .setBootstrapUrls(bootstrapUrl)
         );
     }
@@ -87,10 +58,8 @@ public class VoldemortStorage implements Storage {
                 } else {
                     isFirst = false;
                 }
-                // TODO directly getValue?
-                // TODO getALL?
                 ByteArray key = new ByteArray(view.data());
-                byte[] res = _client.get(key).getValue();
+                byte[] res = _client.getValue(key);
                 if (res != null) {
                     result.writeAll(res);
                 }
@@ -105,6 +74,7 @@ public class VoldemortStorage implements Storage {
 
     @Override
     public void put(Buffer stream, Callback<Boolean> p_callback) {
+
         if (!_isConnected) {
             throw new RuntimeException(_connectedError);
         }
@@ -118,14 +88,36 @@ public class VoldemortStorage implements Storage {
                 _client.put(key, valueView.data());
             }
         }
+
+
         if (p_callback != null) {
             p_callback.on(true);
         }
+
+
+
     }
 
     @Override
     public void remove(Buffer keys, Callback<Boolean> callback) {
-
+        if (!_isConnected) {
+            throw new RuntimeException(_connectedError);
+        }
+        try {
+            BufferIterator it = keys.iterator();
+            while (it.hasNext()) {
+                Buffer view = it.next();
+                _client.delete(new ByteArray(view.data()));
+            }
+            if (callback != null) {
+                callback.on(null);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (callback != null) {
+                callback.on(false);
+            }
+        }
     }
 
     @Override
