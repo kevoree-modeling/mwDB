@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class StorageTest {
 
-   // @Test
+    @Test
     public void test() throws IOException {
 
         try {

@@ -131,6 +131,20 @@ class OffHeapRelation implements Relation {
     }
 
     @Override
+    public Relation addAll(long[] newValues) {
+        chunk.lock();
+        try {
+            for (int i = 0; i < newValues.length; i++) {
+                internal_add(newValues[i]);
+            }
+            chunk.declareDirty();
+        } finally {
+            chunk.unlock();
+        }
+        return this;
+    }
+
+    @Override
     public Relation addNode(Node node) {
         return add(node.id());
     }

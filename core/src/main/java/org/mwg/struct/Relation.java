@@ -14,6 +14,8 @@ public interface Relation {
 
     Relation add(long newValue);
 
+    Relation addAll(long[] newValues);
+
     Relation addNode(Node node);
 
     /**

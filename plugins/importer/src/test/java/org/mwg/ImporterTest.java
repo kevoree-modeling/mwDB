@@ -30,24 +30,25 @@ public class ImporterTest {
 
             Node newNode = g.newNode(0, 0);
             //final Task t = readLines("/Users/duke/dev/mwDB/plugins/importer/src/test/resources/smarthome/smarthome_1.T15.txt")
-            final Task t = newTask().then(readLines("smarthome/smarthome_mini_1.T15.txt"))
-                    .forEach(
-                            newTask().ifThen(ctx -> !ctx.result().get(0).toString().startsWith("1:Date"),
-                                    newTask().thenDo(context -> {
-                                        String[] line = context.result().get(0).toString().split(" ");
-                                        try {
-                                            long time = dateFormat.parse(line[0] + "|" + line[1]).getTime();
-                                            double value = Double.parseDouble(line[2]);
-                                            newNode.travelInTime(time, timedNode -> {
-                                                timedNode.set("value", Type.DOUBLE, value);
-                                                context.continueWith(context.wrap(timedNode));
-                                            });
-                                        } catch (ParseException e) {
-                                            e.printStackTrace();
-                                            context.continueWith(null);
-                                        }
-                                    })
-                            ));
+            final Task t =
+                    then(readLines("smarthome/smarthome_mini_1.T15.txt"))
+                            .forEach(
+                                    newTask().ifThen(ctx -> !ctx.result().get(0).toString().startsWith("1:Date"),
+                                            newTask().thenDo(context -> {
+                                                String[] line = context.result().get(0).toString().split(" ");
+                                                try {
+                                                    long time = dateFormat.parse(line[0] + "|" + line[1]).getTime();
+                                                    double value = Double.parseDouble(line[2]);
+                                                    newNode.travelInTime(time, timedNode -> {
+                                                        timedNode.set("value", Type.DOUBLE, value);
+                                                        context.continueWith(context.wrap(timedNode));
+                                                    });
+                                                } catch (ParseException e) {
+                                                    e.printStackTrace();
+                                                    context.continueWith(null);
+                                                }
+                                            })
+                                    ));
             t.execute(g, null);
         });
     }

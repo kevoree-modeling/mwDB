@@ -106,6 +106,18 @@ class HeapRelation implements Relation {
     }
 
     @Override
+    public Relation addAll(final long[] newValues) {
+        synchronized (parent) {
+            int nextSize = newValues.length + _size;
+            final int closePowerOfTwo = (int) Math.pow(2, Math.ceil(Math.log(nextSize) / Math.log(2)));
+            allocate(closePowerOfTwo);
+            System.arraycopy(newValues, 0, _back, _size, newValues.length);
+            parent.declareDirty();
+        }
+        return this;
+    }
+
+    @Override
     public final Relation insert(final int targetIndex, final long newValue) {
         synchronized (parent) {
             if (_back == null) {
