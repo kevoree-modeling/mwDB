@@ -43,8 +43,8 @@ public class StorageTest {
                 System.out.println("Connected");
                 Task t = newTask();
                 t.thenDo(context -> {context.setGlobalVariable("beginning",System.currentTimeMillis());context.continueTask();});
-                t.loop("0","1000",
-                        ifThen(cond("i % 10 == 0"),then(save()).thenDo(context -> {System.out.println(System.currentTimeMillis());context.continueTask();}))
+                t.loop("0","100",
+                        ifThen(cond("i % 20 == 0"),then(save()).thenDo(context -> {System.out.println(System.currentTimeMillis());context.continueTask();}))
                         .then(createNode())
                 );
                 t.thenDo(context -> {
@@ -65,6 +65,18 @@ public class StorageTest {
                         }
                     });
                 });
+
+
+
+                /*
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(4000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
+                */
 
 
                 /*

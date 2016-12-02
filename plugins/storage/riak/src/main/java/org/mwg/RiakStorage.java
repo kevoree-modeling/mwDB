@@ -18,6 +18,7 @@ import org.mwg.struct.BufferIterator;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 
 public class RiakStorage implements Storage {
@@ -47,7 +48,7 @@ public class RiakStorage implements Storage {
     @Override
     public void disconnect(Callback<Boolean> callback) {
         _client.shutdown();
-       // _client.cleanup();
+        // _client.cleanup();
     }
 
 
@@ -154,34 +155,45 @@ public class RiakStorage implements Storage {
             }
         }
 
-        DeferCounter counter = _graph.newCounter(all.size());
 
-
+        //CountDownLatch latch = new CountDownLatch(all.size());
+        final DeferCounter counter = _graph.newCounter(all.size());
         counter.then(() -> {
             callback.on(true);
         });
 
+
         for (int i = 0; i < all.size(); i++) {
 
-
+            /*
             try {
                 _client.execute(all.get(i));
                 counter.count();
-            } catch (ExecutionException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            }*/
 
 
-/*
             _client.executeAsync(all.get(i)).addListener(new RiakFutureListener<StoreValue.Response, Location>() {
                 @Override
                 public void handle(RiakFuture<StoreValue.Response, Location> f) {
+                    //latch.countDown();
                     counter.count();
                 }
-            });*/
+            });
+
         }
+
+        /*
+        try {
+            latch.await();
+            callback.on(true);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
+
+
+
     }
 
     @Override
