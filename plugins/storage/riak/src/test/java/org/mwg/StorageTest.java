@@ -3,15 +3,18 @@ package org.mwg;
 import org.junit.Test;
 import org.mwg.core.scheduler.NoopScheduler;
 import org.mwg.plugin.Job;
+import org.mwg.task.Task;
 
 import java.io.File;
 import java.io.IOException;
+
+import static org.mwg.core.task.Actions.*;
 
 public class StorageTest {
 
     public static void main(String[] args) {
         try {
-            test(new GraphBuilder().withStorage(new RiakStorage("localhost:32775,localhost:32773,localhost:32771,localhost:32769,localhost:8087")).withScheduler(new NoopScheduler()).withMemorySize(2000000).build());
+            test(new GraphBuilder().withStorage(new RiakStorage("localhost:32775,localhost:32773,localhost:32771,localhost:32769,localhost:8087")).withMemorySize(2000000).build());
           //  Thread.sleep(5000);
 
         } catch (Exception e) {
@@ -23,7 +26,7 @@ public class StorageTest {
     public void test() throws IOException {
 
         try {
-            test(new GraphBuilder().withStorage(new RiakStorage("127.0.0.1")).withScheduler(new NoopScheduler()).withMemorySize(2000000).build());
+            test(new GraphBuilder().withStorage(new RiakStorage("127.0.0.1")).withMemorySize(2000000).build());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -37,7 +40,36 @@ public class StorageTest {
         graph.connect(new Callback<Boolean>() {
             @Override
             public void on(Boolean result) {
+                System.out.println("Connected");
+                Task t = newTask();
+                t.thenDo(context -> {context.setGlobalVariable("beginning",System.currentTimeMillis());context.continueTask();});
+                t.loop("0","1000",
+                        ifThen(cond("i % 10 == 0"),then(save()).thenDo(context -> {System.out.println(System.currentTimeMillis());context.continueTask();}))
+                        .then(createNode())
+                );
+                t.thenDo(context -> {
+                    long before = (long) context.variable("beginning").get(0);
+                   context.setGlobalVariable("execTime", ((System.currentTimeMillis() - before)/1000));
+                   context.continueTask();
+                });
+                t.then(println("{{execTime}} seconds"));
+                t.execute(graph, result1 -> {
+                    graph.disconnect(result2 -> {
+                        File data = new File("data");
+                        if (data.exists()) {
+                            try {
+                                delete(data);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                });
+
+
+                /*
                 final long before = System.currentTimeMillis();
+
                 final Node node = graph.newNode(0, 0);
                 final DeferCounter counter = graph.newCounter(valuesToInsert);
                 for (long i = 0; i < valuesToInsert; i++) {
@@ -74,14 +106,13 @@ public class StorageTest {
                             }
                         });
                     }
+
                 });
+                */
 
             }
         });
-        File data = new File("data");
-        if (data.exists()) {
-            delete(data);
-        }
+
     }
 
     private static void delete(File file) throws IOException {

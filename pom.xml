@@ -108,9 +108,7 @@
 
         <module>plugins/storage/leveldb</module>
         <module>plugins/storage/rocksdb</module>
-        <!--
         <module>plugins/storage/riak</module>
-        -->
 
         <module>plugins/storage/cassandra</module>
         <!--

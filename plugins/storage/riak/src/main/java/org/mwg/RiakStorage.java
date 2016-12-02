@@ -36,7 +36,7 @@ public class RiakStorage implements Storage {
     public void connect(Graph graph, Callback<Boolean> callback) {
         try {
             _graph = graph;
-            _client = RiakClient.newClient("localhost:32773","localhost:32769","localhost:32771");
+            _client = RiakClient.newClient("localhost:32773", "localhost:32769", "localhost:32771");
             callback.on(true);
         } catch (Exception e) {
             e.printStackTrace();
@@ -46,8 +46,8 @@ public class RiakStorage implements Storage {
 
     @Override
     public void disconnect(Callback<Boolean> callback) {
-        _client.cleanup();
         _client.shutdown();
+       // _client.cleanup();
     }
 
 
@@ -137,14 +137,16 @@ public class RiakStorage implements Storage {
             Buffer keyView = it.next();
             Buffer valueView = it.next();
             if (valueView != null) {
-                Location location = new Location(_ns, new String(keyView.data()));
-                RiakObject riakObject = new RiakObject();
-                riakObject.setValue(BinaryValue.create(valueView.data()));
-                StoreValue store = new StoreValue.Builder(riakObject)
-                        .withLocation(location)
-                        .withOption(StoreValue.Option.W, new Quorum(3))
-                        .build();
+
                 try {
+                    Location location = new Location(_ns, new String(keyView.data()));
+                    RiakObject riakObject = new RiakObject();
+                    riakObject.setValue(BinaryValue.create(valueView.data()));
+                    StoreValue store = new StoreValue.Builder(riakObject)
+                            .withLocation(location)
+                            .withOption(StoreValue.Option.W, new Quorum(3))
+                            .build();
+
                     all.add(store);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -157,11 +159,9 @@ public class RiakStorage implements Storage {
 
         counter.then(() -> {
             callback.on(true);
-            System.out.println(counter.getCount()+"-"+all.size());
         });
 
-        for(int i=0;i<all.size();i++){
-
+        for (int i = 0; i < all.size(); i++) {
 
 
             try {
@@ -174,14 +174,13 @@ public class RiakStorage implements Storage {
             }
 
 
-
 /*
-                _client.executeAsync(all.get(i)).addListener(new RiakFutureListener<StoreValue.Response, Location>() {
-                    @Override
-                    public void handle(RiakFuture<StoreValue.Response, Location> f) {
-                        counter.count();
-                    }
-                });*/
+            _client.executeAsync(all.get(i)).addListener(new RiakFutureListener<StoreValue.Response, Location>() {
+                @Override
+                public void handle(RiakFuture<StoreValue.Response, Location> f) {
+                    counter.count();
+                }
+            });*/
         }
     }
 
