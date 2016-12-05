@@ -15,14 +15,14 @@ public class StorageTest {
     public static void main(String[] args) {
         try {
             test(new GraphBuilder().withStorage(new RiakStorage("localhost:32775,localhost:32773,localhost:32771,localhost:32769,localhost:8087")).withMemorySize(2000000).build());
-          //  Thread.sleep(5000);
+            //  Thread.sleep(5000);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    @Test
+    // @Test
     public void test() throws IOException {
 
         try {
@@ -42,15 +42,21 @@ public class StorageTest {
             public void on(Boolean result) {
                 System.out.println("Connected");
                 Task t = newTask();
-                t.thenDo(context -> {context.setGlobalVariable("beginning",System.currentTimeMillis());context.continueTask();});
-                t.loop("0","100",
-                        ifThen(cond("i % 20 == 0"),then(save()).thenDo(context -> {System.out.println(System.currentTimeMillis());context.continueTask();}))
-                        .then(createNode())
+                t.thenDo(context -> {
+                    context.setGlobalVariable("beginning", System.currentTimeMillis());
+                    context.continueTask();
+                });
+                t.loop("0", "100",
+                        ifThen(cond("i % 20 == 0"), then(save()).thenDo(context -> {
+                            System.out.println(System.currentTimeMillis());
+                            context.continueTask();
+                        }))
+                                .then(createNode())
                 );
                 t.thenDo(context -> {
                     long before = (long) context.variable("beginning").get(0);
-                   context.setGlobalVariable("execTime", ((System.currentTimeMillis() - before)/1000));
-                   context.continueTask();
+                    context.setGlobalVariable("execTime", ((System.currentTimeMillis() - before) / 1000));
+                    context.continueTask();
                 });
                 t.then(println("{{execTime}} seconds"));
                 t.execute(graph, result1 -> {
