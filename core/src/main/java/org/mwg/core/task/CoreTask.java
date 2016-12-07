@@ -189,7 +189,16 @@ public class CoreTask implements org.mwg.task.Task {
         if (filter == null) {
             throw new RuntimeException("filter should not be null");
         }
-        addAction(new ActionSelect(filter));
+        addAction(new ActionSelect(null,filter));
+        return this;
+    }
+
+    @Override
+    public Task selectScript(String script) {
+        if (script == null) {
+            throw new RuntimeException("filter should not be null");
+        }
+        addAction(new ActionSelect(script,null));
         return this;
     }
 

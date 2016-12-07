@@ -190,6 +190,8 @@ public interface Task {
      */
     Task select(TaskFunctionSelect filterFunction);
 
+    Task selectScript(String script);
+
     /**
      * Selects an object complying to the filter function.
      *
