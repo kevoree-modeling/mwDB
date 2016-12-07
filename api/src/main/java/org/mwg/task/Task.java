@@ -510,4 +510,5 @@ public interface Task {
 
     TaskFunctionConditional mathConditional(String mathExpression);
 
+    Task timepoints(String from, String to);
 }

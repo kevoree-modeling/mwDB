@@ -776,6 +776,12 @@ public class CoreTask implements org.mwg.task.Task {
         return new MathConditional(mathExpression).conditional();
     }
 
+    @Override
+    public Task timepoints(String from, String to) {
+        addAction(new ActionTimepoints(from,to));
+        return this;
+    }
+
     public static void fillDefault(Map<String, TaskActionFactory> registry) {
         registry.put("get", new TaskActionFactory() { //DefaultTask
             @Override

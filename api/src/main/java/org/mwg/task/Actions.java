@@ -283,4 +283,9 @@ public class Actions {
         return newTask().mathConditional(mathExpression);
     }
 
+
+    public static Task timepoints(String from, String to) {
+        return newTask().timepoints(from,to);
+    }
+
 }
