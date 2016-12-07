@@ -7,9 +7,11 @@ import org.mwg.plugin.NodeFactory;
 import org.mwg.structure.action.*;
 import org.mwg.structure.tree.KDTree;
 import org.mwg.structure.tree.NDTree;
-import org.mwg.structure.tree.NDTree2;
+import org.mwg.structure.tree.SparseNDTree;
 import org.mwg.task.Action;
 import org.mwg.task.TaskActionFactory;
+
+import static org.mwg.core.task.Actions.newTask;
 
 public class StructurePlugin extends BasePlugin {
 
@@ -28,10 +30,10 @@ public class StructurePlugin extends BasePlugin {
             }
         });
 
-        declareNodeType(NDTree2.NAME, new NodeFactory() {
+        declareNodeType(SparseNDTree.NAME, new NodeFactory() {
             @Override
             public Node create(long world, long time, long id, Graph graph) {
-                return new NDTree2(world, time, id, graph);
+                return new SparseNDTree(world, time, id, graph);
             }
         });
 
@@ -63,6 +65,7 @@ public class StructurePlugin extends BasePlugin {
                 double[] key = new double[params.length - 1];
                 for (int i = 0; i < params.length - 1; i++) {
                     key[i] = Double.parseDouble(params[i]);
+
                 }
                 return new NTreeNearestN(key, n);
             }

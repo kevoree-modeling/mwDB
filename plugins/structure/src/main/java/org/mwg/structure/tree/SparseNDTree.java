@@ -18,11 +18,11 @@ import org.mwg.task.*;
 
 import static org.mwg.core.task.Actions.*;
 
-public class NDTree2 extends BaseNode implements NTree {
+public class SparseNDTree extends BaseNode implements NTree {
 
-    public static final String NAME = "NDTree2";
+    public static final String NAME = "SparseNDTree";
 
-    public NDTree2(long p_world, long p_time, long p_id, Graph p_graph) {
+    public SparseNDTree(long p_world, long p_time, long p_id, Graph p_graph) {
         super(p_world, p_time, p_id, p_graph);
     }
 
@@ -88,7 +88,7 @@ public class NDTree2 extends BaseNode implements NTree {
             }
         }
         //Create the new subspace node
-        NDTree2 newChild = (NDTree2) current.graph().newTypedNode(current.world(), current.time(), NAME);
+        SparseNDTree newChild = (SparseNDTree) current.graph().newTypedNode(current.world(), current.time(), NAME);
         NodeState newState = newChild.graph().resolver().resolveState(newChild);
         newState.set(_BOUNDMIN, Type.DOUBLE_ARRAY, newBoundMin);
         newState.set(_BOUNDMAX, Type.DOUBLE_ARRAY, newBoundMax);
@@ -184,7 +184,6 @@ public class NDTree2 extends BaseNode implements NTree {
                         }
                     }
 
-
                     double[] newkeys = new double[keys.length + dim];
                     System.arraycopy(keys, 0, newkeys, 0, keys.length);
                     System.arraycopy(keyToInsert, 0, newkeys, keys.length, dim);
@@ -267,7 +266,7 @@ public class NDTree2 extends BaseNode implements NTree {
                 .thenDo(new ActionFunction() {
                     @Override
                     public void eval(TaskContext context) {
-                        NDTree2 current = (NDTree2) context.result().get(0);
+                        SparseNDTree current = (SparseNDTree) context.result().get(0);
                         NodeState state = current.graph().resolver().resolveState(current);
                         NearestNeighborList nnl = (NearestNeighborList) context.variable("nnl").get(0);
 
@@ -346,7 +345,7 @@ public class NDTree2 extends BaseNode implements NTree {
         reccursiveDown.then(defineAsVar("parent")).thenDo(new ActionFunction() {
             @Override
             public void eval(TaskContext context) {
-                NDTree2 current = (NDTree2) context.result().get(0);
+                SparseNDTree current = (SparseNDTree) context.result().get(0);
                 NodeState state = current.graph().resolver().resolveState(current);
                 NearestNeighborArrayList nnl = (NearestNeighborArrayList) context.variable("nnl").get(0);
 
@@ -423,6 +422,7 @@ public class NDTree2 extends BaseNode implements NTree {
 
 
     //region Gaussian and stat related code for each node subspace
+
     public void setUpdateStat(boolean value) {
         NodeState state = unphasedState();
         state.set(_STAT, Type.BOOL, value);
@@ -601,7 +601,7 @@ public class NDTree2 extends BaseNode implements NTree {
      * result = result.add(Long.ONE);
      * }
      * }
-     * return result.add(Long.fromNumber(org.mwg.structure.tree.NDTree2._RELCONST, true)).toNumber();
+     * return result.add(Long.fromNumber(org.mwg.structure.tree.SparseNDTree._RELCONST, true)).toNumber();
      */
     static long getRelationId(double[] centerKey, double[] keyToInsert) {
         long result = 0;

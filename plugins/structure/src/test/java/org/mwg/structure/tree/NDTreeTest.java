@@ -53,7 +53,7 @@ public class NDTreeTest {
 //                            System.out.print("max: ");
 //                            printArray(max);
 //
-//                            if(temp instanceof NDTree2){
+//                            if(temp instanceof SparseNDTree){
 //                                Object o=temp.getByIndex(10);
 //                                if(o!=null) {
 //                                    System.out.print((boolean) temp.getByIndex(10));
@@ -115,7 +115,7 @@ public class NDTreeTest {
             public void on(Boolean result) {
                 NDTree ndTree = (NDTree) graph.newTypedNode(0, 0, NDTree.NAME);
                 KDTree kdtree = (KDTree) graph.newTypedNode(0, 0, KDTree.NAME);
-                NDTree2 ndTree2 = (NDTree2) graph.newTypedNode(0, 0, NDTree2.NAME);
+                SparseNDTree sparseNdTree = (SparseNDTree) graph.newTypedNode(0, 0, SparseNDTree.NAME);
 
                 KDTreeJava kdtreejava = new KDTreeJava();
                 kdtreejava.setThreshold(KDTree.DISTANCE_THRESHOLD_DEF);
@@ -126,7 +126,7 @@ public class NDTreeTest {
                 kdtreejava.setDistance(GeoDistance.instance());
                 kdtree.setDistance(Distances.GEODISTANCE);
                 ndTree.setDistance(Distances.GEODISTANCE);
-                ndTree2.setDistance(Distances.GEODISTANCE);
+                sparseNdTree.setDistance(Distances.GEODISTANCE);
 
                 int dim = 2;
 
@@ -142,7 +142,7 @@ public class NDTreeTest {
 
 
                 ndTree.setBounds(boundMin, boundMax, precisions);
-                ndTree2.setBounds(boundMin, boundMax);
+                sparseNdTree.setBounds(boundMin, boundMax);
 
 
                 Random random = new Random();
@@ -175,59 +175,31 @@ public class NDTreeTest {
                     ndTree.insertWith(keys[i], values[i], null);
                     kdtree.insertWith(keys[i], values[i], null);
                     kdtreejava.insert(keys[i], values[i], null);
-                    ndTree2.insertWith(keys[i], values[i], null);
+                    sparseNdTree.insertWith(keys[i], values[i], null);
                 }
 
 
                 //System.out.println("ndtree: " + ndTree.size());
-                //System.out.println("ndtree2: " + ndTree2.size());
+                //System.out.println("ndtree2: " + sparseNdTree.size());
 
 
 //                printgraph(ndTree, "ndtree");
-//                printgraph(ndTree2, "ndtree2");
+//                printgraph(sparseNdTree, "ndtree2");
 
                 for (int j = 0; j < ins; j++) {
-
                     final double[] res = keys[j];
                     int finalJ = j;
                     ndTree.nearestN(res, 10, new Callback<Node[]>() {
                         @Override
                         public void on(Node[] result) {
-                            ndTree2.nearestN(res, 10, new Callback<Node[]>() {
+                            sparseNdTree.nearestN(res, 10, new Callback<Node[]>() {
                                 @Override
                                 public void on(Node[] result2) {
 
-//                                    if(result.length!=result2.length){
-//                                        for(int i=0;i<result.length;i++){
-//                                            System.out.println("nd " + result[i] + " dist " + GeoDistance.instance().measure(res, (double[]) result[i].get("key")));
-//                                        }
-//
-//                                        System.out.println();
-//                                        for(int i=0;i<result2.length;i++){
-//                                            System.out.println("nd2 " + result2[i] + " dist " + GeoDistance.instance().measure(res, (double[]) result2[i].get("key")));
-//                                        }
-//
-//                                    }
                                     Assert.assertTrue(result2.length == result.length);
-
-
                                    for (int i = 0; i < result.length; i++) {
-//                                        if (result[i].id() != result2[i].id()) {
-//
-//                                            System.out.println("nd " + result[i] + " dist " + GeoDistance.instance().measure(res, (double[]) result[i].get("key")));
-//                                            System.out.println("nd2 " + result2[i] + " dist " + GeoDistance.instance().measure(res, (double[]) result2[i].get("key")));
-//                                            System.out.println("");
-//                                            count[0]++;
-//                                            // System.out.println("nd "+result[i].id()+" nd2 "+result2[i].id());
-//                                        } else {
-//                                            Assert.assertTrue(result[i].id() == result2[i].id());
-//                                            count[1]++;
-//                                        }
                                        Assert.assertTrue(result[i].id() == result2[i].id());
                                     }
-
-
-
                                 }
                             });
 
@@ -242,6 +214,7 @@ public class NDTreeTest {
     }
 
 
+    @Test
     public void NDInsertTest() {
         final Graph graph = new GraphBuilder()
                 .withPlugin(new StructurePlugin())

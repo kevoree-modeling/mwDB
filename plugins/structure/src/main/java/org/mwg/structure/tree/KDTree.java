@@ -40,179 +40,186 @@ public class KDTree extends BaseNode implements NTree {
     }
 
     //Insert key/value task
-    private static Task insert = newTask().whileDo(new ConditionalFunction() {
-        @Override
-        public boolean eval(TaskContext context) {
-            Node current = context.resultAsNodes().get(0);
-            double[] nodeKey = (double[]) current.get(KEY);
-            //Get variables from context
-            //toDo optimize the variables here
-            int dim = (int) context.variable("dim").get(0);
-            double[] keyToInsert = (double[]) context.variable("key").get(0);
-            Node valueToInsert = (Node) context.variable("value").get(0);
-            Node root = (Node) context.variable("root").get(0);
-            Distance distance = (Distance) context.variable("distance").get(0);
-            double err = (double) context.variable("err").get(0);
-            int lev = (int) context.variable("lev").get(0);
+    private static Task insert = newTask()
+            .whileDo(new ConditionalFunction() {
+                         @Override
+                         public boolean eval(TaskContext context) {
+                             Node current = context.resultAsNodes().get(0);
+                             double[] nodeKey = (double[]) current.get(KEY);
+                             //Get variables from context
+                             //toDo optimize the variables here
+                             int dim = (int) context.variable("dim").get(0);
+                             double[] keyToInsert = (double[]) context.variable("key").get(0);
+                             Node valueToInsert = (Node) context.variable("value").get(0);
+                             Node root = (Node) context.variable("root").get(0);
+                             Distance distance = (Distance) context.variable("distance").get(0);
+                             double err = (double) context.variable("err").get(0);
+                             int lev = (int) context.variable("lev").get(0);
 
-            //Bootstrap, first insert ever
-            if (nodeKey == null) {
-                current.set(DIMENSIONS, Type.INT, dim);
-                current.set(KEY, Type.DOUBLE_ARRAY, keyToInsert);
-                ((Relation) current.getOrCreate(VALUE, Type.RELATION)).clear().add(valueToInsert.id());
-                current.set(SIZE, Type.INT, 1);
-                return false; //stop the while loop and insert here
-            } else if (distance.measure(keyToInsert, nodeKey) < err) {
-                ((Relation) current.getOrCreate(VALUE, Type.RELATION)).clear().add(valueToInsert.id());
-                return false; //insert in the current node, and done with it, no need to continue looping
-            } else {
-                //Decision point for next step
-                Relation child;
-                String nextRel;
-                if (keyToInsert[lev] > nodeKey[lev]) {
-                    child = (Relation) current.get(RIGHT);
-                    nextRel = RIGHT;
-                } else {
-                    child = (Relation) current.get(LEFT);
-                    nextRel = LEFT;
-                }
+                             //Bootstrap, first insert ever
+                             if (nodeKey == null) {
+                                 current.set(DIMENSIONS, Type.INT, dim);
+                                 current.set(KEY, Type.DOUBLE_ARRAY, keyToInsert);
+                                 ((Relation) current.getOrCreate(VALUE, Type.RELATION)).clear().add(valueToInsert.id());
+                                 current.set(SIZE, Type.INT, 1);
+                                 return false; //stop the while loop and insert here
+                             } else if (distance.measure(keyToInsert, nodeKey) < err) {
+                                 ((Relation) current.getOrCreate(VALUE, Type.RELATION)).clear().add(valueToInsert.id());
+                                 return false; //insert in the current node, and done with it, no need to continue looping
+                             } else {
+                                 //Decision point for next step
+                                 Relation child;
+                                 String nextRel;
+                                 if (keyToInsert[lev] > nodeKey[lev]) {
+                                     child = (Relation) current.get(RIGHT);
+                                     nextRel = RIGHT;
+                                 } else {
+                                     child = (Relation) current.get(LEFT);
+                                     nextRel = LEFT;
+                                 }
 
-                //If there is no node to the right, we create one and the game is over
-                if (child == null || child.size() == 0) {
-                    KDTree childNode = (KDTree) context.graph().newTypedNode(current.world(), current.time(), NAME);
-                    childNode.set(KEY, Type.DOUBLE_ARRAY, keyToInsert);
-                    ((Relation) childNode.getOrCreate(VALUE, Type.RELATION)).clear().add(valueToInsert.id());
-                    ((Relation) current.getOrCreate(nextRel, Type.RELATION)).clear().add(childNode.id());
-                    root.set(SIZE, Type.INT, (Integer) root.get(SIZE) + 1);
-                    childNode.free();
-                    return false;
-                } else {
-                    //Otherwise we need to prepare for the next while iteration
-                    context.setGlobalVariable("next", nextRel);
-                    context.setGlobalVariable("lev", (lev + 1) % dim);
-                    return true;
-                }
-            }
-        }
+                                 //If there is no node to the right, we create one and the game is over
+                                 if (child == null || child.size() == 0) {
+                                     KDTree childNode = (KDTree) context.graph().newTypedNode(current.world(), current.time(), NAME);
+                                     childNode.set(KEY, Type.DOUBLE_ARRAY, keyToInsert);
+                                     ((Relation) childNode.getOrCreate(VALUE, Type.RELATION)).clear().add(valueToInsert.id());
+                                     ((Relation) current.getOrCreate(nextRel, Type.RELATION)).clear().add(childNode.id());
+                                     root.set(SIZE, Type.INT, (Integer) root.get(SIZE) + 1);
+                                     childNode.free();
+                                     return false;
+                                 } else {
+                                     //Otherwise we need to prepare for the next while iteration
+                                     context.setGlobalVariable("next", nextRel);
+                                     context.setGlobalVariable("lev", (lev + 1) % dim);
+                                     return true;
+                                 }
+                             }
+                         }
 
-    }, newTask().then(Actions.traverse("{{next}}")));
+                     },
+                    newTask()
+                            .then(traverse("{{next}}")));
 
     private static Task initFindNear() {
         Task reccursiveDown = newTask();
-        reccursiveDown.thenDo(new ActionFunction() {
-            @Override
-            public void eval(TaskContext context) {
-
-                // 1. Load the variables and if kd is empty exit.
-
-                Node node = context.resultAsNodes().get(0);
-                if (node == null) {
-                    context.continueTask();
-                    return;
-                }
-
-
-//                node.graph().save(null);
-                // System.out.println("A- "+node.id()+": "+node.graph().space().available());
-
-                double[] pivot = (double[]) node.get(KEY);
-
-                //Global variable
-                int dim = (int) context.variable("dim").get(0);
-                double[] target = (double[]) context.variable("key").get(0);
-                Distance distance = (Distance) context.variable("distance").get(0);
-
-                //Local variables
-                int lev = (int) context.variable("lev").get(0);
-                HRect hr = (HRect) context.variable("hr").get(0);
-                double max_dist_sqd = (double) context.variable("max_dist_sqd").get(0);
-
-//                System.out.println("T1 " + node.id() + " lev " + lev);
-
-                //System.out.println("traversing " + node.id() + " lev: " + lev + ", key: " + pivot[0] + " , " + pivot[1] + " distance: " + distance.measure(pivot, target));
-
-                // 2. s := split field of kd
-                int s = lev % dim;
-                //System.out.println("T1 "+node.id()+ " lev "+lev+ " s "+s);
-
-                // 3. pivot := dom-elt field of kd
-
-                double pivot_to_target = distance.measure(pivot, target);
-
-                // 4. Cut hr into to sub-hyperrectangles left-hr and right-hr.
-                // The cut plane is through pivot and perpendicular to the s
-                // dimension.
-                HRect left_hr = hr; // optimize by not cloning
-                HRect right_hr = (HRect) hr.clone();
-                left_hr.max[s] = pivot[s];
-                right_hr.min[s] = pivot[s];
-
-                // 5. target-in-left := target_s <= pivot_s
-                boolean target_in_left = target[s] < pivot[s];
-
-                Relation nearer_kd;
-                HRect nearer_hr;
-                Relation further_kd;
-                HRect further_hr;
-                String nearer_st;
-                String farther_st;
-
-                // 6. if target-in-left then
-                // 6.1. nearer-kd := left field of kd and nearer-hr := left-hr
-                // 6.2. further-kd := right field of kd and further-hr := right-hr
-                if (target_in_left) {
-                    nearer_kd = (Relation) node.get(LEFT);
-                    nearer_st = LEFT;
-                    nearer_hr = left_hr;
-
-                    further_kd = (Relation) node.get(RIGHT);
-                    further_hr = right_hr;
-                    farther_st = RIGHT;
-                }
-                //
-                // 7. if not target-in-left then
-                // 7.1. nearer-kd := right field of kd and nearer-hr := right-hr
-                // 7.2. further-kd := left field of kd and further-hr := left-hr
-                else {
-                    nearer_kd = (Relation) node.get(RIGHT);
-                    nearer_hr = right_hr;
-                    nearer_st = RIGHT;
-
-                    further_kd = (Relation) node.get(LEFT);
-                    further_hr = left_hr;
-                    farther_st = LEFT;
-                }
-
-                //define contextual variables for reccursivity:
-                context.defineVariable("further_hr", further_hr);
-                context.defineVariable("pivot_to_target", pivot_to_target);
-
-                if (nearer_kd != null && nearer_kd.size() != 0) {
-                    context.defineVariable("near", nearer_st);
-                    //The 3 variables to set for next round of reccursivity:
-                    context.defineVariableForSubTask("hr", nearer_hr);
-                    context.defineVariableForSubTask("max_dist_sqd", max_dist_sqd);
-                    context.defineVariableForSubTask("lev", lev + 1);
-
-                } else {
-                    context.defineVariableForSubTask("near", context.newResult());  //stop the loop
-                }
-
-                if (further_kd != null && further_kd.size() != 0) {
-                    context.defineVariableForSubTask("far", farther_st);
-                } else {
-                    context.defineVariableForSubTask("far", context.newResult()); //stop the loop
-                }
-
-                context.continueTask();
-            }
-        })
-                .isolate(newTask().ifThen(new ConditionalFunction() {
+        reccursiveDown
+                .thenDo(new ActionFunction() {
                     @Override
-                    public boolean eval(TaskContext context) {
-                        return context.variable("near").size() > 0;
+                    public void eval(TaskContext context) {
+
+                        // 1. Load the variables and if kd is empty exit.
+
+                        Node node = context.resultAsNodes().get(0);
+                        if (node == null) {
+                            context.continueTask();
+                            return;
+                        }
+
+
+                        // node.graph().save(null);
+                        // System.out.println("A- "+node.id()+": "+node.graph().space().available());
+
+                        double[] pivot = (double[]) node.get(KEY);
+
+                        //Global variable
+                        int dim = (int) context.variable("dim").get(0);
+                        double[] target = (double[]) context.variable("key").get(0);
+                        Distance distance = (Distance) context.variable("distance").get(0);
+
+                        //Local variables
+                        int lev = (int) context.variable("lev").get(0);
+                        HRect hr = (HRect) context.variable("hr").get(0);
+                        double max_dist_sqd = (double) context.variable("max_dist_sqd").get(0);
+
+                        // System.out.println("T1 " + node.id() + " lev " + lev);
+                        //System.out.println("traversing " + node.id() + " lev: " + lev + ", key: " + pivot[0] + " , " + pivot[1] + " distance: " + distance.measure(pivot, target));
+
+                        // 2. s := split field of kd
+                        int s = lev % dim;
+                        //System.out.println("T1 "+node.id()+ " lev "+lev+ " s "+s);
+
+                        // 3. pivot := dom-elt field of kd
+
+                        double pivot_to_target = distance.measure(pivot, target);
+
+                        // 4. Cut hr into to sub-hyperrectangles left-hr and right-hr.
+                        // The cut plane is through pivot and perpendicular to the s
+                        // dimension.
+                        HRect left_hr = hr; // optimize by not cloning
+                        HRect right_hr = (HRect) hr.clone();
+                        left_hr.max[s] = pivot[s];
+                        right_hr.min[s] = pivot[s];
+
+                        // 5. target-in-left := target_s <= pivot_s
+                        boolean target_in_left = target[s] < pivot[s];
+
+                        Relation nearer_kd;
+                        HRect nearer_hr;
+                        Relation further_kd;
+                        HRect further_hr;
+                        String nearer_st;
+                        String farther_st;
+
+                        // 6. if target-in-left then
+                        // 6.1. nearer-kd := left field of kd and nearer-hr := left-hr
+                        // 6.2. further-kd := right field of kd and further-hr := right-hr
+                        if (target_in_left) {
+                            nearer_kd = (Relation) node.get(LEFT);
+                            nearer_st = LEFT;
+                            nearer_hr = left_hr;
+
+                            further_kd = (Relation) node.get(RIGHT);
+                            further_hr = right_hr;
+                            farther_st = RIGHT;
+                        }
+                        //
+                        // 7. if not target-in-left then
+                        // 7.1. nearer-kd := right field of kd and nearer-hr := right-hr
+                        // 7.2. further-kd := left field of kd and further-hr := left-hr
+                        else {
+                            nearer_kd = (Relation) node.get(RIGHT);
+                            nearer_hr = right_hr;
+                            nearer_st = RIGHT;
+
+                            further_kd = (Relation) node.get(LEFT);
+                            further_hr = left_hr;
+                            farther_st = LEFT;
+                        }
+
+                        //define contextual variables for reccursivity:
+                        context.defineVariable("further_hr", further_hr);
+                        context.defineVariable("pivot_to_target", pivot_to_target);
+
+                        if (nearer_kd != null && nearer_kd.size() != 0) {
+                            context.defineVariable("near", nearer_st);
+                            //The 3 variables to set for next round of reccursivity:
+                            context.defineVariableForSubTask("hr", nearer_hr);
+                            context.defineVariableForSubTask("max_dist_sqd", max_dist_sqd);
+                            context.defineVariableForSubTask("lev", lev + 1);
+
+                        } else {
+                            context.defineVariableForSubTask("near", context.newResult());  //stop the loop
+                        }
+
+                        if (further_kd != null && further_kd.size() != 0) {
+                            context.defineVariableForSubTask("far", farther_st);
+                        } else {
+                            context.defineVariableForSubTask("far", context.newResult()); //stop the loop
+                        }
+
+                        context.continueTask();
                     }
-                }, newTask().then(Actions.traverse("{{near}}")).isolate(reccursiveDown)))
+                })
+                .isolate(
+                        newTask()
+                                .ifThen(new ConditionalFunction() {
+                                    @Override
+                                    public boolean eval(TaskContext context) {
+                                        return context.variable("near").size() > 0;
+                                    }
+                                }, newTask()
+                                        .then(traverse("{{near}}"))
+                                        .isolate(reccursiveDown)))
 
                 .thenDo(new ActionFunction() {
                     @Override
@@ -229,10 +236,9 @@ public class KDTree extends BaseNode implements NTree {
                         double pivot_to_target = (double) context.variable("pivot_to_target").get(0);
                         int lev = (int) context.variable("lev").get(0);
                         Node node = context.resultAsNodes().get(0);
-//                System.out.println("T2 " + node.id() + " lev " + lev);
 
-
-//                        node.graph().save(null);
+                        // System.out.println("T2 " + node.id() + " lev " + lev);
+                        //node.graph().save(null);
                         //  System.out.println("B- "+node.id()+": "+node.graph().space().available());
 
                         double dist_sqd;
@@ -291,12 +297,17 @@ public class KDTree extends BaseNode implements NTree {
                         context.continueTask();
                     }
                 })
-                .isolate(newTask().ifThen(new ConditionalFunction() {
-                    @Override
-                    public boolean eval(TaskContext context) {
-                        return ((boolean) context.variable("continueFar").get(0) && context.variable("far").size() > 0); //Exploring the far depends also on the distance
-                    }
-                }, newTask().then(Actions.traverse("{{far}}")).isolate(reccursiveDown)));
+                .isolate(
+                        newTask()
+                                .ifThen(new ConditionalFunction() {
+                                            @Override
+                                            public boolean eval(TaskContext context) {
+                                                return ((boolean) context.variable("continueFar").get(0) && context.variable("far").size() > 0); //Exploring the far depends also on the distance
+                                            }
+                                        },
+                                        newTask()
+                                                .then(traverse("{{far}}"))
+                                                .isolate(reccursiveDown)));
 
 
         return reccursiveDown;
@@ -304,119 +315,123 @@ public class KDTree extends BaseNode implements NTree {
 
     private static Task initFindRadius() {
         Task reccursiveDown = newTask();
-        reccursiveDown.thenDo(new ActionFunction() {
-            @Override
-            public void eval(TaskContext context) {
-
-                // 1. Load the variables and if kd is empty exit.
-
-                Node node = context.resultAsNodes().get(0);
-                if (node == null) {
-                    context.continueTask();
-                    return;
-                }
-
-//                node.graph().save(null);
-                // System.out.println("A- "+node.id()+": "+node.graph().space().available());
-
-                double[] pivot = (double[]) node.get(KEY);
-
-                //Global variable
-                int dim = (int) context.variable("dim").get(0);
-                double[] target = (double[]) context.variable("key").get(0);
-                Distance distance = (Distance) context.variable("distance").get(0);
-
-
-                //Local variables
-                int lev = (int) context.variable("lev").get(0);
-                HRect hr = (HRect) context.variable("hr").get(0);
-                double max_dist_sqd = (double) context.variable("max_dist_sqd").get(0);
-
-//                System.out.println("T1 " + node.id() + " lev " + lev);
-
-
-                // 2. s := split field of kd
-                int s = lev % dim;
-                //System.out.println("T1 "+node.id()+ " lev "+lev+ " s "+s);
-
-                // 3. pivot := dom-elt field of kd
-
-                double pivot_to_target = distance.measure(pivot, target);
-
-                // 4. Cut hr into to sub-hyperrectangles left-hr and right-hr.
-                // The cut plane is through pivot and perpendicular to the s
-                // dimension.
-                HRect left_hr = hr; // optimize by not cloning
-                HRect right_hr = (HRect) hr.clone();
-                left_hr.max[s] = pivot[s];
-                right_hr.min[s] = pivot[s];
-
-                // 5. target-in-left := target_s <= pivot_s
-                boolean target_in_left = target[s] < pivot[s];
-
-                Relation nearer_kd;
-                HRect nearer_hr;
-                Relation further_kd;
-                HRect further_hr;
-                String nearer_st;
-                String farther_st;
-
-                // 6. if target-in-left then
-                // 6.1. nearer-kd := left field of kd and nearer-hr := left-hr
-                // 6.2. further-kd := right field of kd and further-hr := right-hr
-                if (target_in_left) {
-                    nearer_kd = (Relation) node.get(LEFT);
-                    nearer_st = LEFT;
-                    nearer_hr = left_hr;
-
-                    further_kd = (Relation) node.get(RIGHT);
-                    further_hr = right_hr;
-                    farther_st = RIGHT;
-                }
-                //
-                // 7. if not target-in-left then
-                // 7.1. nearer-kd := right field of kd and nearer-hr := right-hr
-                // 7.2. further-kd := left field of kd and further-hr := left-hr
-                else {
-                    nearer_kd = (Relation) node.get(RIGHT);
-                    nearer_hr = right_hr;
-                    nearer_st = RIGHT;
-
-                    further_kd = (Relation) node.get(LEFT);
-                    further_hr = left_hr;
-                    farther_st = LEFT;
-                }
-
-                //define contextual variables for reccursivity:
-                context.defineVariable("further_hr", further_hr);
-                context.defineVariable("pivot_to_target", pivot_to_target);
-
-                if (nearer_kd != null && nearer_kd.size() != 0) {
-                    context.defineVariable("near", nearer_st);
-                    //The 3 variables to set for next round of reccursivity:
-                    context.defineVariableForSubTask("hr", nearer_hr);
-                    context.defineVariableForSubTask("max_dist_sqd", max_dist_sqd);
-                    context.defineVariableForSubTask("lev", lev + 1);
-
-                } else {
-                    context.defineVariableForSubTask("near", context.newResult());  //stop the loop
-                }
-
-                if (further_kd != null && further_kd.size() != 0) {
-                    context.defineVariableForSubTask("far", farther_st);
-                } else {
-                    context.defineVariableForSubTask("far", context.newResult()); //stop the loop
-                }
-
-                context.continueTask();
-            }
-        })
-                .isolate(newTask().ifThen(new ConditionalFunction() {
+        reccursiveDown
+                .thenDo(new ActionFunction() {
                     @Override
-                    public boolean eval(TaskContext context) {
-                        return context.variable("near").size() > 0;
+                    public void eval(TaskContext context) {
+
+                        // 1. Load the variables and if kd is empty exit.
+
+                        Node node = context.resultAsNodes().get(0);
+                        if (node == null) {
+                            context.continueTask();
+                            return;
+                        }
+
+                        // node.graph().save(null);
+                        // System.out.println("A- "+node.id()+": "+node.graph().space().available());
+
+                        double[] pivot = (double[]) node.get(KEY);
+
+                        //Global variable
+                        int dim = (int) context.variable("dim").get(0);
+                        double[] target = (double[]) context.variable("key").get(0);
+                        Distance distance = (Distance) context.variable("distance").get(0);
+
+                        //Local variables
+                        int lev = (int) context.variable("lev").get(0);
+                        HRect hr = (HRect) context.variable("hr").get(0);
+                        double max_dist_sqd = (double) context.variable("max_dist_sqd").get(0);
+
+                        // System.out.println("T1 " + node.id() + " lev " + lev);
+
+
+                        // 2. s := split field of kd
+                        int s = lev % dim;
+                        //System.out.println("T1 "+node.id()+ " lev "+lev+ " s "+s);
+
+                        // 3. pivot := dom-elt field of kd
+
+                        double pivot_to_target = distance.measure(pivot, target);
+
+                        // 4. Cut hr into to sub-hyperrectangles left-hr and right-hr.
+                        // The cut plane is through pivot and perpendicular to the s
+                        // dimension.
+                        HRect left_hr = hr; // optimize by not cloning
+                        HRect right_hr = (HRect) hr.clone();
+                        left_hr.max[s] = pivot[s];
+                        right_hr.min[s] = pivot[s];
+
+                        // 5. target-in-left := target_s <= pivot_s
+                        boolean target_in_left = target[s] < pivot[s];
+
+                        Relation nearer_kd;
+                        HRect nearer_hr;
+                        Relation further_kd;
+                        HRect further_hr;
+                        String nearer_st;
+                        String farther_st;
+
+                        // 6. if target-in-left then
+                        // 6.1. nearer-kd := left field of kd and nearer-hr := left-hr
+                        // 6.2. further-kd := right field of kd and further-hr := right-hr
+                        if (target_in_left) {
+                            nearer_kd = (Relation) node.get(LEFT);
+                            nearer_st = LEFT;
+                            nearer_hr = left_hr;
+
+                            further_kd = (Relation) node.get(RIGHT);
+                            further_hr = right_hr;
+                            farther_st = RIGHT;
+                        }
+                        //
+                        // 7. if not target-in-left then
+                        // 7.1. nearer-kd := right field of kd and nearer-hr := right-hr
+                        // 7.2. further-kd := left field of kd and further-hr := left-hr
+                        else {
+                            nearer_kd = (Relation) node.get(RIGHT);
+                            nearer_hr = right_hr;
+                            nearer_st = RIGHT;
+
+                            further_kd = (Relation) node.get(LEFT);
+                            further_hr = left_hr;
+                            farther_st = LEFT;
+                        }
+
+                        //define contextual variables for reccursivity:
+                        context.defineVariable("further_hr", further_hr);
+                        context.defineVariable("pivot_to_target", pivot_to_target);
+
+                        if (nearer_kd != null && nearer_kd.size() != 0) {
+                            context.defineVariable("near", nearer_st);
+                            //The 3 variables to set for next round of reccursivity:
+                            context.defineVariableForSubTask("hr", nearer_hr);
+                            context.defineVariableForSubTask("max_dist_sqd", max_dist_sqd);
+                            context.defineVariableForSubTask("lev", lev + 1);
+
+                        } else {
+                            context.defineVariableForSubTask("near", context.newResult());  //stop the loop
+                        }
+
+                        if (further_kd != null && further_kd.size() != 0) {
+                            context.defineVariableForSubTask("far", farther_st);
+                        } else {
+                            context.defineVariableForSubTask("far", context.newResult()); //stop the loop
+                        }
+
+                        context.continueTask();
                     }
-                }, newTask().then(Actions.traverse("{{near}}")).isolate(reccursiveDown)))
+                })
+                .isolate(
+                        newTask()
+                                .ifThen(new ConditionalFunction() {
+                                    @Override
+                                    public boolean eval(TaskContext context) {
+                                        return context.variable("near").size() > 0;
+                                    }
+                                }, newTask()
+                                        .then(traverse("{{near}}"))
+                                        .isolate(reccursiveDown)))
 
                 .thenDo(new ActionFunction() {
                     @Override
@@ -434,10 +449,9 @@ public class KDTree extends BaseNode implements NTree {
                         double pivot_to_target = (double) context.variable("pivot_to_target").get(0);
                         int lev = (int) context.variable("lev").get(0);
                         Node node = context.resultAsNodes().get(0);
-//                System.out.println("T2 " + node.id() + " lev " + lev);
+                        // System.out.println("T2 " + node.id() + " lev " + lev);
 
-
-//                        node.graph().save(null);
+                        // node.graph().save(null);
                         //  System.out.println("B- "+node.id()+": "+node.graph().space().available());
 
                         double dist_sqd = Double.MAX_VALUE;
@@ -487,14 +501,16 @@ public class KDTree extends BaseNode implements NTree {
                         context.continueTask();
                     }
                 })
-                .isolate(newTask().ifThen(new ConditionalFunction() {
-                    @Override
-                    public boolean eval(TaskContext context) {
-                        return ((boolean) context.variable("continueFar").get(0) && context.variable("far").size() > 0); //Exploring the far depends also on the distance
-                    }
-                }, newTask().then(Actions.traverse("{{far}}")).isolate(reccursiveDown)));
-
-
+                .isolate(
+                        newTask()
+                                .ifThen(new ConditionalFunction() {
+                                    @Override
+                                    public boolean eval(TaskContext context) {
+                                        return ((boolean) context.variable("continueFar").get(0) && context.variable("far").size() > 0); //Exploring the far depends also on the distance
+                                    }
+                                }, newTask()
+                                        .then(traverse("{{far}}"))
+                                        .isolate(reccursiveDown)));
         return reccursiveDown;
     }
 

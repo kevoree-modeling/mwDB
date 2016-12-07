@@ -113,100 +113,101 @@ public class NDTree extends BaseNode implements NTree {
     private static Task nearestTask = initNearestTask();
     private static Task nearestRadiusTask = initRadusTask();
     //Insert key/value task
-    private static Task insert = newTask().whileDo(new ConditionalFunction() {
-        @Override
-        public boolean eval(TaskContext context) {
+    private static Task insert = newTask()
+            .whileDo(new ConditionalFunction() {
+                @Override
+                public boolean eval(TaskContext context) {
 
-            Node root = (Node) context.variable("root").get(0);
+                    Node root = (Node) context.variable("root").get(0);
 
-            Node current = context.resultAsNodes().get(0);
-            NodeState state = current.graph().resolver().resolveState(current);
-            boolean updateStat = (boolean) context.variable("updatestat").get(0);
+                    Node current = context.resultAsNodes().get(0);
+                    NodeState state = current.graph().resolver().resolveState(current);
+                    boolean updateStat = (boolean) context.variable("updatestat").get(0);
 
-            //Get state variables here
+                    //Get state variables here
 
-            double[] boundMax = (double[]) state.get(_BOUNDMAX);
-            double[] boundMin = (double[]) state.get(_BOUNDMIN);
-            double[] centerKey = new double[boundMax.length];
-            for (int i = 0; i < centerKey.length; i++) {
-                centerKey[i] = (boundMax[i] + boundMin[i]) / 2;
-            }
-
-            //Get variables from context
-            //toDo optimize the variables here
-            double[] keyToInsert = (double[]) context.variable("key").get(0);
-
-            double[] precision = (double[]) context.variable("precision").get(0);
-            int dim = keyToInsert.length;
-
-            //Update the gaussian of the current node
-            if (updateStat) {
-                updateGaussian(state, keyToInsert);
-            }
-
-            //Check if we can go deeper or not:
-            boolean continueNavigation = false;
-            for (int i = 0; i < dim; i++) {
-                if (boundMax[i] - boundMin[i] > precision[i]) {
-                    continueNavigation = true;
-                    break;
-                }
-            }
-
-            if (continueNavigation) {
-                //Set the long to traverse
-                long traverseId = getRelationId(centerKey, keyToInsert);
-                // System.out.println(traverseId-_RELCONST);
-                //Check if there is a node already in this subspace, otherwise create it
-                if (state.get(traverseId) == null) {
-                    double[] newBoundMin = new double[dim];
-                    double[] newBoundMax = new double[dim];
-
+                    double[] boundMax = (double[]) state.get(_BOUNDMAX);
+                    double[] boundMin = (double[]) state.get(_BOUNDMIN);
+                    double[] centerKey = new double[boundMax.length];
                     for (int i = 0; i < centerKey.length; i++) {
-                        //Update the bounds in a way that they have always minimum precision[i] of width
-                        if (keyToInsert[i] <= centerKey[i]) {
-                            newBoundMin[i] = boundMin[i];
-                            newBoundMax[i] = Math.max(centerKey[i] - boundMin[i], precision[i]) + boundMin[i];
+                        centerKey[i] = (boundMax[i] + boundMin[i]) / 2;
+                    }
 
-                        } else {
-                            newBoundMin[i] = boundMax[i] - Math.max(boundMax[i] - centerKey[i], precision[i]);
-                            newBoundMax[i] = boundMax[i];
+                    //Get variables from context
+                    //toDo optimize the variables here
+                    double[] keyToInsert = (double[]) context.variable("key").get(0);
+
+                    double[] precision = (double[]) context.variable("precision").get(0);
+                    int dim = keyToInsert.length;
+
+                    //Update the gaussian of the current node
+                    if (updateStat) {
+                        updateGaussian(state, keyToInsert);
+                    }
+
+                    //Check if we can go deeper or not:
+                    boolean continueNavigation = false;
+                    for (int i = 0; i < dim; i++) {
+                        if (boundMax[i] - boundMin[i] > precision[i]) {
+                            continueNavigation = true;
+                            break;
                         }
                     }
-                    //Create the new subspace node
-                    NDTree newChild = (NDTree) current.graph().newTypedNode(current.world(), current.time(), NAME);
-                    NodeState newState = newChild.graph().resolver().resolveState(newChild);
-                    newState.set(_BOUNDMIN, Type.DOUBLE_ARRAY, newBoundMin);
-                    newState.set(_BOUNDMAX, Type.DOUBLE_ARRAY, newBoundMax);
-                    Relation relChild = (Relation) state.getOrCreate(traverseId, Type.RELATION);
-                    relChild.add(newChild.id());
-                    newChild.free();
-                }
-                //toDo how to optimize not to lookup
-                //In all cases we can traverse here
-                context.setVariable("next", traverseId);
-            } else {
-                Node valueToInsert = (Node) context.variable("value").get(0);
-                Relation rel = (Relation) state.getOrCreate(_VALUES, Type.RELATION);
-                rel.add(valueToInsert.id());
-                double[] keys = (double[]) state.get(_KEYS);
-                if (keys != null) {
-                    double[] newkeys = new double[keys.length + dim];
-                    System.arraycopy(keys, 0, newkeys, 0, keys.length);
-                    System.arraycopy(keyToInsert, 0, newkeys, keys.length, dim);
-                    state.set(_KEYS, Type.DOUBLE_ARRAY, newkeys);
-                } else {
-                    state.set(_KEYS, Type.DOUBLE_ARRAY, keyToInsert);
-                }
-                updateCount(true, root);
-                //In case we want an reverse relationship we should set it here
-            }
 
-            return continueNavigation;
-        }
+                    if (continueNavigation) {
+                        //Set the long to traverse
+                        long traverseId = getRelationId(centerKey, keyToInsert);
+                        // System.out.println(traverseId-_RELCONST);
+                        //Check if there is a node already in this subspace, otherwise create it
+                        if (state.get(traverseId) == null) {
+                            double[] newBoundMin = new double[dim];
+                            double[] newBoundMax = new double[dim];
 
-        //todo check how to traverse on long
-    }, newTask().then(Actions.pluginAction(TraverseById.NAME, "{{next}}")));
+                            for (int i = 0; i < centerKey.length; i++) {
+                                //Update the bounds in a way that they have always minimum precision[i] of width
+                                if (keyToInsert[i] <= centerKey[i]) {
+                                    newBoundMin[i] = boundMin[i];
+                                    newBoundMax[i] = Math.max(centerKey[i] - boundMin[i], precision[i]) + boundMin[i];
+
+                                } else {
+                                    newBoundMin[i] = boundMax[i] - Math.max(boundMax[i] - centerKey[i], precision[i]);
+                                    newBoundMax[i] = boundMax[i];
+                                }
+                            }
+                            //Create the new subspace node
+                            NDTree newChild = (NDTree) current.graph().newTypedNode(current.world(), current.time(), NAME);
+                            NodeState newState = newChild.graph().resolver().resolveState(newChild);
+                            newState.set(_BOUNDMIN, Type.DOUBLE_ARRAY, newBoundMin);
+                            newState.set(_BOUNDMAX, Type.DOUBLE_ARRAY, newBoundMax);
+                            Relation relChild = (Relation) state.getOrCreate(traverseId, Type.RELATION);
+                            relChild.add(newChild.id());
+                            newChild.free();
+                        }
+                        //toDo how to optimize not to lookup
+                        //In all cases we can traverse here
+                        context.setVariable("next", traverseId);
+                    } else {
+                        Node valueToInsert = (Node) context.variable("value").get(0);
+                        Relation rel = (Relation) state.getOrCreate(_VALUES, Type.RELATION);
+                        rel.add(valueToInsert.id());
+                        double[] keys = (double[]) state.get(_KEYS);
+                        if (keys != null) {
+                            double[] newkeys = new double[keys.length + dim];
+                            System.arraycopy(keys, 0, newkeys, 0, keys.length);
+                            System.arraycopy(keyToInsert, 0, newkeys, keys.length, dim);
+                            state.set(_KEYS, Type.DOUBLE_ARRAY, newkeys);
+                        } else {
+                            state.set(_KEYS, Type.DOUBLE_ARRAY, keyToInsert);
+                        }
+                        updateCount(true, root);
+                        //In case we want an reverse relationship we should set it here
+                    }
+
+                    return continueNavigation;
+                }
+
+                //todo check how to traverse on long
+            }, newTask().then(Actions.pluginAction(TraverseById.NAME, "{{next}}")));
 
 
     private static Task initNearestTask() {
