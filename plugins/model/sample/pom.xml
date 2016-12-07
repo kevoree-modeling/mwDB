@@ -9,7 +9,7 @@
     <name>kmf :: Sample</name>
 
     <properties>
-        <mwg.version>11-SNAPSHOT</mwg.version>
+        <mwg.version>11.1-SNAPSHOT</mwg.version>
     </properties>
 
     <build>

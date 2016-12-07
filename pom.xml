@@ -3,7 +3,7 @@
     <groupId>org.kevoree.mwg</groupId>
     <artifactId>mwg</artifactId>
     <packaging>pom</packaging>
-    <version>11-SNAPSHOT</version>
+    <version>11.1-SNAPSHOT</version>
     <name>mwg</name>
     <url>https://github.com/kevoree-modeling/mwDB</url>
     <description>Many-World Graph Database</description>
@@ -103,7 +103,7 @@
         <!--
         <module>plugins/mlext</module>
         -->
-        <module>plugins/memory</module>
+        <!--<module>plugins/memory</module>-->
         <module>plugins/importer</module>
 
         <module>plugins/leveldb</module>

@@ -9,7 +9,7 @@
     <parent>
         <groupId>org.kevoree.mwg.plugins</groupId>
         <artifactId>model</artifactId>
-        <version>11-SNAPSHOT</version>
+        <version>11.1-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
 
