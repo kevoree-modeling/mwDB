@@ -575,6 +575,7 @@ public class CoreTask implements org.mwg.task.Task {
             switch (current) {
                 case '\'':
                     isEscaped = true;
+                    cursor++;
                     while (cursor < flatSize) {
                         if (flat.charAt(cursor) == '\'') {
                             break;
@@ -907,6 +908,16 @@ public class CoreTask implements org.mwg.task.Task {
                     throw new RuntimeException("save action does not need parameter");
                 }
                 return new ActionSave();
+            }
+        });
+
+        registry.put("selectScript", new TaskActionFactory() {
+            @Override
+            public TaskAction create(String[] params) {
+                if (params.length != 1) {
+                    throw new RuntimeException("selectScript should have one parameter");
+                }
+                return new ActionSelect(params[0],null);
             }
         });
 
