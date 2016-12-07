@@ -1,10 +1,10 @@
 package org.mwg.core.task;
 
-import jdk.nashorn.internal.ir.BaseNode;
 import org.mwg.Callback;
 import org.mwg.DeferCounter;
 import org.mwg.Node;
 import org.mwg.core.utility.CoreDeferCounter;
+import org.mwg.plugin.AbstractNode;
 import org.mwg.plugin.AbstractTaskAction;
 import org.mwg.plugin.Job;
 import org.mwg.task.TaskContext;
@@ -48,7 +48,7 @@ class ActionTimepoints extends AbstractTaskAction {
         if(previous != null) {
             DeferCounter defer = new CoreDeferCounter(previous.size());
             for(int i=0;i<previous.size();i++) {
-                if(previous.get(i) instanceof BaseNode) {
+                if(previous.get(i) instanceof AbstractNode) {
                     final Node casted = (Node) previous.get(i);
                     casted.timepoints(parsedFrom, parsedTo, new Callback<long[]>() {
                         @Override
