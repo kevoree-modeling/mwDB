@@ -558,7 +558,21 @@ class CoreTaskContext implements TaskContext {
                             }
                         }
                         if (indexStart != -1) {
-                            indexArray = TaskHelper.parseInt(contextKey.substring(indexStart, contextKey.length() - 1));
+                            String idx = contextKey.substring(indexStart, contextKey.length() - 1);
+                            TaskResult vari = variable(idx);
+                            if(vari != null) {
+                                if(vari.get(0) instanceof Integer) {
+                                    indexArray = (int) vari.get(0);
+                                } else {
+                                    throw new RuntimeException("Array index is set by a non integer variable " + idx + "=" + vari);
+                                }
+                            } else {
+                                try {
+                                    indexArray = TaskHelper.parseInt(idx);
+                                } catch (NumberFormatException e) {
+                                    throw new RuntimeException("Array index is set by a non integer literal: " + idx);
+                                }
+                            }
                             contextKey = contextKey.substring(0, indexStart - 1);
                             if (indexArray < 0) {
                                 throw new RuntimeException("Array index out of range: " + indexArray);
