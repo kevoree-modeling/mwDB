@@ -329,7 +329,7 @@ public class PolynomialNode extends BaseMLNode implements RegressionNode {
         if (state != null) {
             double[] weight = (double[]) state.getFromKey(INTERNAL_WEIGHT_KEY);
             if (weight != null) {
-                builder.append("\"polynomial\":\"");
+                builder.append(",\"polynomial\":\"");
                 for (int i = 0; i < weight.length; i++) {
                     if (i != 0) {
                         builder.append("+(");
